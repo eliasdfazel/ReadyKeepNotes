@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "891377067058",
+    "project_id": "always-ready-keep-note",
+    "storage_bucket": "always-ready-keep-note.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891377067058:android:88e8c3ab9acf742f7b482b",
+        "android_client_info": {
+          "package_name": "net.geeksempire.keepnote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891377067058-9jighn7ump5r4u22jttttr9ofc9c2hhp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geeksempire.keepnote",
+            "certificate_hash": "0cb29363c6891fbc51072ac57e27ac126bc8051c"
+          }
+        },
+        {
+          "client_id": "891377067058-fm3e7nbdglt81ii3uamhljfrbta3so2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geeksempire.keepnote",
+            "certificate_hash": "1d15eb4e4e7fc488f568267af689e34209fc705f"
+          }
+        },
+        {
+          "client_id": "891377067058-ot37ulc80do0cmt7k3erdlde4fmc1nc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBkv8Ao91HSCsWhS-07jlsaYyY6R57uwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891377067058-ot37ulc80do0cmt7k3erdlde4fmc1nc0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
