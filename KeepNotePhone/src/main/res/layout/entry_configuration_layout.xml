@@ -17,7 +17,6 @@
         apps:realtimeBlurRadius="7dp"
         apps:realtimeOverlayColor="@color/default_color_transparent_high"/>
 
-
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/waitingView"
         android:layout_width="111dp"

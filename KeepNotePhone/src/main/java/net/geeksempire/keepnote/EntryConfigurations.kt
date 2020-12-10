@@ -1,10 +1,13 @@
 package net.geeksempire.keepnote
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import net.geeksempire.keepnote.AccountManager.SignInProcess.SetupAccount
+import net.geeksempire.keepnote.Notes.Taking.TakeNote
 import net.geeksempire.keepnote.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.keepnote.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.keepnote.databinding.EntryConfigurationLayoutBinding
@@ -36,7 +39,7 @@ class EntryConfigurations : AppCompatActivity() {
                 entryConfigurationLayoutBinding.waitingView.visibility = View.GONE
                 entryConfigurationLayoutBinding.waitingInformationView.visibility = View.GONE
 
-
+                openTakeNoteActivity()
 
             }.addOnFailureListener {
 
@@ -61,11 +64,19 @@ class EntryConfigurations : AppCompatActivity() {
 
         } else {
 
-
+            openTakeNoteActivity()
 
         }
 
     }
 
+
+    private fun openTakeNoteActivity() {
+
+        startActivity(Intent(applicationContext, TakeNote::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+
+    }
 
 }
