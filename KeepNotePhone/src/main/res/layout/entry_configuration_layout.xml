@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:apps="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EntryConfigurations">
+    tools:context=".EntryConfigurations" >
 
     <net.geeksempire.blurry.effect.view.RealtimeBlurView
+        android:id="@+id/blurryBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="invisible"
 
-        apps:realtimeBlurRadius="11dp"
+        apps:realtimeBlurRadius="7dp"
         apps:realtimeOverlayColor="@color/default_color_transparent_high"/>
 
+
     <net.geeksempire.loadingspin.SpinKitView
-        android:layout_width="157dp"
-        android:layout_height="157dp"
-/>
+        android:id="@+id/waitingView"
+        android:layout_width="111dp"
+        android:layout_height="111dp"
+        android:padding="13dp"
+        android:visibility="invisible"
+
+        apps:SpinKit_Style="MultiplePulseRing"
+        apps:SpinKit_Color="@color/default_color_game_light_transparent"
+
+        apps:layout_constraintVertical_bias="0.837"
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/waitingInformationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/waitingInformation"
+        android:textSize="29sp"
+        android:textColor="@color/light"
+        android:fontFamily="@font/upcil"
+        android:visibility="invisible"
+
+        apps:layout_constraintTop_toBottomOf="@id/waitingView"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

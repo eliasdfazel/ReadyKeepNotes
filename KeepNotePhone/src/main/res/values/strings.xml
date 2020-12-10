@@ -2,4 +2,6 @@
 
     <string name="app_name">Keep Note</string>
 
+    <string name="waitingInformation">Setting Up Your Account…</string>
+
 </resources>

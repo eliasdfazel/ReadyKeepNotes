@@ -30,8 +30,17 @@ android {
 
     buildTypes {
         release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+
+            manifestPlaceholders = [enableCrashReporting: "true"]
+        }
+        debug {
+            debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders = [enableCrashReporting: "false"]
         }
     }
 
@@ -84,6 +93,7 @@ static def getDateDay() {
 }
 
 dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
 
     implementation project(path: ':LoadingSpin')
     implementation project(path: ':ShapesCustomImageViewLibrary')
