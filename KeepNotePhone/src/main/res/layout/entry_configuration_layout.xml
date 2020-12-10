@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EntryConfigurations">
 
+    <net.geeksempire.blurry.effect.view.RealtimeBlurView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
+        apps:realtimeBlurRadius="11dp"
+        apps:realtimeOverlayColor="@color/default_color_transparent_high"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
