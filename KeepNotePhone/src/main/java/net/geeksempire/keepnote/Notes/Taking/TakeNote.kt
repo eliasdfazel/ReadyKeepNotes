@@ -2,6 +2,7 @@ package net.geeksempire.keepnote.Notes.Taking
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import net.geeksempire.keepnote.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.keepnote.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnote.databinding.TakeNoteLayoutBinding
 
@@ -16,6 +17,7 @@ class TakeNote : AppCompatActivity() {
         takeNoteLayoutBinding = TakeNoteLayoutBinding.inflate(layoutInflater)
         setContentView(takeNoteLayoutBinding.root)
 
+        setupTakeNoteTheme()
 
     }
 
