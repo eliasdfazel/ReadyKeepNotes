@@ -13,4 +13,9 @@
         apps:realtimeBlurRadius="11dp"
         apps:realtimeOverlayColor="@color/default_color_transparent_high"/>
 
+    <net.geeksempire.loadingspin.SpinKitView
+        android:layout_width="157dp"
+        android:layout_height="157dp"
+/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

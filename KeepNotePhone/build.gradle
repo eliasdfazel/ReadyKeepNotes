@@ -10,11 +10,9 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
-
-
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "net.geeksempire.keepnote"
