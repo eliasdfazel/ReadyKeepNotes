@@ -1,9 +1,19 @@
 package net.geeksempire.keepnote.Notes.Taking.Extensions
 
 import net.geeksempire.keepnote.Notes.Taking.TakeNote
+import net.geeksempire.keepnote.Notes.UI.PaintingCanvasView
 import net.geeksempire.keepnote.R
 
 fun TakeNote.setupTakeNoteTheme() {
+
+    takeNoteLayoutBinding.paintingCanvasContainer.addView(
+        PaintingCanvasView(applicationContext).also { paintingCanvasView ->
+            paintingCanvasView.setupPaintingPanel(
+                getColor(R.color.default_color_game_light),
+                10.0f
+            )
+        }
+    )
 
     if (themePreferences.checkLightDark()) {
 

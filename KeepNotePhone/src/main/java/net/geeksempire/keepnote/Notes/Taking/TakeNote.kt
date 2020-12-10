@@ -8,7 +8,9 @@ import net.geeksempire.keepnote.databinding.TakeNoteLayoutBinding
 
 class TakeNote : AppCompatActivity() {
 
-    val themePreferences: ThemePreferences = ThemePreferences()
+    val themePreferences: ThemePreferences by lazy {
+        ThemePreferences(applicationContext)
+    }
 
     lateinit var takeNoteLayoutBinding: TakeNoteLayoutBinding
 

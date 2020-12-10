@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".Notes.Taking.TakeNote">
 
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cursorVisible="false"
+        android:background="@android:color/transparent"/>
 
+    <FrameLayout
+        android:id="@+id/paintingCanvasContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
