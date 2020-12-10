@@ -4,4 +4,8 @@
 
     <string name="waitingInformation">Setting Up Your Account…</string>
 
+    <string name="anonymouslySignInError">Error Setting Up Your Account ⚠</string>
+
+    <string name="retryText">Retry</string>
+
 </resources>
