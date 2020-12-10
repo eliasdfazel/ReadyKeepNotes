@@ -1,2 +1,5 @@
+include ':ShapesCustomImageViewLibrary'
+include ':LoadingSpin'
+include ':BlurryEffectLibrary'
 include ':KeepNotePhone'
 rootProject.name = "Keep Note"
