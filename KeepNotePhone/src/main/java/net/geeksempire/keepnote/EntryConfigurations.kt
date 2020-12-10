@@ -41,11 +41,6 @@ class EntryConfigurations : AppCompatActivity() {
 
         } else {
 
-            entryConfigurationLayoutBinding.blurryBackground.visibility = View.VISIBLE
-
-            entryConfigurationLayoutBinding.waitingView.visibility = View.VISIBLE
-
-            entryConfigurationLayoutBinding.waitingInformationView.visibility = View.VISIBLE
 
 
         }
