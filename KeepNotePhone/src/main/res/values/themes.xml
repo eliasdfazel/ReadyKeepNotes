@@ -25,4 +25,16 @@
 
     </style>
 
+    <style name="GeeksEmpire.TakeNote" parent="GeeksEmpire.Material">
+
+        <item name="android:windowBackground">@color/default_color</item>
+
+        <item name="android:navigationBarColor">@color/default_color</item>
+        <item name="android:statusBarColor">@color/default_color</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+
+    </style>
+
 </resources>

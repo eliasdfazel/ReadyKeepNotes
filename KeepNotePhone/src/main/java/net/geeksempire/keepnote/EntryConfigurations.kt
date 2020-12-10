@@ -38,8 +38,7 @@ class EntryConfigurations : AppCompatActivity() {
 
 
 
-
-            }.addOnCanceledListener {
+            }.addOnFailureListener {
 
                 SnackbarBuilder(applicationContext).show (
                     rootView = entryConfigurationLayoutBinding.rootView,
