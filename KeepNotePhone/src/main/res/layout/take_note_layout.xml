@@ -34,9 +34,9 @@
         android:id="@+id/editTextContentView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingTop="23dp"
-        android:paddingBottom="91dp"
+        android:paddingVertical="13dp"
         android:paddingHorizontal="17dp"
+        android:layout_marginBottom="91dp"
         android:gravity="start|top"
         android:textSize="19sp"
         android:fontFamily="monospace"
@@ -50,6 +50,7 @@
         android:id="@+id/paintingCanvasContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="91dp"
 
         apps:layout_constraintTop_toBottomOf="@id/editTextTitleView"
         apps:layout_constraintBottom_toBottomOf="parent"/>
