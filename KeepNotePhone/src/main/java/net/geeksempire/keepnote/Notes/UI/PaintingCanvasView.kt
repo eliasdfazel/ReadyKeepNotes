@@ -1,5 +1,6 @@
 package net.geeksempire.keepnote.Notes.UI
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -10,9 +11,11 @@ import android.view.View
 
 class PaintingCanvasView(context: Context?) : View(context) {
 
-    private val drawPaint: Paint = Paint()
+    private var canvas: Canvas? = null
 
-    private val path: Path = Path()
+    private var drawPaint: Paint = Paint()
+
+    private var path: Path = Path()
 
     init {
         isFocusable = true
@@ -34,13 +37,22 @@ class PaintingCanvasView(context: Context?) : View(context) {
 
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
+    fun revertAllDrawingPath() {
 
-        canvas?.drawPath(path, drawPaint)
+        path.rewind()
 
     }
 
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+
+        this@PaintingCanvasView.canvas = canvas
+
+        this@PaintingCanvasView.canvas?.drawPath(path, drawPaint)
+
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(motionEvent: MotionEvent?): Boolean {
 
         motionEvent?.let {
@@ -58,6 +70,11 @@ class PaintingCanvasView(context: Context?) : View(context) {
 
 
                     path.lineTo(pointX, pointY)
+
+                }
+                MotionEvent.ACTION_UP -> {
+
+
 
                 }
                 else -> {

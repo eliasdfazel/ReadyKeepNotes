@@ -3,20 +3,12 @@ package net.geeksempire.keepnote.Notes.Taking.Extensions
 import android.content.res.ColorStateList
 import android.view.inputmethod.InputMethodManager
 import net.geeksempire.keepnote.Notes.Taking.TakeNote
-import net.geeksempire.keepnote.Notes.UI.PaintingCanvasView
 import net.geeksempire.keepnote.R
 import net.geeksempire.keepnote.Utils.UI.Display.DpToInteger
 
 fun TakeNote.setupTakeNoteTheme() {
 
-    takeNoteLayoutBinding.paintingCanvasContainer.addView(
-        PaintingCanvasView(applicationContext).also { paintingCanvasView ->
-            paintingCanvasView.setupPaintingPanel(
-                getColor(R.color.default_color_light),
-                10.0f
-            )
-        }
-    )
+    takeNoteLayoutBinding.paintingCanvasContainer.addView(paintingCanvasView)
 
     if (themePreferences.checkLightDark()) {
 
