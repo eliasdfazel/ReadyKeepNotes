@@ -58,7 +58,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
             allDrawingInformation.forEachIndexed { index, paintingPathData ->
 
-                canvas.drawPath(paintingPathData.path, drawPaint)
+                canvas.drawPath(paintingPathData.path, paintingPathData.paint)
 
             }
 
@@ -77,6 +77,8 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         movingX = x
         movingY = y
+
+        //Set New Color To Current Paint
     }
 
     private fun touchingMove(x: Float, y: Float) {
@@ -99,7 +101,12 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         drawingPath.lineTo(movingX, movingY)
 
-        allDrawingInformation.add(PaintingData(paint = drawPaint, path = drawingPath))
+        //Set New Color To New Paint
+        val newPaintObject = Paint(drawPaint)
+
+
+
+        allDrawingInformation.add(PaintingData(paint = newPaintObject, path = drawingPath))
 
         drawingPath = Path()
 
