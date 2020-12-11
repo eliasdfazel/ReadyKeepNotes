@@ -1,27 +1,33 @@
 package net.geeksempire.keepnote.Notes.UI
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
+import kotlin.math.abs
 
-class PaintingCanvasView(context: Context?) : View(context) {
+class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListener {
 
-    private var canvas: Canvas? = null
-
-    private var drawPaint: Paint = Paint()
+    private var canvas: Canvas = Canvas()
 
     private var path: Path = Path()
+    private var drawPaint: Paint = Paint()
+
+    private var movingX: Float = 0f
+    private  var movingY: Float = 0f
+
+    private var touchTolerance: Float = 4f
+
+    private val drawingPaths = ArrayList<Path>()
+    private val undoDrawingPaths = ArrayList<Path>()
 
     init {
+
         isFocusable = true
         isFocusableInTouchMode = true
 
-        setupPaintingPanel()
+        setOnTouchListener(this@PaintingCanvasView)
+
     }
 
     fun setupPaintingPanel(paintColor: Int = Color.WHITE, paintStrokeWidth: Float = 5.0f) {
@@ -30,6 +36,7 @@ class PaintingCanvasView(context: Context?) : View(context) {
         drawPaint.strokeWidth = paintStrokeWidth
 
         drawPaint.isAntiAlias = true
+        drawPaint.isDither = true
 
         drawPaint.style = Paint.Style.STROKE
         drawPaint.strokeJoin = Paint.Join.MITER
@@ -37,56 +44,116 @@ class PaintingCanvasView(context: Context?) : View(context) {
 
     }
 
-    fun revertAllDrawingPath() {
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+    }
 
-        path.rewind()
+    override fun onDraw(canvas: Canvas) {
+
+        for (aPath in drawingPaths) {
+            canvas.drawPath(aPath, drawPaint)
+        }
+
+        canvas.drawPath(path, drawPaint)
 
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
+    private fun touchingStart(x: Float, y: Float) {
 
-        this@PaintingCanvasView.canvas = canvas
+        undoDrawingPaths.clear()
 
-        this@PaintingCanvasView.canvas?.drawPath(path, drawPaint)
+        path.reset()
+        path.moveTo(x, y)
 
+        movingX = x
+        movingY = y
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(motionEvent: MotionEvent?): Boolean {
+    private fun touchingMove(x: Float, y: Float) {
 
-        motionEvent?.let {
+        val dX: Float = abs(x - movingX)
+        val dY: Float = abs(y - movingY)
 
-            val pointX: Float = motionEvent.x
-            val pointY: Float = motionEvent.y
+        if (dX >= touchTolerance || dY >= touchTolerance) {
 
-            when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
+            path.quadTo(movingX, movingY, (x + movingX) / 2, (y + movingY) / 2)
 
-                    path.moveTo(pointX, pointY)
-
-                }
-                MotionEvent.ACTION_MOVE -> {
-
-
-                    path.lineTo(pointX, pointY)
-
-                }
-                MotionEvent.ACTION_UP -> {
-
-
-
-                }
-                else -> {
-
-                }
-            }
+            movingX = x
+            movingY = y
 
         }
 
-        postInvalidate()
+    }
+
+    private fun touchingUp() {
+
+        path.lineTo(movingX, movingY)
+
+        canvas.drawPath(path, drawPaint)
+
+        drawingPaths.add(path)
+
+        path = Path()
+
+    }
+
+    override fun onTouch(view: View?, motionEvent: MotionEvent): Boolean {
+
+        val initialTouchX = motionEvent.x
+        val initialTouchY = motionEvent.y
+
+        when (motionEvent.action) {
+            MotionEvent.ACTION_DOWN -> {
+
+                touchingStart(initialTouchX, initialTouchY)
+
+                invalidate()
+
+            }
+            MotionEvent.ACTION_MOVE -> {
+
+                touchingMove(initialTouchX, initialTouchY)
+
+                invalidate()
+            }
+            MotionEvent.ACTION_UP -> {
+
+                touchingUp()
+
+                invalidate()
+
+            }
+        }
 
         return true
+    }
+
+    fun undoProcess() {
+
+        if (drawingPaths.size > 0) {
+
+            undoDrawingPaths.add(drawingPaths.removeAt(drawingPaths.size - 1))
+
+            invalidate()
+
+        } else {
+
+        }
+
+    }
+
+    fun redoProcess() {
+
+        if (undoDrawingPaths.size > 0) {
+
+            drawingPaths.add(undoDrawingPaths.removeAt(undoDrawingPaths.size - 1))
+
+            invalidate()
+
+        } else {
+
+        }
+
     }
 
 }
