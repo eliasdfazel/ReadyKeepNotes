@@ -35,8 +35,23 @@ class TakeNote : AppCompatActivity() {
 
         setupToggleKeyboardHandwriting()
 
+        takeNoteLayoutBinding.savingView.setOnClickListener {
 
 
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
 }

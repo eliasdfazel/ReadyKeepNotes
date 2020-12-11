@@ -1,5 +1,6 @@
 package net.geeksempire.keepnote.Notes.Taking.Extensions
 
+import android.content.res.ColorStateList
 import android.view.inputmethod.InputMethodManager
 import net.geeksempire.keepnote.Notes.Taking.TakeNote
 import net.geeksempire.keepnote.Notes.UI.PaintingCanvasView
@@ -11,7 +12,7 @@ fun TakeNote.setupTakeNoteTheme() {
     takeNoteLayoutBinding.paintingCanvasContainer.addView(
         PaintingCanvasView(applicationContext).also { paintingCanvasView ->
             paintingCanvasView.setupPaintingPanel(
-                getColor(R.color.default_color_game_light),
+                getColor(R.color.default_color_light),
                 10.0f
             )
         }
@@ -26,6 +27,9 @@ fun TakeNote.setupTakeNoteTheme() {
 
         takeNoteLayoutBinding.editTextView.setTextColor(getColor(R.color.dark))
 
+        takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
+        takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
+
     } else {
 
         takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
@@ -34,6 +38,9 @@ fun TakeNote.setupTakeNoteTheme() {
         window.navigationBarColor = getColor(R.color.dark)
 
         takeNoteLayoutBinding.editTextView.setTextColor(getColor(R.color.light))
+
+        takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
+        takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
 
     }
 
