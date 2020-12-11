@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingTop="23dp"
-        android:paddingBottom="83dp"
+        android:paddingBottom="91dp"
         android:paddingHorizontal="17dp"
         android:gravity="start|top"
         android:textSize="19sp"
@@ -52,7 +52,7 @@
         android:layout_height="0dp"
 
         apps:layout_constraintTop_toBottomOf="@id/editTextTitleView"
-        apps:layout_constraintBottom_toBottomOf="@id/editTextContentView"/>
+        apps:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/toggleKeyboardHandwriting"
