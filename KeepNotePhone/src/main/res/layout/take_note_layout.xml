@@ -9,16 +9,40 @@
     tools:context=".Notes.Taking.TakeNote">
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/editTextView"
+        android:id="@+id/editTextTitleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="19dp"
+        android:paddingHorizontal="17dp"
+        android:layout_marginVertical="7dp"
+        android:gravity="center_vertical"
+        android:imeOptions="actionNext"
+        android:lines="1"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textSize="31sp"
+        android:textColor="@color/lighter"
+        android:textStyle="bold"
+        android:fontFamily="monospace"
+        android:background="@android:color/transparent"
+
+        apps:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editTextContentView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:paddingVertical="23dp"
         android:paddingHorizontal="17dp"
         android:gravity="start|top"
+        android:imeOptions="actionDone"
         android:textSize="19sp"
         android:fontFamily="monospace"
         android:cursorVisible="true"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+
+        apps:layout_constraintTop_toBottomOf="@id/editTextTitleView"
+        apps:layout_constraintBottom_toBottomOf="parent"/>
 
     <FrameLayout
         android:id="@+id/paintingCanvasContainer"

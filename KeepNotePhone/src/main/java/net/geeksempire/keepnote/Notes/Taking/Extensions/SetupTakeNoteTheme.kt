@@ -25,7 +25,7 @@ fun TakeNote.setupTakeNoteTheme() {
         window.statusBarColor = getColor(R.color.light)
         window.navigationBarColor = getColor(R.color.light)
 
-        takeNoteLayoutBinding.editTextView.setTextColor(getColor(R.color.dark))
+        takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.dark))
 
         takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
         takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
@@ -37,7 +37,7 @@ fun TakeNote.setupTakeNoteTheme() {
         window.statusBarColor = getColor(R.color.dark)
         window.navigationBarColor = getColor(R.color.dark)
 
-        takeNoteLayoutBinding.editTextView.setTextColor(getColor(R.color.light))
+        takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.light))
 
         takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
         takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
@@ -54,11 +54,11 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
     takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 103)
 
     inputMethodManager.showSoftInput(
-        takeNoteLayoutBinding.editTextView,
+        takeNoteLayoutBinding.editTextContentView,
         InputMethodManager.SHOW_IMPLICIT
     )
 
-    takeNoteLayoutBinding.editTextView.requestFocus()
+    takeNoteLayoutBinding.editTextContentView.requestFocus()
 
     takeNoteLayoutBinding.toggleKeyboardHandwriting.setOnClickListener {
 
@@ -70,11 +70,11 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 103)
 
             inputMethodManager.showSoftInput(
-                takeNoteLayoutBinding.editTextView,
+                takeNoteLayoutBinding.editTextContentView,
                 InputMethodManager.SHOW_IMPLICIT
             )
 
-            takeNoteLayoutBinding.editTextView.requestFocus()
+            takeNoteLayoutBinding.editTextContentView.requestFocus()
 
         } else {
 
@@ -84,11 +84,11 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
 
             inputMethodManager.hideSoftInputFromWindow(
-                takeNoteLayoutBinding.editTextView.windowToken,
+                takeNoteLayoutBinding.editTextContentView.windowToken,
                 InputMethodManager.HIDE_NOT_ALWAYS
             )
 
-            takeNoteLayoutBinding.editTextView.clearFocus()
+            takeNoteLayoutBinding.editTextContentView.clearFocus()
 
         }
 
