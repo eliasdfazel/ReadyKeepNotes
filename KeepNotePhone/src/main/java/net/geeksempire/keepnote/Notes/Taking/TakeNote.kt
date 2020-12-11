@@ -4,9 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
-import net.geeksempire.keepnote.Notes.UI.PaintingCanvasView
 import net.geeksempire.keepnote.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnote.R
 import net.geeksempire.keepnote.databinding.TakeNoteLayoutBinding
@@ -17,7 +17,7 @@ class TakeNote : AppCompatActivity() {
         PaintingCanvasView(applicationContext).also {
             it.setupPaintingPanel(
                 getColor(R.color.default_color_light),
-                7.0f
+                7.777f
             )
         }
     }
@@ -48,16 +48,16 @@ class TakeNote : AppCompatActivity() {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
-            paintingCanvasView.changePaintingColor()
+            paintingCanvasView.undoProcess()
 
 
         }
 
         takeNoteLayoutBinding.savingView.setOnLongClickListener {
 
-            paintingCanvasView.removeAllPaints()
 
-            true
+
+            false
         }
 
     }

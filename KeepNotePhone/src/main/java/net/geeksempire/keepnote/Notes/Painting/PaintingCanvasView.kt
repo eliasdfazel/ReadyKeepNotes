@@ -1,4 +1,4 @@
-package net.geeksempire.keepnote.Notes.UI
+package net.geeksempire.keepnote.Notes.Painting
 
 import android.content.Context
 import android.graphics.*
@@ -8,18 +8,18 @@ import kotlin.math.abs
 
 class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListener {
 
-    private val canvas: Canvas = Canvas()
     private var drawPaint: Paint = Paint()
 
-    private var path: Path = Path()
+    private var drawingPath: Path = Path()
 
     private var movingX: Float = 0f
     private  var movingY: Float = 0f
 
     private var touchTolerance: Float = 4f
 
-    private val drawingPaths = ArrayList<Path>()
-    private val undoDrawingPaths = ArrayList<Path>()
+    private val allDrawingInformation = ArrayList<PaintingPathData>()
+
+    private val undoDrawingInformation = ArrayList<PaintingPathData>()
 
     init {
 
@@ -58,11 +58,13 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         canvas?.let {
 
-            for (aPath in drawingPaths) {
-                canvas.drawPath(aPath, drawPaint)
+            allDrawingInformation.forEachIndexed { index, paintingPathData ->
+
+                canvas.drawPath(paintingPathData.path, drawPaint)
+
             }
 
-            canvas.drawPath(path, drawPaint)
+            canvas.drawPath(drawingPath, drawPaint)
 
         }
 
@@ -70,10 +72,10 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     private fun touchingStart(x: Float, y: Float) {
 
-        undoDrawingPaths.clear()
+        undoDrawingInformation.clear()
 
-        path.reset()
-        path.moveTo(x, y)
+        drawingPath.reset()
+        drawingPath.moveTo(x, y)
 
         movingX = x
         movingY = y
@@ -86,7 +88,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         if (dX >= touchTolerance || dY >= touchTolerance) {
 
-            path.quadTo(movingX, movingY, (x + movingX) / 2, (y + movingY) / 2)
+            drawingPath.quadTo(movingX, movingY, (x + movingX) / 2, (y + movingY) / 2)
 
             movingX = x
             movingY = y
@@ -97,13 +99,11 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     private fun touchingUp() {
 
-        path.lineTo(movingX, movingY)
+        drawingPath.lineTo(movingX, movingY)
 
-        canvas.drawPath(path, drawPaint)
+        allDrawingInformation.add(PaintingPathData(path = drawingPath))
 
-        drawingPaths.add(path)
-
-        path = Path()
+        drawingPath = Path()
 
     }
 
@@ -144,9 +144,9 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     fun undoProcess() {
 
-        if (drawingPaths.size > 0) {
+        if (allDrawingInformation.size > 0) {
 
-            undoDrawingPaths.add(drawingPaths.removeAt(drawingPaths.size - 1))
+            undoDrawingInformation.add(allDrawingInformation.removeAt(allDrawingInformation.size - 1))
 
             invalidate()
 
@@ -158,9 +158,9 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     fun redoProcess() {
 
-        if (undoDrawingPaths.size > 0) {
+        if (undoDrawingInformation.size > 0) {
 
-            drawingPaths.add(undoDrawingPaths.removeAt(undoDrawingPaths.size - 1))
+            allDrawingInformation.add(undoDrawingInformation.removeAt(undoDrawingInformation.size - 1))
 
             invalidate()
 
