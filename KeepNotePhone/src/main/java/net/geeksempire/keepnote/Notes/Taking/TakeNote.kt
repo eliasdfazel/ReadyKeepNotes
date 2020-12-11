@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import com.abanabsalan.aban.magazine.Utils.System.doVibrate
 import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
@@ -48,14 +49,13 @@ class TakeNote : AppCompatActivity() {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
-            paintingCanvasView.undoProcess()
 
 
         }
 
         takeNoteLayoutBinding.savingView.setOnLongClickListener {
 
-
+            doVibrate(applicationContext, 113)
 
             false
         }
