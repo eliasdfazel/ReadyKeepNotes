@@ -38,6 +38,7 @@ class TakeNote : AppCompatActivity() {
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
 
+
         }
 
     }
