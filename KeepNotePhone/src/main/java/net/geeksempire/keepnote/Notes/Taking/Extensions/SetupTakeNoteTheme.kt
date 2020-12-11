@@ -96,8 +96,8 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                 InputMethodManager.HIDE_NOT_ALWAYS
             )
 
-            takeNoteLayoutBinding.editTextContentView.clearFocus()
             takeNoteLayoutBinding.editTextTitleView.clearFocus()
+            takeNoteLayoutBinding.editTextContentView.clearFocus()
 
             takeNoteLayoutBinding.paintingCanvasContainer.bringToFront()
 
