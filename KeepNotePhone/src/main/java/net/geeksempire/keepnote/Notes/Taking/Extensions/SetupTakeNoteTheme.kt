@@ -55,7 +55,6 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
 
     takeNoteLayoutBinding.toggleKeyboardHandwriting.setOnClickListener {
 
-
         if (toggleKeyboardHandwriting) {
 
             toggleKeyboardHandwriting = false
