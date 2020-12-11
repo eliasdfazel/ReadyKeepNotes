@@ -48,13 +48,12 @@ class TakeNote : AppCompatActivity() {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
-            paintingCanvasView.undoProcess()
 
         }
 
         takeNoteLayoutBinding.savingView.setOnLongClickListener {
 
-            paintingCanvasView.redoProcess()
+
 
             true
         }
