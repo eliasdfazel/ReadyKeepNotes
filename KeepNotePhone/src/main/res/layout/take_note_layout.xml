@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:paddingVertical="13dp"
         android:paddingHorizontal="9dp"
+        android:textSize="17sp"
         android:cursorVisible="false"
         android:background="@android:color/transparent"/>
 

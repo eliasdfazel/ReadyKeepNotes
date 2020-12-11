@@ -22,12 +22,16 @@ fun TakeNote.setupTakeNoteTheme() {
         window.statusBarColor = getColor(R.color.light)
         window.navigationBarColor = getColor(R.color.light)
 
+        takeNoteLayoutBinding.editTextView.setTextColor(getColor(R.color.dark))
+
     } else {
 
         takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
 
         window.statusBarColor = getColor(R.color.dark)
         window.navigationBarColor = getColor(R.color.dark)
+
+        takeNoteLayoutBinding.editTextView.setTextColor(getColor(R.color.light))
 
     }
 
