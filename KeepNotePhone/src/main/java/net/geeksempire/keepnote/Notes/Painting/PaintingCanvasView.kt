@@ -1,11 +1,13 @@
 package net.geeksempire.keepnote.Notes.Painting
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
 import kotlin.math.abs
 
+@SuppressLint("ClickableViewAccessibility")
 class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListener {
 
     private var drawPaint: Paint = Paint()
@@ -17,16 +19,16 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     private var touchTolerance: Float = 4f
 
-    private val allDrawingInformation = ArrayList<PaintingPathData>()
+    private val allDrawingInformation = ArrayList<PaintingData>()
 
-    private val undoDrawingInformation = ArrayList<PaintingPathData>()
+    private val undoDrawingInformation = ArrayList<PaintingData>()
 
     init {
 
-        isFocusable = true
-        isFocusableInTouchMode = true
+        this@PaintingCanvasView.isFocusable = true
+        this@PaintingCanvasView.isFocusableInTouchMode = true
 
-        setOnTouchListener(this@PaintingCanvasView)
+        this@PaintingCanvasView.setOnTouchListener(this@PaintingCanvasView)
 
     }
 
@@ -46,12 +48,8 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     fun changePaintingColor() {
 
-        drawPaint.color = Color.RED
+        drawPaint.color = Color.MAGENTA
 
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -101,7 +99,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         drawingPath.lineTo(movingX, movingY)
 
-        allDrawingInformation.add(PaintingPathData(path = drawingPath))
+        allDrawingInformation.add(PaintingData(paint = drawPaint, path = drawingPath))
 
         drawingPath = Path()
 
