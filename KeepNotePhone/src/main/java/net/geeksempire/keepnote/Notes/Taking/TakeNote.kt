@@ -21,7 +21,7 @@ class TakeNote : AppCompatActivity() {
 
     /**
      * True: Handwriting - False: Keyboard
-     * */
+     **/
     var toggleKeyboardHandwriting: Boolean = false
 
     lateinit var takeNoteLayoutBinding: TakeNoteLayoutBinding
