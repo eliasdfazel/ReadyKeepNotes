@@ -50,6 +50,8 @@
 
         <activity
             android:name=".Notes.Taking.TakeNote"
+            android:windowSoftInputMode="adjustResize"
+            android:resizeableActivity="true"
             android:theme="@style/GeeksEmpire.TakeNote">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

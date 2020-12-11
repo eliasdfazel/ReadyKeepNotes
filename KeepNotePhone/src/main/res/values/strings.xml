@@ -8,4 +8,6 @@
 
     <string name="retryText">Retry</string>
 
+    <string name="toggleKeyboardHandwriting">Toggle Keyboard and Handwriting</string>
+
 </resources>

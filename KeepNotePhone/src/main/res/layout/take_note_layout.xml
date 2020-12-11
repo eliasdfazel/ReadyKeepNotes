@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -10,15 +12,42 @@
         android:id="@+id/editTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingVertical="13dp"
-        android:paddingHorizontal="9dp"
-        android:textSize="17sp"
-        android:cursorVisible="false"
+        android:paddingVertical="23dp"
+        android:paddingHorizontal="17dp"
+        android:gravity="start|top"
+        android:textSize="19sp"
+        android:fontFamily="monospace"
+        android:cursorVisible="true"
         android:background="@android:color/transparent"/>
 
     <FrameLayout
         android:id="@+id/paintingCanvasContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/toggleKeyboardHandwriting"
+        android:layout_width="79dp"
+        android:layout_height="79dp"
+        android:layout_marginVertical="19dp"
+        android:layout_marginHorizontal="17dp"
+        android:contentDescription="@string/toggleKeyboardHandwriting"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+
+        apps:cornerRadius="51dp"
+        apps:elevation="23dp"
+        apps:icon="@drawable/icon_keyboard"
+        apps:iconSize="103dp"
+        apps:iconGravity="textStart"
+        apps:iconTint="@color/light"
+        apps:iconPadding="0dp"
+        apps:rippleColor="@color/default_color_game_light"
+        apps:backgroundTint="@color/default_color_transparent"
+
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
