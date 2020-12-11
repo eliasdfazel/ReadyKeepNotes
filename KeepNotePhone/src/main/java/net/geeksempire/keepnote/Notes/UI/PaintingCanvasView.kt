@@ -8,10 +8,10 @@ import kotlin.math.abs
 
 class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListener {
 
-    private var canvas: Canvas = Canvas()
+    private val canvas: Canvas = Canvas()
+    private var drawPaint: Paint = Paint()
 
     private var path: Path = Path()
-    private var drawPaint: Paint = Paint()
 
     private var movingX: Float = 0f
     private  var movingY: Float = 0f
@@ -44,17 +44,27 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     }
 
+    fun changePaintingColor() {
+
+        drawPaint.color = Color.RED
+
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas?) {
 
-        for (aPath in drawingPaths) {
-            canvas.drawPath(aPath, drawPaint)
+        canvas?.let {
+
+            for (aPath in drawingPaths) {
+                canvas.drawPath(aPath, drawPaint)
+            }
+
+            canvas.drawPath(path, drawPaint)
+
         }
-
-        canvas.drawPath(path, drawPaint)
 
     }
 
@@ -97,32 +107,36 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     }
 
-    override fun onTouch(view: View?, motionEvent: MotionEvent): Boolean {
+    override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
 
-        val initialTouchX = motionEvent.x
-        val initialTouchY = motionEvent.y
+        motionEvent?.let {
 
-        when (motionEvent.action) {
-            MotionEvent.ACTION_DOWN -> {
+            val initialTouchX = motionEvent.x
+            val initialTouchY = motionEvent.y
 
-                touchingStart(initialTouchX, initialTouchY)
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
 
-                invalidate()
+                    touchingStart(initialTouchX, initialTouchY)
 
+                    invalidate()
+
+                }
+                MotionEvent.ACTION_MOVE -> {
+
+                    touchingMove(initialTouchX, initialTouchY)
+
+                    invalidate()
+                }
+                MotionEvent.ACTION_UP -> {
+
+                    touchingUp()
+
+                    invalidate()
+
+                }
             }
-            MotionEvent.ACTION_MOVE -> {
 
-                touchingMove(initialTouchX, initialTouchY)
-
-                invalidate()
-            }
-            MotionEvent.ACTION_UP -> {
-
-                touchingUp()
-
-                invalidate()
-
-            }
         }
 
         return true
@@ -153,6 +167,11 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         } else {
 
         }
+
+    }
+
+    fun removeAllPaints() {
+
 
     }
 

@@ -17,7 +17,7 @@ class TakeNote : AppCompatActivity() {
         PaintingCanvasView(applicationContext).also {
             it.setupPaintingPanel(
                 getColor(R.color.default_color_light),
-                10.0f
+                7.0f
             )
         }
     }
@@ -48,12 +48,14 @@ class TakeNote : AppCompatActivity() {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
+            paintingCanvasView.changePaintingColor()
+
 
         }
 
         takeNoteLayoutBinding.savingView.setOnLongClickListener {
 
-
+            paintingCanvasView.removeAllPaints()
 
             true
         }
