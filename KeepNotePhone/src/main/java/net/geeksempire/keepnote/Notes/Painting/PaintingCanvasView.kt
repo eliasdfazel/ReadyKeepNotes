@@ -161,6 +161,8 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     fun changePaintingData(modifiedNewPaintingData: NewPaintingData) {
 
+        drawPaint.xfermode = null
+
         newPaintingData = modifiedNewPaintingData
 
     }
