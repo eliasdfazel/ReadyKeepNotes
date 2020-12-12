@@ -7,8 +7,11 @@ import android.view.MotionEvent
 import android.view.View
 import kotlin.math.abs
 
+
 @SuppressLint("ClickableViewAccessibility")
 class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListener {
+
+    private var readyCanvas: Canvas? = null
 
     private var drawPaint: Paint = Paint()
 
@@ -19,11 +22,11 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     private var touchTolerance: Float = 4f
 
-    private var changedColor: Int = Color.WHITE
-
     private val allDrawingInformation = ArrayList<PaintingData>()
 
     private val undoDrawingInformation = ArrayList<PaintingData>()
+
+    private var newPaintingData: NewPaintingData = NewPaintingData()
 
     init {
 
@@ -36,8 +39,6 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     fun setupPaintingPanel(paintColor: Int = Color.WHITE, paintStrokeWidth: Float = 5.0f) {
 
-        changedColor = paintColor
-
         drawPaint.color = paintColor
         drawPaint.strokeWidth = paintStrokeWidth
 
@@ -48,17 +49,15 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         drawPaint.strokeJoin = Paint.Join.MITER
         drawPaint.strokeCap = Paint.Cap.ROUND
 
-    }
-
-    fun changePaintingColor(newColor: Int) {
-
-        changedColor = newColor
+        newPaintingData = NewPaintingData(paintColor, paintStrokeWidth)
 
     }
 
     override fun onDraw(canvas: Canvas?) {
 
         canvas?.let {
+
+            readyCanvas = canvas
 
             allDrawingInformation.forEachIndexed { index, paintingPathData ->
 
@@ -69,52 +68,6 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
             canvas.drawPath(drawingPath, drawPaint)
 
         }
-
-    }
-
-    private fun touchingStart(x: Float, y: Float) {
-
-        undoDrawingInformation.clear()
-
-        drawingPath.reset()
-        drawingPath.moveTo(x, y)
-
-        movingX = x
-        movingY = y
-
-        //Set New Color To Current Paint
-        drawPaint.color = changedColor
-
-
-    }
-
-    private fun touchingMove(x: Float, y: Float) {
-
-        val dX: Float = abs(x - movingX)
-        val dY: Float = abs(y - movingY)
-
-        if (dX >= touchTolerance || dY >= touchTolerance) {
-
-            drawingPath.quadTo(movingX, movingY, (x + movingX) / 2, (y + movingY) / 2)
-
-            movingX = x
-            movingY = y
-
-        }
-
-    }
-
-    private fun touchingUp() {
-
-        drawingPath.lineTo(movingX, movingY)
-
-        //Set New Color To New Paint
-        val newPaintObject = Paint(drawPaint)
-        newPaintObject.color = changedColor
-
-        allDrawingInformation.add(PaintingData(paint = newPaintObject, path = drawingPath))
-
-        drawingPath = Path()
 
     }
 
@@ -153,6 +106,57 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         return true
     }
 
+    private fun touchingStart(x: Float, y: Float) {
+
+        undoDrawingInformation.clear()
+
+        drawingPath.reset()
+        drawingPath.moveTo(x, y)
+
+        movingX = x
+        movingY = y
+
+        //Set New Color To Current Paint
+        drawPaint.color = newPaintingData.paintColor
+
+    }
+
+    private fun touchingMove(x: Float, y: Float) {
+
+        val dX: Float = abs(x - movingX)
+        val dY: Float = abs(y - movingY)
+
+        if (dX >= touchTolerance || dY >= touchTolerance) {
+
+            drawingPath.quadTo(movingX, movingY, (x + movingX) / 2, (y + movingY) / 2)
+
+            movingX = x
+            movingY = y
+
+        }
+
+    }
+
+    private fun touchingUp() {
+
+        drawingPath.lineTo(movingX, movingY)
+
+        //Set New Color To New Paint
+        val newPaintObject = Paint(drawPaint)
+        newPaintObject.color = newPaintingData.paintColor
+
+        allDrawingInformation.add(PaintingData(paint = newPaintObject, path = drawingPath))
+
+        drawingPath = Path()
+
+    }
+
+    fun changePaintingData(modifiedNewPaintingData: NewPaintingData) {
+
+        newPaintingData = modifiedNewPaintingData
+
+    }
+
     fun undoProcess() {
 
         if (allDrawingInformation.size > 0) {
@@ -183,6 +187,9 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     fun removeAllPaints() {
 
+        allDrawingInformation.clear()
+
+        invalidate()
 
     }
 

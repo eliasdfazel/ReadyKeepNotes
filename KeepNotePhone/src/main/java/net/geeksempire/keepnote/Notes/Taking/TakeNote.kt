@@ -1,11 +1,9 @@
 package net.geeksempire.keepnote.Notes.Taking
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import com.abanabsalan.aban.magazine.Utils.System.doVibrate
 import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
@@ -50,17 +48,9 @@ class TakeNote : AppCompatActivity() {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
-            paintingCanvasView.changePaintingColor(Color.GREEN)
+//            paintingCanvasView.changePaintingData(NewPaintingData(paintColor = getColor(R.color.default_color_game_light), paintStrokeWidth = 17f))
+            paintingCanvasView.removeAllPaints()
 
-        }
-
-        takeNoteLayoutBinding.savingView.setOnLongClickListener {
-
-            doVibrate(applicationContext, 113)
-
-            paintingCanvasView.changePaintingColor(Color.GRAY)
-
-            true
         }
 
     }
