@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
+import net.geeksempire.keepnote.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
 import net.geeksempire.keepnote.Preferences.Theme.ThemePreferences
@@ -45,6 +46,8 @@ class TakeNote : AppCompatActivity() {
         setupTakeNoteTheme()
 
         setupToggleKeyboardHandwriting()
+
+        setupPaintingActions()
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 

@@ -119,6 +119,10 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         //Set New Color To Current Paint
         drawPaint.color = newPaintingData.paintColor
 
+        newPaintingData.paint?.let {
+            drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
+        }
+
     }
 
     private fun touchingMove(x: Float, y: Float) {
@@ -144,6 +148,10 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         //Set New Color To New Paint
         val newPaintObject = Paint(drawPaint)
         newPaintObject.color = newPaintingData.paintColor
+
+        newPaintingData.paint?.let {
+            newPaintObject.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        }
 
         allDrawingInformation.add(PaintingData(paint = newPaintObject, path = drawingPath))
 
@@ -182,6 +190,18 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         } else {
 
         }
+
+    }
+
+    fun enableClearing() {
+
+        drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+
+    }
+
+    fun disableClearing() {
+
+        drawPaint.xfermode = null
 
     }
 
