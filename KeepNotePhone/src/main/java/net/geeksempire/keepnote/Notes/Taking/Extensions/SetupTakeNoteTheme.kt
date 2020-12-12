@@ -55,6 +55,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
         takeNoteLayoutBinding.editTextContentView.requestFocus()
 
         takeNoteLayoutBinding.editTextContentView.bringToFront()
+        takeNoteLayoutBinding.paintingToolbarInclude.root.bringToFront()
 
     }
 
@@ -92,6 +93,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.editTextContentView.clearFocus()
 
             takeNoteLayoutBinding.paintingCanvasContainer.bringToFront()
+            takeNoteLayoutBinding.paintingToolbarInclude.root.bringToFront()
 
         }
 

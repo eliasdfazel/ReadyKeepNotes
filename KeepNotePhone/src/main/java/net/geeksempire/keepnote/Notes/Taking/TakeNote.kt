@@ -48,8 +48,7 @@ class TakeNote : AppCompatActivity() {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
-//            paintingCanvasView.changePaintingData(NewPaintingData(paintColor = getColor(R.color.default_color_game_light), paintStrokeWidth = 17f))
-            paintingCanvasView.removeAllPaints()
+
 
         }
 
