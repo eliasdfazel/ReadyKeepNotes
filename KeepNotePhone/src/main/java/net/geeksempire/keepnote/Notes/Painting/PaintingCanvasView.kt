@@ -19,6 +19,8 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     private var touchTolerance: Float = 4f
 
+    private var changedColor: Int = Color.WHITE
+
     private val allDrawingInformation = ArrayList<PaintingData>()
 
     private val undoDrawingInformation = ArrayList<PaintingData>()
@@ -34,6 +36,8 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     fun setupPaintingPanel(paintColor: Int = Color.WHITE, paintStrokeWidth: Float = 5.0f) {
 
+        changedColor = paintColor
+
         drawPaint.color = paintColor
         drawPaint.strokeWidth = paintStrokeWidth
 
@@ -46,9 +50,9 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     }
 
-    fun changePaintingColor() {
+    fun changePaintingColor(newColor: Int) {
 
-        drawPaint.color = Color.MAGENTA
+        changedColor = newColor
 
     }
 
@@ -79,6 +83,9 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         movingY = y
 
         //Set New Color To Current Paint
+        drawPaint.color = changedColor
+
+
     }
 
     private fun touchingMove(x: Float, y: Float) {
@@ -103,8 +110,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         //Set New Color To New Paint
         val newPaintObject = Paint(drawPaint)
-
-
+        newPaintObject.color = changedColor
 
         allDrawingInformation.add(PaintingData(paint = newPaintObject, path = drawingPath))
 

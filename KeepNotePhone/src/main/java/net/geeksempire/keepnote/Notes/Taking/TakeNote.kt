@@ -1,6 +1,7 @@
 package net.geeksempire.keepnote.Notes.Taking
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -49,7 +50,7 @@ class TakeNote : AppCompatActivity() {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
-
+            paintingCanvasView.changePaintingColor(Color.GREEN)
 
         }
 
@@ -57,7 +58,9 @@ class TakeNote : AppCompatActivity() {
 
             doVibrate(applicationContext, 113)
 
-            false
+            paintingCanvasView.changePaintingColor(Color.GRAY)
+
+            true
         }
 
     }
