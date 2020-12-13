@@ -56,6 +56,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val databaseEndpoints: DatabaseEndpoints = DatabaseEndpoints()
 
+    val documentId = System.currentTimeMillis()
+
     @Inject
     lateinit var networkConnectionListener: NetworkConnectionListener
 
@@ -91,24 +93,24 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                 )
 
                 (application as KeepNoteApplication).firestoreDatabase
-                    .collection(databaseEndpoints.GeneralEndpoints(firebaseUser.uid))
-                    .add(notesDataStructure)
-                    .addOnSuccessListener { documentReference ->
+                    .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${System.currentTimeMillis()}")
+                    .set(notesDataStructure)
+                    .addOnSuccessListener {
                         Log.d(this@TakeNote.javaClass.simpleName, "Note Saved Successfully")
 
                         (application as KeepNoteApplication).firebaseStorage
-                            .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentReference.id}.PNG")
+                            .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
                             .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
                             .addOnSuccessListener { uploadTaskSnapshot ->
                                 Log.d(this@TakeNote.javaClass.simpleName, "Paint Saved Successfully")
 
                                 (application as KeepNoteApplication).firebaseStorage
-                                    .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentReference.id}.PNG")
+                                    .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
                                     .downloadUrl
                                     .addOnSuccessListener { downloadUri ->
 
                                         (application as KeepNoteApplication).firestoreDatabase
-                                            .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + documentReference.id)
+                                            .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + documentId)
                                             .update(
                                                 "noteHandwritingSnapshotLink", downloadUri.toString(),
                                             ).addOnSuccessListener {
