@@ -95,9 +95,10 @@ static def getDateDay() {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
+    implementation project(path: ':AdvancedColorPicker')
+    implementation project(path: ':BlurryEffectLibrary')
     implementation project(path: ':LoadingSpin')
     implementation project(path: ':ShapesCustomImageViewLibrary')
-    implementation project(path: ':BlurryEffectLibrary')
 
 
     implementation 'com.google.android.play:core-ktx:1.8.1'

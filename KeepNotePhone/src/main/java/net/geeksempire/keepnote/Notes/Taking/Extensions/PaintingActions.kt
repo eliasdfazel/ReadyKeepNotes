@@ -2,6 +2,8 @@ package net.geeksempire.keepnote.Notes.Taking.Extensions
 
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
+import android.view.View
+import net.geeksempire.keepnote.Notes.Painting.NewPaintingData
 import net.geeksempire.keepnote.Notes.Taking.TakeNote
 import net.geeksempire.keepnote.R
 
@@ -10,6 +12,15 @@ fun TakeNote.setupPaintingActions() {
     takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.setOnClickListener {
 
         //Open All Color Picker
+        if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
+
+            takeNoteLayoutBinding.colorPaletteInclude.root.visibility = View.INVISIBLE
+
+        } else {
+
+            takeNoteLayoutBinding.colorPaletteInclude.root.visibility = View.VISIBLE
+
+        }
 
     }
 
@@ -48,7 +59,13 @@ fun TakeNote.setupPaintingActions() {
 
         paintingCanvasView.removeAllPaints()
 
-        false
+        true
+    }
+
+    takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.setOnColorChangedListener { pickedColor ->
+
+        paintingCanvasView.changePaintingData(NewPaintingData(paintColor = pickedColor, paintStrokeWidth = paintingCanvasView.newPaintingData.paintStrokeWidth))
+
     }
 
 }

@@ -1,3 +1,4 @@
+include ':AdvancedColorPicker'
 include ':ShapesCustomImageViewLibrary'
 include ':LoadingSpin'
 include ':BlurryEffectLibrary'

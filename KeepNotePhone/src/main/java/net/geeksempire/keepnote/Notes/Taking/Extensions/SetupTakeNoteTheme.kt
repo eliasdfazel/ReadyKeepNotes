@@ -1,6 +1,7 @@
 package net.geeksempire.keepnote.Notes.Taking.Extensions
 
 import android.content.res.ColorStateList
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import net.geeksempire.keepnote.Notes.Taking.TakeNote
 import net.geeksempire.keepnote.R
@@ -77,6 +78,9 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
 
             takeNoteLayoutBinding.editTextContentView.bringToFront()
 
+            takeNoteLayoutBinding.paintingToolbarInclude.root.visibility = View.INVISIBLE
+            takeNoteLayoutBinding.colorPaletteInclude.root.visibility = View.INVISIBLE
+
         } else {
 
             toggleKeyboardHandwriting = true
@@ -93,7 +97,11 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.editTextContentView.clearFocus()
 
             takeNoteLayoutBinding.paintingCanvasContainer.bringToFront()
+
+            takeNoteLayoutBinding.paintingToolbarInclude.root.visibility = View.VISIBLE
             takeNoteLayoutBinding.paintingToolbarInclude.root.bringToFront()
+
+            takeNoteLayoutBinding.colorPaletteInclude.root.bringToFront()
 
         }
 

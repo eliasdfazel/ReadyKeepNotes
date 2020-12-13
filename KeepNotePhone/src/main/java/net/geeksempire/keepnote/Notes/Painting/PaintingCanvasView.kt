@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.view.View
 import kotlin.math.abs
 
-
 @SuppressLint("ClickableViewAccessibility")
 class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListener {
 
@@ -26,7 +25,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     private val undoDrawingInformation = ArrayList<PaintingData>()
 
-    private var newPaintingData: NewPaintingData = NewPaintingData()
+    var newPaintingData: NewPaintingData = NewPaintingData()
 
     init {
 
