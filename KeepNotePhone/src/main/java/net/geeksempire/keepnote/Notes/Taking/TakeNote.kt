@@ -4,8 +4,13 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import net.geeksempire.keepnote.Database.DataStructure.NotesDataStructure
+import net.geeksempire.keepnote.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnote.KeepNoteApplication
 import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupPaintingActions
@@ -42,6 +47,10 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
      **/
     var toggleKeyboardHandwriting: Boolean = false
 
+    val firebaseUser = Firebase.auth.currentUser
+
+    val databaseEndpoints: DatabaseEndpoints = DatabaseEndpoints()
+
     @Inject
     lateinit var networkConnectionListener: NetworkConnectionListener
 
@@ -68,7 +77,28 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
+            firebaseUser?.let {
 
+                val notesDataStructure = NotesDataStructure(
+                    noteTile = takeNoteLayoutBinding.editTextTitleView.text.toString(),
+                    noteTextContent = takeNoteLayoutBinding.editTextContentView.text.toString(),
+                    noteHandwritingSnapshotLink = null
+                )
+
+                (application as KeepNoteApplication).firestoreDatabase
+                    .collection(databaseEndpoints.GeneralEndpoints(firebaseUser.uid))
+                    .add(notesDataStructure)
+                    .addOnSuccessListener {
+                        Log.d(this@TakeNote.javaClass.simpleName, "Note Saved Successfully")
+
+
+                    }.addOnFailureListener {
+                        Log.d(this@TakeNote.javaClass.simpleName, "Note Did Note Saved")
+
+
+                    }
+
+            }
 
         }
 

@@ -26,7 +26,7 @@ class KeepNoteApplication : Application() {
 
         firebaseAnalytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
 
-        firestoreDatabase = FirestoreConfiguration(applicationContext).initialize()
+        firestoreDatabase = firestoreConfiguration.initialize()
 
     }
 

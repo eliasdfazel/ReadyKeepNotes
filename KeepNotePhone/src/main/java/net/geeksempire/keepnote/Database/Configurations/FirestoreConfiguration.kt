@@ -18,17 +18,16 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.keepnote.Utils.Network.NetworkCheckpoint
-import java.util.*
 
 class FirestoreConfiguration (private val context: Context) {
+
+    private val firebaseFirestore = Firebase.firestore
 
     private val networkCheckpoint: NetworkCheckpoint = NetworkCheckpoint(context)
 
     private val systemInformation: SystemInformation = SystemInformation(context)
 
     fun initialize() : FirebaseFirestore {
-
-        val firebaseFirestore = Firebase.firestore
 
         val firebaseFirestoreSettings = firestoreSettings {
             isPersistenceEnabled = true
@@ -37,46 +36,19 @@ class FirestoreConfiguration (private val context: Context) {
 
         firebaseFirestore.firestoreSettings = firebaseFirestoreSettings
 
-        if (networkCheckpoint.networkConnectionVpn()) {
-
-            firebaseFirestore.enableNetwork().addOnSuccessListener {
-
-            }.addOnFailureListener {
-
-            }
-
-        } else if (systemInformation.getCountryIso().toUpperCase(Locale.getDefault()) == "IR"
-            || systemInformation.getCountryIso() == "Undefined") {
-
-            firebaseFirestore.disableNetwork().addOnSuccessListener {
-
-            }.addOnFailureListener {
-
-            }
-
-        } else {
-
-            firebaseFirestore.enableNetwork().addOnSuccessListener {
-
-            }.addOnFailureListener {
-
-            }
-
-        }
-
         return firebaseFirestore
     }
 
-    fun favoritedPostsCollectionPath(emailAddress: String) : String {
+    fun forceReadCache() {
 
+        firebaseFirestore.disableNetwork()
 
-        return "${emailAddress}" + "/" + "Favorited" + "/" + "Posts"
     }
 
-    fun favoritedPostDatabasePath(emailAddress: String, favoritedPostId: String) : String {
+    fun forceReadInternet() {
 
+        firebaseFirestore.enableNetwork()
 
-        return "${emailAddress}" + "/" + "Favorited" + "/" + "Posts" + "/" + "${favoritedPostId}"
     }
 
 }
