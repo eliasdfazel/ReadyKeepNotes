@@ -10,4 +10,7 @@
 
     <string name="toggleKeyboardHandwriting">Toggle Keyboard and Handwriting</string>
 
+    <string name="titleHintText">Title Undefined</string>
+    <string name="contentHintText">Type Here…</string>
+
 </resources>
