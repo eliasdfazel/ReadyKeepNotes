@@ -11,6 +11,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.keepnote.Database.DataStructure.NotesDataStructure
 import net.geeksempire.keepnote.Database.GeneralEndpoints.DatabaseEndpoints
+import net.geeksempire.keepnote.Database.IO.PaintingIO
 import net.geeksempire.keepnote.KeepNoteApplication
 import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupPaintingActions
@@ -46,6 +47,10 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
      * True: Handwriting - False: Keyboard
      **/
     var toggleKeyboardHandwriting: Boolean = false
+
+    val paintingIO: PaintingIO by lazy {
+        PaintingIO()
+    }
 
     val firebaseUser = Firebase.auth.currentUser
 
@@ -88,9 +93,44 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                 (application as KeepNoteApplication).firestoreDatabase
                     .collection(databaseEndpoints.GeneralEndpoints(firebaseUser.uid))
                     .add(notesDataStructure)
-                    .addOnSuccessListener {
+                    .addOnSuccessListener { documentReference ->
                         Log.d(this@TakeNote.javaClass.simpleName, "Note Saved Successfully")
 
+                        (application as KeepNoteApplication).firebaseStorage
+                            .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentReference.id}.PNG")
+                            .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
+                            .addOnSuccessListener { uploadTaskSnapshot ->
+                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Saved Successfully")
+
+                                (application as KeepNoteApplication).firebaseStorage
+                                    .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentReference.id}.PNG")
+                                    .downloadUrl
+                                    .addOnSuccessListener { downloadUri ->
+
+                                        (application as KeepNoteApplication).firestoreDatabase
+                                            .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + documentReference.id)
+                                            .update(
+                                                "noteHandwritingSnapshotLink", downloadUri.toString(),
+                                            ).addOnSuccessListener {
+
+
+                                            }.addOnFailureListener {
+
+
+
+                                            }
+
+                                    }.addOnFailureListener {
+
+
+
+                                    }
+
+                            }.addOnFailureListener {
+                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Did Note Saved")
+
+
+                            }
 
                     }.addOnFailureListener {
                         Log.d(this@TakeNote.javaClass.simpleName, "Note Did Note Saved")

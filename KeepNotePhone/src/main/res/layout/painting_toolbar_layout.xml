@@ -8,6 +8,14 @@
     android:layout_gravity="center"
     tools:context=".Notes.Taking.TakeNote">
 
+    <net.geeksempire.blurry.effect.view.RealtimeBlurView
+        android:id="@+id/searchesBlurView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        apps:realtimeBlurRadius="13dp"
+        apps:realtimeOverlayColor="@android:color/transparent" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/allColorsPicker"
         android:layout_width="29dp"

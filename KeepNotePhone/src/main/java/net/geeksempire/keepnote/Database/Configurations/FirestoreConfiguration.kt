@@ -11,21 +11,15 @@
 package net.geeksempire.keepnote.Database.Configurations
 
 import android.content.Context
-import com.abanabsalan.aban.magazine.Utils.System.SystemInformation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.keepnote.Utils.Network.NetworkCheckpoint
 
 class FirestoreConfiguration (private val context: Context) {
 
     private val firebaseFirestore = Firebase.firestore
-
-    private val networkCheckpoint: NetworkCheckpoint = NetworkCheckpoint(context)
-
-    private val systemInformation: SystemInformation = SystemInformation(context)
 
     fun initialize() : FirebaseFirestore {
 
