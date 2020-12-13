@@ -39,8 +39,8 @@
     </item>
 
     <item
-        android:height="58dp"
-        android:width="169dp"
+        android:height="37dp"
+        android:width="304dp"
         android:top="113dp"
         android:gravity="top|center_horizontal" >
         <bitmap
