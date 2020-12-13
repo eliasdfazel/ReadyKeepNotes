@@ -2,6 +2,7 @@ package net.geeksempire.keepnote.Notes.Taking.Extensions
 
 import android.content.res.ColorStateList
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import net.geeksempire.keepnote.Notes.Taking.TakeNote
 import net.geeksempire.keepnote.R
@@ -46,7 +47,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
     takeNoteLayoutBinding.editTextContentView.post {
 
         takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
-        takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 103)
+        takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
 
         inputMethodManager.showSoftInput(
             takeNoteLayoutBinding.editTextContentView,
@@ -67,7 +68,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             toggleKeyboardHandwriting = false
 
             takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 97)
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
 
             inputMethodManager.showSoftInput(
                 takeNoteLayoutBinding.editTextContentView,
@@ -79,14 +80,19 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.editTextContentView.bringToFront()
 
             takeNoteLayoutBinding.paintingToolbarInclude.root.visibility = View.INVISIBLE
-            takeNoteLayoutBinding.colorPaletteInclude.root.visibility = View.INVISIBLE
+            takeNoteLayoutBinding.paintingToolbarInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
+
+            if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
+                takeNoteLayoutBinding.colorPaletteInclude.root.visibility = View.INVISIBLE
+                takeNoteLayoutBinding.colorPaletteInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
+            }
 
         } else {
 
             toggleKeyboardHandwriting = true
 
             takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_handwriting)
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 51)
 
             inputMethodManager.hideSoftInputFromWindow(
                 takeNoteLayoutBinding.editTextContentView.windowToken,
@@ -99,6 +105,8 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.paintingCanvasContainer.bringToFront()
 
             takeNoteLayoutBinding.paintingToolbarInclude.root.visibility = View.VISIBLE
+            takeNoteLayoutBinding.paintingToolbarInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in))
+
             takeNoteLayoutBinding.paintingToolbarInclude.root.bringToFront()
 
             takeNoteLayoutBinding.colorPaletteInclude.root.bringToFront()

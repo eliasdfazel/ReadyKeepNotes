@@ -57,8 +57,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/toggleKeyboardHandwriting"
-        android:layout_width="71dp"
-        android:layout_height="71dp"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
         android:layout_marginVertical="19dp"
         android:layout_marginHorizontal="17dp"
         android:contentDescription="@string/toggleKeyboardHandwriting"
@@ -70,7 +70,7 @@
         apps:cornerRadius="51dp"
         apps:elevation="23dp"
         apps:icon="@drawable/icon_keyboard"
-        apps:iconSize="97dp"
+        apps:iconSize="71dp"
         apps:iconGravity="textStart"
         apps:iconTint="@color/light"
         apps:iconPadding="0dp"
@@ -82,8 +82,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/savingView"
-        android:layout_width="71dp"
-        android:layout_height="71dp"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
         android:layout_marginVertical="19dp"
         android:layout_marginHorizontal="17dp"
         android:contentDescription="@string/toggleKeyboardHandwriting"
@@ -95,7 +95,7 @@
         apps:cornerRadius="51dp"
         apps:elevation="23dp"
         apps:icon="@drawable/icon_save"
-        apps:iconSize="87dp"
+        apps:iconSize="71dp"
         apps:iconGravity="textStart"
         apps:iconTint="@color/light"
         apps:iconPadding="0dp"
