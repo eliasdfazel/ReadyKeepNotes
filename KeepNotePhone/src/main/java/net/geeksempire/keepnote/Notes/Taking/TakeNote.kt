@@ -114,10 +114,11 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                                             .update(
                                                 "noteHandwritingSnapshotLink", downloadUri.toString(),
                                             ).addOnSuccessListener {
+                                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Link Saved Successfully")
 
 
                                             }.addOnFailureListener {
-
+                                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Link Did Note Saved")
 
 
                                             }
