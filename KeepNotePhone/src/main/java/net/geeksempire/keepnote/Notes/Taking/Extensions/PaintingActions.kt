@@ -15,7 +15,7 @@ import kotlin.math.hypot
 
 fun TakeNote.setupPaintingActions() {
 
-    takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.setOnClickListener {
+    val allColorPalette = {
 
         if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
 
@@ -89,6 +89,12 @@ fun TakeNote.setupPaintingActions() {
 
     }
 
+    takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.setOnClickListener {
+
+        allColorPalette.invoke()
+
+    }
+
     takeNoteLayoutBinding.paintingToolbarInclude.undoPaint.setOnClickListener {
 
         paintingCanvasView.undoProcess()
@@ -139,6 +145,7 @@ fun TakeNote.setupPaintingActions() {
     takeNoteLayoutBinding.colorPaletteInclude.pickColorView.setOnClickListener {
 
         //Save Picked Color To Shared Preferences
+        allColorPalette.invoke()
 
 
 
