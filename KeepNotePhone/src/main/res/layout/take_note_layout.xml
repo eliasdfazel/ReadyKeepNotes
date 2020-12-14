@@ -38,7 +38,6 @@
         android:layout_height="0dp"
         android:paddingVertical="13dp"
         android:paddingHorizontal="17dp"
-        android:layout_marginBottom="91dp"
         android:gravity="start|top"
         android:textSize="19sp"
         android:hint="@string/contentHintText"
@@ -54,7 +53,6 @@
         android:id="@+id/paintingCanvasContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="91dp"
 
         apps:layout_constraintTop_toBottomOf="@id/editTextTitleView"
         apps:layout_constraintBottom_toBottomOf="parent"/>
@@ -127,10 +125,10 @@
         android:layout_height="0dp"
         android:paddingStart="29dp"
         android:paddingEnd="29dp"
-        android:visibility="invisible"
+        android:visibility="visible"
 
-        apps:layout_constraintHeight_percent="0.37"
         apps:layout_constraintTop_toBottomOf="@id/paintingToolbarInclude"
+        apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="@id/paintingToolbarInclude"
         apps:layout_constraintEnd_toEndOf="@id/paintingToolbarInclude"/>
 

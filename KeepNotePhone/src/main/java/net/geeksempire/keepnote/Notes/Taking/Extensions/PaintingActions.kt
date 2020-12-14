@@ -17,7 +17,6 @@ fun TakeNote.setupPaintingActions() {
 
     takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.setOnClickListener {
 
-        //Open All Color Picker
         if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
 
             val finalRadius = hypot(displayX(applicationContext).toDouble(), displayY(applicationContext).toDouble())
@@ -131,6 +130,16 @@ fun TakeNote.setupPaintingActions() {
     takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.setOnColorChangedListener { pickedColor ->
 
         paintingCanvasView.changePaintingData(NewPaintingData(paintColor = pickedColor, paintStrokeWidth = paintingCanvasView.newPaintingData.paintStrokeWidth))
+
+        takeNoteLayoutBinding.colorPaletteInclude.pickColorView.iconTint = ColorStateList.valueOf(pickedColor)
+        takeNoteLayoutBinding.colorPaletteInclude.pickColorView.rippleColor = ColorStateList.valueOf(pickedColor)
+
+    }
+
+    takeNoteLayoutBinding.colorPaletteInclude.pickColorView.setOnClickListener {
+
+        //Save Picked Color To Shared Preferences
+
 
     }
 

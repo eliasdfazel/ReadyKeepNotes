@@ -107,12 +107,12 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                                 (application as KeepNoteApplication).firebaseStorage
                                     .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
                                     .downloadUrl
-                                    .addOnSuccessListener { downloadUri ->
+                                    .addOnSuccessListener { downloadUrl ->
 
                                         (application as KeepNoteApplication).firestoreDatabase
                                             .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + documentId)
                                             .update(
-                                                "noteHandwritingSnapshotLink", downloadUri.toString(),
+                                                "noteHandwritingSnapshotLink", downloadUrl.toString(),
                                             ).addOnSuccessListener {
                                                 Log.d(this@TakeNote.javaClass.simpleName, "Paint Link Saved Successfully")
 
@@ -149,10 +149,16 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     override fun onResume() {
         super.onResume()
+
+
+
     }
 
     override fun onPause() {
         super.onPause()
+
+
+
     }
 
     override fun onBackPressed() {

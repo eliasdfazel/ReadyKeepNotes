@@ -65,7 +65,9 @@ class EntryConfigurations : AppCompatActivity() {
 
         } else {
 
-            openOverviewActivity()
+//            openOverviewActivity()
+
+            openTakeNoteActivity()
 
         }
 
