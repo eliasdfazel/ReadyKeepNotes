@@ -57,8 +57,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val databaseEndpoints: DatabaseEndpoints = DatabaseEndpoints()
 
-    val documentId = System.currentTimeMillis()
-
     val recentColorsAdapter: RecentColorsAdapter by lazy {
         RecentColorsAdapter(this@TakeNote, paintingCanvasView)
     }
@@ -72,6 +70,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         super.onCreate(savedInstanceState)
         takeNoteLayoutBinding = TakeNoteLayoutBinding.inflate(layoutInflater)
         setContentView(takeNoteLayoutBinding.root)
+
+        val documentId = System.currentTimeMillis()
 
         (application as KeepNoteApplication)
             .dependencyGraph
@@ -98,7 +98,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                 )
 
                 (application as KeepNoteApplication).firestoreDatabase
-                    .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${System.currentTimeMillis()}")
+                    .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + "${documentId}")
                     .set(notesDataStructure)
                     .addOnSuccessListener {
                         Log.d(this@TakeNote.javaClass.simpleName, "Note Saved Successfully")
@@ -123,7 +123,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
 
                                             }.addOnFailureListener {
-                                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Link Did Note Saved")
+                                                it.printStackTrace()
+                                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Link Did Not Saved")
 
 
                                             }
