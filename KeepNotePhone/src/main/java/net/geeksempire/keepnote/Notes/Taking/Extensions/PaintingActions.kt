@@ -143,6 +143,7 @@ fun TakeNote.setupPaintingActions() {
         true
     }
 
+    takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color = getColor(R.color.default_color)
     takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.setOnColorChangedListener { pickedColor ->
 
         paintingCanvasView.changePaintingData(NewPaintingData(paintColor = pickedColor, paintStrokeWidth = paintingCanvasView.newPaintingData.paintStrokeWidth))
@@ -163,18 +164,20 @@ fun TakeNote.setupPaintingActions() {
 
     }
 
-    setupRecentColors()
+    setupRecentColors(allColorPalette)
 
 }
 
-fun TakeNote.setupRecentColors() = CoroutineScope(Dispatchers.IO).launch {
+fun TakeNote.setupRecentColors(allColorPalette: () -> Unit) = CoroutineScope(Dispatchers.IO).launch {
 
     recentColorsAdapter.allPickedColors.clear()
     recentColorsAdapter.allPickedColors.addAll(paintingIO.readRecentPickedColor())
 
+    recentColorsAdapter.allColorPalette = allColorPalette
+
     withContext(Dispatchers.Main) {
 
-        takeNoteLayoutBinding.colorPaletteInclude.recentColorsList.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.HORIZONTAL, true)
+        takeNoteLayoutBinding.colorPaletteInclude.recentColorsList.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.HORIZONTAL, false)
 
         takeNoteLayoutBinding.colorPaletteInclude.recentColorsList.adapter = recentColorsAdapter
 

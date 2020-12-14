@@ -60,9 +60,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recentColorsList"
         android:layout_width="0dp"
-        android:layout_height="43dp"
+        android:layout_height="47dp"
         android:layout_marginStart="5dp"
-        android:paddingHorizontal="11dp"
+        android:paddingHorizontal="13dp"
 
         apps:layout_constraintTop_toTopOf="@id/pickColorView"
         apps:layout_constraintBottom_toBottomOf="@id/pickColorView"

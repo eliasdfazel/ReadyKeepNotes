@@ -60,7 +60,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val documentId = System.currentTimeMillis()
 
     val recentColorsAdapter: RecentColorsAdapter by lazy {
-        RecentColorsAdapter(applicationContext, paintingCanvasView)
+        RecentColorsAdapter(this@TakeNote, paintingCanvasView)
     }
 
     @Inject

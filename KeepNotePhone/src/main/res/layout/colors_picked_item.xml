@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:id="@+id/itemRootView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.button.MaterialButton
+    <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/pickedColor"
-        android:layout_width="31dp"
+        android:layout_width="43dp"
         android:layout_height="43dp"
         android:layout_margin="3dp"
+        android:scaleType="centerCrop"
 
-        apps:cornerRadius="71dp"
-        apps:rippleColor="@color/light"
-        apps:backgroundTint="@color/black"
+        apps:shape="circle"
 
         apps:layout_constraintTop_toTopOf="parent"
         apps:layout_constraintBottom_toBottomOf="parent"

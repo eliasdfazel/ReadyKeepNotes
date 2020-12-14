@@ -1,17 +1,20 @@
 package net.geeksempire.keepnote.Notes.Painting.Adapter
 
-import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import net.geeksempire.keepnote.Notes.Painting.NewPaintingData
 import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
+import net.geeksempire.keepnote.Notes.Taking.TakeNote
 import net.geeksempire.keepnote.R
 
-class RecentColorsAdapter (private val context: Context, private val paintingCanvasView: PaintingCanvasView) : RecyclerView.Adapter<RecentColorsViewHolder>() {
+class RecentColorsAdapter (private val context: TakeNote, private val paintingCanvasView: PaintingCanvasView) : RecyclerView.Adapter<RecentColorsViewHolder>() {
 
     val allPickedColors: ArrayList<Int> = ArrayList<Int>()
+
+    var allColorPalette: (() -> Unit)? = null
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecentColorsViewHolder {
 
@@ -20,11 +23,16 @@ class RecentColorsAdapter (private val context: Context, private val paintingCan
 
     override fun onBindViewHolder(recentColorsViewHolder: RecentColorsViewHolder, position: Int) {
 
-        recentColorsViewHolder.pickedColor.backgroundTintList = ColorStateList.valueOf(allPickedColors[position])
+        recentColorsViewHolder.pickedColor.setImageDrawable(ColorDrawable(allPickedColors[position]))
 
         recentColorsViewHolder.pickedColor.setOnClickListener {
 
             paintingCanvasView.changePaintingData(NewPaintingData(paintColor = allPickedColors[position], paintStrokeWidth = paintingCanvasView.newPaintingData.paintStrokeWidth))
+
+            context.takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color = allPickedColors[position]
+            context.takeNoteLayoutBinding.colorPaletteInclude.pickColorView.iconTint = ColorStateList.valueOf(allPickedColors[position])
+
+            allColorPalette?.invoke()
 
         }
 
