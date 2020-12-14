@@ -51,6 +51,12 @@
         </activity>
 
         <activity
+            android:name=".Overview.UserInterface.KeepNoteOverview"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:resizeableActivity="true"
+            android:theme="@style/GeeksEmpire.Overview" />
+
+        <activity
             android:name=".Notes.Taking.TakeNote"
             android:windowSoftInputMode="adjustResize"
             android:resizeableActivity="true"

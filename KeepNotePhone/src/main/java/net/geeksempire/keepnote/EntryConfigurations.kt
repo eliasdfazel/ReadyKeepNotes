@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import net.geeksempire.keepnote.AccountManager.SignInProcess.SetupAccount
 import net.geeksempire.keepnote.Notes.Taking.TakeNote
+import net.geeksempire.keepnote.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.keepnote.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.keepnote.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.keepnote.databinding.EntryConfigurationLayoutBinding
@@ -64,12 +65,19 @@ class EntryConfigurations : AppCompatActivity() {
 
         } else {
 
-            openTakeNoteActivity()
+            openOverviewActivity()
 
         }
 
     }
 
+    private fun openOverviewActivity() {
+
+        startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+
+    }
 
     private fun openTakeNoteActivity() {
 
