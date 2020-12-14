@@ -6,6 +6,12 @@ import android.graphics.PorterDuff
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.geeksempire.keepnote.Notes.Painting.NewPaintingData
 import net.geeksempire.keepnote.Notes.Taking.TakeNote
 import net.geeksempire.keepnote.R
@@ -152,8 +158,26 @@ fun TakeNote.setupPaintingActions() {
 
         paintingIO.saveRecentPickedColor(takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color)
 
+        recentColorsAdapter.allPickedColors.add(takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color)
+        recentColorsAdapter.notifyDataSetChanged()
+
     }
 
+    setupRecentColors()
 
+}
+
+fun TakeNote.setupRecentColors() = CoroutineScope(Dispatchers.IO).launch {
+
+    recentColorsAdapter.allPickedColors.clear()
+    recentColorsAdapter.allPickedColors.addAll(paintingIO.readRecentPickedColor())
+
+    withContext(Dispatchers.Main) {
+
+        takeNoteLayoutBinding.colorPaletteInclude.recentColorsList.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.HORIZONTAL, true)
+
+        takeNoteLayoutBinding.colorPaletteInclude.recentColorsList.adapter = recentColorsAdapter
+
+    }
 
 }

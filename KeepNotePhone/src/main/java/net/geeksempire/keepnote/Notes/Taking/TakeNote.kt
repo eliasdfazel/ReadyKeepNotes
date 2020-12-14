@@ -13,6 +13,7 @@ import net.geeksempire.keepnote.Database.DataStructure.NotesDataStructure
 import net.geeksempire.keepnote.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnote.Database.IO.PaintingIO
 import net.geeksempire.keepnote.KeepNoteApplication
+import net.geeksempire.keepnote.Notes.Painting.Adapter.RecentColorsAdapter
 import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.keepnote.Notes.Taking.Extensions.setupTakeNoteTheme
@@ -57,6 +58,10 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val databaseEndpoints: DatabaseEndpoints = DatabaseEndpoints()
 
     val documentId = System.currentTimeMillis()
+
+    val recentColorsAdapter: RecentColorsAdapter by lazy {
+        RecentColorsAdapter(applicationContext, paintingCanvasView)
+    }
 
     @Inject
     lateinit var networkConnectionListener: NetworkConnectionListener

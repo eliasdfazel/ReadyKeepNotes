@@ -37,14 +37,14 @@ class PaintingIO (private val context: Context) {
 
         val colorsSharedPreferences = context.getSharedPreferences("RecentPickedColors", Context.MODE_PRIVATE)
 
+        val savePreferences = SavePreferences(context)
+        savePreferences.savePreference("RecentPickedColors", colorsSharedPreferences.all.size.toString(), pickedColor)
+
         if (colorsSharedPreferences.all.size > 19) {
 
             removeOldPickedColors()
 
         }
-
-        val savePreferences = SavePreferences(context)
-        savePreferences.savePreference("RecentPickedColors", colorsSharedPreferences.all.size.toString(), pickedColor)
 
     }
 

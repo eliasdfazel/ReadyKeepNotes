@@ -58,6 +58,7 @@
         apps:layout_constraintEnd_toEndOf="@id/colorPaletteView"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recentColorsList"
         android:layout_width="0dp"
         android:layout_height="43dp"
         android:layout_marginStart="5dp"

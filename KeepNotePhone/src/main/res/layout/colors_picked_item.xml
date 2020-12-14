@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:apps="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemRootView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -9,10 +10,15 @@
         android:id="@+id/pickedColor"
         android:layout_width="31dp"
         android:layout_height="43dp"
-        android:layout_centerInParent="true"
+        android:layout_margin="3dp"
 
         apps:cornerRadius="71dp"
         apps:rippleColor="@color/light"
-        apps:backgroundTint="@color/black" />
+        apps:backgroundTint="@color/black"
 
-</RelativeLayout>
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
