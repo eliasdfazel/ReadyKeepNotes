@@ -3,6 +3,7 @@ package net.geeksempire.keepnote.Notes.Taking
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -43,14 +44,16 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         ThemePreferences(applicationContext)
     }
 
+    val paintingIO: PaintingIO by lazy {
+        PaintingIO()
+    }
+
+    val pickedColorsList: ArrayList<Int> = arrayListOf(Color.BLACK, Color.BLACK, Color.BLACK)
+
     /**
      * True: Handwriting - False: Keyboard
      **/
     var toggleKeyboardHandwriting: Boolean = false
-
-    val paintingIO: PaintingIO by lazy {
-        PaintingIO()
-    }
 
     val firebaseUser = Firebase.auth.currentUser
 

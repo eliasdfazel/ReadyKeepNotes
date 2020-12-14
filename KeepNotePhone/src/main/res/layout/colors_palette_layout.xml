@@ -57,4 +57,48 @@
         apps:layout_constraintTop_toBottomOf="@id/colorPaletteView"
         apps:layout_constraintEnd_toEndOf="@id/colorPaletteView"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/firstPickedColor"
+        android:layout_width="49dp"
+        android:layout_height="59dp"
+
+        apps:cornerRadius="71dp"
+        apps:rippleColor="@color/light"
+        apps:backgroundTint="@color/black"
+
+        apps:layout_constraintTop_toTopOf="@id/pickColorView"
+        apps:layout_constraintBottom_toBottomOf="@id/pickColorView"
+        apps:layout_constraintStart_toStartOf="@id/colorPaletteView"
+        apps:layout_constraintTop_toBottomOf="@id/colorPaletteView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/secondPickedColor"
+        android:layout_width="49dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="3dp"
+
+        apps:cornerRadius="71dp"
+        apps:rippleColor="@color/light"
+        apps:backgroundTint="@color/black"
+
+        apps:layout_constraintTop_toTopOf="@id/pickColorView"
+        apps:layout_constraintBottom_toBottomOf="@id/pickColorView"
+        apps:layout_constraintStart_toEndOf="@id/firstPickedColor"
+        apps:layout_constraintTop_toBottomOf="@id/colorPaletteView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/thirdPickedColor"
+        android:layout_width="49dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="3dp"
+
+        apps:cornerRadius="71dp"
+        apps:rippleColor="@color/light"
+        apps:backgroundTint="@color/black"
+
+        apps:layout_constraintTop_toTopOf="@id/pickColorView"
+        apps:layout_constraintBottom_toBottomOf="@id/pickColorView"
+        apps:layout_constraintStart_toEndOf="@id/secondPickedColor"
+        apps:layout_constraintTop_toBottomOf="@id/colorPaletteView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -151,4 +151,22 @@ fun TakeNote.setupPaintingActions() {
 
     }
 
+    takeNoteLayoutBinding.colorPaletteInclude.firstPickedColor.setOnClickListener {
+
+
+
+    }
+
+    takeNoteLayoutBinding.colorPaletteInclude.secondPickedColor.setOnClickListener {
+
+
+
+    }
+
+    takeNoteLayoutBinding.colorPaletteInclude.thirdPickedColor.setOnClickListener {
+
+
+
+    }
+
 }
