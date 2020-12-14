@@ -32,6 +32,7 @@ fun TakeNote.setupPaintingActions() {
 
             circularReveal.start()
             circularReveal.addListener(object : Animator.AnimatorListener {
+
                 override fun onAnimationRepeat(animation: Animator?) {
 
                 }
@@ -49,6 +50,7 @@ fun TakeNote.setupPaintingActions() {
                 override fun onAnimationStart(animation: Animator?) {
 
                 }
+
             })
 
         } else {
@@ -68,6 +70,7 @@ fun TakeNote.setupPaintingActions() {
 
             circularReveal.start()
             circularReveal.addListener(object : Animator.AnimatorListener {
+
                 override fun onAnimationRepeat(animation: Animator?) {
 
                 }
@@ -83,6 +86,7 @@ fun TakeNote.setupPaintingActions() {
                 override fun onAnimationStart(animation: Animator?) {
 
                 }
+
             })
 
         }
@@ -144,29 +148,12 @@ fun TakeNote.setupPaintingActions() {
 
     takeNoteLayoutBinding.colorPaletteInclude.pickColorView.setOnClickListener {
 
-        //Save Picked Color To Shared Preferences
         allColorPalette.invoke()
 
-
-
-    }
-
-    takeNoteLayoutBinding.colorPaletteInclude.firstPickedColor.setOnClickListener {
-
-
+        paintingIO.saveRecentPickedColor(takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color)
 
     }
 
-    takeNoteLayoutBinding.colorPaletteInclude.secondPickedColor.setOnClickListener {
 
-
-
-    }
-
-    takeNoteLayoutBinding.colorPaletteInclude.thirdPickedColor.setOnClickListener {
-
-
-
-    }
 
 }

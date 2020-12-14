@@ -36,7 +36,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     }
 
-    fun setupPaintingPanel(paintColor: Int = Color.WHITE, paintStrokeWidth: Float = 5.0f) {
+    fun setupPaintingPanel(paintColor: Int = Color.WHITE, paintStrokeWidth: Float = 7.777f) {
 
         drawPaint.color = paintColor
         drawPaint.strokeWidth = paintStrokeWidth

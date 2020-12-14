@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pickedColor"
+        android:layout_width="31dp"
+        android:layout_height="43dp"
+        android:layout_centerInParent="true"
+
+        apps:cornerRadius="71dp"
+        apps:rippleColor="@color/light"
+        apps:backgroundTint="@color/black" />
+
+</RelativeLayout>
