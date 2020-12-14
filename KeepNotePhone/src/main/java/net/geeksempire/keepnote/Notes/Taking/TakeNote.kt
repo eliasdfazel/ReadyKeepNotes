@@ -123,7 +123,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
 
                                             }.addOnFailureListener {
-                                                it.printStackTrace()
                                                 Log.d(this@TakeNote.javaClass.simpleName, "Paint Link Did Not Saved")
 
 
