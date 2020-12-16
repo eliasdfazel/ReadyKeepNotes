@@ -1,6 +1,8 @@
 package net.geeksempire.keepnotes.Database.IO
 
+import android.content.Context
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import com.google.firebase.auth.FirebaseUser
 import net.geeksempire.keepnotes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
@@ -84,6 +86,17 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
+            val inputMethodManager: InputMethodManager by lazy {
+                keepNoteApplication.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            }
+
+            inputMethodManager.hideSoftInputFromWindow(
+                overviewLayoutBinding.quickTakeNote.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
+
+            overviewLayoutBinding.quickTakeNote.clearFocus()
+
             overviewLayoutBinding.savingView.isEnabled = false
 
             val documentId: Long = System.currentTimeMillis()
@@ -103,6 +116,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
                     overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                    inputMethodManager.showSoftInput(
+                        overviewLayoutBinding.quickTakeNote,
+                        InputMethodManager.SHOW_IMPLICIT
+                    )
+
+                    overviewLayoutBinding.quickTakeNote.requestFocus()
 
                 }.addOnFailureListener {
 

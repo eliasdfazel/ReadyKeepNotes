@@ -1,8 +1,10 @@
 package net.geeksempire.keepnotes.Overview.UserInterface
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -27,6 +29,10 @@ class KeepNoteOverview : AppCompatActivity() {
         ThemePreferences(applicationContext)
     }
 
+    val inputMethodManager: InputMethodManager by lazy {
+        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
     lateinit var overviewLayoutBinding: OverviewLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +41,21 @@ class KeepNoteOverview : AppCompatActivity() {
         setContentView(overviewLayoutBinding.root)
 
         setupColors()
+
+        overviewLayoutBinding.root.post {
+
+            overviewLayoutBinding.quickTakeNote.post {
+
+                overviewLayoutBinding.quickTakeNote.requestFocus()
+
+                inputMethodManager.showSoftInput(
+                    overviewLayoutBinding.quickTakeNote,
+                    InputMethodManager.SHOW_FORCED
+                )
+
+            }
+
+        }
 
         overviewLayoutBinding.savingView.setOnClickListener {
 
@@ -48,10 +69,16 @@ class KeepNoteOverview : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+
+
     }
 
     override fun onPause() {
         super.onPause()
+
+
+
     }
 
     override fun onBackPressed() {

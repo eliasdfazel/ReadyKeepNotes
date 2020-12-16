@@ -26,7 +26,6 @@
             android:paddingStart="23dp"
             android:paddingEnd="11dp"
             android:gravity="center_vertical"
-            android:imeOptions="actionSearch"
             android:hint="@string/quickTakeTextHint"
             android:textColorHint="@color/default_color_game"
 
@@ -68,7 +67,7 @@
             android:layout_width="39dp"
             android:layout_height="39dp"
             android:layout_marginVertical="17dp"
-            android:layout_marginHorizontal="29dp"
+            android:layout_marginHorizontal="31dp"
             android:contentDescription="@string/toggleKeyboardHandwriting"
             android:insetLeft="0dp"
             android:insetTop="00dp"
@@ -86,6 +85,31 @@
             apps:backgroundTint="@color/default_color_transparent_twice"
 
             apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fullNoteTaking"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_marginVertical="23dp"
+            android:layout_marginHorizontal="31dp"
+            android:contentDescription="@string/toggleKeyboardHandwriting"
+            android:insetLeft="0dp"
+            android:insetTop="00dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+
+            apps:cornerRadius="51dp"
+            apps:elevation="23dp"
+            apps:icon="@drawable/common_full_open_on_phone"
+            apps:iconSize="51dp"
+            apps:iconGravity="textStart"
+            apps:iconTint="@color/light"
+            apps:iconPadding="0dp"
+            apps:rippleColor="@color/default_color_light"
+            apps:backgroundTint="@color/default_color_game_transparent"
+
+            apps:layout_constraintTop_toTopOf="parent"
             apps:layout_constraintEnd_toEndOf="parent"/>
         
     </androidx.constraintlayout.widget.ConstraintLayout>
