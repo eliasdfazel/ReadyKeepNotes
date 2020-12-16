@@ -8,7 +8,7 @@ import android.view.View
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import net.geeksempire.keepnote.Utils.PreferencesIO.SavePreferences
+import net.geeksempire.keepnotes.Utils.PreferencesIO.SavePreferences
 import java.io.ByteArrayOutputStream
 
 class PaintingIO (private val context: Context) {

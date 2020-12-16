@@ -1,8 +1,11 @@
 package net.geeksempire.keepnotes.Notes.Taking.Extensions
 
-import net.geeksempire.keepnote.Notes.Taking.TakeNote
-import net.geeksempire.keepnote.R
-import net.geeksempire.keepnote.Utils.UI.Display.DpToInteger
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
+import net.geeksempire.keepnotes.Notes.Taking.TakeNote
+import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.Utils.UI.Display.DpToInteger
 
 fun TakeNote.setupToggleKeyboardHandwriting() {
 

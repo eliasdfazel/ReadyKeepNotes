@@ -9,20 +9,20 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.keepnote.Database.DataStructure.NotesDataStructure
-import net.geeksempire.keepnote.Database.GeneralEndpoints.DatabaseEndpoints
-import net.geeksempire.keepnote.Database.IO.PaintingIO
-import net.geeksempire.keepnote.KeepNoteApplication
-import net.geeksempire.keepnote.Notes.Painting.Adapter.RecentColorsAdapter
-import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
-import net.geeksempire.keepnote.Notes.Taking.Extensions.setupPaintingActions
-import net.geeksempire.keepnote.Notes.Taking.Extensions.setupTakeNoteTheme
-import net.geeksempire.keepnote.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
-import net.geeksempire.keepnote.Preferences.Theme.ThemePreferences
-import net.geeksempire.keepnote.R
-import net.geeksempire.keepnote.Utils.Network.NetworkConnectionListener
-import net.geeksempire.keepnote.Utils.Network.NetworkConnectionListenerInterface
-import net.geeksempire.keepnote.databinding.TakeNoteLayoutBinding
+import net.geeksempire.keepnotes.Database.DataStructure.NotesDataStructure
+import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
+import net.geeksempire.keepnotes.Database.IO.PaintingIO
+import net.geeksempire.keepnotes.KeepNoteApplication
+import net.geeksempire.keepnotes.Notes.Painting.Adapter.RecentColorsAdapter
+import net.geeksempire.keepnotes.Notes.Painting.PaintingCanvasView
+import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupPaintingActions
+import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupTakeNoteTheme
+import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
+import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
+import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListener
+import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListenerInterface
+import net.geeksempire.keepnotes.databinding.TakeNoteLayoutBinding
 import javax.inject.Inject
 
 class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {

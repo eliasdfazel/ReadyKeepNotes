@@ -1,8 +1,8 @@
 package net.geeksempire.keepnotes.Preferences.Theme
 
 import android.content.Context
-import net.geeksempire.keepnote.Utils.PreferencesIO.ReadPreferences
-import net.geeksempire.keepnote.Utils.PreferencesIO.SavePreferences
+import net.geeksempire.keepnotes.Utils.PreferencesIO.ReadPreferences
+import net.geeksempire.keepnotes.Utils.PreferencesIO.SavePreferences
 
 class ThemePreferences (context: Context) {
 

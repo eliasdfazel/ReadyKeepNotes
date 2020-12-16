@@ -1,7 +1,8 @@
 package net.geeksempire.keepnotes.Notes.Taking.Extensions
 
-import net.geeksempire.keepnote.Notes.Taking.TakeNote
-import net.geeksempire.keepnote.R
+import android.content.res.ColorStateList
+import net.geeksempire.keepnotes.Notes.Taking.TakeNote
+import net.geeksempire.keepnotes.R
 
 fun TakeNote.setupTakeNoteTheme() {
 

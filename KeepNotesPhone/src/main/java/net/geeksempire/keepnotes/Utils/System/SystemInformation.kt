@@ -14,7 +14,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 import android.telephony.TelephonyManager
-import net.geeksempire.keepnote.Utils.Extensions.capitalizeFirstChar
+import net.geeksempire.keepnotes.Utils.Extensions.capitalizeFirstChar
 
 class SystemInformation(private val context: Context) {
 

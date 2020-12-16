@@ -7,9 +7,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import net.geeksempire.keepnote.Database.Configurations.FirestoreConfiguration
-import net.geeksempire.keepnote.DependencyInjections.DaggerDependencyGraph
-import net.geeksempire.keepnote.DependencyInjections.DependencyGraph
+import net.geeksempire.keepnotes.BuildConfig
+import net.geeksempire.keepnotes.Database.Configurations.FirestoreConfiguration
+import net.geeksempire.keepnotes.DependencyInjections.DaggerDependencyGraph
+import net.geeksempire.keepnotes.DependencyInjections.DependencyGraph
 
 class KeepNoteApplication : Application() {
 

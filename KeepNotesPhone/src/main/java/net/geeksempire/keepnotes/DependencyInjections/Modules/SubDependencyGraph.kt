@@ -11,7 +11,7 @@
 package net.geeksempire.keepnotes.DependencyInjections.Modules
 
 import dagger.Module
-import net.geeksempire.keepnote.DependencyInjections.SubComponents.NetworkSubDependencyGraph
+import net.geeksempire.keepnotes.DependencyInjections.SubComponents.NetworkSubDependencyGraph
 
 @Module(subcomponents = [NetworkSubDependencyGraph::class])
 class SubDependencyGraphs

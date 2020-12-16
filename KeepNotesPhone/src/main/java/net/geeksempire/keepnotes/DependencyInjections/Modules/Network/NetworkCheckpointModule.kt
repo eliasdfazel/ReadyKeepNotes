@@ -12,8 +12,8 @@ package net.geeksempire.keepnotes.DependencyInjections.Modules.Network
 
 import dagger.Binds
 import dagger.Module
-import net.geeksempire.keepnote.Utils.Network.InterfaceNetworkCheckpoint
-import net.geeksempire.keepnote.Utils.Network.NetworkCheckpoint
+import net.geeksempire.keepnotes.Utils.Network.InterfaceNetworkCheckpoint
+import net.geeksempire.keepnotes.Utils.Network.NetworkCheckpoint
 
 @Module
 abstract class NetworkCheckpointModule {

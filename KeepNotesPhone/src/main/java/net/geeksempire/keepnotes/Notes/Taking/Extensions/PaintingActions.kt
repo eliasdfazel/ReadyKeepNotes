@@ -1,11 +1,23 @@
 package net.geeksempire.keepnotes.Notes.Taking.Extensions
 
 import android.animation.Animator
-import net.geeksempire.keepnote.Notes.Painting.NewPaintingData
-import net.geeksempire.keepnote.Notes.Taking.TakeNote
-import net.geeksempire.keepnote.R
-import net.geeksempire.keepnote.Utils.UI.Display.displayX
-import net.geeksempire.keepnote.Utils.UI.Display.displayY
+import android.content.res.ColorStateList
+import android.graphics.PorterDuff
+import android.view.View
+import android.view.ViewAnimationUtils
+import android.view.animation.AccelerateInterpolator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import net.geeksempire.keepnotes.Notes.Painting.NewPaintingData
+import net.geeksempire.keepnotes.Notes.Taking.TakeNote
+import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.Utils.UI.Display.displayX
+import net.geeksempire.keepnotes.Utils.UI.Display.displayY
+import kotlin.math.hypot
 
 fun TakeNote.setupPaintingActions() {
 

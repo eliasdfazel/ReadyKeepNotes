@@ -25,8 +25,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.offline_indicator.view.*
-import net.geeksempire.keepnote.DependencyInjections.Scopes.ActivityScope
-import net.geeksempire.keepnote.R
+import net.geeksempire.keepnotes.DependencyInjections.Scopes.ActivityScope
+import net.geeksempire.keepnotes.R
 import javax.inject.Inject
 
 interface NetworkConnectionListenerInterface {

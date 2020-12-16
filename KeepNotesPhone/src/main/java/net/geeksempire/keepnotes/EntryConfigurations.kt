@@ -6,16 +6,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import net.geeksempire.keepnote.Notes.Taking.TakeNote
-import net.geeksempire.keepnote.Overview.UserInterface.KeepNoteOverview
-import net.geeksempire.keepnote.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
-import net.geeksempire.keepnote.Utils.UI.NotifyUser.SnackbarBuilder
-import net.geeksempire.keepnote.databinding.EntryConfigurationLayoutBinding
+import net.geeksempire.keepnotes.AccountManager.SignInProcess.SetupAccount
+import net.geeksempire.keepnotes.Notes.Taking.TakeNote
+import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
+import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
+import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarBuilder
+import net.geeksempire.keepnotes.databinding.EntryConfigurationLayoutBinding
 
 class EntryConfigurations : AppCompatActivity() {
 
-    private val setupAccount =
-        _root_ide_package_.net.geeksempire.keepnotes.AccountManager.SignInProcess.SetupAccount()
+    private val setupAccount = SetupAccount()
 
     lateinit var entryConfigurationLayoutBinding: EntryConfigurationLayoutBinding
 

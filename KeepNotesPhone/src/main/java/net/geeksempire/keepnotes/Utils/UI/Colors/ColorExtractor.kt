@@ -16,8 +16,8 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
-import net.geeksempire.keepnote.R
-import net.geeksempire.keepnote.Utils.UI.Images.drawableToBitmap
+import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.Utils.UI.Images.drawableToBitmap
 
 fun extractDominantColor(context: Context, drawable: Drawable): Int {
 

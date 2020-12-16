@@ -2,7 +2,7 @@ package net.geeksempire.keepnotes.Overview.UserInterface
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import net.geeksempire.keepnote.databinding.OverviewLayoutBinding
+import net.geeksempire.keepnotes.databinding.OverviewLayoutBinding
 
 class KeepNoteOverview : AppCompatActivity() {
 

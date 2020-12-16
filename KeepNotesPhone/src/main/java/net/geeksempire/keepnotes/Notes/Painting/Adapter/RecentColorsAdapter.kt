@@ -5,10 +5,10 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import net.geeksempire.keepnote.Notes.Painting.NewPaintingData
-import net.geeksempire.keepnote.Notes.Painting.PaintingCanvasView
-import net.geeksempire.keepnote.Notes.Taking.TakeNote
-import net.geeksempire.keepnote.R
+import net.geeksempire.keepnotes.Notes.Painting.NewPaintingData
+import net.geeksempire.keepnotes.Notes.Painting.PaintingCanvasView
+import net.geeksempire.keepnotes.Notes.Taking.TakeNote
+import net.geeksempire.keepnotes.R
 
 class RecentColorsAdapter (private val context: TakeNote, private val paintingCanvasView: PaintingCanvasView) : RecyclerView.Adapter<RecentColorsViewHolder>() {
 

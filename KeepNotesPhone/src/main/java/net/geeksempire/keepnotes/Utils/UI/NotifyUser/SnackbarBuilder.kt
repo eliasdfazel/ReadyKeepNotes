@@ -14,7 +14,7 @@ import android.content.Context
 import android.view.ViewGroup
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import net.geeksempire.keepnote.R
+import net.geeksempire.keepnotes.R
 
 interface SnackbarActionHandlerInterface {
     fun onActionButtonClicked(snackbar: Snackbar) {}

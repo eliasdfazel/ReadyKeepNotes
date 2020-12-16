@@ -13,7 +13,7 @@ package net.geeksempire.keepnotes.DependencyInjections.Modules.Network
 import android.net.ConnectivityManager
 import dagger.Binds
 import dagger.Module
-import net.geeksempire.keepnote.Utils.Network.NetworkConnectionListener
+import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListener
 
 @Module
 abstract class NetworkConnectionModule {

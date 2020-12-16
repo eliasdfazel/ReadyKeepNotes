@@ -13,9 +13,9 @@ package net.geeksempire.keepnotes.DependencyInjections
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import net.geeksempire.keepnote.DependencyInjections.Modules.Network.NetworkCheckpointModule
-import net.geeksempire.keepnote.DependencyInjections.Modules.SubDependencyGraphs
-import net.geeksempire.keepnote.DependencyInjections.SubComponents.NetworkSubDependencyGraph
+import net.geeksempire.keepnotes.DependencyInjections.Modules.Network.NetworkCheckpointModule
+import net.geeksempire.keepnotes.DependencyInjections.Modules.SubDependencyGraphs
+import net.geeksempire.keepnotes.DependencyInjections.SubComponents.NetworkSubDependencyGraph
 import javax.inject.Singleton
 
 @Singleton

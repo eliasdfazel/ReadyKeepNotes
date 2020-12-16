@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import dagger.BindsInstance
 import dagger.Subcomponent
-import net.geeksempire.keepnote.DependencyInjections.Modules.Network.NetworkConnectionModule
-import net.geeksempire.keepnote.DependencyInjections.Scopes.ActivityScope
-import net.geeksempire.keepnote.Notes.Taking.TakeNote
+import net.geeksempire.keepnotes.DependencyInjections.Modules.Network.NetworkConnectionModule
+import net.geeksempire.keepnotes.DependencyInjections.Scopes.ActivityScope
+import net.geeksempire.keepnotes.Notes.Taking.TakeNote
 
 @ActivityScope
 @Subcomponent(modules = [NetworkConnectionModule::class])
