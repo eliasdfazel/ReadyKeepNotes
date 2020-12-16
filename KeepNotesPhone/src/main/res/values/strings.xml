@@ -1,6 +1,7 @@
 <resources>
 
-    <string name="app_name">Keep Notes</string>
+    <string name="applicationName">Keep Notes</string>
+    <string name="applicationMotto">Always Ready To Keep Notes</string>
 
     <string name="waitingInformation">Setting Up Your Account…</string>
 
@@ -13,4 +14,7 @@
     <string name="titleHintText">Title Undefined</string>
     <string name="contentHintText">Type Here…</string>
     <string name="pickColor">Pick</string>
+
+    <string name="quickTakeTextHint">Always Ready To Keep Notes</string>
+
 </resources>

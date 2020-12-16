@@ -1,11 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Overview.UserInterface.KeepNoteOverview">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
 
+        apps:layout_constraintHeight_percent="0.23"
+        apps:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/textInputQuickTakeNote"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="7dp"
+            android:layout_marginVertical="7dp"
+            android:paddingHorizontal="11dp"
+            android:gravity="center_vertical"
+            android:imeOptions="actionSearch"
+            android:hint="@string/quickTakeTextHint"
+            android:textColorHint="@color/default_color_game"
+
+            apps:boxBackgroundMode="outline"
+            apps:boxBackgroundColor="@color/dark_transparent_high"
+            apps:boxCornerRadiusTopStart="7dp"
+            apps:boxCornerRadiusTopEnd="23dp"
+            apps:boxCornerRadiusBottomStart="23dp"
+            apps:boxCornerRadiusBottomEnd="23dp"
+            apps:boxStrokeColor="@android:color/transparent"
+            apps:boxStrokeWidth="0dp"
+            apps:hintEnabled="true"
+            apps:hintAnimationEnabled="true"
+            apps:hintTextColor="@color/default_color_game"
+            apps:errorEnabled="true"
+            apps:errorTextColor="@color/red"
+
+            apps:layout_constraintStart_toStartOf="parent"
+            apps:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText xmlns:apps="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/quickTakeNote"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="23dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:inputType="text|textAutoComplete"
+                android:textSize="17sp"
+                android:textColor="@color/light"
+                android:textColorHint="@color/light"
+                android:fontFamily="monospace"
+                android:cursorVisible="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/savingView"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_marginVertical="17dp"
+            android:layout_marginHorizontal="29dp"
+            android:contentDescription="@string/toggleKeyboardHandwriting"
+            android:insetLeft="0dp"
+            android:insetTop="00dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+
+            apps:cornerRadius="51dp"
+            apps:elevation="23dp"
+            apps:icon="@drawable/icon_save"
+            apps:iconSize="51dp"
+            apps:iconGravity="textStart"
+            apps:iconTint="@color/light"
+            apps:iconPadding="0dp"
+            apps:rippleColor="@color/default_color_game_light"
+            apps:backgroundTint="@color/default_color_transparent_twice"
+
+            apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintEnd_toEndOf="parent"/>
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        apps:layout_constraintHeight_percent="0.77"
+        apps:layout_constraintBottom_toBottomOf="parent">
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
