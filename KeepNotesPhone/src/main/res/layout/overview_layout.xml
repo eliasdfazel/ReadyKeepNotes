@@ -111,6 +111,20 @@
 
             apps:layout_constraintTop_toTopOf="parent"
             apps:layout_constraintEnd_toEndOf="parent"/>
+
+        <net.geeksempire.loadingspin.SpinKitView
+            android:id="@+id/waitingView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+
+            apps:SpinKit_Style="Pulse"
+            apps:SpinKit_Color="@color/cyan"
+
+            apps:layout_constraintTop_toBottomOf="@id/fullNoteTaking"
+            apps:layout_constraintBottom_toTopOf="@id/savingView"
+            apps:layout_constraintStart_toStartOf="@id/savingView"
+            apps:layout_constraintEnd_toEndOf="@id/fullNoteTaking"/>
         
     </androidx.constraintlayout.widget.ConstraintLayout>
 
