@@ -4,10 +4,15 @@ import android.content.Context
 import net.geeksempire.keepnotes.Utils.PreferencesIO.ReadPreferences
 import net.geeksempire.keepnotes.Utils.PreferencesIO.SavePreferences
 
+object ThemeType {
+    const val Light = true
+    const val Dark = false
+}
+
 class ThemePreferences (context: Context) {
 
-    val savePreferences = SavePreferences(context)
-    val readPreferences = ReadPreferences(context)
+    private val savePreferences = SavePreferences(context)
+    private val readPreferences = ReadPreferences(context)
 
     /**
      * Light = True - Dark = False

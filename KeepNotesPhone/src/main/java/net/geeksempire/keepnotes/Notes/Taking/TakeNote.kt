@@ -1,8 +1,6 @@
 package net.geeksempire.keepnotes.Notes.Taking
 
-import android.app.ActivityOptions
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -121,10 +119,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     override fun onBackPressed() {
 
-        startActivity(Intent(Intent.ACTION_MAIN).apply {
-            this.addCategory(Intent.CATEGORY_HOME)
-            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        this@TakeNote.finish()
+        overridePendingTransition(0, R.anim.fade_out)
 
     }
 

@@ -6,6 +6,8 @@ import net.geeksempire.keepnotes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Notes.Painting.PaintingCanvasView
+import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.databinding.OverviewLayoutBinding
 import net.geeksempire.keepnotes.databinding.TakeNoteLayoutBinding
 
 class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
@@ -24,24 +26,24 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 noteHandwritingSnapshotLink = null
             )
 
-            (keepNoteApplication as KeepNoteApplication).firestoreDatabase
+            (keepNoteApplication).firestoreDatabase
                 .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + "${documentId}")
                 .set(notesDataStructure)
                 .addOnSuccessListener {
                     Log.d(this@NotesIO.javaClass.simpleName, "Note Saved Successfully")
 
-                    (keepNoteApplication as KeepNoteApplication).firebaseStorage
+                    (keepNoteApplication).firebaseStorage
                         .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
                         .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
                         .addOnSuccessListener { uploadTaskSnapshot ->
                             Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
 
-                            (keepNoteApplication as KeepNoteApplication).firebaseStorage
+                            (keepNoteApplication).firebaseStorage
                                 .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
                                 .downloadUrl
                                 .addOnSuccessListener { downloadUrl ->
 
-                                    (keepNoteApplication as KeepNoteApplication).firestoreDatabase
+                                    (keepNoteApplication).firestoreDatabase
                                         .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + documentId)
                                         .update(
                                             "noteHandwritingSnapshotLink", downloadUrl.toString(),
@@ -77,21 +79,37 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    fun saveQuickNotes(firebaseUser: FirebaseUser?, takeNoteLayoutBinding: TakeNoteLayoutBinding,
-                       databaseEndpoints: DatabaseEndpoints,
-                       documentId: Int) {
+    fun saveQuickNotes(firebaseUser: FirebaseUser?, overviewLayoutBinding: OverviewLayoutBinding,
+                       databaseEndpoints: DatabaseEndpoints) {
 
         firebaseUser?.let {
 
+            overviewLayoutBinding.savingView.isEnabled = false
+
+            val documentId: Long = System.currentTimeMillis()
+
             val notesDataStructure = NotesDataStructure(
-                noteTile = takeNoteLayoutBinding.editTextTitleView.text.toString(),
-                noteTextContent = takeNoteLayoutBinding.editTextContentView.text.toString(),
-                noteHandwritingSnapshotLink = null
+                noteTextContent = overviewLayoutBinding.quickTakeNote.text.toString(),
             )
 
-            (keepNoteApplication as KeepNoteApplication).firestoreDatabase
+            (keepNoteApplication).firestoreDatabase
                 .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + "${documentId}")
                 .set(notesDataStructure)
+                .addOnSuccessListener {
+
+                    overviewLayoutBinding.savingView.isEnabled = true
+
+                    overviewLayoutBinding.quickTakeNote.text = null
+
+                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                    overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                }.addOnFailureListener {
+
+                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
+                    overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.errorOccurred)
+
+                }
 
         }
 

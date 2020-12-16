@@ -17,4 +17,6 @@
 
     <string name="quickTakeTextHint">Always Ready To Keep Notes</string>
 
+    <string name="errorOccurred">⚠ Error Occurred ⚠</string>
+
 </resources>
