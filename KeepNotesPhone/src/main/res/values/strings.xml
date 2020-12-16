@@ -1,0 +1,16 @@
+<resources>
+
+    <string name="app_name">Keep Notes</string>
+
+    <string name="waitingInformation">Setting Up Your Account…</string>
+
+    <string name="anonymouslySignInError">Error Setting Up Your Account ⚠</string>
+
+    <string name="retryText">Retry</string>
+
+    <string name="toggleKeyboardHandwriting">Toggle Keyboard and Handwriting</string>
+
+    <string name="titleHintText">Title Undefined</string>
+    <string name="contentHintText">Type Here…</string>
+    <string name="pickColor">Pick</string>
+</resources>

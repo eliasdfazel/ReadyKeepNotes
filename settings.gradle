@@ -2,5 +2,5 @@ include ':AdvancedColorPicker'
 include ':ShapesCustomImageViewLibrary'
 include ':LoadingSpin'
 include ':BlurryEffectLibrary'
-include ':KeepNotePhone'
-rootProject.name = "Keep Note"
+include ':KeepNotesPhone'
+rootProject.name = "Keep Notes"
