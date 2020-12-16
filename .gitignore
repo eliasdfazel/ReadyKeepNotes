@@ -16,3 +16,4 @@ local.properties
 /.idea/
 /KeepNotePhone/build/
 /KeepNotePhone/src/main/res/values/strings_private.xml
+/KeepNotesPhone/src/main/res/values/strings_private.xml

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "891377067058",
+    "firebase_url": "https://always-ready-keep-note-default-rtdb.firebaseio.com",
     "project_id": "always-ready-keep-note",
     "storage_bucket": "always-ready-keep-note.appspot.com"
   },
@@ -27,6 +28,51 @@
           "android_info": {
             "package_name": "net.geeksempire.keepnote",
             "certificate_hash": "1d15eb4e4e7fc488f568267af689e34209fc705f"
+          }
+        },
+        {
+          "client_id": "891377067058-ot37ulc80do0cmt7k3erdlde4fmc1nc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBkv8Ao91HSCsWhS-07jlsaYyY6R57uwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891377067058-ot37ulc80do0cmt7k3erdlde4fmc1nc0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891377067058:android:d1c8be053f35d8827b482b",
+        "android_client_info": {
+          "package_name": "net.geeksempire.keepnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891377067058-1jp7n51v9fqjfk9ph1p7l1sa01oihn92.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geeksempire.keepnotes",
+            "certificate_hash": "1d15eb4e4e7fc488f568267af689e34209fc705f"
+          }
+        },
+        {
+          "client_id": "891377067058-c5ttl18tr0fa73c4cdslm6jjeh90tp4p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geeksempire.keepnotes",
+            "certificate_hash": "0cb29363c6891fbc51072ac57e27ac126bc8051c"
           }
         },
         {
