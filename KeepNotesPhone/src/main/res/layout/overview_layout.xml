@@ -93,7 +93,10 @@
         apps:layout_constraintHeight_percent="0.77"
         apps:layout_constraintBottom_toBottomOf="parent">
 
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/overviewRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

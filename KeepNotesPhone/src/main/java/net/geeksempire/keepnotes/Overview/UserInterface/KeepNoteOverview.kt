@@ -8,9 +8,6 @@ class KeepNoteOverview : AppCompatActivity() {
 
     lateinit var overviewLayoutBinding: OverviewLayoutBinding
 
-    //show list of saved notes
-    // and have an option to take note
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overviewLayoutBinding = OverviewLayoutBinding.inflate(layoutInflater)

@@ -4,13 +4,12 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.keepnotes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
+import net.geeksempire.keepnotes.Database.IO.NotesIO
 import net.geeksempire.keepnotes.Database.IO.PaintingIO
 import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Notes.Painting.Adapter.RecentColorsAdapter
@@ -42,6 +41,10 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(applicationContext)
+    }
+
+    val notesIO: NotesIO by lazy {
+        NotesIO(application as KeepNoteApplication)
     }
 
     val paintingIO: PaintingIO by lazy {
@@ -89,64 +92,14 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 
-            firebaseUser?.let {
-
-                val notesDataStructure = NotesDataStructure(
-                    noteTile = takeNoteLayoutBinding.editTextTitleView.text.toString(),
-                    noteTextContent = takeNoteLayoutBinding.editTextContentView.text.toString(),
-                    noteHandwritingSnapshotLink = null
-                )
-
-                (application as KeepNoteApplication).firestoreDatabase
-                    .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + "${documentId}")
-                    .set(notesDataStructure)
-                    .addOnSuccessListener {
-                        Log.d(this@TakeNote.javaClass.simpleName, "Note Saved Successfully")
-
-                        (application as KeepNoteApplication).firebaseStorage
-                            .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
-                            .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
-                            .addOnSuccessListener { uploadTaskSnapshot ->
-                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Saved Successfully")
-
-                                (application as KeepNoteApplication).firebaseStorage
-                                    .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
-                                    .downloadUrl
-                                    .addOnSuccessListener { downloadUrl ->
-
-                                        (application as KeepNoteApplication).firestoreDatabase
-                                            .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + documentId)
-                                            .update(
-                                                "noteHandwritingSnapshotLink", downloadUrl.toString(),
-                                            ).addOnSuccessListener {
-                                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Link Saved Successfully")
-
-
-                                            }.addOnFailureListener {
-                                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Link Did Not Saved")
-
-
-                                            }
-
-                                    }.addOnFailureListener {
-
-
-
-                                    }
-
-                            }.addOnFailureListener {
-                                Log.d(this@TakeNote.javaClass.simpleName, "Paint Did Note Saved")
-
-
-                            }
-
-                    }.addOnFailureListener {
-                        Log.d(this@TakeNote.javaClass.simpleName, "Note Did Note Saved")
-
-
-                    }
-
-            }
+            notesIO.saveNotesAndPainting(
+                firebaseUser = firebaseUser,
+                takeNoteLayoutBinding,
+                databaseEndpoints,
+                paintingIO,
+                paintingCanvasView,
+                documentId
+            )
 
         }
 
