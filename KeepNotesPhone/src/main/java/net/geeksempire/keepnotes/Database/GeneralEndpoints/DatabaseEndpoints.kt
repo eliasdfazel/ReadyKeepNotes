@@ -4,7 +4,7 @@ class DatabaseEndpoints() {
 
     fun GeneralEndpoints (firebaseUserUniqueId: String) : String  {
 
-        return "/KeepNote/${firebaseUserUniqueId}/Notes"
+        return "/KeepNotes/${firebaseUserUniqueId}/Notes"
     }
 
 }

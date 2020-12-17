@@ -1,13 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootView"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootItemView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginVertical="3dp"
-    android:layout_marginHorizontal="17dp"
+    android:layout_marginHorizontal="23.9dp"
+    android:background="@drawable/round_corner_background"
     tools:context=".Overview.UserInterface.KeepNoteOverview">
 
+    <net.geekstools.imageview.customshapes.ShapesImage
+        android:id="@+id/contentImageView"
+        android:layout_width="77dp"
+        android:layout_height="113dp"
+        android:scaleType="fitCenter"
+        android:background="@drawable/round_corner_background"
 
+        apps:shape="rounded"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+    
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="39dp"
+        android:paddingHorizontal="7dp"
+        android:gravity="center_vertical"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:textColor="@color/dark"
+        android:fontFamily="monospace"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/contentTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingHorizontal="7dp"
+        android:paddingVertical="7dp"
+        android:ellipsize="end"
+        android:lines="3"
+        android:textSize="15sp"
+        android:textColor="@color/dark"
+        android:fontFamily="monospace"
+
+        apps:layout_constraintTop_toBottomOf="@id/titleTextView"
+        apps:layout_constraintBottom_toBottomOf="@id/contentImageView"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

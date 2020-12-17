@@ -19,7 +19,7 @@ class ThemePreferences (context: Context) {
      **/
     fun checkLightDark() : Boolean {
 
-        return readPreferences.readPreference(ThemePreferences::class.java.simpleName, "LightDark", false)
+        return readPreferences.readPreference(ThemePreferences::class.java.simpleName, "LightDark", true)
     }
 
     /**

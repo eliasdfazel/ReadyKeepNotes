@@ -74,7 +74,7 @@ class EntryConfigurations : AppCompatActivity() {
     private fun openOverviewActivity() {
 
         startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
     }
@@ -82,7 +82,7 @@ class EntryConfigurations : AppCompatActivity() {
     private fun openTakeNoteActivity() {
 
         startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
     }

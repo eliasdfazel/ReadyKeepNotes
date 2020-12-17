@@ -87,7 +87,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
-            overviewLayoutBinding.waitingView.visibility = View.VISIBLE
+            overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 
             val inputMethodManager: InputMethodManager by lazy {
                 keepNoteApplication.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -127,7 +127,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     overviewLayoutBinding.quickTakeNote.requestFocus()
 
-                    overviewLayoutBinding.waitingView.visibility = View.INVISIBLE
+                    overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
 
                 }.addOnFailureListener {
 

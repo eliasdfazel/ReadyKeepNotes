@@ -17,6 +17,8 @@
 
     <string name="quickTakeTextHint">Always Ready To Keep Notes</string>
 
+    <string name="emptyNotesCollection">You Don\'t Have Any Saved Notes</string>
+
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 
 </resources>
