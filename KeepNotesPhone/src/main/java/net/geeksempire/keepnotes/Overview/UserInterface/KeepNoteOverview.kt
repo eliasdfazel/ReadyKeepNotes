@@ -63,6 +63,7 @@ class KeepNoteOverview : AppCompatActivity() {
 
             startActivity(Intent(applicationContext, TakeNote::class.java).apply {
                 putExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations, TakeNote.NoteTakingWritingType.Handwriting)
+                putExtra(Intent.EXTRA_TEXT, overviewLayoutBinding.quickTakeNote.text.toString())
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
