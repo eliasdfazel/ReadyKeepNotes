@@ -1,6 +1,7 @@
 package net.geeksempire.keepnotes.Notes.Taking
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -67,6 +68,12 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     lateinit var takeNoteLayoutBinding: TakeNoteLayoutBinding
 
+    object NoteTakingWritingType {
+        const val ExtraConfigurations = "NoteTakingWritingType"
+        const val Keyboard = "Keyboard"
+        const val Handwriting = "Handwriting"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         takeNoteLayoutBinding = TakeNoteLayoutBinding.inflate(layoutInflater)
@@ -87,6 +94,12 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         setupToggleKeyboardHandwriting()
 
         setupPaintingActions()
+
+        if (intent.hasExtra(Intent.EXTRA_TEXT)) {
+
+            takeNoteLayoutBinding.editTextContentView.setText(intent.getStringExtra(Intent.EXTRA_TEXT))
+
+        }
 
         takeNoteLayoutBinding.savingView.setOnClickListener {
 

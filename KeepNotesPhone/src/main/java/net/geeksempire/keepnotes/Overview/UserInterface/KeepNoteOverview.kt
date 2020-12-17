@@ -11,8 +11,10 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnotes.Database.IO.NotesIO
 import net.geeksempire.keepnotes.KeepNoteApplication
+import net.geeksempire.keepnotes.Notes.Taking.TakeNote
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupColors
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
+import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.databinding.OverviewLayoutBinding
 
 class KeepNoteOverview : AppCompatActivity() {
@@ -54,6 +56,15 @@ class KeepNoteOverview : AppCompatActivity() {
                 )
 
             }
+
+        }
+
+        overviewLayoutBinding.fullNoteTaking.setOnClickListener {
+
+            startActivity(Intent(applicationContext, TakeNote::class.java).apply {
+                putExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations, TakeNote.NoteTakingWritingType.Handwriting)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
         }
 
