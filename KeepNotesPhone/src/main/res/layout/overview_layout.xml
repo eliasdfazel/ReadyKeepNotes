@@ -138,7 +138,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/overviewRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginVertical="13dp"
+            android:fadingEdge="vertical"
+            android:fadingEdgeLength="7dp"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="none"
+            android:persistentDrawingCache="animation|scrolling"
+            android:saveEnabled="true"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
