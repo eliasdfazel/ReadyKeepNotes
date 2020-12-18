@@ -20,6 +20,7 @@ import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListenerInterface
+import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.keepnotes.databinding.TakeNoteLayoutBinding
 import javax.inject.Inject
 
@@ -49,6 +50,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val paintingIO: PaintingIO by lazy {
         PaintingIO(applicationContext)
     }
+
+    val contentEncryption: ContentEncryption  = ContentEncryption()
 
     /**
      * True: Handwriting - False: Keyboard
@@ -105,11 +108,12 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             notesIO.saveNotesAndPainting(
                 firebaseUser = firebaseUser,
-                takeNoteLayoutBinding,
-                databaseEndpoints,
-                paintingIO,
-                paintingCanvasView,
-                documentId
+                takeNoteLayoutBinding = takeNoteLayoutBinding,
+                databaseEndpoints = databaseEndpoints,
+                paintingIO = paintingIO,
+                paintingCanvasView = paintingCanvasView,
+                contentEncryption = contentEncryption,
+                documentId = documentId
             )
 
         }

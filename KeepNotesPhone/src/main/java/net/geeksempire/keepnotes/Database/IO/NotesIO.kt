@@ -10,6 +10,7 @@ import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Notes.Painting.PaintingCanvasView
 import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.keepnotes.databinding.OverviewLayoutBinding
 import net.geeksempire.keepnotes.databinding.TakeNoteLayoutBinding
 
@@ -20,6 +21,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                              databaseEndpoints: DatabaseEndpoints,
                              paintingIO: PaintingIO,
                              paintingCanvasView: PaintingCanvasView,
+                             contentEncryption: ContentEncryption,
                              documentId: Long) {
 
         firebaseUser?.let {
@@ -30,8 +32,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
             takeNoteLayoutBinding.savingView.isEnabled = false
 
             val notesDataStructure = NotesDataStructure(
-                noteTile = takeNoteLayoutBinding.editTextTitleView.text.toString(),
-                noteTextContent = takeNoteLayoutBinding.editTextContentView.text.toString(),
+                noteTile = contentEncryption.encryptEncodedData(takeNoteLayoutBinding.editTextTitleView.text.toString(), firebaseUser.uid).asList().toString(),
+                noteTextContent = contentEncryption.encryptEncodedData(takeNoteLayoutBinding.editTextContentView.text.toString(), firebaseUser.uid).asList().toString(),
                 noteHandwritingSnapshotLink = null
             )
 
@@ -92,7 +94,9 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    fun saveQuickNotes(firebaseUser: FirebaseUser?, overviewLayoutBinding: OverviewLayoutBinding,
+    fun saveQuickNotes(firebaseUser: FirebaseUser?,
+                       overviewLayoutBinding: OverviewLayoutBinding,
+                       contentEncryption: ContentEncryption,
                        databaseEndpoints: DatabaseEndpoints) {
 
         firebaseUser?.let {
@@ -115,7 +119,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
             val documentId: Long = System.currentTimeMillis()
 
             val notesDataStructure = NotesDataStructure(
-                noteTextContent = overviewLayoutBinding.quickTakeNote.text.toString(),
+                noteTextContent = contentEncryption.encryptEncodedData(overviewLayoutBinding.quickTakeNote.text.toString(), firebaseUser.uid).asList().toString()
             )
 
             (keepNoteApplication).firestoreDatabase

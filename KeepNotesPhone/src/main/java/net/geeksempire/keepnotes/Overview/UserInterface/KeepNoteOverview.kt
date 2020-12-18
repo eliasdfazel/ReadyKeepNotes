@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.keepnotes.Database.DataStructure.Notes
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
@@ -24,13 +25,14 @@ import net.geeksempire.keepnotes.Overview.UserInterface.Adapter.OverviewAdapter
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupColors
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.keepnotes.databinding.OverviewLayoutBinding
 
 class KeepNoteOverview : AppCompatActivity() {
 
-    private val firebaseUser = Firebase.auth.currentUser
+    val firebaseUser = Firebase.auth.currentUser
 
     private val databaseEndpoints = DatabaseEndpoints()
 
@@ -41,6 +43,8 @@ class KeepNoteOverview : AppCompatActivity() {
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(applicationContext)
     }
+
+    val contentEncryption: ContentEncryption = ContentEncryption()
 
     private val inputMethodManager: InputMethodManager by lazy {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -90,6 +94,12 @@ class KeepNoteOverview : AppCompatActivity() {
 
                 } else {
 
+                    overviewAdapter.notesDataStructureList.clear()
+
+                    overviewLayoutBinding.overviewRecyclerView.removeAllViews()
+
+                    overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
+
                     SnackbarBuilder(applicationContext).show (
                         rootView = overviewLayoutBinding.rootView,
                         messageText= getString(R.string.emptyNotesCollection),
@@ -118,7 +128,7 @@ class KeepNoteOverview : AppCompatActivity() {
 
                 (application as KeepNoteApplication)
                     .firestoreDatabase.collection(databaseEndpoints.GeneralEndpoints(firebaseUser.uid))
-                    .orderBy(Notes.NoteTakenTime)
+                    .orderBy(Notes.NoteTakenTime, Query.Direction.DESCENDING)
                     .addSnapshotListener { querySnapshot, firestoreException ->
 
                         querySnapshot?.let {
@@ -145,6 +155,7 @@ class KeepNoteOverview : AppCompatActivity() {
 
                 notesIO.saveQuickNotes(firebaseUser = firebaseUser,
                     overviewLayoutBinding = overviewLayoutBinding,
+                    contentEncryption = contentEncryption,
                     databaseEndpoints = databaseEndpoints)
 
             }

@@ -22,8 +22,13 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
     override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int) {
 
-        overviewViewHolder.titleTextView.text = notesDataStructureList[position][Notes.NoteTile].toString()
-        overviewViewHolder.contentTextView.text = notesDataStructureList[position][Notes.NoteTextContent].toString()
+        context.firebaseUser?.let {
+
+            overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(context.contentEncryption.plainTextToByteArray(notesDataStructureList[position][Notes.NoteTile].toString()), context.firebaseUser.uid)
+
+            overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(context.contentEncryption.plainTextToByteArray(notesDataStructureList[position][Notes.NoteTextContent].toString()), context.firebaseUser.uid)
+
+        }
 
         when (context.themePreferences.checkLightDark()) {
             ThemeType.Light -> {

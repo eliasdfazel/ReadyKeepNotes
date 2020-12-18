@@ -10,8 +10,8 @@ object Notes {
     const val NoteEditTime: String = "noteEditTime"
 }
 
-data class NotesDataStructure(var noteTile: String = "Untitled",
-                              var noteTextContent: String? = null,
+data class NotesDataStructure(var noteTile: String = "Untitled Note",
+                              var noteTextContent: String = "No Text Content",
                               var noteHandwritingSnapshotLink: String? = null,
                               var noteTakenTime: FieldValue = FieldValue.serverTimestamp(),
                               var noteEditTime: FieldValue? = null)
