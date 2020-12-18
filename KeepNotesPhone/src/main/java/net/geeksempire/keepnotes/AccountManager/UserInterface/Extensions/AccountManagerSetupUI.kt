@@ -89,8 +89,8 @@ fun AccountInformation.accountManagerSetupUI() {
     window.navigationBarColor = Color.TRANSPARENT
     window.statusBarColor = Color.TRANSPARENT
 
-    accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, if (firebaseAuth.currentUser != null) {
-        firebaseAuth.currentUser?.displayName
+    accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, if (firebaseAuthentication.currentUser != null) {
+        firebaseAuthentication.currentUser?.displayName
     } else {
         ""
     })
@@ -104,7 +104,7 @@ fun AccountInformation.accountManagerSetupUI() {
     accountViewLayoutParameters.setMargins(accountViewLayoutParameters.topMargin, accountViewLayoutParameters.topMargin + statusBarHeight(applicationContext), accountViewLayoutParameters.topMargin, accountViewLayoutParameters.topMargin)
     accountInformationLayoutBinding.profileImageView.layoutParams = accountViewLayoutParameters
 
-    firebaseAuth.currentUser?.let { firebaseUser ->
+    firebaseAuthentication.currentUser?.let { firebaseUser ->
 
         Glide.with(this@accountManagerSetupUI)
             .asDrawable()
@@ -179,7 +179,7 @@ fun AccountInformation.clickSetup() {
 
 fun AccountInformation.createUserProfile() {
 
-    firebaseAuth.currentUser?.let { firebaseUser ->
+    firebaseAuthentication.currentUser?.let { firebaseUser ->
 
         accountInformationLayoutBinding.updatingLoadingView.visibility = View.VISIBLE
         accountInformationLayoutBinding.updatingLoadingView.playAnimation()
@@ -200,7 +200,7 @@ fun AccountInformation.createUserProfile() {
 
                 if (!accountInformationLayoutBinding.phoneNumberAddressView.text.isNullOrEmpty()) {
 
-                    val phoneAuthOptions = PhoneAuthOptions.Builder(firebaseAuth).apply {
+                    val phoneAuthOptions = PhoneAuthOptions.Builder(firebaseAuthentication).apply {
                         setPhoneNumber(accountInformationLayoutBinding.phoneNumberAddressView.text.toString())
                         setTimeout(120, TimeUnit.SECONDS)
                         setActivity(this@createUserProfile)

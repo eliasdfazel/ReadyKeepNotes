@@ -26,7 +26,7 @@ class UserInformation(private val context: AccountInformation) {
 
     fun startSignInProcess() {
 
-        if (context.firebaseAuth.currentUser == null) {
+        if (context.firebaseAuthentication.currentUser == null) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(context.getString(R.string.webClientId))

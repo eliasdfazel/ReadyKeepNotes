@@ -51,7 +51,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
         UserInformationIO(applicationContext)
     }
 
-    val firebaseAuth = Firebase.auth
+    val firebaseAuthentication = Firebase.auth
 
     val firestoreDatabase: FirebaseFirestore = Firebase.firestore
 
@@ -78,7 +78,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
         networkConnectionListener.networkConnectionListenerInterface = this@AccountInformation
 
-        if (firebaseAuth.currentUser == null) {
+        if (firebaseAuthentication.currentUser == null) {
 
             accountInformationLayoutBinding.signupLoadingView.visibility = View.VISIBLE
             accountInformationLayoutBinding.signupLoadingView.playAnimation()
@@ -87,7 +87,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
         } else {
 
-            firebaseAuth.currentUser?.let { firebaseUser ->
+            firebaseAuthentication.currentUser?.let { firebaseUser ->
 
                 firestoreDatabase
                     .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
@@ -137,9 +137,9 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                         val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
 
                         val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
-                        firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener {
+                        firebaseAuthentication.signInWithCredential(authCredential).addOnSuccessListener {
 
-                            val firebaseUser = firebaseAuth.currentUser
+                            val firebaseUser = firebaseAuthentication.currentUser
 
                             if (firebaseUser != null) {
 
