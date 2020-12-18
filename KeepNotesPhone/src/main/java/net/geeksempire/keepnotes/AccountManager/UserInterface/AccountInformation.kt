@@ -137,22 +137,25 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                         val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
 
                         val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
-                        firebaseAuthentication.signInWithCredential(authCredential).addOnSuccessListener {
 
-                            val firebaseUser = firebaseAuthentication.currentUser
+                        firebaseAuthentication.currentUser?.let { firebaseUser ->
 
-                            if (firebaseUser != null) {
+                            firebaseUser.linkWithCredential(authCredential).addOnSuccessListener {
 
-                                val accountName: String = firebaseUser.email.toString()
+                                if (firebaseAuthentication.currentUser != null) {
 
-                                userInformationIO.saveUserInformation(accountName)
+                                    val accountName: String = firebaseAuthentication.currentUser?.email.toString()
 
-                                createUserProfile()
+                                    userInformationIO.saveUserInformation(accountName)
+
+                                    createUserProfile()
+
+                                }
+
+                            }.addOnFailureListener {
+
 
                             }
-
-                        }.addOnFailureListener {
-
 
                         }
 
