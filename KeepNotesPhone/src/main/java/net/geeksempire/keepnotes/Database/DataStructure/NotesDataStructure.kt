@@ -11,7 +11,7 @@ object Notes {
 }
 
 data class NotesDataStructure(var noteTile: String = "Untitled Note",
-                              var noteTextContent: String = "No Text Content",
+                              var noteTextContent: String = "No Content",
                               var noteHandwritingSnapshotLink: String? = null,
                               var noteTakenTime: FieldValue = FieldValue.serverTimestamp(),
                               var noteEditTime: FieldValue? = null)

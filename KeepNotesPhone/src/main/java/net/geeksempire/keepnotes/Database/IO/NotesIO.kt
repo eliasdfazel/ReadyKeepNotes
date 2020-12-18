@@ -26,14 +26,17 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
+            val noteTitle = takeNoteLayoutBinding.editTextContentView.text?:"Untitled Note"
+            val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
+
             takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 
             takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
             takeNoteLayoutBinding.savingView.isEnabled = false
 
             val notesDataStructure = NotesDataStructure(
-                noteTile = contentEncryption.encryptEncodedData(takeNoteLayoutBinding.editTextTitleView.text.toString(), firebaseUser.uid).asList().toString(),
-                noteTextContent = contentEncryption.encryptEncodedData(takeNoteLayoutBinding.editTextContentView.text.toString(), firebaseUser.uid).asList().toString(),
+                noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
                 noteHandwritingSnapshotLink = null
             )
 
@@ -101,6 +104,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
+            val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
+
             overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 
             val inputMethodManager: InputMethodManager by lazy {
@@ -119,7 +124,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
             val documentId: Long = System.currentTimeMillis()
 
             val notesDataStructure = NotesDataStructure(
-                noteTextContent = contentEncryption.encryptEncodedData(overviewLayoutBinding.quickTakeNote.text.toString(), firebaseUser.uid).asList().toString()
+                noteTile = contentEncryption.encryptEncodedData("Untitled Note", firebaseUser.uid).asList().toString(),
+                noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString()
             )
 
             (keepNoteApplication).firestoreDatabase
