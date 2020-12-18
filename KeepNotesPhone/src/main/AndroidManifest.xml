@@ -70,6 +70,17 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".AccountManager.UserInterface.AccountInformation"
+            android:label="@string/applicationName"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:resizeableActivity="true"
+            android:screenOrientation="sensorPortrait"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/GeeksEmpire.Material.SignIn"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
     </application>
 
 </manifest>

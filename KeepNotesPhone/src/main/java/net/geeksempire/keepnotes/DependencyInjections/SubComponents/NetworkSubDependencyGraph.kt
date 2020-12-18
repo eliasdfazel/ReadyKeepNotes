@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import dagger.BindsInstance
 import dagger.Subcomponent
+import net.geeksempire.keepnotes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.keepnotes.DependencyInjections.Modules.Network.NetworkConnectionModule
 import net.geeksempire.keepnotes.DependencyInjections.Scopes.ActivityScope
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
@@ -28,5 +29,6 @@ interface NetworkSubDependencyGraph {
     }
 
     fun inject(takeNote: TakeNote)
+    fun inject(accountInformation: AccountInformation)
 
 }

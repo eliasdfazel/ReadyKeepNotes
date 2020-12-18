@@ -22,4 +22,25 @@
 
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 
+    <string name="welcomeText">Welcome %1$s To Vicinity…!</string>
+
+    <string name="typeInstagram">Type Your Instagram Username</string>
+    <string name="typeTwitter">Type Your Twitter Username</string>
+    <string name="typeFacebook">Type Your Facebook Username</string>
+    <string name="typePhoneNumber">Type Your Phone Number; +19876543210</string>
+
+    <string name="inviteAction">Invite</string>
+    <string name="inviteTitle">Invite To Vicinity</string>
+    <string name="invitationDataReady">Invitation Data Copied &amp; Ready To Share</string>
+    <string name="switchAccountType">Click Here To Switch Account Type To Business &amp; Personal</string>
+
+    <string name="inAppUpdateDescription">An Update Has Just Been Installed</string>
+    <string name="inAppUpdateAction">
+        <![CDATA[
+            Complete It!
+        ]]>
+    </string>
+
+    <string name="followFacebook">Follow Us On Facebook</string>
+
 </resources>
