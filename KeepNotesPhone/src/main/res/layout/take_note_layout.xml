@@ -107,6 +107,20 @@
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"/>
 
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/waitingViewUpload"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:visibility="invisible"
+
+        apps:SpinKit_Style="Circle"
+        apps:SpinKit_Color="@color/cyan"
+
+        apps:layout_constraintTop_toTopOf="@id/savingView"
+        apps:layout_constraintBottom_toBottomOf="@id/toggleKeyboardHandwriting"
+        apps:layout_constraintStart_toEndOf="@id/savingView"
+        apps:layout_constraintEnd_toStartOf="@id/toggleKeyboardHandwriting"/>
+
     <include
         layout="@layout/painting_toolbar_layout"
 

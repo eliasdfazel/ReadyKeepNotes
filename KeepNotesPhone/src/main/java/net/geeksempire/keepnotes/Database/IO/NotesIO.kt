@@ -15,13 +15,19 @@ import net.geeksempire.keepnotes.databinding.TakeNoteLayoutBinding
 
 class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
-    fun saveNotesAndPainting(firebaseUser: FirebaseUser?, takeNoteLayoutBinding: TakeNoteLayoutBinding,
+    fun saveNotesAndPainting(firebaseUser: FirebaseUser?,
+                             takeNoteLayoutBinding: TakeNoteLayoutBinding,
                              databaseEndpoints: DatabaseEndpoints,
                              paintingIO: PaintingIO,
                              paintingCanvasView: PaintingCanvasView,
                              documentId: Long) {
 
         firebaseUser?.let {
+
+            takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
+            takeNoteLayoutBinding.savingView.isEnabled = false
 
             val notesDataStructure = NotesDataStructure(
                 noteTile = takeNoteLayoutBinding.editTextTitleView.text.toString(),
@@ -53,6 +59,10 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                                         ).addOnSuccessListener {
                                             Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Saved Successfully")
 
+                                            takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+
+                                            takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = true
+                                            takeNoteLayoutBinding.savingView.isEnabled = true
 
                                         }.addOnFailureListener {
                                             Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Did Not Saved")
