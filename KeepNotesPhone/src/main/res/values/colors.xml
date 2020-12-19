@@ -40,6 +40,7 @@
     <color name="brown">#800909</color>
     <color name="pink">#FE5475</color>
     <color name="light_pink">#f79caf</color>
+    <color name="pink_transparent">#80f79caf</color>
     <color name="cyan">#1FD4AF</color>
     <color name="purple">#be0193</color>
     <color name="blue">#00acee</color>

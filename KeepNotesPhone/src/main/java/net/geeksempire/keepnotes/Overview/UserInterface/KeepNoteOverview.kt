@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -30,6 +30,7 @@ import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupColors
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
+import net.geeksempire.keepnotes.Utils.UI.Display.columnCount
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.keepnotes.databinding.OverviewLayoutBinding
@@ -67,7 +68,7 @@ class KeepNoteOverview : AppCompatActivity() {
 
         overviewLayoutBinding.root.post {
 
-            overviewLayoutBinding.overviewRecyclerView.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+            overviewLayoutBinding.overviewRecyclerView.layoutManager = GridLayoutManager(applicationContext, columnCount(applicationContext, 313), RecyclerView.VERTICAL, false)
 
             val overviewAdapter = OverviewAdapter(this@KeepNoteOverview)
 
