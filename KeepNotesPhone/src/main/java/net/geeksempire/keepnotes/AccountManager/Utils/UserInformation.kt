@@ -20,13 +20,13 @@ class UserInformation(private val context: AccountInformation) {
     companion object {
         const val GoogleSignInRequestCode = 103
 
-        fun userProfileDatabasePath(userUniqueIdentifier: String) : String = "Vicinity/UserInformation/${userUniqueIdentifier}/Profile"
+        fun userProfileDatabasePath(userUniqueIdentifier: String) : String = "KeepNotes/UserInformation/${userUniqueIdentifier}/Profile"
 
     }
 
     fun startSignInProcess() {
 
-        if (context.firebaseAuthentication.currentUser == null) {
+        if (context.firebaseAuthentication.currentUser?.isAnonymous == true) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(context.getString(R.string.webClientId))

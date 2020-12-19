@@ -18,12 +18,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.keepnotes.AccountManager.DataStructure.UserInformationDataStructure
-import net.geeksempire.keepnotes.AccountManager.UserInterface.Extensions.accountManagerSetupUI
+import net.geeksempire.keepnotes.AccountManager.UserInterface.Extensions.accountManagerSetupUserInterface
 import net.geeksempire.keepnotes.AccountManager.UserInterface.Extensions.createUserProfile
 import net.geeksempire.keepnotes.AccountManager.Utils.UserInformation
 import net.geeksempire.keepnotes.AccountManager.Utils.UserInformationIO
@@ -68,7 +69,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
         accountInformationLayoutBinding = AccountInformationLayoutBinding.inflate(layoutInflater)
         setContentView(accountInformationLayoutBinding.root)
 
-        accountManagerSetupUI()
+        accountManagerSetupUserInterface()
 
         (application as KeepNoteApplication)
             .dependencyGraph
@@ -78,7 +79,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
         networkConnectionListener.networkConnectionListenerInterface = this@AccountInformation
 
-        if (firebaseAuthentication.currentUser == null) {
+        if (firebaseAuthentication.currentUser?.isAnonymous == true) {
 
             accountInformationLayoutBinding.signupLoadingView.visibility = View.VISIBLE
             accountInformationLayoutBinding.signupLoadingView.playAnimation()
@@ -106,8 +107,8 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                             accountInformationLayoutBinding.phoneNumberAddressView.setText(documentData.data?.get(UserInformationDataStructure.phoneNumber).toString())
 
-                            accountInformationLayoutBinding.inviteDirectlyPrivateMessage.visibility = View.VISIBLE
-                            accountInformationLayoutBinding.inviteDirectlyPrivateMessage.setOnClickListener {
+                            accountInformationLayoutBinding.inviteFriendsView.visibility = View.VISIBLE
+                            accountInformationLayoutBinding.inviteFriendsView.setOnClickListener {
 
                                 //
 
@@ -142,7 +143,12 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                             firebaseUser.linkWithCredential(authCredential).addOnSuccessListener {
 
-                                if (firebaseAuthentication.currentUser != null) {
+                                val userProfileChangeRequestBuilder = UserProfileChangeRequest.Builder().apply {
+                                    displayName = googleSignInAccount.displayName
+                                    photoUri = googleSignInAccount.photoUrl
+                                }
+
+                                firebaseUser.updateProfile(userProfileChangeRequestBuilder.build()).addOnSuccessListener {
 
                                     val accountName: String = firebaseAuthentication.currentUser?.email.toString()
 

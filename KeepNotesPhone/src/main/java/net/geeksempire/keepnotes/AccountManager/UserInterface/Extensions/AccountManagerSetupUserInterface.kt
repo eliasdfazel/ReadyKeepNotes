@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import net.geeksempire.keepnotes.AccountManager.DataStructure.UserInformationDataStructure
 import net.geeksempire.keepnotes.AccountManager.DataStructure.UserInformationProfileData
 import net.geeksempire.keepnotes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.keepnotes.AccountManager.Utils.UserInformation
@@ -44,12 +45,10 @@ import net.geeksempire.keepnotes.Utils.UI.Display.statusBarHeight
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-fun AccountInformation.accountManagerSetupUI() {
+fun AccountInformation.accountManagerSetupUserInterface() {
 
     when (themePreferences.checkLightDark()) {
         ThemeType.Light -> {
-
-            accountInformationLayoutBinding.rootView.setBackgroundColor(getColor(R.color.white))
 
             accountInformationLayoutBinding.profileBlurView.setOverlayColor(getColor(R.color.light_blurry_color))
 
@@ -66,8 +65,6 @@ fun AccountInformation.accountManagerSetupUI() {
 
         }
         ThemeType.Dark -> {
-
-            accountInformationLayoutBinding.rootView.setBackgroundColor(getColor(R.color.black))
 
             accountInformationLayoutBinding.profileBlurView.setOverlayColor(getColor(R.color.dark_blurry_color))
 
@@ -89,11 +86,7 @@ fun AccountInformation.accountManagerSetupUI() {
     window.navigationBarColor = Color.TRANSPARENT
     window.statusBarColor = Color.TRANSPARENT
 
-    accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, if (firebaseAuthentication.currentUser != null) {
-        firebaseAuthentication.currentUser?.displayName
-    } else {
-        ""
-    })
+    accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, firebaseAuthentication.currentUser?.displayName)
 
     var dominantColor = getColor(R.color.yellow)
     var vibrantColor = getColor(R.color.default_color_light)
@@ -106,7 +99,7 @@ fun AccountInformation.accountManagerSetupUI() {
 
     firebaseAuthentication.currentUser?.let { firebaseUser ->
 
-        Glide.with(this@accountManagerSetupUI)
+        Glide.with(this@accountManagerSetupUserInterface)
             .asDrawable()
             .load(firebaseUser.photoUrl)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -130,12 +123,11 @@ fun AccountInformation.accountManagerSetupUI() {
 
                             window.setBackgroundDrawable(GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, arrayOf(vibrantColor, dominantColor).toIntArray()))
 
-
                             if (isColorDark(dominantColor) && isColorDark(vibrantColor)) {
-                                Log.d(this@accountManagerSetupUI.javaClass.simpleName, "Dark Extracted Colors")
+                                Log.d(this@accountManagerSetupUserInterface.javaClass.simpleName, "Dark Extracted Colors")
 
                             } else {
-                                Log.d(this@accountManagerSetupUI.javaClass.simpleName, "Light Extracted Colors")
+                                Log.d(this@accountManagerSetupUserInterface.javaClass.simpleName, "Light Extracted Colors")
 
                             }
 
@@ -183,6 +175,8 @@ fun AccountInformation.createUserProfile() {
 
         accountInformationLayoutBinding.updatingLoadingView.visibility = View.VISIBLE
         accountInformationLayoutBinding.updatingLoadingView.playAnimation()
+
+        accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, firebaseAuthentication.currentUser?.displayName)
 
         val userInformationProfileData: UserInformationProfileData = UserInformationProfileData(
             privacyAgreement = userInformationIO.readPrivacyAgreement(),
@@ -294,6 +288,84 @@ fun AccountInformation.createUserProfile() {
                 }
 
             }
+
+        firestoreDatabase
+            .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+
+                documentSnapshot?.let { documentData ->
+
+                    accountInformationLayoutBinding.socialMediaScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in))
+                    accountInformationLayoutBinding.socialMediaScrollView.visibility = View.VISIBLE
+
+                    accountInformationLayoutBinding.instagramAddressView.setText(documentData.data?.get(
+                        UserInformationDataStructure.instagramAccount).toString().toLowerCase(Locale.getDefault()))
+
+                    accountInformationLayoutBinding.twitterAddressView.setText(documentData.data?.get(
+                        UserInformationDataStructure.twitterAccount).toString())
+
+                    accountInformationLayoutBinding.phoneNumberAddressView.setText(documentData.data?.get(
+                        UserInformationDataStructure.phoneNumber).toString())
+
+                    accountInformationLayoutBinding.inviteFriendsView.visibility = View.VISIBLE
+                    accountInformationLayoutBinding.inviteFriendsView.setOnClickListener {
+
+                        //
+
+                    }
+
+                }
+
+            }
+
+        var dominantColor = getColor(R.color.yellow)
+        var vibrantColor = getColor(R.color.default_color_light)
+
+        Glide.with(this@createUserProfile)
+            .asDrawable()
+            .load(firebaseUser.photoUrl)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .listener(object : RequestListener<Drawable> {
+
+                override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+
+                    return false
+                }
+
+                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+
+                    runOnUiThread {
+
+                        accountInformationLayoutBinding.profileImageView.setImageDrawable(resource)
+
+                        resource?.let {
+
+                            dominantColor = extractDominantColor(applicationContext, it)
+                            vibrantColor = extractVibrantColor(applicationContext, it)
+
+                            window.setBackgroundDrawable(GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, arrayOf(vibrantColor, dominantColor).toIntArray()))
+
+                            accountInformationLayoutBinding.signupLoadingView.pauseAnimation()
+                            accountInformationLayoutBinding.signupLoadingView.visibility = View.INVISIBLE
+
+                            if (isColorDark(dominantColor) && isColorDark(vibrantColor)) {
+                                Log.d(this@createUserProfile.javaClass.simpleName, "Dark Extracted Colors")
+
+                            } else {
+                                Log.d(this@createUserProfile.javaClass.simpleName, "Light Extracted Colors")
+
+                            }
+
+                        }
+
+                    }
+
+                    return false
+                }
+
+            })
+            .submit()
 
     }
 

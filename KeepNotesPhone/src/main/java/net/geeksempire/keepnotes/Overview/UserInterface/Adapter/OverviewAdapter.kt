@@ -24,9 +24,9 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
         context.firebaseUser?.let {
 
-            overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(context.contentEncryption.plainTextToByteArray(notesDataStructureList[position][Notes.NoteTile].toString()), context.firebaseUser.uid)
+            overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(notesDataStructureList[position][Notes.NoteTile].toString(), context.firebaseUser.uid)
 
-            overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(context.contentEncryption.plainTextToByteArray(notesDataStructureList[position][Notes.NoteTextContent].toString()), context.firebaseUser.uid)
+            overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(notesDataStructureList[position][Notes.NoteTextContent].toString(), context.firebaseUser.uid)
 
         }
 

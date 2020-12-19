@@ -19,44 +19,6 @@ class ContentEncryption {
         return rawPasswordString.substring(0, 16)
     }
 
-    @Throws(InvalidKeyException::class)
-    fun encryptEncodedData(plainText: String, rawPasswordString: String): ByteArray {
-
-        //First Encode
-        //Second Encrypt
-
-        val encodedText: String = encodeStringBase64(plainText)
-
-        val cipher = Cipher.getInstance("AES")
-        cipher.init(Cipher.ENCRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawPasswordString)))
-
-        return cipher.doFinal(encodedText.toByteArray(Charset.defaultCharset()))
-    }
-
-    @Throws(Exception::class)
-    fun decryptEncodedData(encryptedByteArray: ByteArray, rawPasswordString: String): String? {
-
-        //First Decrypt
-        //Second Decode
-
-        var plainText: String? = null
-
-        try {
-            var cipherD: Cipher? = null
-            cipherD = Cipher.getInstance("AES")
-            cipherD!!.init(Cipher.DECRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawPasswordString)))
-            val decryptString = String(cipherD.doFinal(encryptedByteArray), Charset.defaultCharset())
-
-            plainText = decodeStringBase64(decryptString)
-        } catch (e: Exception) {
-            e.printStackTrace()
-
-            plainText = encryptedByteArray.toString()
-        }
-
-        return plainText
-    }
-
     @Throws(Exception::class)
     private fun encodeStringBase64(plainText: String): String {
         return Base64.encodeToString(plainText.toByteArray(), Base64.DEFAULT)
@@ -67,7 +29,7 @@ class ContentEncryption {
         return String(Base64.decode(encodedText, Base64.DEFAULT))
     }
 
-    fun plainTextToByteArray(plainText: String): ByteArray {
+    private fun plainTextToByteArray(plainText: String): ByteArray {
         val listOfRawString = plainText.replace("[", "").replace("]", "").split(",")
 
         val resultByteArray = ByteArray(listOfRawString.size)
@@ -86,6 +48,46 @@ class ContentEncryption {
         }
 
         return resultByteArray
+    }
+
+    @Throws(InvalidKeyException::class)
+    fun encryptEncodedData(plainText: String, rawPasswordString: String): ByteArray {
+
+        //First Encode
+        //Second Encrypt
+
+        val encodedText: String = encodeStringBase64(plainText)
+
+        val cipher = Cipher.getInstance("AES")
+        cipher.init(Cipher.ENCRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawPasswordString)))
+
+        return cipher.doFinal(encodedText.toByteArray(Charset.defaultCharset()))
+    }
+
+    @Throws(Exception::class)
+    fun decryptEncodedData(encryptedPlainText: String, rawPasswordString: String): String? {
+
+        //First Decrypt
+        //Second Decode
+
+        val encryptedByteArray = plainTextToByteArray(encryptedPlainText)
+
+        var plainText: String? = null
+
+        try {
+            var cipherD: Cipher? = null
+            cipherD = Cipher.getInstance("AES")
+            cipherD!!.init(Cipher.DECRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawPasswordString)))
+            val decryptString = String(cipherD.doFinal(encryptedByteArray), Charset.defaultCharset())
+
+            plainText = decodeStringBase64(decryptString)
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+            plainText = encryptedByteArray.toString()
+        }
+
+        return plainText
     }
 
 }

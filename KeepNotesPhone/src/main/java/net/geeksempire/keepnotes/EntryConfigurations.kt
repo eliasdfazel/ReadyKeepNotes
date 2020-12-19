@@ -7,8 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import net.geeksempire.keepnotes.AccountManager.SignInProcess.SetupAccount
+import net.geeksempire.keepnotes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
-import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.keepnotes.databinding.EntryConfigurationLayoutBinding
@@ -73,7 +73,7 @@ class EntryConfigurations : AppCompatActivity() {
 
     private fun openOverviewActivity() {
 
-        startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
+        startActivity(Intent(applicationContext, /*KeepNoteOverview*/AccountInformation::class.java).apply {
 
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
