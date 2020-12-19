@@ -161,7 +161,7 @@ fun AccountInformation.clickSetup() {
 
             profileUpdating = true
 
-            createUserProfile()
+            createUserProfile(true)
 
         }
 
@@ -169,7 +169,7 @@ fun AccountInformation.clickSetup() {
 
 }
 
-fun AccountInformation.createUserProfile() {
+fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false) {
 
     firebaseAuthentication.currentUser?.let { firebaseUser ->
 
@@ -281,7 +281,7 @@ fun AccountInformation.createUserProfile() {
 
                         accountInformationLayoutBinding.nextSubmitView.playAnimation()
 
-                        profileUpdating = true
+                        profileUpdating = profileUpdatingProcess
 
                     }, 531)
 
@@ -319,9 +319,6 @@ fun AccountInformation.createUserProfile() {
 
             }
 
-        var dominantColor = getColor(R.color.yellow)
-        var vibrantColor = getColor(R.color.default_color_light)
-
         Glide.with(this@createUserProfile)
             .asDrawable()
             .load(firebaseUser.photoUrl)
@@ -341,8 +338,8 @@ fun AccountInformation.createUserProfile() {
 
                         resource?.let {
 
-                            dominantColor = extractDominantColor(applicationContext, it)
-                            vibrantColor = extractVibrantColor(applicationContext, it)
+                            val dominantColor = extractDominantColor(applicationContext, it)
+                            val vibrantColor = extractVibrantColor(applicationContext, it)
 
                             window.setBackgroundDrawable(GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, arrayOf(vibrantColor, dominantColor).toIntArray()))
 

@@ -31,14 +31,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        apps:realtimeBlurRadius="7dp"
+        apps:realtimeBlurRadius="11dp"
         apps:realtimeOverlayColor="@color/light_blurry_color" />
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/profileImageView"
-        android:layout_width="211dp"
-        android:layout_height="211dp"
-        android:layout_marginTop="3dp"
+        android:layout_width="191dp"
+        android:layout_height="191dp"
+        android:layout_marginTop="11dp"
         android:layout_marginBottom="29dp"
         android:scaleType="centerCrop"
         android:src="@drawable/not_login_icon"
@@ -51,8 +51,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/inviteFriendsView"
-        android:layout_width="91dp"
-        android:layout_height="91dp"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
         android:layout_margin="3dp"
         android:contentDescription="@string/inviteTitle"
         android:insetLeft="0dp"
