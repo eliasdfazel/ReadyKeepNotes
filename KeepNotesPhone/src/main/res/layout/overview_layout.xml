@@ -8,12 +8,47 @@
     android:background="@color/light"
     tools:context=".Overview.UserInterface.KeepNoteOverview">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/informationBar"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+
+        apps:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/applicationLogoView"
+            android:layout_width="39dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="23dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/official_business_logo"
+
+            apps:layout_constraintTop_toTopOf="parent"
+            apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="39dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="23dp"
+            android:scaleType="fitCenter"
+            android:transitionName="@string/profileImageTransitionName"
+            android:src="@drawable/not_login_icon"
+
+            apps:layout_constraintTop_toTopOf="parent"
+            apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
-        apps:layout_constraintHeight_percent="0.25"
-        apps:layout_constraintTop_toTopOf="parent">
+        apps:layout_constraintHeight_percent="0.23"
+        apps:layout_constraintTop_toBottomOf="@id/informationBar">
 
         <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/textInputQuickTakeNote"
@@ -136,7 +171,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
-        apps:layout_constraintHeight_percent="0.75"
+        apps:layout_constraintHeight_percent="0.70"
         apps:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView

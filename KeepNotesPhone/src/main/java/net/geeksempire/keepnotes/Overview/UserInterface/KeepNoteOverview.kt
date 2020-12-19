@@ -11,6 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
@@ -22,6 +25,7 @@ import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
 import net.geeksempire.keepnotes.Overview.NotesLiveData.NotesOverviewViewModel
 import net.geeksempire.keepnotes.Overview.UserInterface.Adapter.OverviewAdapter
+import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupActions
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupColors
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
@@ -34,9 +38,9 @@ class KeepNoteOverview : AppCompatActivity() {
 
     val firebaseUser = Firebase.auth.currentUser
 
-    private val databaseEndpoints = DatabaseEndpoints()
+    val databaseEndpoints = DatabaseEndpoints()
 
-    private val notesIO: NotesIO by lazy {
+    val notesIO: NotesIO by lazy {
         NotesIO(application as KeepNoteApplication)
     }
 
@@ -58,6 +62,8 @@ class KeepNoteOverview : AppCompatActivity() {
         setContentView(overviewLayoutBinding.root)
 
         setupColors()
+
+        setupActions()
 
         overviewLayoutBinding.root.post {
 
@@ -140,23 +146,11 @@ class KeepNoteOverview : AppCompatActivity() {
                         firestoreException?.printStackTrace()
                     }
 
-            }
-
-            overviewLayoutBinding.fullNoteTaking.setOnClickListener {
-
-                startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-                    putExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations, TakeNote.NoteTakingWritingType.Handwriting)
-                    putExtra(Intent.EXTRA_TEXT, overviewLayoutBinding.quickTakeNote.text.toString())
-                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
-
-            }
-
-            overviewLayoutBinding.savingView.setOnClickListener {
-
-                notesIO.saveQuickNotes(firebaseUser = firebaseUser,
-                    overviewLayoutBinding = overviewLayoutBinding,
-                    contentEncryption = contentEncryption,
-                    databaseEndpoints = databaseEndpoints)
+                Glide.with(applicationContext)
+                    .load(firebaseUser.photoUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .transform(CircleCrop())
+                    .into(overviewLayoutBinding.profileImageView)
 
             }
 

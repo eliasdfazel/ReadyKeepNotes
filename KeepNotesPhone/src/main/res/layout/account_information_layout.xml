@@ -41,6 +41,7 @@
         android:layout_marginTop="11dp"
         android:layout_marginBottom="29dp"
         android:scaleType="centerCrop"
+        android:transitionName="@string/profileImageTransitionName"
         android:src="@drawable/not_login_icon"
 
         apps:layout_constraintEnd_toEndOf="parent"

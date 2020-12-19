@@ -1,5 +1,7 @@
 <resources>
 
+    <string name="profileImageTransitionName" translatable="false">profileImageTransitionName</string>
 
+    <string name="twitterGeeksEmpire">https://twitter.com/GeeksEmpire</string>
 
 </resources>
