@@ -110,7 +110,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
         return true
     }
 
-    fun touchingStart(x: Float, y: Float) {
+    private fun touchingStart(x: Float, y: Float) {
 
         undoDrawingInformation.clear()
 
@@ -133,9 +133,9 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     }
 
-    fun touchingMove(x: Float, y: Float) {
+    private fun touchingMove(x: Float, y: Float) {
 
-        allRedrawPaintingData.add(0, RedrawPaintingData(x, y))
+        allRedrawPaintingData.add(RedrawPaintingData(x, y))
 
         val dX: Float = abs(x - movingX)
         val dY: Float = abs(y - movingY)
@@ -153,9 +153,9 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     }
 
-    fun touchingUp() {
+    private fun touchingUp() {
 
-        allRedrawPaintingData.add(0, RedrawPaintingData(movingX, movingY))
+        allRedrawPaintingData.add(RedrawPaintingData(movingX, movingY))
 
         drawingPath.lineTo(movingX, movingY)
 
