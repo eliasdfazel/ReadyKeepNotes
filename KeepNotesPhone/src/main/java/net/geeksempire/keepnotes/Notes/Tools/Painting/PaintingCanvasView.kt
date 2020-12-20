@@ -249,7 +249,6 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     }
 
-
     fun restorePaints() {
 
         redrawSavedPaints.start(allRedrawPaintingData).invokeOnCompletion {
