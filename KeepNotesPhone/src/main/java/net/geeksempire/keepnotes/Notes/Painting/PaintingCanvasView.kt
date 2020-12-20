@@ -170,9 +170,18 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         if (allDrawingInformation.size > 0) {
 
-            undoDrawingInformation.add(allDrawingInformation.removeAt(allDrawingInformation.size - 1))
+            try {
 
-            invalidate()
+                undoDrawingInformation.add(allDrawingInformation.removeAt(allDrawingInformation.size - 1))
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+            } finally {
+
+                invalidate()
+
+            }
 
         } else {
 
@@ -184,9 +193,18 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         if (undoDrawingInformation.size > 0) {
 
-            allDrawingInformation.add(undoDrawingInformation.removeAt(undoDrawingInformation.size - 1))
+            try {
 
-            invalidate()
+                allDrawingInformation.add(undoDrawingInformation.removeAt(undoDrawingInformation.size - 1))
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+            } finally {
+
+                invalidate()
+
+            }
 
         } else {
 
