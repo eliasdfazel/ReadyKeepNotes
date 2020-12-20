@@ -8,14 +8,11 @@ class RedrawSavedPaints (private val paintingCanvasView: PaintingCanvasView) {
 
     fun start(allRedrawPaintingData: ArrayList<RedrawPaintingData>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
 
-        delay(3000)
-
+        delay(1000)
 
         paintingCanvasView.touchingStartRestore(allRedrawPaintingData[0].xDrawPosition, allRedrawPaintingData[0].yDrawPosition)
 
         paintingCanvasView.touchingMoveRestore(allRedrawPaintingData[0].xDrawPosition, allRedrawPaintingData[0].yDrawPosition)
-
-        delay(1000)
 
         allRedrawPaintingData.forEach { redrawPaintingData ->
 

@@ -252,10 +252,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     fun restorePaints() {
 
-        val test = allRedrawPaintingData
-
-        /* Check If Saved Notes Exist and Pass Data to RedrawSavedPaints Class */
-        redrawSavedPaints.start(test).invokeOnCompletion {
+        redrawSavedPaints.start(allRedrawPaintingData).invokeOnCompletion {
             Log.d(this@PaintingCanvasView.javaClass.simpleName, "Redrawing Paints Completed")
 
         }
