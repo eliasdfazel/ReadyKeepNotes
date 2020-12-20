@@ -3,16 +3,17 @@ package net.geeksempire.keepnotes.Notes.Tools.Painting
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.geeksempire.keepnotes.Notes.Restoring.RedrawSavedPaints
 import kotlin.math.abs
 
 @SuppressLint("ClickableViewAccessibility")
-class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListener {
+class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener {
 
     private var readyCanvas: Canvas? = null
 
@@ -31,6 +32,10 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     var newPaintingData: NewPaintingData = NewPaintingData()
 
+    val redrawSavedPaints: RedrawSavedPaints = RedrawSavedPaints(this@PaintingCanvasView)
+
+    val allRedrawPaintingData: ArrayList<RedrawPaintingData> = ArrayList<RedrawPaintingData>()
+
     init {
 
         this@PaintingCanvasView.isFocusable = true
@@ -40,7 +45,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     }
 
-    fun setupPaintingPanel(paintColor: Int = Color.WHITE, paintStrokeWidth: Float = 7.777f) = CoroutineScope(Dispatchers.Main).launch {
+    fun setupPaintingPanel(paintColor: Int = Color.BLUE, paintStrokeWidth: Float = 7.777f) = CoroutineScope(Dispatchers.Main).launch {
 
         drawPaint.color = paintColor
         drawPaint.strokeWidth = paintStrokeWidth
@@ -54,34 +59,6 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         newPaintingData = NewPaintingData(paintColor, paintStrokeWidth)
 
-
-
-        /*******/
-
-        delay(3000)
-
-        touchingStart(300f, 300f)
-        invalidate()
-
-        touchingMove(300f, 300f)
-        invalidate()
-
-        delay(1000)
-
-        for (i in 200..550) {
-
-            delay(100)
-
-            touchingMove(300f + i, 300f + i)
-            invalidate()
-
-        }
-
-        touchingUp()
-        invalidate()
-
-        /*******/
-
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -91,6 +68,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
             readyCanvas = canvas
 
             allDrawingInformation.forEachIndexed { index, paintingPathData ->
+
 
                 canvas.drawPath(paintingPathData.path, paintingPathData.paint)
 
@@ -114,20 +92,15 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
                     touchingStart(initialTouchX, initialTouchY)
 
-                    invalidate()
-
                 }
                 MotionEvent.ACTION_MOVE -> {
 
                     touchingMove(initialTouchX, initialTouchY)
 
-                    invalidate()
                 }
                 MotionEvent.ACTION_UP -> {
 
                     touchingUp()
-
-                    invalidate()
 
                 }
             }
@@ -137,12 +110,14 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         return true
     }
 
-    private fun touchingStart(x: Float, y: Float) {
+    fun touchingStart(x: Float, y: Float) {
 
         undoDrawingInformation.clear()
 
         drawingPath.reset()
         drawingPath.moveTo(x, y)
+
+        allRedrawPaintingData.add(0, RedrawPaintingData(x, y))
 
         movingX = x
         movingY = y
@@ -154,9 +129,13 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
             drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
         }
 
+        invalidate()
+
     }
 
-    private fun touchingMove(x: Float, y: Float) {
+    fun touchingMove(x: Float, y: Float) {
+
+        allRedrawPaintingData.add(0, RedrawPaintingData(x, y))
 
         val dX: Float = abs(x - movingX)
         val dY: Float = abs(y - movingY)
@@ -170,9 +149,13 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
         }
 
+        invalidate()
+
     }
 
-    private fun touchingUp() {
+    fun touchingUp() {
+
+        allRedrawPaintingData.add(0, RedrawPaintingData(movingX, movingY))
 
         drawingPath.lineTo(movingX, movingY)
 
@@ -187,6 +170,8 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         allDrawingInformation.add(PaintingData(paint = newPaintObject, path = drawingPath))
 
         drawingPath = Path()
+
+        invalidate()
 
     }
 
@@ -264,4 +249,75 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     }
 
+
+    fun restorePaints() {
+
+        val test = allRedrawPaintingData
+
+        /* Check If Saved Notes Exist and Pass Data to RedrawSavedPaints Class */
+        redrawSavedPaints.start(test).invokeOnCompletion {
+            Log.d(this@PaintingCanvasView.javaClass.simpleName, "Redrawing Paints Completed")
+
+        }
+
+    }
+
+    fun touchingStartRestore(x: Float, y: Float) {
+
+        undoDrawingInformation.clear()
+
+        drawingPath.reset()
+        drawingPath.moveTo(x, y)
+
+        movingX = x
+        movingY = y
+
+        //Set New Color To Current Paint
+        drawPaint.color = newPaintingData.paintColor
+
+        newPaintingData.paint?.let {
+            drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
+        }
+
+        invalidate()
+
+    }
+
+    fun touchingMoveRestore(x: Float, y: Float) {
+
+        val dX: Float = abs(x - movingX)
+        val dY: Float = abs(y - movingY)
+
+        if (dX >= touchTolerance || dY >= touchTolerance) {
+
+            drawingPath.quadTo(movingX, movingY, (x + movingX) / 2, (y + movingY) / 2)
+
+            movingX = x
+            movingY = y
+
+        }
+
+        invalidate()
+
+    }
+
+    fun touchingUpRestore() {
+
+        drawingPath.lineTo(movingX, movingY)
+
+        //Set New Color To New Paint
+        val newPaintObject = Paint(drawPaint)
+        newPaintObject.color = newPaintingData.paintColor
+
+        newPaintingData.paint?.let {
+            newPaintObject.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        }
+
+        allDrawingInformation.add(PaintingData(paint = newPaintObject, path = drawingPath))
+
+        drawingPath = Path()
+
+        invalidate()
+
+    }
 }

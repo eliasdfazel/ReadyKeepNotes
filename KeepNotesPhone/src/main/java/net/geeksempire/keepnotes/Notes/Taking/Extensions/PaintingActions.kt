@@ -8,6 +8,7 @@ import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abanabsalan.aban.magazine.Utils.System.doVibrate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -137,8 +138,11 @@ fun TakeNote.setupPaintingActions() {
     }
 
     takeNoteLayoutBinding.paintingToolbarInclude.clearAllPaint.setOnLongClickListener {
+        doVibrate(applicationContext, 179)
 
         paintingCanvasView.removeAllPaints()
+
+        paintingCanvasView.restorePaints()
 
         true
     }
