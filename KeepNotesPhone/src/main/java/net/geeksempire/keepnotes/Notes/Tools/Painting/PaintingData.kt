@@ -1,4 +1,4 @@
-package net.geeksempire.keepnotes.Notes.Painting
+package net.geeksempire.keepnotes.Notes.Tools.Painting
 
 import android.graphics.Color
 import android.graphics.Paint

@@ -12,8 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.geeksempire.keepnotes.Notes.Painting.NewPaintingData
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
+import net.geeksempire.keepnotes.Notes.Tools.Painting.NewPaintingData
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.UI.Display.displayX
 import net.geeksempire.keepnotes.Utils.UI.Display.displayY

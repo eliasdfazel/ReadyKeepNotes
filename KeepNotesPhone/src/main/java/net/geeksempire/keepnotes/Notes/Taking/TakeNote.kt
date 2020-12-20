@@ -11,11 +11,11 @@ import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnotes.Database.IO.NotesIO
 import net.geeksempire.keepnotes.Database.IO.PaintingIO
 import net.geeksempire.keepnotes.KeepNoteApplication
-import net.geeksempire.keepnotes.Notes.Painting.Adapter.RecentColorsAdapter
-import net.geeksempire.keepnotes.Notes.Painting.PaintingCanvasView
 import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
+import net.geeksempire.keepnotes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
+import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListener

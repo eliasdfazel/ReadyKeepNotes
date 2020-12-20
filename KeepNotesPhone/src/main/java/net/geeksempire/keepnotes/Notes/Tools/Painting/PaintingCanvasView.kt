@@ -1,10 +1,14 @@
-package net.geeksempire.keepnotes.Notes.Painting
+package net.geeksempire.keepnotes.Notes.Tools.Painting
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @SuppressLint("ClickableViewAccessibility")
@@ -36,7 +40,7 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
 
     }
 
-    fun setupPaintingPanel(paintColor: Int = Color.WHITE, paintStrokeWidth: Float = 7.777f) {
+    fun setupPaintingPanel(paintColor: Int = Color.WHITE, paintStrokeWidth: Float = 7.777f) = CoroutineScope(Dispatchers.Main).launch {
 
         drawPaint.color = paintColor
         drawPaint.strokeWidth = paintStrokeWidth
@@ -49,6 +53,34 @@ class PaintingCanvasView(context: Context?) : View(context), View.OnTouchListene
         drawPaint.strokeCap = Paint.Cap.ROUND
 
         newPaintingData = NewPaintingData(paintColor, paintStrokeWidth)
+
+
+
+        /*******/
+
+        delay(3000)
+
+        touchingStart(300f, 300f)
+        invalidate()
+
+        touchingMove(300f, 300f)
+        invalidate()
+
+        delay(1000)
+
+        for (i in 200..550) {
+
+            delay(100)
+
+            touchingMove(300f + i, 300f + i)
+            invalidate()
+
+        }
+
+        touchingUp()
+        invalidate()
+
+        /*******/
 
     }
 

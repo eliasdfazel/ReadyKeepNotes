@@ -1,4 +1,4 @@
-package net.geeksempire.keepnotes.Notes.Painting.Adapter
+package net.geeksempire.keepnotes.Notes.Tools.Painting.Adapter
 
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout

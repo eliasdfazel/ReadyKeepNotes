@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import net.geeksempire.keepnotes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnotes.KeepNoteApplication
-import net.geeksempire.keepnotes.Notes.Painting.PaintingCanvasView
+import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
