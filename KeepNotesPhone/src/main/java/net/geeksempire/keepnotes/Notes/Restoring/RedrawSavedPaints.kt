@@ -1,20 +1,32 @@
 package net.geeksempire.keepnotes.Notes.Restoring
 
+import android.util.Log
 import kotlinx.coroutines.*
 import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.keepnotes.Notes.Tools.Painting.RedrawPaintingData
 
 class RedrawSavedPaints (private val paintingCanvasView: PaintingCanvasView) {
 
-    fun start(allRedrawPaintingData: ArrayList<RedrawPaintingData>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+    fun runRestoreProcess(allRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+
+        allRedrawPaintingData.forEach { paintingPathData ->
+
+            startPainting(paintingPathData)
+
+        }
+
+    }
+
+    private fun startPainting(allRedrawPaintingPathData: ArrayList<RedrawPaintingData>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+        Log.d(this@RedrawSavedPaints.javaClass.simpleName, "${allRedrawPaintingPathData[0].xDrawPosition} | ${allRedrawPaintingPathData[0].yDrawPosition}")
 
         delay(1133)
 
-        paintingCanvasView.touchingStartRestore(allRedrawPaintingData[0].xDrawPosition, allRedrawPaintingData[0].yDrawPosition)
+        paintingCanvasView.touchingStartRestore(allRedrawPaintingPathData[0].xDrawPosition, allRedrawPaintingPathData[0].yDrawPosition)
 
-        paintingCanvasView.touchingMoveRestore(allRedrawPaintingData[0].xDrawPosition, allRedrawPaintingData[0].yDrawPosition)
+        paintingCanvasView.touchingMoveRestore(allRedrawPaintingPathData[0].xDrawPosition, allRedrawPaintingPathData[0].yDrawPosition)
 
-        allRedrawPaintingData.forEach { redrawPaintingData ->
+        allRedrawPaintingPathData.forEachIndexed paintingLoop@ { index, redrawPaintingData ->
 
             paintingCanvasView.touchingMoveRestore(redrawPaintingData.xDrawPosition, redrawPaintingData.yDrawPosition)
 

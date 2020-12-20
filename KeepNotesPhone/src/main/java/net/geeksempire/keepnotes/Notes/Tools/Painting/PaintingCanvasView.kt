@@ -24,6 +24,9 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
     private var movingX: Float = 0f
     private  var movingY: Float = 0f
 
+    private var movingRedrawX: Float = 0f
+    private  var movingRedrawY: Float = 0f
+
     private var touchTolerance: Float = 4f
 
     private val allDrawingInformation = ArrayList<PaintingData>()
@@ -34,7 +37,9 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     val redrawSavedPaints: RedrawSavedPaints = RedrawSavedPaints(this@PaintingCanvasView)
 
-    val allRedrawPaintingData: ArrayList<RedrawPaintingData> = ArrayList<RedrawPaintingData>()
+    val allRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
+
+    lateinit var allRedrawPaintingPathData: ArrayList<RedrawPaintingData>
 
     init {
 
@@ -117,7 +122,11 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
         drawingPath.reset()
         drawingPath.moveTo(x, y)
 
-        allRedrawPaintingData.add(0, RedrawPaintingData(x, y))
+        allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
+        allRedrawPaintingPathData.clear()
+
+        allRedrawPaintingPathData.add(0, RedrawPaintingData(x, y))
+        allRedrawPaintingPathData.add(RedrawPaintingData(x, y))
 
         movingX = x
         movingY = y
@@ -135,7 +144,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     private fun touchingMove(x: Float, y: Float) {
 
-        allRedrawPaintingData.add(RedrawPaintingData(x, y))
+        allRedrawPaintingPathData.add(RedrawPaintingData(x, y))
 
         val dX: Float = abs(x - movingX)
         val dY: Float = abs(y - movingY)
@@ -155,7 +164,9 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     private fun touchingUp() {
 
-        allRedrawPaintingData.add(RedrawPaintingData(movingX, movingY))
+        allRedrawPaintingPathData.add(RedrawPaintingData(movingX, movingY))
+
+        allRedrawPaintingData.add(allRedrawPaintingPathData)
 
         drawingPath.lineTo(movingX, movingY)
 
@@ -251,7 +262,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     fun restorePaints() {
 
-        redrawSavedPaints.start(allRedrawPaintingData).invokeOnCompletion {
+        redrawSavedPaints.runRestoreProcess(allRedrawPaintingData).invokeOnCompletion {
             Log.d(this@PaintingCanvasView.javaClass.simpleName, "Redrawing Paints Completed")
 
         }
@@ -265,8 +276,8 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
         drawingPath.reset()
         drawingPath.moveTo(x, y)
 
-        movingX = x
-        movingY = y
+        movingRedrawX = x
+        movingRedrawY = y
 
         //Set New Color To Current Paint
         drawPaint.color = newPaintingData.paintColor
@@ -281,15 +292,15 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     fun touchingMoveRestore(x: Float, y: Float) {
 
-        val dX: Float = abs(x - movingX)
-        val dY: Float = abs(y - movingY)
+        val dX: Float = abs(x - movingRedrawX)
+        val dY: Float = abs(y - movingRedrawY)
 
         if (dX >= touchTolerance || dY >= touchTolerance) {
 
-            drawingPath.quadTo(movingX, movingY, (x + movingX) / 2, (y + movingY) / 2)
+            drawingPath.quadTo(movingRedrawX, movingRedrawY, (x + movingRedrawX) / 2, (y + movingRedrawY) / 2)
 
-            movingX = x
-            movingY = y
+            movingRedrawX = x
+            movingRedrawY = y
 
         }
 
@@ -299,7 +310,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     fun touchingUpRestore() {
 
-        drawingPath.lineTo(movingX, movingY)
+        drawingPath.lineTo(movingRedrawX, movingRedrawY)
 
         //Set New Color To New Paint
         val newPaintObject = Paint(drawPaint)
