@@ -1,6 +1,5 @@
 package net.geeksempire.keepnotes.Overview.UserInterface.Adapter
 
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -41,7 +40,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
                 overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
-                imageContentBackground?.setTint(context.getColor(R.color.dark_transparent_high))
+                imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
 
                 overviewViewHolder.contentImageView.background = imageContentBackground
 
@@ -57,7 +56,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
                 overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
-                imageContentBackground?.setTint(context.getColor(R.color.light_transparent_high))
+                imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
 
                 overviewViewHolder.contentImageView.background = imageContentBackground
 
@@ -70,14 +69,13 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
         if (notesDataStructureList[position][Notes.NoteHandwritingSnapshotLink] == null) {
 
             overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            overviewViewHolder.contentImageView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.pink_transparent))
+            overviewViewHolder.contentImageView.setColorFilter(context.getColor(R.color.pink_transparent))
             overviewViewHolder.contentImageView.setImageDrawable(context.getDrawable(R.drawable.icon_no_content))
-
 
         } else {
 
             overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.FIT_CENTER
-            overviewViewHolder.contentImageView.imageTintList = null
+            overviewViewHolder.contentImageView.clearColorFilter()
 
             Glide.with(context)
                 .load(notesDataStructureList[position][Notes.NoteHandwritingSnapshotLink].toString())
