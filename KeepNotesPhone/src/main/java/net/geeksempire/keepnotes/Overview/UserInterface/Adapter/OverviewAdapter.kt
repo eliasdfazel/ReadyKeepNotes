@@ -8,6 +8,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.firestore.DocumentSnapshot
 import net.geeksempire.keepnotes.Database.DataStructure.Notes
+import net.geeksempire.keepnotes.KeepNoteApplication
+import net.geeksempire.keepnotes.Notes.Tools.Painting.RedrawPaintingData
 import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.keepnotes.Preferences.Theme.ThemeType
 import net.geeksempire.keepnotes.R
@@ -82,6 +84,45 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(overviewViewHolder.contentImageView)
 
+        }
+
+        overviewViewHolder.rootItemView.setOnClickListener {
+
+            (context.application as KeepNoteApplication)
+                .firestoreDatabase.collection(context.databaseEndpoints.paintPathsEndpoints(notesDataStructureList[position].reference.path))
+                .get()
+                .addOnSuccessListener {
+
+                    it.documents.forEach { doc ->
+
+
+
+                        val test: ArrayList<RedrawPaintingData> = ArrayList<RedrawPaintingData>()
+
+                        doc.data?.entries?.map { anyData ->
+
+                            println(">>>>>>>>>>>>>>> " + anyData.value)
+
+//                            anyData.value as RedrawPaintingData
+                        }/*?.let { allData -> test.addAll(allData) }*/
+
+//                        println(">>>>>>>>>>> " + test)
+//                        println(">>>>>>>>>>> " + test[0])
+//                        println(">>>>>>>>>>> " + test[1])
+
+
+
+                    }
+
+                }
+
+        }
+
+        overviewViewHolder.rootItemView.setOnLongClickListener {
+
+
+
+            true
         }
 
     }
