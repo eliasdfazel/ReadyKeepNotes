@@ -26,6 +26,12 @@ class RedrawSavedPaints (private val paintingCanvasView: PaintingCanvasView) {
 
         paintingCanvasView.touchingMoveRestore(allRedrawPaintingPathData[0].xDrawPosition, allRedrawPaintingPathData[0].yDrawPosition)
 
+
+
+        println(">>>>>>>>>>>>>>>>>> " + allRedrawPaintingPathData.toString())
+
+
+
         allRedrawPaintingPathData.forEachIndexed paintingLoop@ { index, redrawPaintingData ->
 
             paintingCanvasView.touchingMoveRestore(redrawPaintingData.xDrawPosition, redrawPaintingData.yDrawPosition)

@@ -7,9 +7,14 @@ class DatabaseEndpoints {
         return "/KeepNotes/${firebaseUserUniqueId}/Notes"
     }
 
-    fun PaintPathEndpoints (firebaseUserUniqueId: String) : String {
+    fun NoteTextsEndpoints (generalEndpoints: String) : String {
 
-        return GeneralEndpoints(firebaseUserUniqueId).plus("/PaintPaths")
+        return generalEndpoints.plus("/TextingNote").plus("/Texts").plus("/Content")
+    }
+
+    fun PaintPathsEndpoints (generalEndpoints: String) : String {
+
+        return generalEndpoints.plus("/PaintingNote").plus("/Paths").plus("/Content")
     }
 
 }

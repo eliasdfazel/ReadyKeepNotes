@@ -142,6 +142,8 @@ fun TakeNote.setupPaintingActions() {
 
         paintingCanvasView.removeAllPaints()
 
+        paintingCanvasView.restorePaints()
+
         true
     }
 

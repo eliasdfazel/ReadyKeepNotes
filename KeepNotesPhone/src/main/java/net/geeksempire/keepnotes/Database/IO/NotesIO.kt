@@ -44,12 +44,15 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 noteHandwritingSnapshotLink = null
             )
 
+            val databasePath = databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + "${documentId}"
+
             (keepNoteApplication).firestoreDatabase
-                .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + "${documentId}")
+                .document(databasePath)
                 .set(notesDataStructure)
                 .addOnSuccessListener {
                     Log.d(this@NotesIO.javaClass.simpleName, "Note Saved Successfully")
 
+                    /* Save Notes & Snapshot Of Handwriting */
                     (keepNoteApplication).firebaseStorage
                         .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
                         .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
@@ -90,6 +93,43 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
 
                         }
+
+                    /* Save Text Content Archive */
+                    (keepNoteApplication).firestoreDatabase
+                        .collection(databaseEndpoints.NoteTextsEndpoints(databasePath))
+                        .add(hashMapOf(
+                            "noteTile" to notesDataStructure.noteTile,
+                            "noteTextContent" to notesDataStructure.noteTextContent
+                        ))
+                        .addOnSuccessListener {
+
+
+
+                        }.addOnFailureListener {
+
+
+
+                        }
+
+                    /* Save Paths Of Handwriting Notes */
+                    paintingCanvasView.allRedrawPaintingData.forEach {
+
+                        (keepNoteApplication).firestoreDatabase
+                            .collection(databaseEndpoints.PaintPathsEndpoints(databasePath))
+                            .add(hashMapOf(
+                                "paintPath" to it.toString()
+                            ))
+                            .addOnSuccessListener {
+
+
+
+                            }.addOnFailureListener {
+
+
+
+                            }
+
+                    }
 
                 }.addOnFailureListener {
                     Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
