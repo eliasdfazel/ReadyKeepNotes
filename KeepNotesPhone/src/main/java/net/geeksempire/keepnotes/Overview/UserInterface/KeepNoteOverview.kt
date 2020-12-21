@@ -134,7 +134,7 @@ class KeepNoteOverview : AppCompatActivity() {
             firebaseUser?.let {
 
                 (application as KeepNoteApplication)
-                    .firestoreDatabase.collection(databaseEndpoints.GeneralEndpoints(firebaseUser.uid))
+                    .firestoreDatabase.collection(databaseEndpoints.generalEndpoints(firebaseUser.uid))
                     .orderBy(Notes.NoteTakenTime, Query.Direction.DESCENDING)
                     .addSnapshotListener { querySnapshot, firestoreException ->
 

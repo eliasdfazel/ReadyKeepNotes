@@ -44,7 +44,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 noteHandwritingSnapshotLink = null
             )
 
-            val databasePath = databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + "${documentId}"
+            val databasePath = databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}"
 
             (keepNoteApplication).firestoreDatabase
                 .document(databasePath)
@@ -54,18 +54,18 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     /* Save Notes & Snapshot Of Handwriting */
                     (keepNoteApplication).firebaseStorage
-                        .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
+                        .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
                         .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
                         .addOnSuccessListener { uploadTaskSnapshot ->
                             Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
 
                             (keepNoteApplication).firebaseStorage
-                                .getReference(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
+                                .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
                                 .downloadUrl
                                 .addOnSuccessListener { downloadUrl ->
 
                                     (keepNoteApplication).firestoreDatabase
-                                        .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + documentId)
+                                        .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + documentId)
                                         .update(
                                             "noteHandwritingSnapshotLink", downloadUrl.toString(),
                                         ).addOnSuccessListener {
@@ -96,7 +96,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     /* Save Text Content Archive */
                     (keepNoteApplication).firestoreDatabase
-                        .collection(databaseEndpoints.NoteTextsEndpoints(databasePath))
+                        .collection(databaseEndpoints.noteTextsEndpoints(databasePath))
                         .add(hashMapOf(
                             "noteTile" to notesDataStructure.noteTile,
                             "noteTextContent" to notesDataStructure.noteTextContent
@@ -115,7 +115,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     paintingCanvasView.allRedrawPaintingData.forEach {
 
                         (keepNoteApplication).firestoreDatabase
-                            .collection(databaseEndpoints.PaintPathsEndpoints(databasePath))
+                            .collection(databaseEndpoints.paintPathsEndpoints(databasePath))
                             .add(hashMapOf(
                                 "paintPath" to it.toString()
                             ))
@@ -207,7 +207,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 )
 
                 (keepNoteApplication).firestoreDatabase
-                    .document(databaseEndpoints.GeneralEndpoints(firebaseUser.uid) + "/" + "${documentId}")
+                    .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}")
                     .set(notesDataStructure)
                     .addOnSuccessListener {
 

@@ -2,17 +2,17 @@ package net.geeksempire.keepnotes.Database.GeneralEndpoints
 
 class DatabaseEndpoints {
 
-    fun GeneralEndpoints (firebaseUserUniqueId: String) : String  {
+    fun generalEndpoints (firebaseUserUniqueId: String) : String  {
 
         return "/KeepNotes/${firebaseUserUniqueId}/Notes"
     }
 
-    fun NoteTextsEndpoints (generalEndpoints: String) : String {
+    fun noteTextsEndpoints (generalEndpoints: String) : String {
 
         return generalEndpoints.plus("/TextingNote").plus("/Texts").plus("/Content")
     }
 
-    fun PaintPathsEndpoints (generalEndpoints: String) : String {
+    fun paintPathsEndpoints (generalEndpoints: String) : String {
 
         return generalEndpoints.plus("/PaintingNote").plus("/Paths").plus("/Content")
     }
