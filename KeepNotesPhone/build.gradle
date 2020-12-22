@@ -166,6 +166,9 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.4.4'
 
 
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.21"
 
 

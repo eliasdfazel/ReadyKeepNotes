@@ -94,25 +94,8 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
                     it.documents.forEach { doc ->
 
-
-
-                        val test: ArrayList<Any> = ArrayList<Any>()
-
-                        doc.data?.entries?.map { anyData ->
-
-                            println(">>>>>>>>>>>>>>> " + anyData.value)
-
-//                            anyData.value as RedrawPaintingData
-                        }?.let { allData ->
-                            test.addAll(allData)
-                        }
-
-                        //[RedrawPaintingData(xDrawPosition=204.0, yDrawPosition=762.0), RedrawPaintingData(xDrawPosition=204.0, yDrawPosition=762.0), RedrawPaintingData(xDrawPosition=210.0, yDrawPosition=761.0), RedrawPaintingData(xDrawPosition=224.0, yDrawPosition=760.0), RedrawPaintingData(xDrawPosition=244.0, yDrawPosition=762.0), RedrawPaintingData(xDrawPosition=244.0, yDrawPosition=762.0)]
-                        println(">>>>>>>>>>> " + test)
-                        println(">>>>>>>>>>> " + test[0])
-                        println(">>>>>>>>>>> " + test[1])
-
-
+                        // Pass String To Redraw
+                        // Then Convert It to Json
 
                     }
 
