@@ -5,10 +5,12 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.view.View
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.coroutines.*
+import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingCanvasView
+import net.geeksempire.keepnotes.Notes.Tools.Painting.RedrawPaintingData
 import net.geeksempire.keepnotes.Utils.PreferencesIO.SavePreferences
+import org.json.JSONArray
 import java.io.ByteArrayOutputStream
 
 class PaintingIO (private val context: Context) {
@@ -94,6 +96,31 @@ class PaintingIO (private val context: Context) {
             colorsSharedPreferences.edit().putInt(index.toString(), entry.value.toString().toInt())
 
         }
+
+    }
+
+    fun preparePaintingPaths(paintingCanvasView: PaintingCanvasView, paintingPathsJsonArray: ArrayList<DocumentSnapshot>) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+
+        paintingPathsJsonArray.forEach { paintingPaths ->
+
+            val jsonArrayPaths = JSONArray(paintingPaths["paintPath"].toString())
+
+            paintingCanvasView.allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
+
+            for (pathIndex in 0 until jsonArrayPaths.length()) {
+
+                val xDrawPosition = jsonArrayPaths.getJSONObject(pathIndex).get("xDrawPosition").toString().toFloat()
+                val yDrawPosition = jsonArrayPaths.getJSONObject(pathIndex).get("yDrawPosition").toString().toFloat()
+
+                paintingCanvasView.allRedrawPaintingPathData.add(RedrawPaintingData(xDrawPosition = xDrawPosition, yDrawPosition = yDrawPosition))
+
+            }
+
+            paintingCanvasView.allRedrawPaintingData.add(paintingCanvasView.allRedrawPaintingPathData)
+
+        }
+
+
 
     }
 

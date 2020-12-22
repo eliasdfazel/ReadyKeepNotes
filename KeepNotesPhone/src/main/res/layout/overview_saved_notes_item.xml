@@ -62,4 +62,18 @@
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
 
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/waitingViewLoading"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:visibility="gone"
+
+        apps:SpinKit_Style="CubeGrid"
+        apps:SpinKit_Color="@color/cyan_transparent"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

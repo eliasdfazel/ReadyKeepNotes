@@ -119,7 +119,7 @@ class KeepNoteOverview : AppCompatActivity() {
 
                                 startActivity(Intent(applicationContext, TakeNote::class.java).apply {
                                     putExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations, TakeNote.NoteTakingWritingType.Keyboard)
-                                    putExtra(Intent.EXTRA_TEXT, overviewLayoutBinding.quickTakeNote.text.toString())
+                                    putExtra(TakeNote.NoteTakingWritingType.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
                                 }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
                             }

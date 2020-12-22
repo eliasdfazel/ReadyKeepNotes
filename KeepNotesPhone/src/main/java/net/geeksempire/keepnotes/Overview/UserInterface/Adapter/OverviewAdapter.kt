@@ -3,6 +3,7 @@ package net.geeksempire.keepnotes.Overview.UserInterface.Adapter
 import android.app.ActivityOptions
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,6 @@ import net.geeksempire.keepnotes.Notes.Taking.TakeNote
 import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.keepnotes.Preferences.Theme.ThemeType
 import net.geeksempire.keepnotes.R
-import org.json.JSONArray
 
 class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
 
@@ -91,20 +91,33 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
         overviewViewHolder.rootItemView.setOnClickListener {
 
+            overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
+
             (context.application as KeepNoteApplication)
                 .firestoreDatabase.collection(context.databaseEndpoints.paintPathsEndpoints(notesDataStructureList[position].reference.path))
                 .get()
-                .addOnSuccessListener {
+                .addOnSuccessListener { querySnapshot ->
 
-                    it.documents.forEach { aDocument ->
-
-                        // Pass String To Redraw
-                        // Then Convert It to Json
-                        println(">>> " + JSONArray(aDocument["paintPath"].toString())
-                        )
+                    if (querySnapshot.isEmpty) {
 
                         context.startActivity(Intent(context, TakeNote::class.java).apply {
-                            putExtra(TakeNote.NoteTakingWritingType.PaintingPath, "${JSONArray(aDocument["paintPath"].toString())}")
+                            putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].id.toLong())
+                            putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position][Notes.NoteTile].toString())
+                            putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position][Notes.NoteTextContent].toString())
+                        }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+
+                    } else {
+
+                        TakeNote.paintingPathsJsonArray.clear()
+                        TakeNote.paintingPathsJsonArray.addAll(querySnapshot.documents)
+
+                        overviewViewHolder.waitingViewLoading.visibility = View.GONE
+
+                        context.startActivity(Intent(context, TakeNote::class.java).apply {
+                            putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].id.toLong())
+                            putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position][Notes.NoteTile].toString())
+                            putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position][Notes.NoteTextContent].toString())
+                            putExtra(TakeNote.NoteTakingWritingType.PaintingPath, "Draw Saved Handwriting")
                         }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
                     }
@@ -115,7 +128,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
         overviewViewHolder.rootItemView.setOnLongClickListener {
 
-
+            //
 
             true
         }
