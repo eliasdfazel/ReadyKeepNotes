@@ -194,6 +194,12 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     }
 
+    fun changePaintingPathStrokeWidth(modifiedNewPaintingData: NewPaintingData) {
+
+        newPaintingData = modifiedNewPaintingData
+
+    }
+
     fun undoProcess() {
 
         if (allDrawingInformation.size > 0) {
