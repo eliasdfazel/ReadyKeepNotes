@@ -122,12 +122,6 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
         drawingPath.reset()
         drawingPath.moveTo(x, y)
 
-        allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
-        allRedrawPaintingPathData.clear()
-
-        allRedrawPaintingPathData.add(0, RedrawPaintingData(x, y))
-        allRedrawPaintingPathData.add(RedrawPaintingData(x, y))
-
         movingX = x
         movingY = y
 
@@ -138,13 +132,19 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
             drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
         }
 
+        allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
+        allRedrawPaintingPathData.clear()
+
+        allRedrawPaintingPathData.add(0, RedrawPaintingData(x, y, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+        allRedrawPaintingPathData.add(RedrawPaintingData(x, y, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+
         invalidate()
 
     }
 
     private fun touchingMove(x: Float, y: Float) {
 
-        allRedrawPaintingPathData.add(RedrawPaintingData(x, y))
+        allRedrawPaintingPathData.add(RedrawPaintingData(x, y, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
 
         val dX: Float = abs(x - movingX)
         val dY: Float = abs(y - movingY)
@@ -164,7 +164,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     private fun touchingUp() {
 
-        allRedrawPaintingPathData.add(RedrawPaintingData(movingX, movingY))
+        allRedrawPaintingPathData.add(RedrawPaintingData(movingX, movingY, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
 
         allRedrawPaintingData.add(allRedrawPaintingPathData)
 
@@ -260,6 +260,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     }
 
+    /* Redraw Process */
     fun restorePaints() {
 
         redrawSavedPaints.runRestoreProcess(allRedrawPaintingData).invokeOnCompletion {
@@ -269,7 +270,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     }
 
-    fun touchingStartRestore(x: Float, y: Float) {
+    fun touchingStartRestore(x: Float, y: Float, pathColor: Int, pathStrokeWidth: Float) {
 
         undoDrawingInformation.clear()
 
@@ -280,7 +281,8 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
         movingRedrawY = y
 
         //Set New Color To Current Paint
-        drawPaint.color = newPaintingData.paintColor
+        drawPaint.color = pathColor
+        drawPaint.strokeWidth = pathStrokeWidth
 
         newPaintingData.paint?.let {
             drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
@@ -308,13 +310,14 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     }
 
-    fun touchingUpRestore() {
+    fun touchingUpRestore(pathColor: Int, pathStrokeWidth: Float) {
 
         drawingPath.lineTo(movingRedrawX, movingRedrawY)
 
         //Set New Color To New Paint
         val newPaintObject = Paint(drawPaint)
-        newPaintObject.color = newPaintingData.paintColor
+        newPaintObject.color = pathColor
+        newPaintObject.strokeWidth = pathStrokeWidth
 
         newPaintingData.paint?.let {
             newPaintObject.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)

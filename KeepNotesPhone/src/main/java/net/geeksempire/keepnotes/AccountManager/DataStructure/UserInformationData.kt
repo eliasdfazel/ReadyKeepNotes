@@ -31,19 +31,6 @@ object UserInformationDataStructure {
 }
 
 @Keep
-data class UserInformationData (var userIdentification: String, var userEmailAddress: String, var userDisplayName: String, var userProfileImage: String,
-                                var userLatitude: String, var userLongitude: String,
-                                var userState: String,
-                                var userLastSignIn:  FieldValue,
-                                var userJointDate:  FieldValue = FieldValue.serverTimestamp())
-
-@Keep
-data class PeopleData (var userIdentification: String, var userEmailAddress: String, var userDisplayName: String, var userProfileImage: String,
-                       var userLatitude: String, var userLongitude: String,
-                       var userState: String,
-                       var userLastSignIn:  String)
-
-@Keep
 data class UserInformationProfileData (var privacyAgreement: Boolean? = false,
                                        var userIdentification: String, var userEmailAddress: String, var userDisplayName: String, var userProfileImage: String,
                                        var instagramAccount: String?,
@@ -51,13 +38,3 @@ data class UserInformationProfileData (var privacyAgreement: Boolean? = false,
                                        var phoneNumber: String?,
                                        var phoneNumberVerified: Boolean? = false,
                                        var userJointDate:  FieldValue = FieldValue.serverTimestamp())
-
-@Keep
-data class UserInformationVicinityArchiveData (var vicinityCountry: String, var vicinityName: String, var vicinityKnownName: String,
-                                               var vicinityLatitude: String, var vicinityLongitude: String,
-                                               var lastLatitude: String, var lastLongitude: String,
-                                               var userJointDate:  FieldValue = FieldValue.serverTimestamp())
-
-@Keep
-data class UserInformationPrivateMessengerArchiveData (var privateMessengerName: String,
-                                                       var selfUid: String, var otherUid: String)

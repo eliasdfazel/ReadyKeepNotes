@@ -112,14 +112,21 @@ class PaintingIO (private val context: Context) {
                 val xDrawPosition = jsonArrayPaths.getJSONObject(pathIndex).get("xDrawPosition").toString().toFloat()
                 val yDrawPosition = jsonArrayPaths.getJSONObject(pathIndex).get("yDrawPosition").toString().toFloat()
 
-                paintingCanvasView.allRedrawPaintingPathData.add(RedrawPaintingData(xDrawPosition = xDrawPosition, yDrawPosition = yDrawPosition))
+                val paintColor = jsonArrayPaths.getJSONObject(pathIndex).get("paintColor").toString().toInt()
+                val paintStrokeWidth = jsonArrayPaths.getJSONObject(pathIndex).get("paintStrokeWidth").toString().toFloat()
+
+                paintingCanvasView.allRedrawPaintingPathData.add(RedrawPaintingData(
+                    xDrawPosition = xDrawPosition,
+                    yDrawPosition = yDrawPosition,
+                    paintColor = paintColor,
+                    paintStrokeWidth = paintStrokeWidth
+                ))
 
             }
 
             paintingCanvasView.allRedrawPaintingData.add(paintingCanvasView.allRedrawPaintingPathData)
 
         }
-
 
 
     }

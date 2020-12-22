@@ -22,7 +22,11 @@ class RedrawSavedPaints (private val paintingCanvasView: PaintingCanvasView) {
 
         delay(1133)
 
-        paintingCanvasView.touchingStartRestore(allRedrawPaintingPathData[0].xDrawPosition, allRedrawPaintingPathData[0].yDrawPosition)
+        paintingCanvasView.touchingStartRestore(
+            allRedrawPaintingPathData[0].xDrawPosition,
+            allRedrawPaintingPathData[0].yDrawPosition,
+            allRedrawPaintingPathData[0].paintColor,
+            allRedrawPaintingPathData[0].paintStrokeWidth)
 
         paintingCanvasView.touchingMoveRestore(allRedrawPaintingPathData[0].xDrawPosition, allRedrawPaintingPathData[0].yDrawPosition)
 
@@ -32,7 +36,7 @@ class RedrawSavedPaints (private val paintingCanvasView: PaintingCanvasView) {
 
         }
 
-        paintingCanvasView.touchingUpRestore()
+        paintingCanvasView.touchingUpRestore(allRedrawPaintingPathData[0].paintColor, allRedrawPaintingPathData[0].paintStrokeWidth)
 
     }
 
