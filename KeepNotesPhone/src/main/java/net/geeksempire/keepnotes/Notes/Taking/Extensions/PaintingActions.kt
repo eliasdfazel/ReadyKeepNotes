@@ -3,8 +3,6 @@ package net.geeksempire.keepnotes.Notes.Taking.Extensions
 import android.animation.Animator
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
@@ -143,12 +141,6 @@ fun TakeNote.setupPaintingActions() {
         doVibrate(applicationContext, 179)
 
         paintingCanvasView.removeAllPaints()
-
-        Handler(Looper.getMainLooper()).postDelayed({
-
-            paintingCanvasView.restorePaints()
-
-        }, 1500)
 
         true
     }
