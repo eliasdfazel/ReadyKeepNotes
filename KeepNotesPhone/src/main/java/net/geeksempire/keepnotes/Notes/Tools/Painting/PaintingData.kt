@@ -1,11 +1,10 @@
 package net.geeksempire.keepnotes.Notes.Tools.Painting
 
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 
-data class PaintingData(var paint: Paint, var path: Path, var paintColor: Int = Color.WHITE, var paintStrokeWidth: Float = 7.777f)
+data class PaintingData(var paint: Paint, var path: Path, var paintColor: Int = 0x2325934, var paintStrokeWidth: Float = 3.7531f)
 
-data class NewPaintingData(var paintColor: Int = Color.WHITE, var paintStrokeWidth: Float = 7.777f, var paint: Paint? = null)
+data class NewPaintingData(var paintColor: Int = 0x2325934, var paintStrokeWidth: Float = 3.7531f, var paint: Paint? = null)
 
-data class RedrawPaintingData(var xDrawPosition: Float, var yDrawPosition: Float)
+data class RedrawPaintingData(var xDrawPosition: Float, var yDrawPosition: Float, var paintColor: Int = 0x2325934, var paintStrokeWidth: Float = 3.7531f)
