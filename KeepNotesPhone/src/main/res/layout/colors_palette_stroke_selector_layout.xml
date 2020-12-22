@@ -70,4 +70,6 @@
         apps:layout_constraintStart_toStartOf="@id/colorPaletteView"
         apps:layout_constraintEnd_toStartOf="@id/pickColorView" />
 
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

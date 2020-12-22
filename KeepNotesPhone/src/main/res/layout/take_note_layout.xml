@@ -132,7 +132,7 @@
         apps:layout_constraintTop_toTopOf="@id/paintingCanvasContainer" />
 
     <include
-        layout="@layout/colors_palette_layout"
+        layout="@layout/colors_palette_stroke_selector_layout"
 
         android:id="@+id/colorPaletteInclude"
         android:layout_width="0dp"
