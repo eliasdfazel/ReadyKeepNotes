@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
 import net.geeksempire.keepnotes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
+import net.geeksempire.keepnotes.Database.Json.JsonIO
 import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.keepnotes.R
@@ -18,6 +19,8 @@ import net.geeksempire.keepnotes.databinding.OverviewLayoutBinding
 import net.geeksempire.keepnotes.databinding.TakeNoteLayoutBinding
 
 class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
+
+    private val jsonIO = JsonIO()
 
     fun saveNotesAndPainting(context: Context,
                              firebaseUser: FirebaseUser?,
@@ -133,7 +136,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     "noteTextContent" to notesDataStructure.noteTextContent
                 ))
                 .addOnSuccessListener {
-
+                    Log.d(this@NotesIO.javaClass.simpleName, "Note Archive Saved Successfully")
 
 
                 }.addOnFailureListener {
@@ -143,15 +146,15 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 }
 
             /* Save Paths Of Handwriting Notes */
-            paintingCanvasView.allRedrawPaintingData.forEach {
+            paintingCanvasView.allRedrawPaintingData.forEach { aPathXY ->
 
                 (keepNoteApplication).firestoreDatabase
                     .collection(databaseEndpoints.paintPathsEndpoints(databasePath))
                     .add(hashMapOf(
-                        "paintPath" to it.toString()
+                        "paintPath" to jsonIO.writePaintingPathData(aPathXY)
                     ))
                     .addOnSuccessListener {
-
+                        Log.d(this@NotesIO.javaClass.simpleName, "Handwriting Paths Saved Successfully")
 
 
                     }.addOnFailureListener {

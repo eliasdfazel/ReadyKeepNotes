@@ -1,5 +1,7 @@
 package net.geeksempire.keepnotes.Overview.UserInterface.Adapter
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,15 +11,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.firestore.DocumentSnapshot
 import net.geeksempire.keepnotes.Database.DataStructure.Notes
 import net.geeksempire.keepnotes.KeepNoteApplication
+import net.geeksempire.keepnotes.Notes.Taking.TakeNote
 import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.keepnotes.Preferences.Theme.ThemeType
 import net.geeksempire.keepnotes.R
+import org.json.JSONArray
 
 class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
 
     val notesDataStructureList: ArrayList<DocumentSnapshot> = ArrayList<DocumentSnapshot>()
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): OverviewViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : OverviewViewHolder {
 
         return OverviewViewHolder(LayoutInflater.from(context).inflate(R.layout.overview_saved_notes_item, viewGroup, false))
     }
@@ -92,10 +96,16 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
                 .get()
                 .addOnSuccessListener {
 
-                    it.documents.forEach { doc ->
+                    it.documents.forEach { aDocument ->
 
                         // Pass String To Redraw
                         // Then Convert It to Json
+                        println(">>> " + JSONArray(aDocument["paintPath"].toString())
+                        )
+
+                        context.startActivity(Intent(context, TakeNote::class.java).apply {
+                            putExtra(TakeNote.NoteTakingWritingType.PaintingPath, "${JSONArray(aDocument["paintPath"].toString())}")
+                        }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
                     }
 
@@ -112,7 +122,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
     }
 
-    override fun getItemCount(): Int {
+    override fun getItemCount() : Int {
 
         return notesDataStructureList.size
     }

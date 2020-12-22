@@ -3,6 +3,8 @@ package net.geeksempire.keepnotes.Notes.Taking
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
@@ -16,12 +18,14 @@ import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
 import net.geeksempire.keepnotes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
 import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingCanvasView
+import net.geeksempire.keepnotes.Notes.Tools.Painting.RedrawPaintingData
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListenerInterface
 import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.keepnotes.databinding.TakeNoteLayoutBinding
+import org.json.JSONArray
 import javax.inject.Inject
 
 class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
@@ -75,6 +79,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         const val ExtraConfigurations = "NoteTakingWritingType"
         const val Keyboard = "Keyboard"
         const val Handwriting = "Handwriting"
+        const val PaintingPath = "PaintingPath"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,6 +106,33 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         if (intent.hasExtra(Intent.EXTRA_TEXT)) {
 
             takeNoteLayoutBinding.editTextContentView.setText(intent.getStringExtra(Intent.EXTRA_TEXT))
+
+        }
+
+        if (intent.hasExtra(TakeNote.NoteTakingWritingType.PaintingPath)) {
+
+            val paintingPaths = intent.getStringExtra(TakeNote.NoteTakingWritingType.PaintingPath)
+
+            val jsonArrayPaths = JSONArray(paintingPaths)
+
+            paintingCanvasView.allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
+
+            for (pathIndex in 0 until jsonArrayPaths.length()) {
+
+                val xDrawPosition = jsonArrayPaths.getJSONObject(pathIndex).get("xDrawPosition").toString().toFloat()
+                val yDrawPosition = jsonArrayPaths.getJSONObject(pathIndex).get("yDrawPosition").toString().toFloat()
+
+                paintingCanvasView.allRedrawPaintingPathData.add(RedrawPaintingData(xDrawPosition = xDrawPosition, yDrawPosition = yDrawPosition))
+
+            }
+
+            paintingCanvasView.allRedrawPaintingData.add(paintingCanvasView.allRedrawPaintingPathData)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                paintingCanvasView.restorePaints()
+
+            }, 5000)
 
         }
 

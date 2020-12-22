@@ -67,7 +67,7 @@
 
             apps:boxBackgroundMode="outline"
             apps:boxBackgroundColor="@color/dark_transparent_high"
-            apps:boxCornerRadiusTopStart="7dp"
+            apps:boxCornerRadiusTopStart="3dp"
             apps:boxCornerRadiusTopEnd="23dp"
             apps:boxCornerRadiusBottomStart="23dp"
             apps:boxCornerRadiusBottomEnd="23dp"

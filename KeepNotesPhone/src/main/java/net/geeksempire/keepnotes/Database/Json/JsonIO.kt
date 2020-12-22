@@ -11,15 +11,15 @@
 package net.geeksempire.keepnotes.Database.Json
 
 import com.google.gson.Gson
+import net.geeksempire.keepnotes.Notes.Tools.Painting.RedrawPaintingData
 
 class JsonIO {
 
-    val gson: Gson = JsonConfiguration().initialize()
+    private val jsonDatabase: Gson = JsonConfiguration().initialize()
 
-    fun writeParagraphToJson(jsonDataType: String, jsonDataContent: String) {
+    fun writePaintingPathData(aPathXY: ArrayList<RedrawPaintingData>) : String {
 
-
-
+        return jsonDatabase.toJson(aPathXY).toString()
     }
 
 }

@@ -109,11 +109,11 @@
 
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/waitingViewUpload"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:visibility="invisible"
 
-        apps:SpinKit_Style="Circle"
+        apps:SpinKit_Style="RotatingCircle"
         apps:SpinKit_Color="@color/cyan"
 
         apps:layout_constraintTop_toTopOf="@id/savingView"
