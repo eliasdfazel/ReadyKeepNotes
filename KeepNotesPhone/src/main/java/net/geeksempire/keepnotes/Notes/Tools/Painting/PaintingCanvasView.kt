@@ -127,6 +127,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
         //Set New Color To Current Paint
         drawPaint.color = newPaintingData.paintColor
+        drawPaint.strokeWidth = newPaintingData.paintStrokeWidth
 
         newPaintingData.paint?.let {
             drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
@@ -173,6 +174,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
         //Set New Color To New Paint
         val newPaintObject = Paint(drawPaint)
         newPaintObject.color = newPaintingData.paintColor
+        newPaintObject.strokeWidth = newPaintingData.paintStrokeWidth
 
         newPaintingData.paint?.let {
             newPaintObject.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
