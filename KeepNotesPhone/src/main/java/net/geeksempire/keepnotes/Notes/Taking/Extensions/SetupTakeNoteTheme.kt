@@ -8,6 +8,8 @@ fun TakeNote.setupTakeNoteTheme() {
 
     takeNoteLayoutBinding.paintingCanvasContainer.addView(paintingCanvasView)
 
+    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthSample.addView(strokePaintingCanvasView)
+
     if (themePreferences.checkLightDark()) {
 
         window.statusBarColor = getColor(R.color.light)

@@ -16,6 +16,7 @@ import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.keepnotes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
 import net.geeksempire.keepnotes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
 import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingCanvasView
+import net.geeksempire.keepnotes.Notes.Tools.Painting.Utils.StrokePaintingCanvasView
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListener
@@ -28,6 +29,15 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val paintingCanvasView: PaintingCanvasView by lazy {
         PaintingCanvasView(applicationContext).also {
+            it.setupPaintingPanel(
+                getColor(R.color.default_color_light),
+                3.0f
+            )
+        }
+    }
+
+    val strokePaintingCanvasView: StrokePaintingCanvasView by lazy {
+        StrokePaintingCanvasView(applicationContext).also {
             it.setupPaintingPanel(
                 getColor(R.color.default_color_light),
                 3.0f
