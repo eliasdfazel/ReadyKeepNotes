@@ -185,6 +185,8 @@ fun TakeNote.setupPaintingActions() {
 
         takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.bubbleText = Html.fromHtml("<small>${selectedStrokeWidth.toString()}</small>", Html.FROM_HTML_MODE_COMPACT).toString()
 
+        paintingCanvasView.changePaintingData(NewPaintingData(paintColor = paintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth))
+
     }
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = 0f
