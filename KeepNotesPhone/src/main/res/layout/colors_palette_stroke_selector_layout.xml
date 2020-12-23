@@ -94,7 +94,7 @@
         android:layout_width="0dp"
         android:layout_height="51dp"
         android:layout_marginTop="17dp"
-        android:visibility="invisible"
+        android:layout_marginHorizontal="33dp"
 
         apps:layout_constraintTop_toBottomOf="@id/pickColorView"
         apps:layout_constraintStart_toStartOf="parent"

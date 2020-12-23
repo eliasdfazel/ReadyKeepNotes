@@ -133,7 +133,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
             drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
         }
 
-        allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
+        allRedrawPaintingPathData = ArrayList<RedrawPaintingData>()
         allRedrawPaintingPathData.clear()
 
         allRedrawPaintingPathData.add(0, RedrawPaintingData(x, y, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))

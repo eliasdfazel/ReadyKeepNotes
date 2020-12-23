@@ -4,21 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import kotlinx.coroutines.*
 import net.geeksempire.keepnotes.Notes.Tools.Painting.NewPaintingData
 import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingData
 import net.geeksempire.keepnotes.Notes.Tools.Painting.RedrawPaintingData
+import org.json.JSONArray
 import kotlin.math.abs
 
 @SuppressLint("ClickableViewAccessibility")
-class StrokePaintingCanvasView(context: Context) : View(context) {
+class StrokePaintingCanvasView(context: Context) : View(context), View.OnTouchListener  {
 
     private var readyCanvas: Canvas? = null
 
     private var drawPaint: Paint = Paint()
 
     private var drawingPath: Path = Path()
+
+    private var movingX: Float = 0f
+    private  var movingY: Float = 0f
 
     private var movingRedrawX: Float = 0f
     private  var movingRedrawY: Float = 0f
@@ -29,12 +34,18 @@ class StrokePaintingCanvasView(context: Context) : View(context) {
 
     private val undoDrawingInformation = ArrayList<PaintingData>()
 
+    val allRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
+
+    lateinit var allRedrawPaintingPathData: ArrayList<RedrawPaintingData>
+
     var newPaintingData: NewPaintingData = NewPaintingData()
 
     init {
 
         this@StrokePaintingCanvasView.isFocusable = true
         this@StrokePaintingCanvasView.isFocusableInTouchMode = true
+
+        this@StrokePaintingCanvasView.setOnTouchListener(this@StrokePaintingCanvasView)
 
     }
 
@@ -73,25 +84,122 @@ class StrokePaintingCanvasView(context: Context) : View(context) {
 
     }
 
+    override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
+
+        motionEvent?.let {
+
+            val initialTouchX = motionEvent.x
+            val initialTouchY = motionEvent.y
+
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+
+                    touchingStart(initialTouchX, initialTouchY)
+
+                }
+                MotionEvent.ACTION_MOVE -> {
+
+                    touchingMove(initialTouchX, initialTouchY)
+
+                }
+                MotionEvent.ACTION_UP -> {
+
+                    touchingUp()
+
+                }
+            }
+
+        }
+
+        return true
+    }
+
+    private fun touchingStart(x: Float, y: Float) {
+
+        undoDrawingInformation.clear()
+
+        drawingPath.reset()
+        drawingPath.moveTo(x, y)
+
+        movingX = x
+        movingY = y
+
+        //Set New Color To Current Paint
+        drawPaint.color = newPaintingData.paintColor
+        drawPaint.strokeWidth = newPaintingData.paintStrokeWidth
+
+        newPaintingData.paint?.let {
+            drawPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
+        }
+
+        allRedrawPaintingPathData = ArrayList<RedrawPaintingData>()
+        allRedrawPaintingPathData.clear()
+
+        allRedrawPaintingPathData.add(0, RedrawPaintingData(x, y, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+        allRedrawPaintingPathData.add(RedrawPaintingData(x, y, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+
+        invalidate()
+
+    }
+
+    private fun touchingMove(x: Float, y: Float) {
+
+        allRedrawPaintingPathData.add(RedrawPaintingData(x, y, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+
+        val dX: Float = abs(x - movingX)
+        val dY: Float = abs(y - movingY)
+
+        if (dX >= touchTolerance || dY >= touchTolerance) {
+
+            drawingPath.quadTo(movingX, movingY, (x + movingX) / 2, (y + movingY) / 2)
+
+            movingX = x
+            movingY = y
+
+        }
+
+        invalidate()
+
+    }
+
+    private fun touchingUp() {
+
+        allRedrawPaintingPathData.add(RedrawPaintingData(movingX, movingY, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+
+        allRedrawPaintingData.add(allRedrawPaintingPathData)
+
+        drawingPath.lineTo(movingX, movingY)
+
+        //Set New Color To New Paint
+        val newPaintObject = Paint(drawPaint)
+        newPaintObject.color = newPaintingData.paintColor
+        newPaintObject.strokeWidth = newPaintingData.paintStrokeWidth
+
+        newPaintingData.paint?.let {
+            newPaintObject.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        }
+
+        allDrawingInformation.add(PaintingData(paint = newPaintObject, path = drawingPath))
+
+        drawingPath = Path()
+
+        invalidate()
+
+    }
+
     fun changePaintingPathStrokeWidth(modifiedNewPaintingData: NewPaintingData) {
 
         newPaintingData = modifiedNewPaintingData
 
     }
 
-    fun runRestoreProcess(allRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>>) = CoroutineScope(
-        SupervisorJob() + Dispatchers.Main).launch {
+    fun runRestoreProcess(allRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
 
-        allRedrawPaintingData.forEach { paintingPathData ->
-
-            startPainting(paintingPathData)
-
-        }
+        startPainting(allRedrawPaintingData.first())
 
     }
 
-    private fun startPainting(allRedrawPaintingPathData: ArrayList<RedrawPaintingData>) = CoroutineScope(
-        SupervisorJob() + Dispatchers.Main).launch {
+    private fun startPainting(allRedrawPaintingPathData: ArrayList<RedrawPaintingData>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
         Log.d(this@StrokePaintingCanvasView.javaClass.simpleName, "${allRedrawPaintingPathData[0].xDrawPosition} | ${allRedrawPaintingPathData[0].yDrawPosition}")
 
         delay(1133)
@@ -100,7 +208,7 @@ class StrokePaintingCanvasView(context: Context) : View(context) {
             allRedrawPaintingPathData[0].xDrawPosition,
             allRedrawPaintingPathData[0].yDrawPosition,
             allRedrawPaintingPathData[0].paintColor,
-            allRedrawPaintingPathData[0].paintStrokeWidth)
+            newPaintingData.paintStrokeWidth)
 
         touchingMoveRestore(allRedrawPaintingPathData[0].xDrawPosition, allRedrawPaintingPathData[0].yDrawPosition)
 
@@ -110,7 +218,7 @@ class StrokePaintingCanvasView(context: Context) : View(context) {
 
         }
 
-        touchingUpRestore(allRedrawPaintingPathData[0].paintColor, allRedrawPaintingPathData[0].paintStrokeWidth)
+        touchingUpRestore(allRedrawPaintingPathData[0].paintColor, newPaintingData.paintStrokeWidth)
 
     }
 
@@ -172,6 +280,31 @@ class StrokePaintingCanvasView(context: Context) : View(context) {
         drawingPath = Path()
 
         invalidate()
+
+    }
+
+    fun preparePaintingPaths(paintingPathsJsonArray: String) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+
+        val jsonArrayPaths = JSONArray(paintingPathsJsonArray)
+
+        allRedrawPaintingPathData = ArrayList<RedrawPaintingData>()
+
+        for (pathIndex in 0 until jsonArrayPaths.length()) {
+
+            val xDrawPosition = jsonArrayPaths.getJSONObject(pathIndex).get("xDrawPosition").toString().toFloat()
+            val yDrawPosition = jsonArrayPaths.getJSONObject(pathIndex).get("yDrawPosition").toString().toFloat()
+
+            val paintStrokeWidth = jsonArrayPaths.getJSONObject(pathIndex).get("paintStrokeWidth").toString().toFloat()
+
+            allRedrawPaintingPathData.add(RedrawPaintingData(
+                xDrawPosition = xDrawPosition,
+                yDrawPosition = yDrawPosition,
+                paintStrokeWidth = paintStrokeWidth
+            ))
+
+        }
+
+        allRedrawPaintingData.add(allRedrawPaintingPathData)
 
     }
 

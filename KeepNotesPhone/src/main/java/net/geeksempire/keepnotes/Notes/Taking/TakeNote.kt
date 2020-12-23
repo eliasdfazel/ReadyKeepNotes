@@ -30,7 +30,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val paintingCanvasView: PaintingCanvasView by lazy {
         PaintingCanvasView(applicationContext).also {
             it.setupPaintingPanel(
-                getColor(R.color.default_color_light),
+                getColor(R.color.cyberGreen),
                 3.0f
             )
         }
@@ -39,7 +39,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val strokePaintingCanvasView: StrokePaintingCanvasView by lazy {
         StrokePaintingCanvasView(applicationContext).also {
             it.setupPaintingPanel(
-                getColor(R.color.default_color_light),
+                getColor(R.color.default_color_game),
                 3.0f
             )
         }

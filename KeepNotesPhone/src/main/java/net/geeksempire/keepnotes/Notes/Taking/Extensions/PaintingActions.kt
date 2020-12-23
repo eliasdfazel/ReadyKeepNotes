@@ -3,7 +3,6 @@ package net.geeksempire.keepnotes.Notes.Taking.Extensions
 import android.animation.Animator
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
-import android.text.Html
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
@@ -19,8 +18,6 @@ import net.geeksempire.keepnotes.Notes.Tools.Painting.NewPaintingData
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.UI.Display.displayX
 import net.geeksempire.keepnotes.Utils.UI.Display.displayY
-import java.math.RoundingMode
-import java.text.DecimalFormat
 import kotlin.math.hypot
 
 fun TakeNote.setupPaintingActions() {
@@ -171,41 +168,7 @@ fun TakeNote.setupPaintingActions() {
 
     }
 
-    /* Stroke Width Changer */
-    val fluidSliderMinimum = 3.0.toFloat()
-    val fluidSlideMaximum = 33.0.toFloat()
-    val totalFluidSliderAmount = (fluidSlideMaximum - fluidSliderMinimum)
-
-    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.positionListener = { fluidSliderPosition ->
-
-        val decimalFormat = DecimalFormat("#.##")
-        decimalFormat.roundingMode = RoundingMode.HALF_EVEN
-
-        val selectedStrokeWidth = decimalFormat.format((fluidSliderMinimum + (totalFluidSliderAmount  * fluidSliderPosition))).toFloat()
-
-        takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.bubbleText = Html.fromHtml("<small>${selectedStrokeWidth.toString()}</small>", Html.FROM_HTML_MODE_COMPACT).toString()
-
-        paintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = paintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth))
-
-    }
-
-    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = 0f
-
-    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.startText ="$fluidSliderMinimum"
-    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.endText = "$fluidSlideMaximum"
-
-    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.beginTrackingListener = {
-
-
-
-    }
-
-    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.endTrackingListener = {
-
-
-
-    }
-    /* Stroke Width Changer */
+    paintingActionsStrokeWidthSample()
 
     setupRecentColors(allColorPalette)
 
