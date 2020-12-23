@@ -39,13 +39,20 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_handwriting)
                takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 51)
 
-               takeNoteLayoutBinding.editTextTitleView.clearFocus()
-               takeNoteLayoutBinding.editTextContentView.clearFocus()
+               takeNoteLayoutBinding.editTextTitleView.isEnabled = false
+               takeNoteLayoutBinding.editTextContentView.isEnabled = false
 
-               inputMethodManager.hideSoftInputFromWindow(
-                   takeNoteLayoutBinding.editTextContentView.windowToken,
-                   InputMethodManager.HIDE_IMPLICIT_ONLY
-               )
+               takeNoteLayoutBinding.editTextTitleView.post {
+
+                   takeNoteLayoutBinding.editTextTitleView.clearFocus()
+                   takeNoteLayoutBinding.editTextContentView.clearFocus()
+
+                   inputMethodManager.hideSoftInputFromWindow(
+                       takeNoteLayoutBinding.editTextContentView.windowToken,
+                       InputMethodManager.HIDE_NOT_ALWAYS
+                   )
+
+               }
 
                takeNoteLayoutBinding.paintingCanvasContainer.bringToFront()
 
@@ -89,6 +96,9 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
             takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
 
+            takeNoteLayoutBinding.editTextTitleView.isEnabled = true
+            takeNoteLayoutBinding.editTextContentView.isEnabled = true
+
             takeNoteLayoutBinding.editTextContentView.requestFocus()
 
             inputMethodManager.showSoftInput(
@@ -112,6 +122,9 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
 
             takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_handwriting)
             takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 51)
+
+            takeNoteLayoutBinding.editTextTitleView.isEnabled = false
+            takeNoteLayoutBinding.editTextContentView.isEnabled = false
 
             takeNoteLayoutBinding.editTextTitleView.clearFocus()
             takeNoteLayoutBinding.editTextContentView.clearFocus()

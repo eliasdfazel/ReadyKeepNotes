@@ -30,7 +30,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         PaintingCanvasView(applicationContext).also {
             it.setupPaintingPanel(
                 getColor(R.color.default_color_light),
-                3.7531f
+                3.0f
             )
         }
     }
