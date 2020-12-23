@@ -117,9 +117,7 @@ class StrokePaintingCanvasView(context: Context) : View(context), View.OnTouchLi
 
     private fun touchingStart(x: Float, y: Float) {
 
-        allDrawingInformation.clear()
-
-        invalidate()
+        removeAllPaints()
 
         undoDrawingInformation.clear()
 
@@ -230,23 +228,33 @@ class StrokePaintingCanvasView(context: Context) : View(context), View.OnTouchLi
 
     fun changePaintingPathStrokeWidth(modifiedNewPaintingData: NewPaintingData) {
 
+        println(">>>>>>>>>>>>>>>>>>>>>>>>> " + modifiedNewPaintingData.paintStrokeWidth)
+
         newPaintingData = modifiedNewPaintingData
 
     }
 
-    fun runRestoreProcess(allRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>>) =
-        CoroutineScope(
-            SupervisorJob() + Dispatchers.Main
-        ).launch {
+    fun removeAllPaints() {
 
-            startPainting(allRedrawPaintingData.last())
+        allDrawingInformation.clear()
+
+        invalidate()
+
+    }
+
+    fun runRestoreProcess(allRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>>) =
+        CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+
+            if (allRedrawPaintingData.isNotEmpty()) {
+
+                startPainting(allRedrawPaintingData.last())
+
+            }
 
         }
 
     private fun startPainting(allRedrawPaintingPathData: ArrayList<RedrawPaintingData>) =
-        CoroutineScope(
-            SupervisorJob() + Dispatchers.Main
-        ).launch {
+        CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
             Log.d(
                 this@StrokePaintingCanvasView.javaClass.simpleName,
                 "${allRedrawPaintingPathData[0].xDrawPosition} | ${allRedrawPaintingPathData[0].yDrawPosition}"

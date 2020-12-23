@@ -27,6 +27,7 @@ fun TakeNote.paintingActionsStrokeWidthSample() {
         paintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = paintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth))
 
         strokePaintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = strokePaintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth))
+
     }
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = 0f
@@ -42,7 +43,7 @@ fun TakeNote.paintingActionsStrokeWidthSample() {
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.endTrackingListener = {
 
-        strokePaintingCanvasView.runRestoreProcess(strokePaintingCanvasView.allRedrawPaintingData)
+        strokePaintingCanvasView.removeAllPaints()
 
 
     }
