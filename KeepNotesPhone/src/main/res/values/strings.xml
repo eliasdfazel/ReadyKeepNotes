@@ -20,6 +20,8 @@
     <string name="noNotesTyped">You Didn\'t Type Anything</string>
     <string name="emptyNotesCollection">You Don\'t Have Any Saved Notes</string>
 
+    <string name="drawForWidthSample">Draw Here For Sample</string>
+
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 
     <string name="welcomeText">Welcome %1$s To Keep Notes…!</string>

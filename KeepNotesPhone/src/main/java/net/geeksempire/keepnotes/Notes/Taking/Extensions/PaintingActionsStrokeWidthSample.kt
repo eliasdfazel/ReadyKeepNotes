@@ -3,7 +3,6 @@ package net.geeksempire.keepnotes.Notes.Taking.Extensions
 import android.text.Html
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
 import net.geeksempire.keepnotes.Notes.Tools.Painting.NewPaintingData
-import net.geeksempire.keepnotes.R
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -11,12 +10,6 @@ import java.text.DecimalFormat
  * Line Stroke Width Changer
  **/
 fun TakeNote.paintingActionsStrokeWidthSample() {
-
-    strokePaintingCanvasView.preparePaintingPaths(getString(R.string.strokeWidthSample)).invokeOnCompletion {
-
-        strokePaintingCanvasView.runRestoreProcess(strokePaintingCanvasView.allRedrawPaintingData)
-
-    }
 
     val fluidSliderMinimum = 3.0.toFloat()
     val fluidSlideMaximum = 33.0.toFloat()
@@ -49,11 +42,8 @@ fun TakeNote.paintingActionsStrokeWidthSample() {
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.endTrackingListener = {
 
-        strokePaintingCanvasView.preparePaintingPaths(getString(R.string.strokeWidthSample)).invokeOnCompletion {
+        strokePaintingCanvasView.runRestoreProcess(strokePaintingCanvasView.allRedrawPaintingData)
 
-            strokePaintingCanvasView.runRestoreProcess(strokePaintingCanvasView.allRedrawPaintingData)
-
-        }
 
     }
 
