@@ -11,14 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.keepnotes.Database.DataStructure.Notes
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnotes.Database.IO.NotesIO
 import net.geeksempire.keepnotes.KeepNoteApplication
@@ -27,16 +22,20 @@ import net.geeksempire.keepnotes.Overview.NotesLiveData.NotesOverviewViewModel
 import net.geeksempire.keepnotes.Overview.UserInterface.Adapter.OverviewAdapter
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupActions
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupColors
+import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.startNetworkOperation
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.InApplicationUpdate.InApplicationUpdateProcess
+import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListener
+import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListenerInterface
 import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.keepnotes.Utils.UI.Display.columnCount
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.keepnotes.databinding.OverviewLayoutBinding
+import javax.inject.Inject
 
-class KeepNoteOverview : AppCompatActivity() {
+class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val firebaseUser = Firebase.auth.currentUser
 
@@ -56,12 +55,27 @@ class KeepNoteOverview : AppCompatActivity() {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
+    val notesOverviewViewModel: NotesOverviewViewModel by lazy {
+        ViewModelProvider(this@KeepNoteOverview).get(NotesOverviewViewModel::class.java)
+    }
+
+    @Inject
+    lateinit var networkConnectionListener: NetworkConnectionListener
+
     lateinit var overviewLayoutBinding: OverviewLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overviewLayoutBinding = OverviewLayoutBinding.inflate(layoutInflater)
         setContentView(overviewLayoutBinding.root)
+
+        (application as KeepNoteApplication)
+            .dependencyGraph
+            .subDependencyGraph()
+            .create(this@KeepNoteOverview, overviewLayoutBinding.rootView)
+            .inject(this@KeepNoteOverview)
+
+        networkConnectionListener.networkConnectionListenerInterface = this@KeepNoteOverview
 
         setupColors()
 
@@ -83,8 +97,6 @@ class KeepNoteOverview : AppCompatActivity() {
                 )
 
             }
-
-            val notesOverviewViewModel = ViewModelProvider(this@KeepNoteOverview).get(NotesOverviewViewModel::class.java)
 
             notesOverviewViewModel.notesQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
@@ -132,30 +144,6 @@ class KeepNoteOverview : AppCompatActivity() {
 
             })
 
-            firebaseUser?.let {
-
-                (application as KeepNoteApplication)
-                    .firestoreDatabase.collection(databaseEndpoints.generalEndpoints(firebaseUser.uid))
-                    .orderBy(Notes.NoteTakenTime, Query.Direction.DESCENDING)
-                    .addSnapshotListener { querySnapshot, firestoreException ->
-
-                        querySnapshot?.let {
-
-                            notesOverviewViewModel.processDocumentSnapshots(querySnapshot.documents)
-
-                        }
-
-                        firestoreException?.printStackTrace()
-                    }
-
-                Glide.with(applicationContext)
-                    .load(firebaseUser.photoUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .transform(CircleCrop())
-                    .into(overviewLayoutBinding.profileImageView)
-
-            }
-
             /*Invoke In Application Update*/
             InApplicationUpdateProcess(this@KeepNoteOverview, overviewLayoutBinding.rootView)
                 .initialize()
@@ -184,6 +172,18 @@ class KeepNoteOverview : AppCompatActivity() {
             this.addCategory(Intent.CATEGORY_HOME)
             this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+    }
+
+    override fun networkAvailable() {
+
+        startNetworkOperation()
+
+    }
+
+    override fun networkLost() {
+
+
 
     }
 

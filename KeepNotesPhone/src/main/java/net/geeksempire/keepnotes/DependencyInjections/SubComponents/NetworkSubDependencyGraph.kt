@@ -18,6 +18,7 @@ import net.geeksempire.keepnotes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.keepnotes.DependencyInjections.Modules.Network.NetworkConnectionModule
 import net.geeksempire.keepnotes.DependencyInjections.Scopes.ActivityScope
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
+import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
 
 @ActivityScope
 @Subcomponent(modules = [NetworkConnectionModule::class])
@@ -29,6 +30,7 @@ interface NetworkSubDependencyGraph {
     }
 
     fun inject(takeNote: TakeNote)
+    fun inject(keepNoteOverview: KeepNoteOverview)
     fun inject(accountInformation: AccountInformation)
 
 }
