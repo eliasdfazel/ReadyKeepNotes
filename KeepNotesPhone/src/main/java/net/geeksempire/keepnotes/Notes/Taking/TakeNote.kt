@@ -1,7 +1,11 @@
 package net.geeksempire.keepnotes.Notes.Taking
 
+import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.ViewAnimationUtils
+import android.view.animation.AccelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
@@ -22,8 +26,11 @@ import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.keepnotes.Utils.Network.NetworkConnectionListenerInterface
 import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
+import net.geeksempire.keepnotes.Utils.UI.Display.displayX
+import net.geeksempire.keepnotes.Utils.UI.Display.displayY
 import net.geeksempire.keepnotes.databinding.TakeNoteLayoutBinding
 import javax.inject.Inject
+import kotlin.math.hypot
 
 class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
@@ -190,8 +197,48 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     override fun onBackPressed() {
 
-        this@TakeNote.finish()
-        overridePendingTransition(0, R.anim.fade_out)
+        if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
+
+            val finalRadius = hypot(displayX(applicationContext).toDouble(), displayY(applicationContext).toDouble())
+
+            val circularReveal: Animator = ViewAnimationUtils.createCircularReveal(takeNoteLayoutBinding.colorPaletteInclude.root,
+                (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.x.toInt()),
+                (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.y.toInt() - (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.height)),
+                finalRadius.toFloat(),
+                (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.height.toFloat() / 2))
+
+            circularReveal.duration = 555
+            circularReveal.interpolator = AccelerateInterpolator()
+
+            circularReveal.start()
+            circularReveal.addListener(object : Animator.AnimatorListener {
+
+                override fun onAnimationRepeat(animation: Animator?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animator?) {
+
+                    takeNoteLayoutBinding.colorPaletteInclude.root.visibility = View.INVISIBLE
+
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+
+                }
+
+                override fun onAnimationStart(animation: Animator?) {
+
+                }
+
+            })
+
+        } else {
+
+            this@TakeNote.finish()
+            overridePendingTransition(0, R.anim.fade_out)
+
+        }
 
     }
 
