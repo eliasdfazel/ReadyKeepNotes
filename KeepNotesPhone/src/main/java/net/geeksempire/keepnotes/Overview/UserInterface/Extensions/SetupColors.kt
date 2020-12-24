@@ -24,6 +24,7 @@ fun KeepNoteOverview.setupColors() {
             overviewLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
 
             overviewLayoutBinding.textInputQuickTakeNote.boxBackgroundColor = getColor(R.color.dark_transparent_high)
+            overviewLayoutBinding.textInputQuickTakeNote.boxStrokeColor = getColor(R.color.dark_transparent_higher)
 
             overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.darker))
 
@@ -36,6 +37,7 @@ fun KeepNoteOverview.setupColors() {
             overviewLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
 
             overviewLayoutBinding.textInputQuickTakeNote.boxBackgroundColor = getColor(R.color.light_transparent_high)
+            overviewLayoutBinding.textInputQuickTakeNote.boxStrokeColor = getColor(R.color.light_transparent_higher)
 
             overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.lighter))
 
