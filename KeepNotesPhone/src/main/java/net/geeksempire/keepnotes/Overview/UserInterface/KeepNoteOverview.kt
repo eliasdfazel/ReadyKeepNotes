@@ -93,7 +93,7 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                 fromPosition = fromPos
                 toPosition = toPositon
 
-                newIndex = overviewAdapter.notesDataStructureList[toPosition][Notes.NoteIndex].toString().toLong().plus(1.toLong())
+                newIndex = overviewAdapter.notesDataStructureList[toPosition][Notes.NoteIndex].toString().toLong().plus((1..13).random())
 
                 overviewAdapter.rearrangeItemsData(fromPosition, toPosition).invokeOnCompletion {
 
@@ -214,10 +214,21 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
                     overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
 
-                    overviewAdapter.notesDataStructureList.clear()
-                    overviewAdapter.notesDataStructureList.addAll(it)
+                    if (overviewAdapter.notesDataStructureList.isNotEmpty()) {
 
-                    overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapter
+                        overviewAdapter.notesDataStructureList.clear()
+                        overviewAdapter.notesDataStructureList.addAll(it)
+
+                        overviewAdapter.notifyDataSetChanged()
+
+                    } else {
+
+                        overviewAdapter.notesDataStructureList.clear()
+                        overviewAdapter.notesDataStructureList.addAll(it)
+
+                        overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapter
+
+                    }
 
                     overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
 
