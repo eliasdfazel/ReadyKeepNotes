@@ -4,6 +4,9 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -15,10 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abanabsalan.aban.magazine.Utils.System.doVibrate
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import net.geeksempire.keepnotes.Database.DataStructure.Notes
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnotes.Database.IO.NotesIO
@@ -61,16 +62,16 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
+    var databaseListener: ListenerRegistration? = null
+
     val notesOverviewViewModel: NotesOverviewViewModel by lazy {
         ViewModelProvider(this@KeepNoteOverview).get(NotesOverviewViewModel::class.java)
     }
 
-    val itemTouchHelper: ItemTouchHelper by lazy {
+    private val itemTouchHelper: ItemTouchHelper by lazy {
 
-        var fromPosition = -1
-        var toPosition = -1
-
-        var newIndex: Long = System.currentTimeMillis()
+        var initialPosition = -1
+        var targetPosition = -1
 
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or
@@ -82,34 +83,22 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
 
 
+
                 return true
             }
 
-            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPos: Int, target: RecyclerView.ViewHolder, toPositon: Int, x: Int, y: Int) {
-                super.onMoved(recyclerView, viewHolder, fromPos, target, toPositon, x, y)
+            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
+                super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
-                val overviewAdapter = recyclerView.adapter as OverviewAdapter
 
-                fromPosition = fromPos
-                toPosition = toPositon
+                val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
 
-                newIndex = overviewAdapter.notesDataStructureList[toPosition][Notes.NoteIndex].toString().toLong().plus((1..13).random())
-
-                overviewAdapter.rearrangeItemsData(fromPosition, toPosition).invokeOnCompletion {
-
-                    try {
-
-                        CoroutineScope(Dispatchers.Main).launch {
-
-                            overviewAdapter.notifyItemMoved(fromPosition, toPosition)
-
-                        }
-
-                    } catch (e: IllegalStateException) {
-                        e.printStackTrace()
-                    }
-
+                if (initialPosition == -1) {
+                    initialPosition = fromPosition
                 }
+                targetPosition = toPosition
+
+                overviewAdapter.notifyItemMoved(initialPosition, targetPosition)
 
             }
 
@@ -128,6 +117,13 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                     ItemTouchHelper.ACTION_STATE_DRAG -> {
 
 
+                    }
+                    ItemTouchHelper.ACTION_STATE_SWIPE -> {
+
+
+                    }
+                    ItemTouchHelper.ACTION_STATE_IDLE -> {
+
 
                     }
                 }
@@ -137,25 +133,43 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
 
-                doVibrate(applicationContext, 157)
+                doVibrate(applicationContext, 57)
 
-                val overviewAdapter = recyclerView.adapter as OverviewAdapter
+                if (initialPosition != -1 && targetPosition != -1) {
 
-                if (fromPosition != -1 && toPosition != -1) {
+                    val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
 
-                    (application as KeepNoteApplication)
-                        .firestoreDatabase.document(overviewAdapter.notesDataStructureList[fromPosition].reference.path)
-                        .update(
-                            Notes.NoteIndex, newIndex,
-                        ).addOnSuccessListener {
+                    val oldIndex = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteIndex].toString().toLong()
+                    val newIndex = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteIndex].toString().toLong()
 
 
 
-                        }.addOnFailureListener {
+                    Handler(Looper.getMainLooper()).postDelayed({
+
+                        (application as KeepNoteApplication)
+                            .firestoreDatabase.document(overviewAdapter.notesDataStructureList[initialPosition].reference.path)
+                            .update(
+                                Notes.NoteIndex, newIndex,
+                            ).addOnSuccessListener {
+                                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Initial Position")
 
 
+                            }
 
-                        }
+                        (application as KeepNoteApplication)
+                            .firestoreDatabase.document(overviewAdapter.notesDataStructureList[targetPosition].reference.path)
+                            .update(
+                                Notes.NoteIndex, oldIndex,
+                            ).addOnSuccessListener {
+                                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Target Positionb")
+
+
+                            }
+
+                        initialPosition = -1
+                        targetPosition = -1
+
+                    }, 555)
 
                 }
 

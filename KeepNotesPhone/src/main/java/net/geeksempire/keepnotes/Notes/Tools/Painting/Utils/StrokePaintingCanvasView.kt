@@ -228,8 +228,6 @@ class StrokePaintingCanvasView(context: Context) : View(context), View.OnTouchLi
 
     fun changePaintingPathStrokeWidth(modifiedNewPaintingData: NewPaintingData) {
 
-        println(">>>>>>>>>>>>>>>>>>>>>>>>> " + modifiedNewPaintingData.paintStrokeWidth)
-
         newPaintingData = modifiedNewPaintingData
 
     }
