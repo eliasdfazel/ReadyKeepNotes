@@ -74,7 +74,7 @@ class PaintingIO (private val context: Context) {
 
         } else {
 
-            recentPickedColors.addAll(arrayListOf(Color.WHITE, Color.WHITE, Color.WHITE))
+
 
         }
 
