@@ -29,6 +29,7 @@ import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupActions
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupColors
 import net.geeksempire.keepnotes.Preferences.Theme.ThemePreferences
 import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.Utils.InApplicationUpdate.InApplicationUpdateProcess
 import net.geeksempire.keepnotes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.keepnotes.Utils.UI.Display.columnCount
 import net.geeksempire.keepnotes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
@@ -154,6 +155,10 @@ class KeepNoteOverview : AppCompatActivity() {
                     .into(overviewLayoutBinding.profileImageView)
 
             }
+
+            /*Invoke In Application Update*/
+            InApplicationUpdateProcess(this@KeepNoteOverview, overviewLayoutBinding.rootView)
+                .initialize()
 
         }
 
