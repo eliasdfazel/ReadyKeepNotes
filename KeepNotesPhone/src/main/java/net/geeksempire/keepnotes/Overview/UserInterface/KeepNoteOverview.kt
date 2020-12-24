@@ -93,9 +93,6 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                 fromPosition = fromPos
                 toPosition = toPositon
 
-                println(">>> From >> ${fromPosition} > " + (overviewAdapter.notesDataStructureList[fromPosition][Notes.NoteIndex]))
-                println(">>> To >> ${toPosition} >" + (overviewAdapter.notesDataStructureList[toPosition][Notes.NoteIndex]))
-
                 newIndex = overviewAdapter.notesDataStructureList[toPosition][Notes.NoteIndex].toString().toLong().plus(1.toLong())
 
                 overviewAdapter.rearrangeItemsData(fromPosition, toPosition).invokeOnCompletion {
@@ -152,14 +149,11 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                             Notes.NoteIndex, newIndex,
                         ).addOnSuccessListener {
 
-                            println(">>> success")
-
-                            println(">>> New >> ${toPosition} >" + newIndex)
 
 
                         }.addOnFailureListener {
 
-                            println(">>> fail")
+
 
                         }
 
