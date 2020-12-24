@@ -15,16 +15,17 @@ fun KeepNoteOverview.setupColors() {
             window.statusBarColor = getColor(R.color.light)
             window.navigationBarColor = getColor(R.color.light)
 
-            overviewLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
+            window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            } else {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
 
-            overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.default_color_bright))
+            overviewLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
 
             overviewLayoutBinding.textInputQuickTakeNote.boxBackgroundColor = getColor(R.color.dark_transparent_high)
 
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
+            overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.darker))
 
         }
         ThemeType.Dark -> {
@@ -36,7 +37,7 @@ fun KeepNoteOverview.setupColors() {
 
             overviewLayoutBinding.textInputQuickTakeNote.boxBackgroundColor = getColor(R.color.light_transparent_high)
 
-            overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.default_color_bright))
+            overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.lighter))
 
         }
     }
