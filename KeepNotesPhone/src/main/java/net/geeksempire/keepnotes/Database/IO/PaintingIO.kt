@@ -75,7 +75,7 @@ class PaintingIO (private val context: Context) {
 
         } else {
 
-            recentPickedColors.addAll(arrayListOf(context.getColor(R.color.default_color), context.getColor(R.color.default_color_game), context.getColor(R.color.green)))
+            recentPickedColors.addAll(arrayListOf(context.getColor(R.color.default_color_game), context.getColor(R.color.green), context.getColor(R.color.default_color)))
 
         }
 
