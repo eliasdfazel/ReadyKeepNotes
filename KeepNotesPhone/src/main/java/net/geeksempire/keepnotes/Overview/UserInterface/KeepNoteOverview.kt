@@ -25,6 +25,7 @@ import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
 import net.geeksempire.keepnotes.Overview.NotesLiveData.NotesOverviewViewModel
 import net.geeksempire.keepnotes.Overview.UserInterface.Adapter.OverviewAdapter
+import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.loadUserAccountInformation
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupActions
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.setupColors
 import net.geeksempire.keepnotes.Overview.UserInterface.Extensions.startNetworkOperation
@@ -285,7 +286,7 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
     override fun onResume() {
         super.onResume()
 
-
+        loadUserAccountInformation()
 
     }
 

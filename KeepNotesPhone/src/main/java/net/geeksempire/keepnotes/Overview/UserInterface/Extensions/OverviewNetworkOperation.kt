@@ -7,11 +7,12 @@ import com.google.firebase.firestore.Query
 import net.geeksempire.keepnotes.Database.DataStructure.Notes
 import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
+import net.geeksempire.keepnotes.R
 
 /**
  * justRegisterChangeListener
- * False to Load Evey Time Database Changed
- * True Just Add Database Change Listener
+ * - False to Load Evey Time Database Changed
+ * - True Just Add Database Change Listener
  **/
 fun KeepNoteOverview.startNetworkOperation() {
 
@@ -43,8 +44,17 @@ fun KeepNoteOverview.startNetworkOperation() {
 
             }
 
+    }
+
+}
+
+fun KeepNoteOverview.loadUserAccountInformation() {
+
+    firebaseUser?.let {
+
         Glide.with(applicationContext)
             .load(firebaseUser.photoUrl)
+            .error(getDrawable(R.drawable.not_login_icon))
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .transform(CircleCrop())
             .into(overviewLayoutBinding.profileImageView)
