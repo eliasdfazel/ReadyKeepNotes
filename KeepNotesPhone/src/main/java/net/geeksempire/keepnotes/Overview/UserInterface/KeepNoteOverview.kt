@@ -10,10 +10,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.abanabsalan.aban.magazine.Utils.System.doVibrate
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import net.geeksempire.keepnotes.Database.DataStructure.Notes
 import net.geeksempire.keepnotes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.keepnotes.Database.IO.NotesIO
 import net.geeksempire.keepnotes.KeepNoteApplication
@@ -59,6 +65,113 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
         ViewModelProvider(this@KeepNoteOverview).get(NotesOverviewViewModel::class.java)
     }
 
+    val itemTouchHelper: ItemTouchHelper by lazy {
+
+        var fromPosition = -1
+        var toPosition = -1
+
+        var newIndex: Long = System.currentTimeMillis()
+
+        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or
+                    ItemTouchHelper.DOWN or
+                    ItemTouchHelper.START or
+                    ItemTouchHelper.END,
+            0) {
+
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+
+
+                return true
+            }
+
+            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPos: Int, target: RecyclerView.ViewHolder, toPositon: Int, x: Int, y: Int) {
+                super.onMoved(recyclerView, viewHolder, fromPos, target, toPositon, x, y)
+
+                val overviewAdapter = recyclerView.adapter as OverviewAdapter
+
+                fromPosition = fromPos
+                toPosition = toPositon
+
+                println(">>> From >> ${fromPosition} > " + (overviewAdapter.notesDataStructureList[fromPosition][Notes.NoteIndex]))
+                println(">>> To >> ${toPosition} >" + (overviewAdapter.notesDataStructureList[toPosition][Notes.NoteIndex]))
+
+                newIndex = overviewAdapter.notesDataStructureList[toPosition][Notes.NoteIndex].toString().toLong().plus(1.toLong())
+
+                overviewAdapter.rearrangeItemsData(fromPosition, toPosition).invokeOnCompletion {
+
+                    try {
+
+                        CoroutineScope(Dispatchers.Main).launch {
+
+                            overviewAdapter.notifyItemMoved(fromPosition, toPosition)
+
+                        }
+
+                    } catch (e: IllegalStateException) {
+                        e.printStackTrace()
+                    }
+
+                }
+
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+
+
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+
+                doVibrate(applicationContext, 157)
+
+                when (actionState) {
+                    ItemTouchHelper.ACTION_STATE_DRAG -> {
+
+
+
+                    }
+                }
+
+            }
+
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+
+                doVibrate(applicationContext, 157)
+
+                val overviewAdapter = recyclerView.adapter as OverviewAdapter
+
+                if (fromPosition != -1 && toPosition != -1) {
+
+                    (application as KeepNoteApplication)
+                        .firestoreDatabase.document(overviewAdapter.notesDataStructureList[fromPosition].reference.path)
+                        .update(
+                            Notes.NoteIndex, newIndex,
+                        ).addOnSuccessListener {
+
+                            println(">>> success")
+
+                            println(">>> New >> ${toPosition} >" + newIndex)
+
+
+                        }.addOnFailureListener {
+
+                            println(">>> fail")
+
+                        }
+
+                }
+
+            }
+
+        }
+
+        ItemTouchHelper(simpleItemTouchCallback)
+    }
+
     @Inject
     lateinit var networkConnectionListener: NetworkConnectionListener
 
@@ -83,10 +196,6 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
         overviewLayoutBinding.root.post {
 
-            overviewLayoutBinding.overviewRecyclerView.layoutManager = GridLayoutManager(applicationContext, columnCount(applicationContext, 313), RecyclerView.VERTICAL, false)
-
-            val overviewAdapter = OverviewAdapter(this@KeepNoteOverview)
-
             overviewLayoutBinding.quickTakeNote.post {
 
                 overviewLayoutBinding.quickTakeNote.requestFocus()
@@ -97,6 +206,12 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                 )
 
             }
+
+            overviewLayoutBinding.overviewRecyclerView.layoutManager = GridLayoutManager(applicationContext, columnCount(applicationContext, 313), RecyclerView.VERTICAL, false)
+
+            val overviewAdapter = OverviewAdapter(this@KeepNoteOverview)
+
+            itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
 
             notesOverviewViewModel.notesQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 

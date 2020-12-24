@@ -44,7 +44,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
             val notesDataStructure = NotesDataStructure(
                 noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
                 noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                noteHandwritingSnapshotLink = null
+                noteHandwritingSnapshotLink = null,
+                noteIndex = documentId
             )
 
             val databasePath = databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}"
@@ -206,7 +207,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 val notesDataStructure = NotesDataStructure(
                     noteTile = contentEncryption.encryptEncodedData("Untitled Note", firebaseUser.uid).asList().toString(),
-                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString()
+                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                    noteIndex = documentId
                 )
 
                 (keepNoteApplication).firestoreDatabase

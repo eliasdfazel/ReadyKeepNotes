@@ -14,7 +14,7 @@ fun KeepNoteOverview.startNetworkOperation() {
 
         (application as KeepNoteApplication)
             .firestoreDatabase.collection(databaseEndpoints.generalEndpoints(firebaseUser.uid))
-            .orderBy(Notes.NoteTakenTime, Query.Direction.DESCENDING)
+            .orderBy(Notes.NoteIndex, Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, firestoreException ->
 
                 querySnapshot?.let {

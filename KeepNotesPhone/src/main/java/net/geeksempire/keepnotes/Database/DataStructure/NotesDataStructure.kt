@@ -8,10 +8,12 @@ object Notes {
     const val NoteHandwritingSnapshotLink: String = "noteHandwritingSnapshotLink"
     const val NoteTakenTime: String = "noteTakenTime"
     const val NoteEditTime: String = "noteEditTime"
+    const val NoteIndex: String = "noteIndex"
 }
 
 data class NotesDataStructure(var noteTile: String = "Untitled Note",
                               var noteTextContent: String = "No Content",
                               var noteHandwritingSnapshotLink: String? = null,
                               var noteTakenTime: FieldValue = FieldValue.serverTimestamp(),
-                              var noteEditTime: FieldValue? = null)
+                              var noteEditTime: FieldValue? = null,
+                              var noteIndex: Long)

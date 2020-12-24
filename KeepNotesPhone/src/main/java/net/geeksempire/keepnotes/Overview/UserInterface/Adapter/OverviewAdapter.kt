@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import net.geeksempire.keepnotes.Database.DataStructure.Notes
 import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
@@ -24,6 +28,11 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : OverviewViewHolder {
 
         return OverviewViewHolder(LayoutInflater.from(context).inflate(R.layout.overview_saved_notes_item, viewGroup, false))
+    }
+
+    override fun getItemCount() : Int {
+
+        return notesDataStructureList.size
     }
 
     override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int) {
@@ -100,6 +109,8 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
                     if (querySnapshot.isEmpty) {
 
+                        overviewViewHolder.waitingViewLoading.visibility = View.GONE
+
                         context.startActivity(Intent(context, TakeNote::class.java).apply {
                             putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].id.toLong())
                             putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position][Notes.NoteTile].toString())
@@ -126,18 +137,23 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
         }
 
-        overviewViewHolder.rootItemView.setOnLongClickListener {
-
-            //
-
-            true
-        }
-
     }
 
-    override fun getItemCount() : Int {
+    fun rearrangeItemsData(fromPosition: Int, toPosition: Int) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
-        return notesDataStructureList.size
+        val selectedItem = notesDataStructureList[fromPosition]
+        notesDataStructureList.removeAt(fromPosition)
+
+        if (toPosition < fromPosition) {
+
+            notesDataStructureList.add(toPosition, selectedItem)
+
+        } else {
+
+            notesDataStructureList.add(toPosition - 1, selectedItem)
+
+        }
+
     }
 
 }
