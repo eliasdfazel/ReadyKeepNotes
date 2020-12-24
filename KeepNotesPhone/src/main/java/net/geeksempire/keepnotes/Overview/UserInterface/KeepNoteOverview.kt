@@ -4,8 +4,6 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -74,10 +72,10 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
         var targetPosition = -1
 
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or
-                    ItemTouchHelper.DOWN or
-                    ItemTouchHelper.START or
-                    ItemTouchHelper.END,
+            ItemTouchHelper.UP
+                    or ItemTouchHelper.DOWN
+                    or ItemTouchHelper.START
+                    or ItemTouchHelper.END,
             0) {
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -90,11 +88,14 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
             override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
                 super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
-
                 val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
 
                 if (initialPosition == -1) {
+
+                    databaseListener?.remove()
+
                     initialPosition = fromPosition
+
                 }
                 targetPosition = toPosition
 
@@ -142,34 +143,29 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                     val oldIndex = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteIndex].toString().toLong()
                     val newIndex = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteIndex].toString().toLong()
 
+                    (application as KeepNoteApplication)
+                        .firestoreDatabase.document(overviewAdapter.notesDataStructureList[initialPosition].reference.path)
+                        .update(
+                            Notes.NoteIndex, newIndex,
+                        ).addOnSuccessListener {
+                            Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Initial Position")
 
+                            (application as KeepNoteApplication)
+                                .firestoreDatabase.document(overviewAdapter.notesDataStructureList[targetPosition].reference.path)
+                                .update(
+                                    Notes.NoteIndex, oldIndex,
+                                ).addOnSuccessListener {
+                                    Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Target Positionb")
 
-                    Handler(Looper.getMainLooper()).postDelayed({
+                                    (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = true
+                                    startNetworkOperation()
 
-                        (application as KeepNoteApplication)
-                            .firestoreDatabase.document(overviewAdapter.notesDataStructureList[initialPosition].reference.path)
-                            .update(
-                                Notes.NoteIndex, newIndex,
-                            ).addOnSuccessListener {
-                                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Initial Position")
+                                    initialPosition = -1
+                                    targetPosition = -1
 
+                                }
 
-                            }
-
-                        (application as KeepNoteApplication)
-                            .firestoreDatabase.document(overviewAdapter.notesDataStructureList[targetPosition].reference.path)
-                            .update(
-                                Notes.NoteIndex, oldIndex,
-                            ).addOnSuccessListener {
-                                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Target Positionb")
-
-
-                            }
-
-                        initialPosition = -1
-                        targetPosition = -1
-
-                    }, 555)
+                        }
 
                 }
 
@@ -310,6 +306,8 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
     }
 
     override fun networkAvailable() {
+
+        (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = false
 
         startNetworkOperation()
 

@@ -13,7 +13,7 @@ import net.geeksempire.keepnotes.DependencyInjections.DependencyGraph
 
 class KeepNoteApplication : Application() {
 
-    private val firestoreConfiguration: FirestoreConfiguration by lazy {
+    val firestoreConfiguration: FirestoreConfiguration by lazy {
         FirestoreConfiguration(applicationContext)
     }
 

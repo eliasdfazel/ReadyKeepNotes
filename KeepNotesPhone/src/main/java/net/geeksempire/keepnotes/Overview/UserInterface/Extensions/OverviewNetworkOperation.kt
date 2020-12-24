@@ -8,6 +8,11 @@ import net.geeksempire.keepnotes.Database.DataStructure.Notes
 import net.geeksempire.keepnotes.KeepNoteApplication
 import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
 
+/**
+ * justRegisterChangeListener
+ * False to Load Evey Time Database Changed
+ * True Just Add Database Change Listener
+ **/
 fun KeepNoteOverview.startNetworkOperation() {
 
     firebaseUser?.let {
@@ -20,13 +25,22 @@ fun KeepNoteOverview.startNetworkOperation() {
             .orderBy(Notes.NoteIndex, Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, firestoreException ->
 
-                querySnapshot?.let {
+                if (!(application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener) {
 
-                    notesOverviewViewModel.processDocumentSnapshots(querySnapshot.documents)
+                    querySnapshot?.let {
+
+                        notesOverviewViewModel.processDocumentSnapshots(querySnapshot.documents)
+
+                    }
+
+                    firestoreException?.printStackTrace()
+
+                } else {
+
+                    (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = false
 
                 }
 
-                firestoreException?.printStackTrace()
             }
 
         Glide.with(applicationContext)
