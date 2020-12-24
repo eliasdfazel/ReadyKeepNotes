@@ -49,7 +49,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
             ThemeType.Light -> {
 
                 val tintedBackgroundDrawable = context.getDrawable(R.drawable.round_corner_background)
-                tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent_high))
+                tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
 
                 overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
 
@@ -65,7 +65,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
             ThemeType.Dark -> {
 
                 val tintedBackgroundDrawable = context.getDrawable(R.drawable.round_corner_background)
-                tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent_high))
+                tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
 
                 overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
 
