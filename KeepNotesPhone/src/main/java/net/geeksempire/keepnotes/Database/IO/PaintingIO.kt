@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.*
 import net.geeksempire.keepnotes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.keepnotes.Notes.Tools.Painting.RedrawPaintingData
+import net.geeksempire.keepnotes.R
 import net.geeksempire.keepnotes.Utils.PreferencesIO.SavePreferences
 import org.json.JSONArray
 import java.io.ByteArrayOutputStream
@@ -74,7 +75,7 @@ class PaintingIO (private val context: Context) {
 
         } else {
 
-
+            recentPickedColors.addAll(arrayListOf(context.getColor(R.color.default_color), context.getColor(R.color.default_color_game), context.getColor(R.color.green)))
 
         }
 
