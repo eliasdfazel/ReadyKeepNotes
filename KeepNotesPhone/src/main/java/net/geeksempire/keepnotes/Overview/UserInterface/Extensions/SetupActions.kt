@@ -2,11 +2,11 @@ package net.geeksempire.keepnotes.Overview.UserInterface.Extensions
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.net.Uri
 import net.geeksempire.keepnotes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.keepnotes.Notes.Taking.TakeNote
 import net.geeksempire.keepnotes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.keepnotes.R
+import net.geeksempire.keepnotes.Utils.InApplicationReview.InApplicationReviewProcess
 
 fun KeepNoteOverview.setupActions() {
 
@@ -30,8 +30,8 @@ fun KeepNoteOverview.setupActions() {
 
     overviewLayoutBinding.applicationLogoView.setOnClickListener {
 
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.twitterGeeksEmpire))),
-            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+        InApplicationReviewProcess(this@setupActions)
+            .start(true)
 
     }
 

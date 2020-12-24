@@ -2,6 +2,8 @@
 
     <string name="profileImageTransitionName" translatable="false">profileImageTransitionName</string>
 
+    <string name="playStoreLink" translatable="false">https://play.google.com/store/apps/details?id=net.geeksempire.keepnotes</string>
+
     <string name="twitterGeeksEmpire">https://twitter.com/GeeksEmpire</string>
 
 </resources>
