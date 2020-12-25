@@ -15,7 +15,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "net.geeksempire.keepnotes"
+        applicationId "net.geeksempire.ready.keep.notes"
 
         minSdkVersion 25
         targetSdkVersion 30

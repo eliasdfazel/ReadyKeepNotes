@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="applicationName">Keep Notes</string>
-    <string name="applicationMotto">Always Ready To Keep Notes</string>
+    <string name="applicationName">Ready Keep Notes</string>
+    <string name="applicationMotto">Always Ready To Keep Your Notes</string>
 
     <string name="waitingInformation">Setting Up Your Account…</string>
 
