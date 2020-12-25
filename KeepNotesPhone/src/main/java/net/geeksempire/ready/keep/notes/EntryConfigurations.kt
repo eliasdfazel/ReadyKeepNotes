@@ -23,6 +23,10 @@ class EntryConfigurations : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         entryConfigurationLayoutBinding = EntryConfigurationLayoutBinding.inflate(layoutInflater)
         setContentView(entryConfigurationLayoutBinding.root)
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         if (setupAccount.firebaseUser == null) {
 
