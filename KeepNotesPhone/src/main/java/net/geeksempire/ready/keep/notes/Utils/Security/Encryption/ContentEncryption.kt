@@ -90,7 +90,7 @@ class ContentEncryption {
         } catch (e: Exception) {
             e.printStackTrace()
 
-            plainText = " ♥ "
+            plainText = null
         }
 
         return plainText
