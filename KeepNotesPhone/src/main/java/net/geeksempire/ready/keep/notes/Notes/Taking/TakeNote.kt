@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
+import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
@@ -67,6 +68,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val paintingIO: PaintingIO by lazy {
         PaintingIO(applicationContext)
     }
+
+    val jsonIO = JsonIO()
 
     val contentEncryption: ContentEncryption  = ContentEncryption()
 

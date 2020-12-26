@@ -50,6 +50,8 @@ class NaturalLanguageProcessNetworkOperation(private val context: TakeNote) {
 
                         val allTags = String(it)
 
+                        context.jsonIO.writeTagsLineSeparated(allTags)
+
 
                     }
 

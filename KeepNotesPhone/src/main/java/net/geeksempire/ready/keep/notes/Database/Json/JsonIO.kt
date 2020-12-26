@@ -22,4 +22,9 @@ class JsonIO {
         return jsonDatabase.toJson(aPathXY).toString()
     }
 
+    fun writeTagsLineSeparated(allTags: String) : String {
+
+        return jsonDatabase.toJson(allTags).toString()
+    }
+
 }
