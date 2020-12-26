@@ -172,7 +172,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
             takeNoteLayoutBinding.savingView.setOnClickListener {
 
                 notesIO.saveNotesAndPainting(
-                    context = applicationContext,
+                    context = this@TakeNote,
                     firebaseUser = firebaseUser,
                     takeNoteLayoutBinding = takeNoteLayoutBinding,
                     databaseEndpoints = databaseEndpoints,

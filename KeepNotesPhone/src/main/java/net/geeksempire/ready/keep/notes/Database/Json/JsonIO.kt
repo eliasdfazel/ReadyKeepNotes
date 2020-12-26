@@ -11,6 +11,7 @@
 package net.geeksempire.ready.keep.notes.Database.Json
 
 import com.google.gson.Gson
+import net.geeksempire.ready.keep.notes.ContentContexts.DataStructure.TagsData
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.RedrawPaintingData
 
 class JsonIO {
@@ -22,7 +23,7 @@ class JsonIO {
         return jsonDatabase.toJson(aPathXY).toString()
     }
 
-    fun writeTagsLineSeparated(allTags: String) : String {
+    fun writeTagsData(allTags: ArrayList<TagsData>) : String {
 
         return jsonDatabase.toJson(allTags).toString()
     }

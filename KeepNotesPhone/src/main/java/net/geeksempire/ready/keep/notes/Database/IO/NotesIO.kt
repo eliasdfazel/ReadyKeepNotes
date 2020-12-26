@@ -4,12 +4,15 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
+import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.NaturalLanguageProcessNetworkOperation
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
+import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
@@ -22,7 +25,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     private val jsonIO = JsonIO()
 
-    fun saveNotesAndPainting(context: Context,
+    fun saveNotesAndPainting(context: TakeNote,
                              firebaseUser: FirebaseUser?,
                              takeNoteLayoutBinding: TakeNoteLayoutBinding,
                              databaseEndpoints: DatabaseEndpoints,
@@ -98,6 +101,11 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                         }
 
+                    NaturalLanguageProcessNetworkOperation(context)
+                        .start(firebaseUserId = firebaseUser.uid,
+                            documentId = documentId.toString(),
+                            textContent =  contentText.toString())
+
                 }.addOnFailureListener {
                     Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
 
@@ -170,7 +178,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    fun saveQuickNotes(firebaseUser: FirebaseUser?,
+    fun saveQuickNotes(context: AppCompatActivity,
+                       firebaseUser: FirebaseUser?,
                        overviewLayoutBinding: OverviewLayoutBinding,
                        contentEncryption: ContentEncryption,
                        databaseEndpoints: DatabaseEndpoints) {
@@ -215,6 +224,11 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}")
                     .set(notesDataStructure)
                     .addOnSuccessListener {
+
+                        NaturalLanguageProcessNetworkOperation(context)
+                            .start(firebaseUserId = firebaseUser.uid,
+                                documentId = documentId.toString(),
+                                textContent =  contentText.toString())
 
                         overviewLayoutBinding.savingView.isEnabled = true
 

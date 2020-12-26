@@ -1,5 +1,6 @@
 package net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
@@ -8,32 +9,24 @@ import androidx.work.workDataOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
-import net.geeksempire.ready.keep.notes.Utils.Network.Extensions.JsonRequestResponseInterface
+import net.geeksempire.ready.keep.notes.ContentContexts.DataStructure.TextRazorParameters
+import java.nio.charset.Charset
 
-
-object EnqueueEndPointQuery {
-    const val JSON_REQUEST_TIMEOUT = (1000 * 3)
-    const val JSON_REQUEST_RETRIES = (3)
-}
-
-object TextRazorParameters {
-    const val Response = "response"
-    const val ExtractorsEntities = "entities"
-    const val AnalyzedText = "matchedText"
-}
-
-class NaturalLanguageProcessNetworkOperation(private val context: TakeNote) {
+class NaturalLanguageProcessNetworkOperation(private val context: AppCompatActivity) {
 
     fun start(
-        textContent: String,
-        jsonRequestResponseInterface: JsonRequestResponseInterface?
+        firebaseUserId: String,
+        documentId: String,
+        textContent: String
     ) = CoroutineScope(Dispatchers.IO).async {
 
         val workRequest = OneTimeWorkRequestBuilder<WorkBackgroundProcess>()
-            .setInputData(workDataOf(
-                "Request_Body" to requestBodyTextRazor(TextRazorParameters.ExtractorsEntities, textContent)
-            ))
+            .setInputData(
+                workDataOf(
+                    "Request_Body" to requestBodyTextRazor(TextRazorParameters.ExtractorsEntities, textContent).toByteArray(Charset.defaultCharset()),
+                    "FirebaseUserId" to firebaseUserId.toByteArray(Charset.defaultCharset()),
+                    "FirebaseDocumentId" to documentId.toByteArray(Charset.defaultCharset())
+                ))
             .build()
 
 
@@ -49,9 +42,6 @@ class NaturalLanguageProcessNetworkOperation(private val context: TakeNote) {
                     workInfo.outputData.getByteArray("Note_Tags")?.let {
 
                         val allTags = String(it)
-
-                        context.jsonIO.writeTagsLineSeparated(allTags)
-
 
                     }
 
