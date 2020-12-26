@@ -2,7 +2,6 @@ package net.geeksempire.ready.keep.notes.Notes.Taking.Extensions
 
 import android.animation.Animator
 import android.content.res.ColorStateList
-import android.graphics.PorterDuff
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
@@ -120,29 +119,10 @@ fun TakeNote.setupPaintingActions() {
 
     takeNoteLayoutBinding.paintingToolbarInclude.clearAllPaint.setOnClickListener {
 
-        if (takeNoteLayoutBinding.paintingToolbarInclude.clearAllPaint.imageTintList == ColorStateList.valueOf(getColor(R.color.red_transparent))) {
-
-            paintingCanvasView.disableClearing()
-
-            takeNoteLayoutBinding.paintingToolbarInclude.clearAllPaint.imageTintList = null
-
-        } else {
-
-            paintingCanvasView.enableClearing()
-
-            takeNoteLayoutBinding.paintingToolbarInclude.clearAllPaint.imageTintMode = PorterDuff.Mode.SRC_ATOP
-            takeNoteLayoutBinding.paintingToolbarInclude.clearAllPaint.imageTintList = ColorStateList.valueOf(getColor(R.color.red_transparent))
-
-        }
-
-    }
-
-    takeNoteLayoutBinding.paintingToolbarInclude.clearAllPaint.setOnLongClickListener {
         doVibrate(applicationContext, 179)
 
         paintingCanvasView.removeAllPaints()
 
-        true
     }
 
     takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color = getColor(R.color.default_color_bright)
