@@ -18,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.NaturalLanguageProcessNetworkOperation
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
@@ -281,18 +280,6 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                 .initialize()
 
         }
-
-
-
-
-
-
-
-
-
-        val naturalLanguageProcessNetworkOperation = NaturalLanguageProcessNetworkOperation(this@KeepNoteOverview)
-
-        naturalLanguageProcessNetworkOperation.start("Do you like patterns? It’s enough to look at your wardrobe, surely you’ll see printed clothes or accessories. Using patterns is popular among many people because they add some diversities and a spirit to your style. On the other side, every fashion designer uses iconic patterns in their collections, as we can see prints are a fashion trend in these years according to all fashion weeks. So, you need to know how to use patterns in your style or how to coordinate different patterns together.", null)
 
     }
 
