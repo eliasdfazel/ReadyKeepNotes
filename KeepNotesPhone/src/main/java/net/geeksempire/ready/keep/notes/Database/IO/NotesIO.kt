@@ -163,22 +163,30 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             /* Save Paths Of Handwriting Notes */
             (keepNoteApplication).firestoreDatabase
-                .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath).plus("/"))
-                .document().delete().addOnSuccessListener {
+                .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
+                .get().addOnSuccessListener {
+
+                    it.documents.forEach { documentSnapshot ->
+
+                        documentSnapshot.reference.delete()
+
+                    }
 
                     paintingCanvasView.overallRedrawPaintingData.forEach { aPathXY ->
 
                         (keepNoteApplication).firestoreDatabase
                             .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
-                            .add(hashMapOf(
-                                "paintPath" to jsonIO.writePaintingPathData(aPathXY)
-                            ))
+                            .add(
+                                hashMapOf(
+                                    "paintPath" to jsonIO.writePaintingPathData(aPathXY)
+                                )
+                            )
                             .addOnSuccessListener {
-                                Log.d(this@NotesIO.javaClass.simpleName, "Handwriting Paths Saved Successfully")
-
-
+                                Log.d(
+                                    this@NotesIO.javaClass.simpleName,
+                                    "Handwriting Paths Saved Successfully"
+                                )
                             }.addOnFailureListener {
-
 
 
                             }
