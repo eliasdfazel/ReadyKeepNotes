@@ -2,7 +2,8 @@ package net.geeksempire.ready.keep.notes.Notes.Taking.Extensions
 
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.InputMethodManager
+import com.abanabsalan.aban.magazine.Utils.System.hideKeyboard
+import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
@@ -19,10 +20,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                    takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
                    takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
 
-                   inputMethodManager.showSoftInput(
-                       takeNoteLayoutBinding.editTextContentView,
-                       InputMethodManager.SHOW_IMPLICIT
-                   )
+                   showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
                    takeNoteLayoutBinding.editTextContentView.requestFocus()
 
@@ -47,10 +45,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                    takeNoteLayoutBinding.editTextTitleView.clearFocus()
                    takeNoteLayoutBinding.editTextContentView.clearFocus()
 
-                   inputMethodManager.hideSoftInputFromWindow(
-                       takeNoteLayoutBinding.editTextContentView.windowToken,
-                       InputMethodManager.HIDE_NOT_ALWAYS
-                   )
+                   hideKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
                }
 
@@ -73,10 +68,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
             takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
 
-            inputMethodManager.showSoftInput(
-                takeNoteLayoutBinding.editTextContentView,
-                InputMethodManager.SHOW_IMPLICIT
-            )
+            showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
             takeNoteLayoutBinding.editTextContentView.requestFocus()
 
@@ -101,10 +93,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
 
             takeNoteLayoutBinding.editTextContentView.requestFocus()
 
-            inputMethodManager.showSoftInput(
-                takeNoteLayoutBinding.editTextContentView,
-                InputMethodManager.SHOW_IMPLICIT
-            )
+            showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
             takeNoteLayoutBinding.editTextContentView.bringToFront()
 
@@ -129,10 +118,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
             takeNoteLayoutBinding.editTextTitleView.clearFocus()
             takeNoteLayoutBinding.editTextContentView.clearFocus()
 
-            inputMethodManager.hideSoftInputFromWindow(
-                takeNoteLayoutBinding.editTextContentView.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            hideKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
             takeNoteLayoutBinding.paintingCanvasContainer.bringToFront()
 

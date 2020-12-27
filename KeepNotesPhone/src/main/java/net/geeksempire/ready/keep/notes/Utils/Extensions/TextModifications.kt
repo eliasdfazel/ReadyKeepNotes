@@ -28,3 +28,32 @@ fun String.capitalizeFirstChar(): String {
     }
 
 }
+
+/**
+ *
+ *  Special Characters  * # . - ☑ ✅
+ *
+ **/
+data class SpecialCharacterData(var detected: Boolean, var specialCharacter: String?)
+
+/**
+ *
+ *  Special Characters  * # . - ☑ ✅
+ *
+ **/
+fun String.checkSpecialCharacters() : SpecialCharacterData {
+
+    val arrayOfSpecialCharacters = arrayListOf<String>("*", "#", ".", "-", "☑", "✅")
+
+    arrayOfSpecialCharacters.forEachIndexed { index, detectedSpecialCharater ->
+
+        if (this@checkSpecialCharacters == detectedSpecialCharater) {
+
+            return SpecialCharacterData(true, "${detectedSpecialCharater} ")
+        }
+
+    }
+
+    return SpecialCharacterData(false, null)
+}
+

@@ -1,13 +1,12 @@
 package net.geeksempire.ready.keep.notes.Notes.Taking
 
 import android.animation.Animator
-import android.content.Context
 import android.os.Bundle
-import android.view.KeyEvent
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -15,7 +14,6 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
-import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
@@ -25,6 +23,7 @@ import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Utils.StrokePaintingCanvasView
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.Extensions.checkSpecialCharacters
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
@@ -55,10 +54,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         }
     }
 
-    val inputMethodManager: InputMethodManager by lazy {
-        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    }
-
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(applicationContext)
     }
@@ -70,8 +65,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val paintingIO: PaintingIO by lazy {
         PaintingIO(applicationContext)
     }
-
-    val jsonIO = JsonIO()
 
     val contentEncryption: ContentEncryption  = ContentEncryption()
 
@@ -87,6 +80,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val recentColorsAdapter: RecentColorsAdapter by lazy {
         RecentColorsAdapter(this@TakeNote, paintingCanvasView)
     }
+
+    var autoEnterPlaced = false
 
     @Inject
     lateinit var networkConnectionListener: NetworkConnectionListener
@@ -169,19 +164,59 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             }
 
-            takeNoteLayoutBinding.editTextContentView.setOnEditorActionListener { textView, keyCode, keyEvent ->
+            takeNoteLayoutBinding.editTextContentView.addTextChangedListener(object : TextWatcher {
 
-                println(">>> >> > " + textView.text.toString())
-
-                if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-
-                    println(">>> >> > " + textView.text.toString()[0])
-                    println(">>> >> > " + textView.text.toString().split(" ")[0])
+                override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
 
                 }
 
-                false
-            }
+                override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+
+                }
+
+                override fun afterTextChanged(editable: Editable?) {
+
+                    editable?.let {
+
+                        if (editable[editable.length - 1] == '\n') {
+
+                            val allLines = editable.toString().split("\n")
+
+                            val lastLine = allLines[allLines.size - 2]
+
+                            val specialCharacterData = lastLine.substring(IntRange(0, 0)).checkSpecialCharacters()
+
+                            if (specialCharacterData.detected) {
+
+                                if (lastLine.length == 2) {
+
+                                    autoEnterPlaced = true
+
+                                    takeNoteLayoutBinding.editTextContentView.editableText.replace(editable.length - 4, editable.length, "")
+                                    takeNoteLayoutBinding.editTextContentView.append("\n")
+
+                                } else {
+
+                                    if (!autoEnterPlaced) {
+
+                                        takeNoteLayoutBinding.editTextContentView.append(specialCharacterData.specialCharacter)
+                                        takeNoteLayoutBinding.editTextContentView.setSelection(editable.length)
+
+                                    }
+
+                                    autoEnterPlaced = false
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            })
 
             takeNoteLayoutBinding.savingView.setOnClickListener {
 

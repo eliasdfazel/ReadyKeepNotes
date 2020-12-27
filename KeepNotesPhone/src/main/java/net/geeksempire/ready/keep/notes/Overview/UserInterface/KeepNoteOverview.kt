@@ -1,15 +1,12 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface
 
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.abanabsalan.aban.magazine.Utils.System.doVibrate
+import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
@@ -34,6 +32,7 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.setupC
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.startNetworkOperation
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.Extensions.checkSpecialCharacters
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.InApplicationUpdateProcess
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
@@ -60,10 +59,6 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
     val contentEncryption: ContentEncryption = ContentEncryption()
 
-    private val inputMethodManager: InputMethodManager by lazy {
-        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    }
-
     var databaseListener: ListenerRegistration? = null
 
     val notesOverviewViewModel: NotesOverviewViewModel by lazy {
@@ -80,16 +75,29 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                     or ItemTouchHelper.DOWN
                     or ItemTouchHelper.START
                     or ItemTouchHelper.END,
-            0) {
+            0
+        ) {
 
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
 
 
 
                 return true
             }
 
-            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
+            override fun onMoved(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                fromPosition: Int,
+                target: RecyclerView.ViewHolder,
+                toPosition: Int,
+                x: Int,
+                y: Int
+            ) {
                 super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
                 val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
@@ -152,14 +160,20 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                         .update(
                             Notes.NoteIndex, newIndex,
                         ).addOnSuccessListener {
-                            Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Initial Position")
+                            Log.d(
+                                this@KeepNoteOverview.javaClass.simpleName,
+                                "Database Rearrange Process Completed Successfully | Initial Position"
+                            )
 
                             (application as KeepNoteApplication)
                                 .firestoreDatabase.document(overviewAdapter.notesDataStructureList[targetPosition].reference.path)
                                 .update(
                                     Notes.NoteIndex, oldIndex,
                                 ).addOnSuccessListener {
-                                    Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Target Positionb")
+                                    Log.d(
+                                        this@KeepNoteOverview.javaClass.simpleName,
+                                        "Database Rearrange Process Completed Successfully | Target Positionb"
+                                    )
 
                                     (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = true
                                     startNetworkOperation()
@@ -179,6 +193,8 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
         ItemTouchHelper(simpleItemTouchCallback)
     }
+
+    var autoEnterPlaced = false
 
     @Inject
     lateinit var networkConnectionListener: NetworkConnectionListener
@@ -208,11 +224,7 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
                 overviewLayoutBinding.quickTakeNote.requestFocus()
 
-                inputMethodManager.showSoftInput(
-                    overviewLayoutBinding.quickTakeNote,
-                    InputMethodManager.SHOW_FORCED
-                )
-
+                showKeyboard(applicationContext, overviewLayoutBinding.quickTakeNote)
 
                 overviewLayoutBinding.quickTakeNote.addTextChangedListener(object : TextWatcher {
 
@@ -226,26 +238,47 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
                     override fun afterTextChanged(editable: Editable?) {
 
-                        println(">>> >> > " + editable.toString())
+                        editable?.let {
 
+                            if (editable[editable.length - 1] == '\n') {
+
+                                val allLines = editable.toString().split("\n")
+
+                                val lastLine = allLines[allLines.size - 2]
+
+                                val specialCharacterData = lastLine.substring(IntRange(0, 0)).checkSpecialCharacters()
+
+                                if (specialCharacterData.detected) {
+
+                                    if (lastLine.length == 2) {
+
+                                        autoEnterPlaced = true
+
+                                        overviewLayoutBinding.quickTakeNote.editableText.replace(editable.length - 4, editable.length, "")
+                                        overviewLayoutBinding.quickTakeNote.append("\n")
+
+                                    } else {
+
+                                        if (!autoEnterPlaced) {
+
+                                            overviewLayoutBinding.quickTakeNote.append(specialCharacterData.specialCharacter)
+                                            overviewLayoutBinding.quickTakeNote.setSelection(editable.length)
+
+                                        }
+
+                                        autoEnterPlaced = false
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
 
                     }
 
                 })
-                overviewLayoutBinding.quickTakeNote.setImeActionLabel("Enter", KeyEvent.KEYCODE_ENTER)
-                overviewLayoutBinding.quickTakeNote.setOnEditorActionListener { textView, keyCode, keyEvent ->
-
-                    println(">>> >> > " + textView.text.toString())
-
-                    if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-
-                        println(">>> >> > " + textView.text.toString()[0])
-                        println(">>> >> > " + textView.text.toString().split(" ")[0])
-
-                    }
-
-                    false
-                }
 
             }
 
@@ -288,9 +321,9 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
                     overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
 
-                    SnackbarBuilder(applicationContext).show (
+                    SnackbarBuilder(applicationContext).show(
                         rootView = overviewLayoutBinding.rootView,
-                        messageText= getString(R.string.emptyNotesCollection),
+                        messageText = getString(R.string.emptyNotesCollection),
                         messageDuration = Snackbar.LENGTH_INDEFINITE,
                         actionButtonText = android.R.string.ok,
                         snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
@@ -298,10 +331,22 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                             override fun onActionButtonClicked(snackbar: Snackbar) {
                                 super.onActionButtonClicked(snackbar)
 
-                                startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-                                    putExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations, TakeNote.NoteTakingWritingType.Keyboard)
-                                    putExtra(TakeNote.NoteTakingWritingType.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
-                                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+                                startActivity(
+                                    Intent(applicationContext, TakeNote::class.java).apply {
+                                        putExtra(
+                                            TakeNote.NoteTakingWritingType.ExtraConfigurations,
+                                            TakeNote.NoteTakingWritingType.Keyboard
+                                        )
+                                        putExtra(
+                                            TakeNote.NoteTakingWritingType.ContentText,
+                                            overviewLayoutBinding.quickTakeNote.text.toString()
+                                        )
+                                    }, ActivityOptions.makeCustomAnimation(
+                                        applicationContext,
+                                        R.anim.fade_in,
+                                        0
+                                    ).toBundle()
+                                )
 
                             }
 
@@ -336,10 +381,16 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
     override fun onBackPressed() {
 
-        startActivity(Intent(Intent.ACTION_MAIN).apply {
-            this.addCategory(Intent.CATEGORY_HOME)
-            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        startActivity(
+            Intent(Intent.ACTION_MAIN).apply {
+                this.addCategory(Intent.CATEGORY_HOME)
+                this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }, ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+            ).toBundle()
+        )
 
     }
 
