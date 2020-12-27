@@ -125,7 +125,7 @@ class PaintingIO (private val context: Context) {
 
             }
 
-            paintingCanvasView.allRedrawPaintingData.add(paintingCanvasView.allRedrawPaintingPathData)
+            paintingCanvasView.overallRedrawPaintingData.add(paintingCanvasView.allRedrawPaintingPathData)
 
         }
 

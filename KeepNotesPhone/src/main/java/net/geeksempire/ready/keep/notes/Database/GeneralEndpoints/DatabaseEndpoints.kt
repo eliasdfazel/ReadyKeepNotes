@@ -12,7 +12,12 @@ class DatabaseEndpoints {
         return generalEndpoints.plus("/TextingNote").plus("/Texts").plus("/Content")
     }
 
-    fun paintPathsEndpoints (generalEndpoints: String) : String {
+    fun paintPathsDocumentEndpoints (generalEndpoints: String) : String {
+
+        return generalEndpoints.plus("/PaintingNote").plus("/Paths")
+    }
+
+    fun paintPathsCollectionEndpoints (generalEndpoints: String) : String {
 
         return generalEndpoints.plus("/PaintingNote").plus("/Paths").plus("/Content")
     }

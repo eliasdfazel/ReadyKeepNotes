@@ -37,9 +37,12 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     val redrawSavedPaints: RedrawSavedPaints = RedrawSavedPaints(this@PaintingCanvasView)
 
-    val allRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
+    val overallRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
+
+    var overallRedrawPaintingDataRedo: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
 
     lateinit var allRedrawPaintingPathData: ArrayList<RedrawPaintingData>
+
 
     init {
 
@@ -167,7 +170,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
         allRedrawPaintingPathData.add(RedrawPaintingData(movingX, movingY, newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
 
-        allRedrawPaintingData.add(allRedrawPaintingPathData)
+        overallRedrawPaintingData.add(allRedrawPaintingPathData)
 
         drawingPath.lineTo(movingX, movingY)
 
@@ -208,7 +211,13 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
             try {
 
-                undoDrawingInformation.add(allDrawingInformation.removeAt(allDrawingInformation.size - 1))
+                val itemToUndo = allDrawingInformation.removeAt(allDrawingInformation.size - 1)
+
+                undoDrawingInformation.add(itemToUndo)
+
+                overallRedrawPaintingDataRedo.add(overallRedrawPaintingData[overallRedrawPaintingData.size - 1])
+
+                overallRedrawPaintingData.removeAt(overallRedrawPaintingData.size - 1)
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -231,7 +240,13 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
             try {
 
-                allDrawingInformation.add(undoDrawingInformation.removeAt(undoDrawingInformation.size - 1))
+                val itemToRedo = undoDrawingInformation.removeAt(undoDrawingInformation.size - 1)
+
+                allDrawingInformation.add(itemToRedo)
+
+                overallRedrawPaintingData.add(overallRedrawPaintingDataRedo[overallRedrawPaintingDataRedo.size - 1])
+
+                overallRedrawPaintingDataRedo.removeAt(overallRedrawPaintingDataRedo.size - 1)
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -264,6 +279,10 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
         allDrawingInformation.clear()
 
+        allRedrawPaintingPathData.clear()
+
+        overallRedrawPaintingData.clear()
+
         invalidate()
 
     }
@@ -271,7 +290,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
     /* Redraw Process */
     fun restorePaints() {
 
-        redrawSavedPaints.runRestoreProcess(allRedrawPaintingData).invokeOnCompletion {
+        redrawSavedPaints.runRestoreProcess(overallRedrawPaintingData).invokeOnCompletion {
             Log.d(this@PaintingCanvasView.javaClass.simpleName, "Redrawing Paints Completed")
 
         }

@@ -114,7 +114,7 @@
         android:visibility="invisible"
 
         apps:SpinKit_Style="RotatingCircle"
-        apps:SpinKit_Color="@color/cyan"
+        apps:SpinKit_Color="@color/cyan_transparent"
 
         apps:layout_constraintTop_toTopOf="@id/savingView"
         apps:layout_constraintBottom_toBottomOf="@id/toggleKeyboardHandwriting"

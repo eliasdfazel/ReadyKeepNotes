@@ -103,7 +103,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
             overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
 
             (context.application as KeepNoteApplication)
-                .firestoreDatabase.collection(context.databaseEndpoints.paintPathsEndpoints(notesDataStructureList[position].reference.path))
+                .firestoreDatabase.collection(context.databaseEndpoints.paintPathsCollectionEndpoints(notesDataStructureList[position].reference.path))
                 .get()
                 .addOnSuccessListener { querySnapshot ->
 
