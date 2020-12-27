@@ -101,13 +101,16 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                         }
 
-                    if (contentText != "No Content") {
+                    if (contentText.isNotBlank()
+                        || contentText != "No Content") {
+
                         NaturalLanguageProcessNetworkOperation(context)
                             .start(
                                 firebaseUserId = firebaseUser.uid,
                                 documentId = documentId.toString(),
                                 textContent = contentText.toString()
                             )
+
                     }
 
                 }.addOnFailureListener {
@@ -235,10 +238,17 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     .set(notesDataStructure)
                     .addOnSuccessListener {
 
-                        NaturalLanguageProcessNetworkOperation(context)
-                            .start(firebaseUserId = firebaseUser.uid,
-                                documentId = documentId.toString(),
-                                textContent =  contentText.toString())
+                        if (contentText.isNotBlank()
+                            || contentText != "No Content") {
+
+                            NaturalLanguageProcessNetworkOperation(context)
+                                .start(
+                                    firebaseUserId = firebaseUser.uid,
+                                    documentId = documentId.toString(),
+                                    textContent =  contentText.toString()
+                                )
+
+                        }
 
                         overviewLayoutBinding.savingView.isEnabled = true
 
