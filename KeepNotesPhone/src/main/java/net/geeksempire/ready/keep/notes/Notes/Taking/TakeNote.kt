@@ -3,6 +3,7 @@ package net.geeksempire.ready.keep.notes.Notes.Taking
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
@@ -32,6 +33,7 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
 import net.geeksempire.ready.keep.notes.databinding.TakeNoteLayoutBinding
 import javax.inject.Inject
 import kotlin.math.hypot
+
 
 class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
@@ -137,8 +139,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             }
 
-
-
             if (intent.hasExtra(NoteTakingWritingType.TitleText)) {
 
                 takeNoteLayoutBinding.editTextTitleView.setText(intent.getStringExtra(
@@ -167,6 +167,20 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                 }
 
+            }
+
+            takeNoteLayoutBinding.editTextContentView.setOnEditorActionListener { textView, keyCode, keyEvent ->
+
+                println(">>> >> > " + textView.text.toString())
+
+                if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                    println(">>> >> > " + textView.text.toString()[0])
+                    println(">>> >> > " + textView.text.toString().split(" ")[0])
+
+                }
+
+                false
             }
 
             takeNoteLayoutBinding.savingView.setOnClickListener {
@@ -206,13 +220,19 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
 
-            val finalRadius = hypot(displayX(applicationContext).toDouble(), displayY(applicationContext).toDouble())
+            val finalRadius = hypot(
+                displayX(applicationContext).toDouble(), displayY(
+                    applicationContext
+                ).toDouble()
+            )
 
-            val circularReveal: Animator = ViewAnimationUtils.createCircularReveal(takeNoteLayoutBinding.colorPaletteInclude.root,
+            val circularReveal: Animator = ViewAnimationUtils.createCircularReveal(
+                takeNoteLayoutBinding.colorPaletteInclude.root,
                 (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.x.toInt()),
                 (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.y.toInt() - (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.height)),
                 finalRadius.toFloat(),
-                (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.height.toFloat() / 2))
+                (takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.height.toFloat() / 2)
+            )
 
             circularReveal.duration = 555
             circularReveal.interpolator = AccelerateInterpolator()

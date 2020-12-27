@@ -4,7 +4,10 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -209,6 +212,40 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                     overviewLayoutBinding.quickTakeNote,
                     InputMethodManager.SHOW_FORCED
                 )
+
+
+                overviewLayoutBinding.quickTakeNote.addTextChangedListener(object : TextWatcher {
+
+                    override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
+
+                    }
+
+                    override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+
+                    }
+
+                    override fun afterTextChanged(editable: Editable?) {
+
+                        println(">>> >> > " + editable.toString())
+
+
+                    }
+
+                })
+                overviewLayoutBinding.quickTakeNote.setImeActionLabel("Enter", KeyEvent.KEYCODE_ENTER)
+                overviewLayoutBinding.quickTakeNote.setOnEditorActionListener { textView, keyCode, keyEvent ->
+
+                    println(">>> >> > " + textView.text.toString())
+
+                    if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                        println(">>> >> > " + textView.text.toString()[0])
+                        println(">>> >> > " + textView.text.toString().split(" ")[0])
+
+                    }
+
+                    false
+                }
 
             }
 
