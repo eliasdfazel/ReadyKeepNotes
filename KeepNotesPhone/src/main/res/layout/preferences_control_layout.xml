@@ -80,6 +80,8 @@
                     android:layout_width="59dp"
                     android:layout_height="59dp"
                     android:scaleType="centerCrop"
+                    android:transitionName="@string/profileImageTransitionName"
+                    android:src="@drawable/not_login_icon"
 
                     apps:shape="circle"
 
@@ -95,7 +97,7 @@
                     android:gravity="center_vertical"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="43sp"
+                    android:textSize="41sp"
                     android:textColor="@color/dark"
                     android:fontFamily="@font/upcil"
 

@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -85,12 +86,16 @@ class PreferencesControl : AppCompatActivity() {
 
         if (firebaseUser.isAnonymous) {
 
-            preferencesControlLayoutBinding.accountManagerView.visibility = View.GONE
+            preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
+
+            preferencesControlLayoutBinding.userDisplayName.setLines(2)
+            preferencesControlLayoutBinding.userDisplayName.text = Html.fromHtml("${getString(R.string.notLogin)}", Html.FROM_HTML_MODE_COMPACT)
 
         } else {
 
             preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
 
+            preferencesControlLayoutBinding.userDisplayName.setLines(1)
             preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
 
             Glide.with(this@PreferencesControl)
@@ -99,19 +104,15 @@ class PreferencesControl : AppCompatActivity() {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(preferencesControlLayoutBinding.userProfileImage)
 
-            preferencesControlLayoutBinding.accountManagerView.setOnClickListener {
+        }
 
-                startActivity(
-                    Intent(applicationContext, AccountInformation::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    }, ActivityOptions.makeCustomAnimation(
-                        applicationContext,
-                        R.anim.fade_in,
-                        R.anim.fade_out
-                    ).toBundle()
-                )
+        preferencesControlLayoutBinding.accountManagerView.setOnClickListener {
 
-            }
+            startActivity(
+                Intent(applicationContext, AccountInformation::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }, ActivityOptions.makeSceneTransitionAnimation(this@PreferencesControl, preferencesControlLayoutBinding.userProfileImage, getString(R.string.profileImageTransitionName)).toBundle()
+            )
 
         }
 

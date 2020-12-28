@@ -43,6 +43,12 @@
         ]]>
     </string>
 
+    <string name="notLogin">
+        <![CDATA[
+            Complete Your Account <br/>
+            <small>Login To Sync Your Data</small>
+        ]]>
+    </string>
     <string name="followFacebook">Like Us</string>
     <string name="followTwitter">Follow Us</string>
 
