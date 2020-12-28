@@ -162,16 +162,21 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                     photoUri = googleSignInAccount.photoUrl
                                 }
 
-                                firebaseUser.updateProfile(userProfileChangeRequestBuilder.build()).addOnSuccessListener {
-                                    Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
+                                firebaseUser.updateProfile(userProfileChangeRequestBuilder.build())
+                                    .addOnSuccessListener {
+                                        Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
 
-                                    val accountName: String = firebaseAuthentication.currentUser?.email.toString()
+                                        val accountName: String = firebaseAuthentication.currentUser?.email.toString()
 
-                                    userInformationIO.saveUserInformation(accountName)
+                                        userInformationIO.saveUserInformation(accountName)
 
-                                    createUserProfile()
+                                        createUserProfile()
 
-                                }
+                                    }.addOnFailureListener {
+
+
+
+                                    }
 
                             }.addOnFailureListener {
 
@@ -182,6 +187,12 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                     }.addOnFailureListener {
                         it.printStackTrace()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+
+                            userInformation.startSignInProcess()
+
+                        }, 531)
 
                     }
 
