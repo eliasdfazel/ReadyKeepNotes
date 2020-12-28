@@ -1,6 +1,7 @@
 <resources>
 
     <string name="profileImageTransitionName" translatable="false">profileImageTransitionName</string>
+    <string name="preferenceImageTransitionName" translatable="false">preferenceImageTransitionName</string>
 
     <string name="playStoreLink" translatable="false">https://play.google.com/store/apps/details?id=net.geeksempire.keepnotes</string>
     <string name="facebookLink" translatable="false">https://www.facebook.com/ReadyKeepNotes</string>

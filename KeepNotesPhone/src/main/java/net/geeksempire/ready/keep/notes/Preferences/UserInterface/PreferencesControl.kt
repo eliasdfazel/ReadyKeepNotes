@@ -40,6 +40,7 @@ class PreferencesControl : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preferencesControlLayoutBinding = PreferencesControlLayoutBinding.inflate(layoutInflater)
         setContentView(preferencesControlLayoutBinding.root)
 
         preferencesControlSetupUserInterface()

@@ -32,6 +32,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/preferencesView"
+                android:layout_width="match_parent"
+                android:layout_height="77dp"
+                android:padding="13dp"
+                android:scaleType="fitCenter"
+                android:transitionName="@string/preferenceImageTransitionName"
+                android:src="@drawable/preference_icon"
+                android:background="@color/light"
+
+                apps:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/goBackView"
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:padding="13dp"
+                android:scaleType="fitCenter"
+
+                apps:layout_constraintTop_toTopOf="parent"
+                apps:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/supportView"
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:padding="13dp"
+                android:scaleType="fitCenter"
+
+                apps:layout_constraintTop_toTopOf="parent"
+                apps:layout_constraintEnd_toEndOf="parent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/accountManagerView"
                 android:layout_width="match_parent"
@@ -39,7 +71,7 @@
                 android:paddingHorizontal="23dp"
                 android:background="@drawable/preferences_account_view_background"
 
-                apps:layout_constraintTop_toTopOf="parent">
+                apps:layout_constraintTop_toBottomOf="@id/preferencesView">
 
                 <net.geekstools.imageview.customshapes.ShapesImage
                     android:id="@+id/userProfileImage"

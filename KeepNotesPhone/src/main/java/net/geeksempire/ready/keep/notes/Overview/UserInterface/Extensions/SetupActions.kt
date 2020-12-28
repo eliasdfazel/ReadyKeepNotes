@@ -5,6 +5,7 @@ import android.content.Intent
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
+import net.geeksempire.ready.keep.notes.Preferences.UserInterface.PreferencesControl
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.InApplicationReview.InApplicationReviewProcess
 
@@ -44,4 +45,11 @@ fun KeepNoteOverview.setupActions() {
 
     }
 
+    overviewLayoutBinding.preferencesView.setOnClickListener {
+
+        val accountInformation = Intent(applicationContext, PreferencesControl::class.java)
+        startActivity(accountInformation,
+            ActivityOptions.makeSceneTransitionAnimation(this@setupActions, overviewLayoutBinding.preferencesView, getString(R.string.preferenceImageTransitionName)).toBundle())
+
+    }
 }
