@@ -28,6 +28,12 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.Task
 import net.geeksempire.ready.keep.notes.R
 
+interface UpdateResponse {
+    fun newUpdateAvailable() {}
+    fun latestVersionAlreadyInstalled() {}
+    fun updateProcessError(errorCode: Int) {}
+}
+
 class InApplicationUpdateProcess (private val context: AppCompatActivity, private val rootView: ViewGroup) : InstallStateUpdatedListener {
 
     private val appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(context)
@@ -36,7 +42,7 @@ class InApplicationUpdateProcess (private val context: AppCompatActivity, privat
         private const val IN_APP_UPDATE_REQUEST = 333
     }
 
-    fun initialize() {
+    fun initialize(updateResponse: UpdateResponse) {
 
         appUpdateManager.registerListener(this@InApplicationUpdateProcess)
 
@@ -59,6 +65,8 @@ class InApplicationUpdateProcess (private val context: AppCompatActivity, privat
 
             } else {
                 Log.d(this@InApplicationUpdateProcess.javaClass.simpleName, "Latest Version Installed")
+
+                updateResponse.latestVersionAlreadyInstalled()
 
             }
 

@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Html
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +27,8 @@ import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.InApplicationReview.InApplicationReviewProcess
+import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.InApplicationUpdateProcess
+import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.UpdateResponse
 import net.geeksempire.ready.keep.notes.databinding.PreferencesControlLayoutBinding
 import java.util.*
 
@@ -157,6 +160,22 @@ class PreferencesControl : AppCompatActivity() {
                     R.anim.slide_out_left
                 ).toBundle()
             )
+
+        }
+
+        preferencesControlLayoutBinding.preferencesView.setOnClickListener {
+
+            InApplicationUpdateProcess(this@PreferencesControl, preferencesControlLayoutBinding.rootView)
+                .initialize (object : UpdateResponse {
+
+                    override fun latestVersionAlreadyInstalled() {
+                        super.latestVersionAlreadyInstalled()
+
+                        Toast.makeText(applicationContext, "Latest Version Already Installed", Toast.LENGTH_LONG).show()
+
+                    }
+
+                })
 
         }
 

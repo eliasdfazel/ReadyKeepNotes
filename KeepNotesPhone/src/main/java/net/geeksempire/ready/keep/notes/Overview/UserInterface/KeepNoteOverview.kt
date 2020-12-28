@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +36,7 @@ import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Extensions.checkSpecialCharacters
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.InApplicationUpdateProcess
+import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.UpdateResponse
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
@@ -364,7 +366,16 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
             /*Invoke In Application Update*/
             InApplicationUpdateProcess(this@KeepNoteOverview, overviewLayoutBinding.rootView)
-                .initialize()
+                .initialize (object : UpdateResponse {
+
+                    override fun latestVersionAlreadyInstalled() {
+                        super.latestVersionAlreadyInstalled()
+
+                        Toast.makeText(applicationContext, "Latest Version Already Installed", Toast.LENGTH_LONG).show()
+
+                    }
+
+                })
 
         }
 
