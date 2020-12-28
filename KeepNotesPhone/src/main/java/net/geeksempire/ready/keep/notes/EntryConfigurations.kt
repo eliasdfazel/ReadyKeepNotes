@@ -15,7 +15,6 @@ import net.geeksempire.ready.keep.notes.databinding.EntryConfigurationLayoutBind
 
 class EntryConfigurations : AppCompatActivity() {
 
-    private val setupAccount = SetupAccount()
 
     lateinit var entryConfigurationLayoutBinding: EntryConfigurationLayoutBinding
 
@@ -27,6 +26,8 @@ class EntryConfigurations : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        val setupAccount = SetupAccount()
 
         if (setupAccount.firebaseUser == null) {
 
