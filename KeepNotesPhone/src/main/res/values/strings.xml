@@ -46,4 +46,7 @@
     <string name="followFacebook">Like Us</string>
     <string name="followTwitter">Follow Us</string>
 
+    <string name="supportEmail" translatable="false">ReadyKeepNotes@GeeksEmpire.xyz</string>
+    <string name="feedbackTag" translatable="false">Ready Keep Notes Direct Help | Feedback</string>
+
 </resources>

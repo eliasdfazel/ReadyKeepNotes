@@ -3,18 +3,22 @@ package net.geeksempire.ready.keep.notes.Preferences.UserInterface
 import android.app.ActivityOptions
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.abanabsalan.aban.magazine.Utils.System.SystemInformation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
+import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Preferences.DataStructure.PreferencesLiveData
 import net.geeksempire.ready.keep.notes.Preferences.Extensions.preferencesControlSetupUserInterface
 import net.geeksempire.ready.keep.notes.Preferences.Extensions.toggleLightDark
@@ -23,11 +27,16 @@ import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.InApplicationReview.InApplicationReviewProcess
 import net.geeksempire.ready.keep.notes.databinding.PreferencesControlLayoutBinding
+import java.util.*
 
 class PreferencesControl : AppCompatActivity() {
 
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(applicationContext)
+    }
+
+    val systemInformation: SystemInformation by lazy {
+        SystemInformation(applicationContext)
     }
 
     val firebaseUser: FirebaseUser = Firebase.auth.currentUser!!
@@ -49,7 +58,7 @@ class PreferencesControl : AppCompatActivity() {
 
             var delayTheme: Long = 3333
 
-            when(themePreferences.checkThemeLightDark()) {
+            when (themePreferences.checkThemeLightDark()) {
                 ThemeType.ThemeLight -> {
                     delayTheme = 3000
                 }
@@ -74,19 +83,35 @@ class PreferencesControl : AppCompatActivity() {
 
         })
 
-        preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
+        if (firebaseUser.isAnonymous) {
 
-        Glide.with(this@PreferencesControl)
-            .asDrawable()
-            .load(firebaseUser.photoUrl)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(preferencesControlLayoutBinding.userProfileImage)
+            preferencesControlLayoutBinding.accountManagerView.visibility = View.GONE
 
-        preferencesControlLayoutBinding.accountManagerView.setOnClickListener {
+        } else {
 
-            startActivity(Intent(applicationContext, AccountInformation::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, R.anim.fade_out).toBundle())
+            preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
+
+            preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
+
+            Glide.with(this@PreferencesControl)
+                .asDrawable()
+                .load(firebaseUser.photoUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(preferencesControlLayoutBinding.userProfileImage)
+
+            preferencesControlLayoutBinding.accountManagerView.setOnClickListener {
+
+                startActivity(
+                    Intent(applicationContext, AccountInformation::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }, ActivityOptions.makeCustomAnimation(
+                        applicationContext,
+                        R.anim.fade_in,
+                        R.anim.fade_out
+                    ).toBundle()
+                )
+
+            }
 
         }
 
@@ -127,27 +152,50 @@ class PreferencesControl : AppCompatActivity() {
 
         preferencesControlLayoutBinding.facebookView.setOnClickListener {
 
-            startActivity(Intent().apply {
-                action = Intent.ACTION_VIEW
-                data = Uri.parse(getString(R.string.facebookLink))
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_in_right, R.anim.slide_out_left).toBundle())
+            startActivity(
+                Intent().apply {
+                    action = Intent.ACTION_VIEW
+                    data = Uri.parse(getString(R.string.facebookLink))
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }, ActivityOptions.makeCustomAnimation(
+                    applicationContext,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                ).toBundle()
+            )
 
         }
 
         preferencesControlLayoutBinding.twitterView.setOnClickListener {
 
-            startActivity(Intent().apply {
-                action = Intent.ACTION_VIEW
-                data = Uri.parse(getString(R.string.twitterLink))
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_in_right, R.anim.slide_out_left).toBundle())
+            startActivity(
+                Intent().apply {
+                    action = Intent.ACTION_VIEW
+                    data = Uri.parse(getString(R.string.twitterLink))
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }, ActivityOptions.makeCustomAnimation(
+                    applicationContext,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                ).toBundle()
+            )
 
         }
 
         preferencesControlLayoutBinding.supportView.setOnClickListener {
 
+            val textMessage = "\n\n\n\n\n" +
+                    "[Essential Information] \n" +
+                    "${systemInformation.getDeviceName()} | API ${Build.VERSION.SDK_INT} | ${systemInformation.getCountryIso().toUpperCase(Locale.getDefault())}"
 
+            val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                putExtra(Intent.EXTRA_EMAIL, getString(R.string.supportEmail))
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedbackTag) + " [${BuildConfig.VERSION_NAME}]")
+                putExtra(Intent.EXTRA_TEXT, textMessage)
+                type = "text/*"
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.feedbackTag)))
 
         }
 

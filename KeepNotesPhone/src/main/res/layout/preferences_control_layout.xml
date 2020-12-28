@@ -40,7 +40,7 @@
                 android:scaleType="fitCenter"
                 android:transitionName="@string/preferenceImageTransitionName"
                 android:src="@drawable/preference_icon"
-                android:background="@color/light"
+                android:background="@android:color/transparent"
 
                 apps:layout_constraintTop_toTopOf="parent"/>
 
@@ -95,7 +95,7 @@
                     android:gravity="center_vertical"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:textSize="59sp"
+                    android:textSize="43sp"
                     android:textColor="@color/dark"
                     android:fontFamily="@font/upcil"
 
@@ -171,7 +171,7 @@
                 apps:iconTint="@android:color/transparent"
                 apps:iconGravity="textStart"
                 apps:backgroundTint="@color/blueDark"
-                apps:rippleColor="@color/default_color_bright"
+                apps:rippleColor="@color/default_color_game_light_transparent"
                 apps:cornerRadius="51dp"
                 apps:elevation="23dp"
 
@@ -197,7 +197,7 @@
                 apps:iconTint="@android:color/transparent"
                 apps:iconGravity="textStart"
                 apps:backgroundTint="@color/blue"
-                apps:rippleColor="@color/default_color_bright"
+                apps:rippleColor="@color/default_color_game_light_transparent"
                 apps:cornerRadius="51dp"
                 apps:elevation="23dp"
 
