@@ -43,6 +43,7 @@
         ]]>
     </string>
 
-    <string name="followFacebook">Follow Us On Facebook</string>
+    <string name="followFacebook">Like Us</string>
+    <string name="followTwitter">Follow Us</string>
 
 </resources>

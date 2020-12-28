@@ -134,6 +134,16 @@ class PreferencesControl : AppCompatActivity() {
 
         }
 
+        preferencesControlLayoutBinding.twitterView.setOnClickListener {
+
+            startActivity(Intent().apply {
+                action = Intent.ACTION_VIEW
+                data = Uri.parse(getString(R.string.twitterLink))
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_in_right, R.anim.slide_out_left).toBundle())
+
+        }
+
     }
 
     override fun onBackPressed() {
