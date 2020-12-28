@@ -83,32 +83,6 @@ class PreferencesControl : AppCompatActivity() {
 
         })
 
-        firebaseUser?.let {
-
-            if (firebaseUser.isAnonymous) {
-
-                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
-
-                preferencesControlLayoutBinding.userDisplayName.setLines(2)
-                preferencesControlLayoutBinding.userDisplayName.text = Html.fromHtml("${getString(R.string.notLogin)}", Html.FROM_HTML_MODE_COMPACT)
-
-            } else {
-
-                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
-
-                preferencesControlLayoutBinding.userDisplayName.setLines(1)
-                preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
-
-                Glide.with(this@PreferencesControl)
-                    .asDrawable()
-                    .load(firebaseUser.photoUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(preferencesControlLayoutBinding.userProfileImage)
-
-            }
-
-        }
-
         preferencesControlLayoutBinding.accountManagerView.setOnClickListener {
 
             startActivity(
@@ -207,6 +181,37 @@ class PreferencesControl : AppCompatActivity() {
 
             this@PreferencesControl.finish()
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        firebaseUser?.let {
+
+            if (firebaseUser.isAnonymous) {
+
+                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
+
+                preferencesControlLayoutBinding.userDisplayName.setLines(2)
+                preferencesControlLayoutBinding.userDisplayName.text = Html.fromHtml("${getString(R.string.notLogin)}", Html.FROM_HTML_MODE_COMPACT)
+
+            } else {
+
+                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
+
+                preferencesControlLayoutBinding.userDisplayName.setLines(1)
+                preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
+
+                Glide.with(this@PreferencesControl)
+                    .asDrawable()
+                    .load(firebaseUser.photoUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(preferencesControlLayoutBinding.userProfileImage)
+
+            }
 
         }
 

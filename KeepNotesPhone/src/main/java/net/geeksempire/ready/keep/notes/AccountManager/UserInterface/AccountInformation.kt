@@ -12,6 +12,9 @@ package net.geeksempire.ready.keep.notes.AccountManager.UserInterface
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
@@ -84,7 +87,15 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
             accountInformationLayoutBinding.signupLoadingView.visibility = View.VISIBLE
             accountInformationLayoutBinding.signupLoadingView.playAnimation()
 
-            userInformation.startSignInProcess()
+            accountInformationLayoutBinding.root.post {
+
+                Handler(Looper.getMainLooper()).postDelayed({
+
+                    userInformation.startSignInProcess()
+
+                }, 531)
+
+            }
 
         } else {
 
@@ -144,6 +155,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                         firebaseAuthentication.currentUser?.let { firebaseUser ->
 
                             firebaseUser.linkWithCredential(authCredential).addOnSuccessListener {
+                                Log.d(this@AccountInformation.javaClass.simpleName, "Anonymous Credential Linked With Google Account Credential.")
 
                                 val userProfileChangeRequestBuilder = UserProfileChangeRequest.Builder().apply {
                                     displayName = googleSignInAccount.displayName
@@ -151,6 +163,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                 }
 
                                 firebaseUser.updateProfile(userProfileChangeRequestBuilder.build()).addOnSuccessListener {
+                                    Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
 
                                     val accountName: String = firebaseAuthentication.currentUser?.email.toString()
 
