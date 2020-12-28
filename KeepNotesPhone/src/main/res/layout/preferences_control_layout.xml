@@ -48,8 +48,9 @@
                 android:id="@+id/goBackView"
                 android:layout_width="77dp"
                 android:layout_height="77dp"
-                android:padding="13dp"
+                android:padding="15dp"
                 android:scaleType="fitCenter"
+                android:src="@drawable/back_icon"
 
                 apps:layout_constraintTop_toTopOf="parent"
                 apps:layout_constraintStart_toStartOf="parent" />
@@ -58,8 +59,9 @@
                 android:id="@+id/supportView"
                 android:layout_width="77dp"
                 android:layout_height="77dp"
-                android:padding="13dp"
+                android:padding="15dp"
                 android:scaleType="fitCenter"
+                android:src="@drawable/support_icon"
 
                 apps:layout_constraintTop_toTopOf="parent"
                 apps:layout_constraintEnd_toEndOf="parent" />

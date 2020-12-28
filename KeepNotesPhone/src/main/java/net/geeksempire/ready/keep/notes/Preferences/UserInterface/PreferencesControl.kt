@@ -145,11 +145,24 @@ class PreferencesControl : AppCompatActivity() {
 
         }
 
+        preferencesControlLayoutBinding.supportView.setOnClickListener {
+
+
+
+        }
+
+        preferencesControlLayoutBinding.goBackView.setOnClickListener {
+
+            this@PreferencesControl.finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+
+        }
+
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
 
+        this@PreferencesControl.finish()
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
     }
