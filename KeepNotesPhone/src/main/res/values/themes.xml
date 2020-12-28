@@ -61,4 +61,16 @@
 
     </style>
 
+    <style name="GeeksEmpire.Material.Preferences" parent="GeeksEmpire.Material">
+
+        <item name="android:statusBarColor">@color/default_color_light</item>
+        <item name="android:navigationBarColor">@color/default_color_light</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <item name="android:windowBackground">@color/default_color</item>
+
+    </style>
+
 </resources>

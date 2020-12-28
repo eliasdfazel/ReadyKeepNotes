@@ -46,8 +46,8 @@ import java.util.concurrent.TimeUnit
 
 fun AccountInformation.accountManagerSetupUserInterface() {
 
-    when (themePreferences.checkLightDark()) {
-        ThemeType.Light -> {
+    when (themePreferences.checkThemeLightDark()) {
+        ThemeType.ThemeLight -> {
 
             accountInformationLayoutBinding.profileBlurView.setOverlayColor(getColor(R.color.light_blurry_color))
 
@@ -63,7 +63,7 @@ fun AccountInformation.accountManagerSetupUserInterface() {
             accountInformationLayoutBinding.phoneNumberAddressLayout.boxBackgroundColor = (getColor(R.color.white))
 
         }
-        ThemeType.Dark -> {
+        ThemeType.ThemeDark -> {
 
             accountInformationLayoutBinding.profileBlurView.setOverlayColor(getColor(R.color.dark_blurry_color))
 

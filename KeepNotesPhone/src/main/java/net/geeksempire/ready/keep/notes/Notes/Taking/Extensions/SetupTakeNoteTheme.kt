@@ -10,7 +10,7 @@ fun TakeNote.setupTakeNoteTheme() {
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthSample.addView(strokePaintingCanvasView)
 
-    if (themePreferences.checkLightDark()) {
+    if (themePreferences.checkThemeLightDark()) {
 
         window.statusBarColor = getColor(R.color.light)
         window.navigationBarColor = getColor(R.color.light)

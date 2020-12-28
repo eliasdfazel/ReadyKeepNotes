@@ -5,8 +5,8 @@ import net.geeksempire.ready.keep.notes.Utils.PreferencesIO.ReadPreferences
 import net.geeksempire.ready.keep.notes.Utils.PreferencesIO.SavePreferences
 
 object ThemeType {
-    const val Light = true
-    const val Dark = false
+    const val ThemeLight = true
+    const val ThemeDark = false
 }
 
 class ThemePreferences (context: Context) {
@@ -17,11 +17,11 @@ class ThemePreferences (context: Context) {
     /**
      * Light = True - Dark = False
      **/
-    fun checkLightDark() : Boolean {
+    fun checkThemeLightDark() : Boolean {
 
         return readPreferences.readPreference(
             ThemePreferences::class.java.simpleName, "LightDark",
-            ThemeType.Dark
+            ThemeType.ThemeDark
         )
     }
 

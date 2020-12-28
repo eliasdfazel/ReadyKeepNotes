@@ -8,8 +8,8 @@ import net.geeksempire.ready.keep.notes.R
 
 fun KeepNoteOverview.setupColors() {
 
-    when (themePreferences.checkLightDark()) {
-        ThemeType.Light -> {
+    when (themePreferences.checkThemeLightDark()) {
+        ThemeType.ThemeLight -> {
 
             window.statusBarColor = getColor(R.color.light)
             window.navigationBarColor = getColor(R.color.light)
@@ -28,7 +28,7 @@ fun KeepNoteOverview.setupColors() {
             overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.darker))
 
         }
-        ThemeType.Dark -> {
+        ThemeType.ThemeDark -> {
 
             window.statusBarColor = getColor(R.color.dark)
             window.navigationBarColor = getColor(R.color.dark)

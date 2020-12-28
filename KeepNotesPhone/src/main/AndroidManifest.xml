@@ -81,6 +81,15 @@
             android:theme="@style/GeeksEmpire.Material.SignIn"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
+        <activity
+            android:name=".Preferences.UserInterface.PreferencesControl"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="keyboardHidden"
+            android:resizeableActivity="true"
+            android:screenOrientation="sensorPortrait"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/GeeksEmpire.Material.Preferences" />
+
     </application>
 
 </manifest>
