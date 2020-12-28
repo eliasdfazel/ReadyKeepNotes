@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.abanabsalan.aban.magazine.Utils.System.doVibrate
+import com.abanabsalan.aban.magazine.Utils.System.hideKeyboard
 import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
@@ -214,8 +215,6 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
         networkConnectionListener.networkConnectionListenerInterface = this@KeepNoteOverview
 
-        setupColors()
-
         setupActions()
 
         overviewLayoutBinding.root.post {
@@ -368,6 +367,8 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
     override fun onResume() {
         super.onResume()
 
+        setupColors()
+
         loadUserAccountInformation()
 
     }
@@ -375,7 +376,7 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
     override fun onPause() {
         super.onPause()
 
-
+        hideKeyboard(applicationContext, overviewLayoutBinding.quickTakeNote)
 
     }
 
