@@ -4,7 +4,7 @@
     xmlns:apps="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="37dp"
+    android:layout_height="47dp"
     android:layout_gravity="center"
     tools:context=".Notes.Taking.TakeNote">
 
@@ -18,8 +18,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/allColorsPicker"
-        android:layout_width="29dp"
-        android:layout_height="29dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:layout_marginStart="33dp"
         android:src="@drawable/all_colors_icon"
         android:background="@android:color/transparent"
@@ -30,8 +30,8 @@
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/clearAllPaint"
-        android:layout_width="29dp"
-        android:layout_height="29dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:layout_marginEnd="33dp"
         android:scaleType="centerCrop"
         android:src="@drawable/clear_canvas_icon"
@@ -45,8 +45,8 @@
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/redoPaint"
-        android:layout_width="29dp"
-        android:layout_height="29dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:layout_marginEnd="77dp"
         android:scaleType="centerCrop"
         android:src="@drawable/redo_icon"
@@ -60,8 +60,8 @@
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/undoPaint"
-        android:layout_width="29dp"
-        android:layout_height="29dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:layout_marginEnd="13dp"
         android:scaleType="centerCrop"
         android:src="@drawable/undo_icon"

@@ -36,8 +36,9 @@
         android:id="@+id/editTextContentView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingVertical="13dp"
         android:paddingHorizontal="17dp"
+        android:paddingTop="13dp"
+        android:paddingBottom="79dp"
         android:gravity="start|top"
         android:textSize="19sp"
         android:hint="@string/contentHintText"
@@ -126,7 +127,7 @@
 
         android:id="@+id/paintingToolbarInclude"
         android:layout_width="match_parent"
-        android:layout_height="51dp"
+        android:layout_height="57dp"
         android:visibility="invisible"
 
         apps:layout_constraintTop_toTopOf="@id/paintingCanvasContainer" />
