@@ -178,38 +178,44 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                     editable?.let {
 
-                        if (editable[editable.length - 1] == '\n') {
+                        try {
 
-                            val allLines = editable.toString().split("\n")
+                            if (editable[editable.length - 1] == '\n') {
 
-                            val lastLine = allLines[allLines.size - 2]
+                                val allLines = editable.toString().split("\n")
 
-                            val specialCharacterData = lastLine.substring(IntRange(0, 0)).checkSpecialCharacters()
+                                val lastLine = allLines[allLines.size - 2]
 
-                            if (specialCharacterData.detected) {
+                                val specialCharacterData = lastLine.substring(IntRange(0, 0)).checkSpecialCharacters()
 
-                                if (lastLine.length == 2) {
+                                if (specialCharacterData.detected) {
 
-                                    autoEnterPlaced = true
+                                    if (lastLine.length == 2) {
 
-                                    takeNoteLayoutBinding.editTextContentView.editableText.replace(editable.length - 4, editable.length, "")
-                                    takeNoteLayoutBinding.editTextContentView.append("\n")
+                                        autoEnterPlaced = true
 
-                                } else {
+                                        takeNoteLayoutBinding.editTextContentView.editableText.replace(editable.length - 4, editable.length, "")
+                                        takeNoteLayoutBinding.editTextContentView.append("\n")
 
-                                    if (!autoEnterPlaced) {
+                                    } else {
 
-                                        takeNoteLayoutBinding.editTextContentView.append(specialCharacterData.specialCharacter)
-                                        takeNoteLayoutBinding.editTextContentView.setSelection(editable.length)
+                                        if (!autoEnterPlaced) {
+
+                                            takeNoteLayoutBinding.editTextContentView.append(specialCharacterData.specialCharacter)
+                                            takeNoteLayoutBinding.editTextContentView.setSelection(editable.length)
+
+                                        }
+
+                                        autoEnterPlaced = false
 
                                     }
-
-                                    autoEnterPlaced = false
 
                                 }
 
                             }
 
+                        } catch (e: IndexOutOfBoundsException) {
+                            e.printStackTrace()
                         }
 
                     }
