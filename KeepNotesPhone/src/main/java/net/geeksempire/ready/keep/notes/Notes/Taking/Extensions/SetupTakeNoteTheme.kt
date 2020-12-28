@@ -1,7 +1,10 @@
 package net.geeksempire.ready.keep.notes.Notes.Taking.Extensions
 
 import android.content.res.ColorStateList
+import android.os.Build
+import android.view.View
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
+import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
 fun TakeNote.setupTakeNoteTheme() {
@@ -10,32 +13,41 @@ fun TakeNote.setupTakeNoteTheme() {
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthSample.addView(strokePaintingCanvasView)
 
-    if (themePreferences.checkThemeLightDark()) {
+    when (themePreferences.checkThemeLightDark()) {
+        ThemeType.ThemeLight -> {
 
-        window.statusBarColor = getColor(R.color.light)
-        window.navigationBarColor = getColor(R.color.light)
+            window.statusBarColor = getColor(R.color.light)
+            window.navigationBarColor = getColor(R.color.light)
 
-        takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
-        takeNoteLayoutBinding.editTextTitleView.setBackgroundColor(getColor(R.color.lighter))
+            window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            } else {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
 
-        takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.dark))
+            takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
+            takeNoteLayoutBinding.editTextTitleView.setBackgroundColor(getColor(R.color.lighter))
 
-        takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
-        takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
+            takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.dark))
 
-    } else {
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
+            takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
 
-        window.statusBarColor = getColor(R.color.dark)
-        window.navigationBarColor = getColor(R.color.dark)
+        }
+        ThemeType.ThemeDark -> {
 
-        takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
-        takeNoteLayoutBinding.editTextTitleView.setBackgroundColor(getColor(R.color.darker))
+            window.statusBarColor = getColor(R.color.dark)
+            window.navigationBarColor = getColor(R.color.dark)
 
-        takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.light))
+            takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
+            takeNoteLayoutBinding.editTextTitleView.setBackgroundColor(getColor(R.color.darker))
 
-        takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
-        takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
+            takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.light))
 
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
+            takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
+
+        }
     }
 
 }

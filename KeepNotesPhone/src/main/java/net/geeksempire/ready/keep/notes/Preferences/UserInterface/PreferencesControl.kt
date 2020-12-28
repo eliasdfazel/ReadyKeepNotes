@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.abanabsalan.aban.magazine.Utils.System.SystemInformation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
@@ -40,7 +39,7 @@ class PreferencesControl : AppCompatActivity() {
         SystemInformation(applicationContext)
     }
 
-    val firebaseUser: FirebaseUser = Firebase.auth.currentUser!!
+    val firebaseUser = Firebase.auth.currentUser
 
     val preferencesLiveData: PreferencesLiveData by lazy {
         ViewModelProvider(this@PreferencesControl).get(PreferencesLiveData::class.java)
@@ -84,25 +83,29 @@ class PreferencesControl : AppCompatActivity() {
 
         })
 
-        if (firebaseUser.isAnonymous) {
+        firebaseUser?.let {
 
-            preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
+            if (firebaseUser.isAnonymous) {
 
-            preferencesControlLayoutBinding.userDisplayName.setLines(2)
-            preferencesControlLayoutBinding.userDisplayName.text = Html.fromHtml("${getString(R.string.notLogin)}", Html.FROM_HTML_MODE_COMPACT)
+                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
 
-        } else {
+                preferencesControlLayoutBinding.userDisplayName.setLines(2)
+                preferencesControlLayoutBinding.userDisplayName.text = Html.fromHtml("${getString(R.string.notLogin)}", Html.FROM_HTML_MODE_COMPACT)
 
-            preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
+            } else {
 
-            preferencesControlLayoutBinding.userDisplayName.setLines(1)
-            preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
+                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
 
-            Glide.with(this@PreferencesControl)
-                .asDrawable()
-                .load(firebaseUser.photoUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(preferencesControlLayoutBinding.userProfileImage)
+                preferencesControlLayoutBinding.userDisplayName.setLines(1)
+                preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
+
+                Glide.with(this@PreferencesControl)
+                    .asDrawable()
+                    .load(firebaseUser.photoUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(preferencesControlLayoutBinding.userProfileImage)
+
+            }
 
         }
 
