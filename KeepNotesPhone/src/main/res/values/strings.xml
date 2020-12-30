@@ -6,6 +6,9 @@
     <string name="proceedAgreement">Agreed &amp; Proceed</string>
     <string name="privacyAgreement">Privacy Policy &amp; User Agreement</string>
 
+    <string name="grantPermission">Grant</string>
+    <string name="permissionMessage">Application Can Not Work Properly Without Permissions</string>
+
     <string name="waitingInformation">Setting Up Your Account…</string>
 
     <string name="anonymouslySignInError">Error Setting Up Your Account ⚠</string>
