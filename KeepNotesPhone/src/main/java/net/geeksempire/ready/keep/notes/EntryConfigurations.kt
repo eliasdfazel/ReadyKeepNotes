@@ -14,15 +14,23 @@ import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
 import net.geeksempire.ready.keep.notes.Browser.BuiltInBrowser
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
+import net.geeksempire.ready.keep.notes.Utils.Network.NetworkCheckpoint
+import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
+import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.EntryConfigurationLayoutBinding
+import javax.inject.Inject
 
-class EntryConfigurations : AppCompatActivity() {
+class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     private val userInformationIO: UserInformationIO by lazy {
         UserInformationIO(applicationContext)
     }
+
+    @Inject lateinit var networkCheckpoint: NetworkCheckpoint
+
+    @Inject lateinit var networkConnectionListener: NetworkConnectionListener
 
     lateinit var entryConfigurationLayoutBinding: EntryConfigurationLayoutBinding
 
@@ -34,6 +42,14 @@ class EntryConfigurations : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         entryConfigurationLayoutBinding = EntryConfigurationLayoutBinding.inflate(layoutInflater)
         setContentView(entryConfigurationLayoutBinding.root)
+
+        (application as KeepNoteApplication)
+            .dependencyGraph
+            .subDependencyGraph()
+            .create(this@EntryConfigurations, entryConfigurationLayoutBinding.rootView)
+            .inject(this@EntryConfigurations)
+
+        networkConnectionListener.networkConnectionListenerInterface = this@EntryConfigurations
 
         if (userInformationIO.readPrivacyAgreement()) {
 
@@ -157,11 +173,25 @@ class EntryConfigurations : AppCompatActivity() {
 
     }
 
+    override fun networkAvailable() {
+
+
+
+    }
+
+    override fun networkLost() {
+
+
+
+    }
+
     private fun openOverviewActivity() {
 
         startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
 
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+
+        this@EntryConfigurations.finish()
 
     }
 
@@ -170,6 +200,8 @@ class EntryConfigurations : AppCompatActivity() {
         startActivity(Intent(applicationContext, TakeNote::class.java).apply {
 
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+
+        this@EntryConfigurations.finish()
 
     }
 

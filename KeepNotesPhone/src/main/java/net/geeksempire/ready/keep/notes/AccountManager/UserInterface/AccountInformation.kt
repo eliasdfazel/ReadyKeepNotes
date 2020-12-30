@@ -19,6 +19,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -143,7 +144,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
         data?.let {
 
             when (requestCode) {
-                UserInformation.GoogleSignInRequestCode -> {
+                UserInformation.GoogleSignInLinkRequestCode -> {
 
                     val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
                     googleSignInAccountTask.addOnSuccessListener {
@@ -188,11 +189,68 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                     }.addOnFailureListener {
                         it.printStackTrace()
 
-                        Handler(Looper.getMainLooper()).postDelayed({
+                        when ((it as ApiException).statusCode) {
+                            GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS -> {
 
-                            userInformation.startSignInProcess()
+                            }
+                            else -> {
 
-                        }, 531)
+                                Handler(Looper.getMainLooper()).postDelayed({
+
+                                    userInformation.startSignInProcess()
+
+                                }, 777)
+
+                            }
+                        }
+
+                    }
+
+                }
+                UserInformation.GoogleSignInRequestCode -> {
+
+                    val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
+                    googleSignInAccountTask.addOnSuccessListener {
+
+                        val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
+
+                        val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
+
+                        firebaseAuthentication.currentUser?.let { firebaseUser ->
+
+                            firebaseAuthentication.signInWithCredential(authCredential).addOnSuccessListener {
+                                Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Created.")
+
+                                val accountName: String = firebaseAuthentication.currentUser?.email.toString()
+
+                                userInformationIO.saveUserInformation(accountName)
+
+                                createUserProfile()
+
+                            }.addOnFailureListener {
+
+
+                            }
+
+                        }
+
+                    }.addOnFailureListener {
+                        it.printStackTrace()
+
+                        when ((it as ApiException).statusCode) {
+                            GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS -> {
+
+                            }
+                            else -> {
+
+                                Handler(Looper.getMainLooper()).postDelayed({
+
+                                    userInformation.startSignInProcess()
+
+                                }, 777)
+
+                            }
+                        }
 
                     }
 

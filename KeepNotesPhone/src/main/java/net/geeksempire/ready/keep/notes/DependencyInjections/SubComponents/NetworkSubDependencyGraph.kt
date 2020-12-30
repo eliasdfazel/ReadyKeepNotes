@@ -17,6 +17,7 @@ import dagger.Subcomponent
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.DependencyInjections.Modules.Network.NetworkConnectionModule
 import net.geeksempire.ready.keep.notes.DependencyInjections.Scopes.ActivityScope
+import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 
@@ -29,8 +30,11 @@ interface NetworkSubDependencyGraph {
         fun create(@BindsInstance appCompatActivity: AppCompatActivity, @BindsInstance constraintLayout: ConstraintLayout): NetworkSubDependencyGraph
     }
 
-    fun inject(takeNote: TakeNote)
+    fun inject(entryConfigurations: EntryConfigurations)
+
     fun inject(keepNoteOverview: KeepNoteOverview)
+    fun inject(takeNote: TakeNote)
+
     fun inject(accountInformation: AccountInformation)
 
 }

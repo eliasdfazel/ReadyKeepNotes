@@ -18,7 +18,8 @@ import net.geeksempire.ready.keep.notes.R
 class UserInformation(private val context: AccountInformation) {
 
     companion object {
-        const val GoogleSignInRequestCode = 103
+        const val GoogleSignInLinkRequestCode = 103
+        const val GoogleSignInRequestCode = 105
 
         fun userProfileDatabasePath(userUniqueIdentifier: String) : String = "KeepNotes/UserInformation/${userUniqueIdentifier}/Profile"
 
@@ -26,7 +27,7 @@ class UserInformation(private val context: AccountInformation) {
 
     fun startSignInProcess() {
 
-        if (context.firebaseAuthentication.currentUser?.isAnonymous == true) {
+        context.firebaseAuthentication.currentUser?.let { firebaseUser ->
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(context.getString(R.string.webClientId))
@@ -35,7 +36,20 @@ class UserInformation(private val context: AccountInformation) {
 
             val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
             googleSignInClient.signInIntent.run {
-                context.startActivityForResult(this@run, GoogleSignInRequestCode)
+                context.startActivityForResult(this@run, UserInformation.GoogleSignInLinkRequestCode)
+            }
+
+            firebaseUser
+        }.let {
+
+            val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(context.getString(R.string.webClientId))
+                .requestEmail()
+                .build()
+
+            val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+            googleSignInClient.signInIntent.run {
+                context.startActivityForResult(this@run, UserInformation.GoogleSignInRequestCode)
             }
 
         }
