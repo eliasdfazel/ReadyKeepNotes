@@ -7,8 +7,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.NaturalLanguageProcessNetworkOperation
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -25,7 +29,43 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     private val jsonIO = JsonIO()
 
+    fun saveNotesAndPaintingOffline(context: TakeNote,
+                                    firebaseUser: FirebaseUser?,
+                                    takeNoteLayoutBinding: TakeNoteLayoutBinding,
+                                    paintingIO: PaintingIO,
+                                    paintingCanvasView: PaintingCanvasView,
+                                    contentEncryption: ContentEncryption,
+                                    documentId: Long) = CoroutineScope(Dispatchers.IO).launch {
 
+        firebaseUser?.let {
+
+            val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
+            val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
+
+            takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
+            takeNoteLayoutBinding.savingView.isEnabled = false
+
+            val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                noteTile = "${noteTitle}",
+                noteTextContent = "${contentText}",
+                noteHandwritingSnapshotLink = null,
+                noteTakenTime = documentId,
+                noteEditTime = null,
+                noteIndex = documentId
+            )
+
+            (keepNoteApplication).notesRoomDatabaseConfiguration
+                .insertNewWidgetDataSuspend(notesDatabaseModel)
+
+            /*
+            * Convert Path To Array and Then To JsonArray
+            * */
+
+        }
+
+    }
 
     fun saveNotesAndPaintingOnline(context: TakeNote,
                                    firebaseUser: FirebaseUser?,

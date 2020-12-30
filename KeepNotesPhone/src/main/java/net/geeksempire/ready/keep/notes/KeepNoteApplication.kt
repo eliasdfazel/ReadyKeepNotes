@@ -7,11 +7,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import net.geeksempire.ready.keep.notes.Database.Configurations.Offline.NotesRoomDatabaseConfiguration
 import net.geeksempire.ready.keep.notes.Database.Configurations.Online.FirestoreConfiguration
 import net.geeksempire.ready.keep.notes.DependencyInjections.DaggerDependencyGraph
 import net.geeksempire.ready.keep.notes.DependencyInjections.DependencyGraph
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.NotesDatabaseDataAccessObject
 
 class KeepNoteApplication : Application() {
+
+    val notesRoomDatabaseConfiguration: NotesDatabaseDataAccessObject by lazy {
+        NotesRoomDatabaseConfiguration().initialize(applicationContext)
+    }
 
     val firestoreConfiguration: FirestoreConfiguration by lazy {
         FirestoreConfiguration(applicationContext)

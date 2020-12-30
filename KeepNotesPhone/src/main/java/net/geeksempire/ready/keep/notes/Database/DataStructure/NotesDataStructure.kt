@@ -29,12 +29,12 @@ const val NotesDatabase = "NotesDatabase"
 data class NotesDatabaseModel(
     @NonNull @PrimaryKey var uniqueNoteId: Long,
 
-    @Nullable @ColumnInfo(name = "noteTile") var noteTile: String,
-    @Nullable @ColumnInfo(name = "noteTextContent") var noteTextContent: String,
-    @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink") var noteHandwritingSnapshotLink: String,
+    @Nullable @ColumnInfo(name = "noteTile") var noteTile: String?,
+    @Nullable @ColumnInfo(name = "noteTextContent") var noteTextContent: String?,
+    @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink") var noteHandwritingSnapshotLink: String?,
 
     @NonNull @ColumnInfo(name = "noteTakenTime") var noteTakenTime: Long,
-    @Nullable @ColumnInfo(name = "noteEditTime") var noteEditTime: Long,
+    @Nullable @ColumnInfo(name = "noteEditTime") var noteEditTime: Long?,
 
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long
 )

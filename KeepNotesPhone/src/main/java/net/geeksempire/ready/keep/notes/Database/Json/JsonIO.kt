@@ -18,6 +18,11 @@ class JsonIO {
 
     private val jsonDatabase: Gson = JsonConfiguration().initialize()
 
+    fun writeAllPaintingPathData(allPathXY: ArrayList<ArrayList<RedrawPaintingData>>) : String {
+
+        return jsonDatabase.toJson(allPathXY).toString()
+    }
+
     fun writePaintingPathData(aPathXY: ArrayList<RedrawPaintingData>) : String {
 
         return jsonDatabase.toJson(aPathXY).toString()
