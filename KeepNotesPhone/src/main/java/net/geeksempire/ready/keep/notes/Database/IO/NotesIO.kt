@@ -25,14 +25,16 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     private val jsonIO = JsonIO()
 
-    fun saveNotesAndPainting(context: TakeNote,
-                             firebaseUser: FirebaseUser?,
-                             takeNoteLayoutBinding: TakeNoteLayoutBinding,
-                             databaseEndpoints: DatabaseEndpoints,
-                             paintingIO: PaintingIO,
-                             paintingCanvasView: PaintingCanvasView,
-                             contentEncryption: ContentEncryption,
-                             documentId: Long) {
+
+
+    fun saveNotesAndPaintingOnline(context: TakeNote,
+                                   firebaseUser: FirebaseUser?,
+                                   takeNoteLayoutBinding: TakeNoteLayoutBinding,
+                                   databaseEndpoints: DatabaseEndpoints,
+                                   paintingIO: PaintingIO,
+                                   paintingCanvasView: PaintingCanvasView,
+                                   contentEncryption: ContentEncryption,
+                                   documentId: Long) {
 
         firebaseUser?.let {
 
@@ -126,7 +128,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                             override fun onActionButtonClicked(snackbar: Snackbar) {
                                 super.onActionButtonClicked(snackbar)
 
-                                saveNotesAndPainting(
+                                saveNotesAndPaintingOnline(
                                     context,
                                     firebaseUser,
                                     takeNoteLayoutBinding,
@@ -199,11 +201,11 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    fun saveQuickNotes(context: AppCompatActivity,
-                       firebaseUser: FirebaseUser?,
-                       overviewLayoutBinding: OverviewLayoutBinding,
-                       contentEncryption: ContentEncryption,
-                       databaseEndpoints: DatabaseEndpoints) {
+    fun saveQuickNotesOffline(context: AppCompatActivity,
+                              firebaseUser: FirebaseUser?,
+                              overviewLayoutBinding: OverviewLayoutBinding,
+                              contentEncryption: ContentEncryption,
+                              databaseEndpoints: DatabaseEndpoints) {
 
         firebaseUser?.let {
 
