@@ -166,6 +166,8 @@ class EntryConfigurations : AppCompatActivity() {
 
     private fun runtimePermission() {
 
+        userInformationIO.savePrivacyAgreement()
+
         val permissionsList = arrayListOf(
             Manifest.permission.INTERNET,
             Manifest.permission.ACCESS_NETWORK_STATE,
