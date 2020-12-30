@@ -24,6 +24,7 @@ data class NotesDataStructure(var noteTile: String = "Untitled Note",
                               var noteIndex: Long)
 
 const val NotesDatabase = "NotesDatabase"
+
 @Entity(tableName = NotesDatabase)
 data class NotesDatabaseModel(
     @NonNull @PrimaryKey var uniqueNoteId: Long,
@@ -32,7 +33,7 @@ data class NotesDatabaseModel(
     @Nullable @ColumnInfo(name = "noteTextContent") var noteTextContent: String,
     @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink") var noteHandwritingSnapshotLink: String,
 
-    @NonNull @ColumnInfo(name = "noteTakenTime") var noteTakenTime: String,
+    @NonNull @ColumnInfo(name = "noteTakenTime") var noteTakenTime: Long,
     @Nullable @ColumnInfo(name = "noteEditTime") var noteEditTime: Long,
 
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long

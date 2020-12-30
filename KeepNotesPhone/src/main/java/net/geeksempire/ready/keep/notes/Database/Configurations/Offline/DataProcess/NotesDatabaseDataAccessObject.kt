@@ -11,40 +11,39 @@
 package net.geekstools.floatshort.PRO.Widgets.RoomDatabase
 
 import androidx.room.*
-import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 
 @Dao
 interface NotesDatabaseDataAccessObject {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNewWidgetDataSuspend(vararg arrayOfDatabaseModels: NotesDataStructure)
+    suspend fun insertNewWidgetDataSuspend(vararg arrayOfNotesDatabaseModels: NotesDatabaseModel)
 
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateWidgetDataSuspend(vararg arrayOfDatabaseModels: NotesDataStructure)
+    suspend fun updateWidgetDataSuspend(vararg arrayOfNotesDatabaseModels: NotesDatabaseModel)
 
 
     @Delete
-    suspend fun deleteSuspend(databaseModel: NotesDataStructure)
+    suspend fun deleteSuspend(notesDatabaseModel: NotesDatabaseModel)
 
-
-    @Query("SELECT * FROM NotesDatabase ORDER BY noteTakenTime ASC")
-    suspend fun getAllNotesDataSuspend(): List<NotesDatabaseModel>
-
-
-    @Query("SELECT * FROM NotesDatabase WHERE uniqueNoteId = :uniqueNoteId")
-    suspend fun loadSpecificNote(uniqueNoteId: Long): NotesDatabaseModel
-
-
-    @Query("UPDATE NotesDatabase SET uniqueNoteId = :uniqueNoteId WHERE uniqueNoteId = :uniqueNoteId")
-    suspend fun updateSpecificNote(uniqueNoteId: Long): Int
-
-
-    @Query("DELETE FROM NotesDatabase WHERE uniqueNoteId = :Long")
-    suspend fun deleteSpecificNote(Long: String)
-
-
-    @Query("SELECT COUNT(uniqueNoteId) FROM NotesDatabase")
-    suspend fun getRowCountSuspend(): Int
+//
+//    @Query("SELECT * FROM NotesDatabase ORDER BY noteTakenTime ASC")
+//    suspend fun getAllNotesDataSuspend(): List<NotesDatabaseModel>
+//
+//
+//    @Query("SELECT * FROM NotesDatabase WHERE uniqueNoteId = :uniqueNoteId")
+//    suspend fun loadSpecificNote(uniqueNoteId: String): NotesDatabaseModel
+//
+//
+//    @Query("UPDATE NotesDatabase SET uniqueNoteId = :uniqueNoteId")
+//    suspend fun updateSpecificNote(uniqueNoteId: String): Int
+//
+//
+//    @Query("DELETE FROM NotesDatabase WHERE uniqueNoteId = :uniqueNoteId")
+//    suspend fun deleteSpecificNote(uniqueNoteId: String)
+//
+//
+//    @Query("SELECT COUNT(uniqueNoteId) FROM NotesDatabase")
+//    suspend fun getRowCountSuspend(): Int
 }
