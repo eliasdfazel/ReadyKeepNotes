@@ -49,17 +49,4 @@ class UserInformationIO(private val context: Context) {
         return readPreferences.readPreference("UserInformation", "PrivacyAgreement", false)
     }
 
-    /**
-     * Account Type;
-     * InvitationConstant.InvitationTypes.Personal
-     * InvitationConstant.InvitationTypes.Business
-     **/
-    fun saveAccountType(accountType: String) {
-
-        val savePreferences = SavePreferences(context)
-
-        savePreferences.savePreference("UserInformation", "AccountType", accountType)
-
-    }
-
 }
