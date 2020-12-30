@@ -15,7 +15,6 @@ import net.geeksempire.ready.keep.notes.databinding.EntryConfigurationLayoutBind
 
 class EntryConfigurations : AppCompatActivity() {
 
-
     lateinit var entryConfigurationLayoutBinding: EntryConfigurationLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

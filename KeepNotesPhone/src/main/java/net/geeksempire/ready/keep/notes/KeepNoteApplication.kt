@@ -7,8 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import net.geeksempire.ready.keep.notes.BuildConfig
-import net.geeksempire.ready.keep.notes.Database.Configurations.FirestoreConfiguration
+import net.geeksempire.ready.keep.notes.Database.Configurations.Online.FirestoreConfiguration
 import net.geeksempire.ready.keep.notes.DependencyInjections.DaggerDependencyGraph
 import net.geeksempire.ready.keep.notes.DependencyInjections.DependencyGraph
 

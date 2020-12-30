@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geeksempire.ready.keep.notes.Database.Configurations
+package net.geeksempire.ready.keep.notes.Database.Configurations.Online
 
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
