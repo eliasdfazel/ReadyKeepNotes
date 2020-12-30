@@ -3,6 +3,9 @@
     <string name="applicationName">Ready Keep Notes</string>
     <string name="applicationMotto">Always Ready To Keep Your Notes</string>
 
+    <string name="proceedAgreement">Agreed &amp; Proceed</string>
+    <string name="privacyAgreement">Privacy Policy &amp; User Agreement</string>
+
     <string name="waitingInformation">Setting Up Your Account…</string>
 
     <string name="anonymouslySignInError">Error Setting Up Your Account ⚠</string>

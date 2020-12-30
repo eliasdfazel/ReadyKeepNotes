@@ -17,18 +17,45 @@
         apps:realtimeBlurRadius="7dp"
         apps:realtimeOverlayColor="@color/default_color_transparent_high"/>
 
-    <net.geeksempire.loadingspin.SpinKitView
-        android:id="@+id/waitingView"
-        android:layout_width="111dp"
-        android:layout_height="111dp"
-        android:padding="13dp"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/proceedButton"
+        android:layout_width="253dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="51dp"
+        android:textAllCaps="false"
+        android:text="@string/proceedAgreement"
+        android:textSize="29sp"
+        android:textColor="@color/dark"
+        android:fontFamily="@font/upcil"
         android:visibility="invisible"
 
-        apps:SpinKit_Style="MultiplePulseRing"
-        apps:SpinKit_Color="@color/default_color_game_light_transparent"
+        apps:backgroundTint="@color/light"
+        apps:strokeWidth="0dp"
+        apps:rippleColor="@color/default_color_game"
+        apps:cornerRadius="51dp"
+        apps:elevation="23dp"
 
-        apps:layout_constraintVertical_bias="0.837"
-        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/agreementDataView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingTop="3dp"
+        android:gravity="center_horizontal|top"
+        android:text="@string/privacyAgreement"
+        android:textSize="13sp"
+        android:textColor="@color/default_color_game_transparent"
+        android:shadowColor="@color/default_color_game_light"
+        android:shadowRadius="3"
+        android:fontFamily="monospace"
+        android:linksClickable="true"
+        android:autoLink="web"
+        android:visibility="invisible"
+
+        apps:layout_constraintTop_toBottomOf="@id/proceedButton"
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent"/>
@@ -37,15 +64,30 @@
         android:id="@+id/waitingInformationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="7dp"
         android:text="@string/waitingInformation"
         android:textSize="29sp"
         android:textColor="@color/light"
         android:fontFamily="@font/upcil"
         android:visibility="invisible"
 
-        apps:layout_constraintTop_toBottomOf="@id/waitingView"
+        apps:layout_constraintBottom_toTopOf="@id/proceedButton"
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent"/>
 
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/waitingView"
+        android:layout_width="103dp"
+        android:layout_height="103dp"
+        android:padding="13dp"
+        android:visibility="invisible"
+
+        apps:SpinKit_Style="MultiplePulseRing"
+        apps:SpinKit_Color="@color/default_color_game_light_transparent"
+
+        apps:layout_constraintVertical_bias="0.837"
+        apps:layout_constraintBottom_toTopOf="@id/waitingInformationView"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
