@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="19dp"
         android:layout_marginVertical="23dp"
-        android:fontFamily="@font/upcil"
+        android:fontFamily="@font/houston_regular"
         android:text="@string/welcomeText"
         android:textColor="@color/dark"
         android:textSize="51sp"
