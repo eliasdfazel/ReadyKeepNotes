@@ -56,6 +56,12 @@ class EntryConfigurations : AppCompatActivity() {
 
             entryConfigurationLayoutBinding.proceedButton.setOnClickListener {
 
+                entryConfigurationLayoutBinding.agreementDataView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                entryConfigurationLayoutBinding.agreementDataView.visibility = View.INVISIBLE
+
+                entryConfigurationLayoutBinding.proceedButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                entryConfigurationLayoutBinding.proceedButton.visibility = View.INVISIBLE
+
                 runtimePermission()
 
             }
@@ -96,7 +102,10 @@ class EntryConfigurations : AppCompatActivity() {
 
                         entryConfigurationLayoutBinding.blurryBackground.visibility = View.VISIBLE
 
+                        entryConfigurationLayoutBinding.waitingView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
                         entryConfigurationLayoutBinding.waitingView.visibility = View.VISIBLE
+
+                        entryConfigurationLayoutBinding.waitingInformationView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
                         entryConfigurationLayoutBinding.waitingInformationView.visibility = View.VISIBLE
 
                         val signInAnonymously = {

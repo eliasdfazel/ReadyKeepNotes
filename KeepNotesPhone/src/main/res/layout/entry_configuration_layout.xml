@@ -64,21 +64,21 @@
         android:id="@+id/waitingInformationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="7dp"
+        android:layout_marginVertical="59dp"
         android:text="@string/waitingInformation"
         android:textSize="29sp"
         android:textColor="@color/light"
-        android:fontFamily="@font/upcil"
+        android:fontFamily="@font/houston_regular"
         android:visibility="invisible"
 
-        apps:layout_constraintBottom_toTopOf="@id/proceedButton"
+        apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent"/>
 
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/waitingView"
-        android:layout_width="103dp"
-        android:layout_height="103dp"
+        android:layout_width="91dp"
+        android:layout_height="91dp"
         android:padding="13dp"
         android:visibility="invisible"
 
