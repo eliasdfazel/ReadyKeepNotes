@@ -21,7 +21,6 @@ interface NotesDatabaseDataAccessObject {
     suspend fun insertNewWidgetDataSuspend(vararg arrayOfDatabaseModels: NotesDataStructure)
 
 
-    //Update Current Data
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateWidgetDataSuspend(vararg arrayOfDatabaseModels: NotesDataStructure)
 
@@ -30,22 +29,22 @@ interface NotesDatabaseDataAccessObject {
     suspend fun deleteSuspend(databaseModel: NotesDataStructure)
 
 
-    @Query("SELECT * FROM NotesDatabase ORDER BY emailAddress ASC")
+    @Query("SELECT * FROM NotesDatabase ORDER BY noteTakenTime ASC")
     suspend fun getAllNotesDataSuspend(): List<NotesDatabaseModel>
 
 
-    @Query("SELECT * FROM NotesDatabase WHERE emailAddress IN (:emailAddress) AND phoneCountryCode IN (:phoneCountryCode)")
-    suspend fun loadWidgetByClassNameProviderWidgetSuspend(emailAddress: String, phoneCountryCode: String): NotesDatabaseModel
+    @Query("SELECT * FROM NotesDatabase WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun loadSpecificNote(uniqueNoteId: Long): NotesDatabaseModel
 
 
-    @Query("UPDATE NotesDatabase SET emailAddress = :WidgetId WHERE emailAddress = :emailAddress AND phoneCountryCode = :phoneCountryCode")
-    suspend fun updateWidgetIdByPackageNameClassNameSuspend(WidgetId: Int, emailAddress: String, phoneCountryCode: String): Int
+    @Query("UPDATE NotesDatabase SET uniqueNoteId = :uniqueNoteId WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateSpecificNote(uniqueNoteId: Long): Int
 
 
-    @Query("DELETE FROM NotesDatabase WHERE emailAddress = :emailAddress AND phoneCountryCode = :phoneCountryCode")
-    suspend fun deleteByWidgetClassNameProviderWidgetSuspend(emailAddress: String, phoneCountryCode: String)
+    @Query("DELETE FROM NotesDatabase WHERE uniqueNoteId = :Long")
+    suspend fun deleteSpecificNote(Long: String)
 
 
-    @Query("SELECT COUNT(uniqueUsername) FROM NotesDatabase")
+    @Query("SELECT COUNT(uniqueNoteId) FROM NotesDatabase")
     suspend fun getRowCountSuspend(): Int
 }
