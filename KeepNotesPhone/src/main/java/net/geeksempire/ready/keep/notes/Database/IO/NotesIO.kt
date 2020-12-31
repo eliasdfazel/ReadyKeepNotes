@@ -9,7 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.NaturalLanguageProcessNetworkOperation
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
@@ -35,7 +35,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                                     paintingIO: PaintingIO,
                                     paintingCanvasView: PaintingCanvasView,
                                     contentEncryption: ContentEncryption,
-                                    documentId: Long) = CoroutineScope(Dispatchers.IO).launch {
+                                    documentId: Long) = CoroutineScope(Dispatchers.IO).async {
 
         firebaseUser?.let {
 

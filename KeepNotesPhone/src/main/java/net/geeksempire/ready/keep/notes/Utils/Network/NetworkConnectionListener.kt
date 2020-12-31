@@ -11,12 +11,10 @@
 package net.geeksempire.ready.keep.notes.Utils.Network
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -87,22 +85,14 @@ class NetworkConnectionListener @Inject constructor (private var appCompatActivi
                     rootView.addView(offlineIndicator)
 
                     Handler(Looper.getMainLooper()).postDelayed(Runnable {
+
                         Glide.with(appCompatActivity)
                             .asGif()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .load(R.drawable.no_internet_connection)
                             .into(offlineIndicator.offlineWait)
 
-                        offlineIndicator.offlineWait.setOnClickListener {
-
-                            appCompatActivity.startActivityForResult(
-                                Intent(Settings.ACTION_WIFI_SETTINGS)
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                NetworkSettingCallback.WifiSetting
-                            )
-
-                            appCompatActivity.finish()
-                        }
+                        rootView.removeView(offlineIndicator)
 
                     }, 555)
 
