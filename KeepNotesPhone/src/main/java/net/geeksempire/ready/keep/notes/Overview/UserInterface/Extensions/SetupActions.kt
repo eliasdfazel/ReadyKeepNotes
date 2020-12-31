@@ -28,6 +28,11 @@ fun KeepNoteOverview.setupActions() {
             contentEncryption = contentEncryption,
             databaseEndpoints = databaseEndpoints)
 
+        notesIO.saveQuickNotesOffline(context = this@setupActions,
+            firebaseUser = firebaseUser,
+            overviewLayoutBinding = overviewLayoutBinding,
+            contentEncryption = contentEncryption)
+
     }
 
     overviewLayoutBinding.applicationLogoView.setOnClickListener {

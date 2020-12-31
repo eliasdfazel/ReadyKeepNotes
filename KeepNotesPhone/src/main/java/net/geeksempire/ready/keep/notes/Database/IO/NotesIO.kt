@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.NaturalLanguageProcessNetworkOperation
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
@@ -272,11 +273,67 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     fun saveQuickNotesOffline(context: AppCompatActivity,
                               firebaseUser: FirebaseUser?,
                               overviewLayoutBinding: OverviewLayoutBinding,
-                              contentEncryption: ContentEncryption) {
+                              contentEncryption: ContentEncryption) = CoroutineScope(Dispatchers.IO).launch {
 
         firebaseUser?.let {
 
+            if (overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
 
+                if (overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
+
+                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                    overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                }
+
+                val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
+
+                overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+
+                val inputMethodManager: InputMethodManager by lazy {
+                    keepNoteApplication.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                }
+
+                overviewLayoutBinding.quickTakeNote.clearFocus()
+
+                inputMethodManager.hideSoftInputFromWindow(
+                    overviewLayoutBinding.quickTakeNote.windowToken,
+                    InputMethodManager.HIDE_IMPLICIT_ONLY
+                )
+
+                overviewLayoutBinding.savingView.isEnabled = false
+
+                val documentId: Long = System.currentTimeMillis()
+
+                try {
+
+                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                        noteTile = null,
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteHandwritingPaintingPaths = null,
+                        noteHandwritingSnapshotLink = null,
+                        noteTakenTime = documentId,
+                        noteEditTime = null,
+                        noteIndex = documentId
+                    )
+
+                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                        .insertNewWidgetDataSuspend(notesDatabaseModel)
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+
+                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
+                    overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.errorOccurred)
+
+                }
+
+            } else {
+
+                overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
+                overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
+
+            }
 
         }
 
