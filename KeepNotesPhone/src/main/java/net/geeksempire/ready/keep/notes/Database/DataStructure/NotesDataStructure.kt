@@ -11,6 +11,7 @@ object Notes {
     const val NoteTile: String = "noteTile"
     const val NoteTextContent: String = "noteTextContent"
     const val NoteHandwritingSnapshotLink: String = "noteHandwritingSnapshotLink"
+    const val noteHandwritingPaintingPaths: String = "noteHandwritingPaintingPaths"
     const val NoteTakenTime: String = "noteTakenTime"
     const val NoteEditTime: String = "noteEditTime"
     const val NoteIndex: String = "noteIndex"
@@ -31,6 +32,7 @@ data class NotesDatabaseModel(
 
     @Nullable @ColumnInfo(name = "noteTile") var noteTile: String?,
     @Nullable @ColumnInfo(name = "noteTextContent") var noteTextContent: String?,
+    @Nullable @ColumnInfo(name = "noteHandwritingPaintingPaths") var noteHandwritingPaintingPaths: String?,
     @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink") var noteHandwritingSnapshotLink: String?,
 
     @NonNull @ColumnInfo(name = "noteTakenTime") var noteTakenTime: Long,

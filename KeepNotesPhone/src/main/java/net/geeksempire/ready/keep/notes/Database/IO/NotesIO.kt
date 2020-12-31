@@ -39,29 +39,56 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
-            val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
-            val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
+            try {
 
-            takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+                val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
+                val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
-            takeNoteLayoutBinding.savingView.isEnabled = false
+                takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 
-            val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                noteTile = "${noteTitle}",
-                noteTextContent = "${contentText}",
-                noteHandwritingSnapshotLink = null,
-                noteTakenTime = documentId,
-                noteEditTime = null,
-                noteIndex = documentId
-            )
+                takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
+                takeNoteLayoutBinding.savingView.isEnabled = false
 
-            (keepNoteApplication).notesRoomDatabaseConfiguration
-                .insertNewWidgetDataSuspend(notesDatabaseModel)
+                val noteHandwritingSnapshot = context.openFileOutput("${documentId}.PNG", Context.MODE_PRIVATE)
 
-            /*
-            * Convert Path To Array and Then To JsonArray
-            * */
+                noteHandwritingSnapshot.write(paintingIO.takeScreenshot(paintingCanvasView))
+
+                val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                    noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                    noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
+                    noteHandwritingSnapshotLink = context.getFileStreamPath("${documentId}.PNG").absolutePath,
+                    noteTakenTime = documentId,
+                    noteEditTime = null,
+                    noteIndex = documentId
+                )
+
+                (keepNoteApplication).notesRoomDatabaseConfiguration
+                    .insertNewWidgetDataSuspend(notesDatabaseModel)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+                Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
+
+                SnackbarBuilder(context).show (
+                    rootView = takeNoteLayoutBinding.rootView,
+                    messageText= context.getString(R.string.emptyNotesCollection),
+                    messageDuration = Snackbar.LENGTH_INDEFINITE,
+                    actionButtonText = R.string.retryText,
+                    snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+
+                        override fun onActionButtonClicked(snackbar: Snackbar) {
+                            super.onActionButtonClicked(snackbar)
+
+
+
+                        }
+
+                    }
+                )
+
+            }
 
         }
 
@@ -241,11 +268,11 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    fun saveQuickNotesOffline(context: AppCompatActivity,
-                              firebaseUser: FirebaseUser?,
-                              overviewLayoutBinding: OverviewLayoutBinding,
-                              contentEncryption: ContentEncryption,
-                              databaseEndpoints: DatabaseEndpoints) {
+    fun saveQuickNotesOnline(context: AppCompatActivity,
+                             firebaseUser: FirebaseUser?,
+                             overviewLayoutBinding: OverviewLayoutBinding,
+                             contentEncryption: ContentEncryption,
+                             databaseEndpoints: DatabaseEndpoints) {
 
         firebaseUser?.let {
 

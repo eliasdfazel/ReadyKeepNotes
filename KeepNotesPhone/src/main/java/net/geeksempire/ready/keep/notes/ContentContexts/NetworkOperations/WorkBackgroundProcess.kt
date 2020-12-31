@@ -13,6 +13,7 @@ import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoi
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.R
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.DataOutputStream
@@ -67,42 +68,48 @@ class WorkBackgroundProcess(appContext: Context, val workerParams: WorkerParamet
 
             bufferReader.close()
 
-            val completeJsonObject = JSONObject(response.toString())
+            try {
 
-            val allJsonResponseArray = (completeJsonObject.get(TextRazorParameters.Response) as JSONObject)[TextRazorParameters.ExtractorsEntities] as JSONArray
+                val completeJsonObject = JSONObject(response.toString())
 
-            val allTags = ArrayList<TagsData>()
+                val allJsonResponseArray = (completeJsonObject.get(TextRazorParameters.Response) as JSONObject)[TextRazorParameters.ExtractorsEntities] as JSONArray
 
-            for (i in 0 until allJsonResponseArray.length()) {
+                val allTags = ArrayList<TagsData>()
 
-                val jsonObject = allJsonResponseArray[i] as JSONObject
+                for (i in 0 until allJsonResponseArray.length()) {
 
-                val aWikiDataId = jsonObject[TextRazorParameters.WikiDataId].toString()
-                val aWikiLink = jsonObject[TextRazorParameters.WikiLink].toString()
-                val aTag = jsonObject[TextRazorParameters.AnalyzedText].toString()
+                    val jsonObject = allJsonResponseArray[i] as JSONObject
 
-                allTags.add(TagsData(
-                    wikiDataId = aWikiDataId,
-                    wikiLink = aWikiLink,
-                    aTag = aTag
-                ))
+                    val aWikiDataId = jsonObject[TextRazorParameters.WikiDataId].toString()
+                    val aWikiLink = jsonObject[TextRazorParameters.WikiLink].toString()
+                    val aTag = jsonObject[TextRazorParameters.AnalyzedText].toString()
 
-            }
-
-            Firebase.firestore
-                .document(databaseEndpoints.generalEndpoints(firebaseUserId) + "/" + firebaseDocumentId)
-                .update(
-                    "tags", jsonIO.writeTagsData(allTags)
-                ).addOnSuccessListener {
-
-
-                }.addOnFailureListener {
+                    allTags.add(TagsData(
+                        wikiDataId = aWikiDataId,
+                        wikiLink = aWikiLink,
+                        aTag = aTag
+                    ))
 
                 }
 
-            val workOutputData = workDataOf("Note_Tags" to allTags.toString().toByteArray(Charset.defaultCharset()))
+                Firebase.firestore
+                    .document(databaseEndpoints.generalEndpoints(firebaseUserId) + "/" + firebaseDocumentId)
+                    .update(
+                        "tags", jsonIO.writeTagsData(allTags)
+                    ).addOnSuccessListener {
 
-            workerResult = Result.success(workOutputData)
+
+                    }.addOnFailureListener {
+
+                    }
+
+                val workOutputData = workDataOf("Note_Tags" to allTags.toString().toByteArray(Charset.defaultCharset()))
+
+                workerResult = Result.success(workOutputData)
+
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
 
         } else {
 

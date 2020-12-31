@@ -24,6 +24,7 @@ import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Utils.StrokePaintin
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Extensions.checkSpecialCharacters
+import net.geeksempire.ready.keep.notes.Utils.Network.NetworkCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
@@ -83,8 +84,9 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     var autoEnterPlaced = false
 
-    @Inject
-    lateinit var networkConnectionListener: NetworkConnectionListener
+    @Inject lateinit var networkCheckpoint: NetworkCheckpoint
+
+    @Inject lateinit var networkConnectionListener: NetworkConnectionListener
 
     lateinit var takeNoteLayoutBinding: TakeNoteLayoutBinding
 
@@ -231,6 +233,16 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                     firebaseUser = firebaseUser,
                     takeNoteLayoutBinding = takeNoteLayoutBinding,
                     databaseEndpoints = databaseEndpoints,
+                    paintingIO = paintingIO,
+                    paintingCanvasView = paintingCanvasView,
+                    contentEncryption = contentEncryption,
+                    documentId = documentId
+                )
+
+                notesIO.saveNotesAndPaintingOffline(
+                    context = this@TakeNote,
+                    firebaseUser = firebaseUser,
+                    takeNoteLayoutBinding = takeNoteLayoutBinding,
                     paintingIO = paintingIO,
                     paintingCanvasView = paintingCanvasView,
                     contentEncryption = contentEncryption,

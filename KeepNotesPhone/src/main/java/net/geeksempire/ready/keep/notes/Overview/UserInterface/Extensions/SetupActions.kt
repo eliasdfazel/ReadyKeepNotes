@@ -22,7 +22,7 @@ fun KeepNoteOverview.setupActions() {
 
     overviewLayoutBinding.savingView.setOnClickListener {
 
-        notesIO.saveQuickNotesOffline(context = this@setupActions,
+        notesIO.saveQuickNotesOnline(context = this@setupActions,
             firebaseUser = firebaseUser,
             overviewLayoutBinding = overviewLayoutBinding,
             contentEncryption = contentEncryption,
