@@ -268,6 +268,20 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
+
+    fun saveQuickNotesOffline(context: AppCompatActivity,
+                              firebaseUser: FirebaseUser?,
+                              overviewLayoutBinding: OverviewLayoutBinding,
+                              contentEncryption: ContentEncryption) {
+
+        firebaseUser?.let {
+
+
+
+        }
+
+    }
+
     fun saveQuickNotesOnline(context: AppCompatActivity,
                              firebaseUser: FirebaseUser?,
                              overviewLayoutBinding: OverviewLayoutBinding,
