@@ -14,13 +14,14 @@ class NotesOverviewViewModel : ViewModel() {
         MutableLiveData<List<NotesDatabaseModel>>()
     }
 
-    val notesFirestoreQuerySnapshots : MutableLiveData<ArrayList<DocumentSnapshot>> by lazy {
-        MutableLiveData<ArrayList<DocumentSnapshot>>()
-    }
-
     fun processDocumentSnapshots(documentSnapshotsList: List<DocumentSnapshot>) = CoroutineScope(Dispatchers.IO).async {
 
         //Download & Save To Room Database
+        documentSnapshotsList.forEach {
+
+
+
+        }
 
     }
 

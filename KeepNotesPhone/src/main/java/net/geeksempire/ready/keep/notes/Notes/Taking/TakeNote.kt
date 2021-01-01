@@ -170,21 +170,9 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                 val paintingPathsData = intent.getStringExtra(NoteTakingWritingType.PaintingPath)!!
 
-                if (paintingPathsData.isEmpty()) {
+                paintingIO.preparePaintingPathsOffline(paintingCanvasView, paintingPathsData).invokeOnCompletion {
 
-                    paintingIO.preparePaintingPathsOnline(paintingCanvasView, paintingPathsJsonArray).invokeOnCompletion {
-
-                        paintingCanvasView.restorePaints()
-
-                    }
-
-                } else {
-
-                    paintingIO.preparePaintingPathsOffline(paintingCanvasView, paintingPathsData).invokeOnCompletion {
-
-                        paintingCanvasView.restorePaints()
-
-                    }
+                    paintingCanvasView.restorePaints()
 
                 }
 
