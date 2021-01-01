@@ -26,7 +26,6 @@ import com.google.firebase.inappmessaging.model.InAppMessage
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.BuildConfig
-import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
@@ -34,7 +33,6 @@ import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OfflineOverviewAdapter
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OnlineOverviewAdapter
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.*
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
@@ -147,22 +145,22 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 if (initialPosition != -1 && targetPosition != -1) {
 
-                    val overviewAdapter = (recyclerView.adapter as OnlineOverviewAdapter)
+                    val overviewAdapter = (recyclerView.adapter as OfflineOverviewAdapter)
 
-                    val oldIndex = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteIndex].toString().toLong()
-                    val newIndex = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteIndex].toString().toLong()
+                    val oldIndex = overviewAdapter.notesDataStructureList[initialPosition].noteIndex.toString().toLong()
+                    val newIndex = overviewAdapter.notesDataStructureList[targetPosition].noteIndex.toString().toLong()
 
                     lifecycleScope.launch {
 
                         (application as KeepNoteApplication)
                             .notesRoomDatabaseConfiguration
                             .updateNoteData(NotesDatabaseModel(
-                                uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].id.toLong(),
-                                noteTile = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteTile].toString(),
-                                noteTextContent = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteTextContent].toString(),
+                                uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(),
+                                noteTile = overviewAdapter.notesDataStructureList[initialPosition].noteTile.toString(),
+                                noteTextContent = overviewAdapter.notesDataStructureList[initialPosition].noteTextContent.toString(),
                                 noteHandwritingPaintingPaths = null,
                                 noteHandwritingSnapshotLink = null,
-                                noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteTile].toString().toLong(),
+                                noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString().toLong(),
                                 noteEditTime = null,
                                 noteIndex = newIndex
                             ))
@@ -170,48 +168,48 @@ class KeepNoteOverview : AppCompatActivity(),
                         (application as KeepNoteApplication)
                             .notesRoomDatabaseConfiguration
                             .updateNoteData(NotesDatabaseModel(
-                                uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].id.toLong(),
-                                noteTile = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteTile].toString(),
-                                noteTextContent = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteTextContent].toString(),
+                                uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(),
+                                noteTile = overviewAdapter.notesDataStructureList[targetPosition].noteTile.toString(),
+                                noteTextContent = overviewAdapter.notesDataStructureList[targetPosition].noteTextContent.toString(),
                                 noteHandwritingPaintingPaths = null,
                                 noteHandwritingSnapshotLink = null,
-                                noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteTile].toString().toLong(),
+                                noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString().toLong(),
                                 noteEditTime = null,
                                 noteIndex = oldIndex
                             ))
 
                         overviewAdapter.rearrangeItemsData(initialPosition, targetPosition)
 
-                        (application as KeepNoteApplication)
-                            .firestoreDatabase.document(overviewAdapter.notesDataStructureList[initialPosition].reference.path)
-                            .update(
-                                Notes.NoteIndex, newIndex,
-                            ).addOnSuccessListener {
-                                Log.d(
-                                    this@KeepNoteOverview.javaClass.simpleName,
-                                    "Database Rearrange Process Completed Successfully | Initial Position"
-                                )
-
-                                (application as KeepNoteApplication)
-                                    .firestoreDatabase.document(overviewAdapter.notesDataStructureList[targetPosition].reference.path)
-                                    .update(
-                                        Notes.NoteIndex, oldIndex,
-                                    ).addOnSuccessListener {
-                                        Log.d(
-                                            this@KeepNoteOverview.javaClass.simpleName,
-                                            "Database Rearrange Process Completed Successfully | Target Positionb"
-                                        )
-
-                                        (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = true
-
-                                        startNetworkOperation()
-
-                                        initialPosition = -1
-                                        targetPosition = -1
-
-                                    }
-
-                            }
+//                        (application as KeepNoteApplication)
+//                            .firestoreDatabase.document(overviewAdapter.notesDataStructureList[initialPosition].reference.path)
+//                            .update(
+//                                Notes.NoteIndex, newIndex,
+//                            ).addOnSuccessListener {
+//                                Log.d(
+//                                    this@KeepNoteOverview.javaClass.simpleName,
+//                                    "Database Rearrange Process Completed Successfully | Initial Position"
+//                                )
+//
+//                                (application as KeepNoteApplication)
+//                                    .firestoreDatabase.document(overviewAdapter.notesDataStructureList[targetPosition].reference.path)
+//                                    .update(
+//                                        Notes.NoteIndex, oldIndex,
+//                                    ).addOnSuccessListener {
+//                                        Log.d(
+//                                            this@KeepNoteOverview.javaClass.simpleName,
+//                                            "Database Rearrange Process Completed Successfully | Target Positionb"
+//                                        )
+//
+//                                        (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = true
+//
+//                                        startNetworkOperation()
+//
+//                                        initialPosition = -1
+//                                        targetPosition = -1
+//
+//                                    }
+//
+//                            }
 
                     }
 
@@ -334,9 +332,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
             val offlineOverviewAdapter = OfflineOverviewAdapter(this@KeepNoteOverview)
 
-            val onlineOverviewAdapter = OnlineOverviewAdapter(this@KeepNoteOverview)
-
-//            itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
+            itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
 
             notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
@@ -405,74 +401,6 @@ class KeepNoteOverview : AppCompatActivity(),
                 }
 
             })
-
-            /*notesOverviewViewModel.notesFirestoreQuerySnapshots.observe(this@KeepNoteOverview, Observer {
-
-                if (it.isNotEmpty()) {
-
-                    overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
-
-                    if (onlineOverviewAdapter.notesDataStructureList.isNotEmpty()) {
-
-                        onlineOverviewAdapter.notesDataStructureList.clear()
-                        onlineOverviewAdapter.notesDataStructureList.addAll(it)
-
-                        onlineOverviewAdapter.notifyDataSetChanged()
-
-                    } else {
-
-                        onlineOverviewAdapter.notesDataStructureList.clear()
-                        onlineOverviewAdapter.notesDataStructureList.addAll(it)
-
-                        overviewLayoutBinding.overviewRecyclerView.adapter = onlineOverviewAdapter
-
-                    }
-
-                    overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
-
-                } else {
-
-                    onlineOverviewAdapter.notesDataStructureList.clear()
-
-                    overviewLayoutBinding.overviewRecyclerView.removeAllViews()
-
-                    overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
-
-                    SnackbarBuilder(applicationContext).show(
-                        rootView = overviewLayoutBinding.rootView,
-                        messageText = getString(R.string.emptyNotesCollection),
-                        messageDuration = Snackbar.LENGTH_INDEFINITE,
-                        actionButtonText = android.R.string.ok,
-                        snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
-
-                            override fun onActionButtonClicked(snackbar: Snackbar) {
-                                super.onActionButtonClicked(snackbar)
-
-                                startActivity(
-                                    Intent(applicationContext, TakeNote::class.java).apply {
-                                        putExtra(
-                                            TakeNote.NoteTakingWritingType.ExtraConfigurations,
-                                            TakeNote.NoteTakingWritingType.Keyboard
-                                        )
-                                        putExtra(
-                                            TakeNote.NoteTakingWritingType.ContentText,
-                                            overviewLayoutBinding.quickTakeNote.text.toString()
-                                        )
-                                    }, ActivityOptions.makeCustomAnimation(
-                                        applicationContext,
-                                        R.anim.fade_in,
-                                        0
-                                    ).toBundle()
-                                )
-
-                            }
-
-                        }
-                    )
-
-                }
-
-            })*/
 
             /*Invoke In Application Update*/
             InApplicationUpdateProcess(this@KeepNoteOverview, overviewLayoutBinding.rootView)
