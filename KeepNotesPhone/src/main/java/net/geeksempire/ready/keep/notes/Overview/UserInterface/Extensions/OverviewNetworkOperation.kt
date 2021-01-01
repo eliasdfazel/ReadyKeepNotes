@@ -9,6 +9,14 @@ import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
 
+fun KeepNoteOverview.startDatabaseOperation() {
+
+    (application as KeepNoteApplication)
+        .notesRoomDatabaseConfiguration
+
+
+}
+
 /**
  * justRegisterChangeListener
  * - False to Load Evey Time Database Changed

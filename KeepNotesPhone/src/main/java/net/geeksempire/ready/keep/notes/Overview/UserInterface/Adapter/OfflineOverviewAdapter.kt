@@ -9,21 +9,19 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
-import net.geeksempire.ready.keep.notes.KeepNoteApplication
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
-class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
+class OfflineOverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
 
-    val notesDataStructureList: ArrayList<DocumentSnapshot> = ArrayList<DocumentSnapshot>()
+    val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : OverviewViewHolder {
 
@@ -39,9 +37,9 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
         context.firebaseUser?.let {
 
-            overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(notesDataStructureList[position][Notes.NoteTile].toString(), context.firebaseUser.uid)
+            overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(notesDataStructureList[position].noteTile.toString(), context.firebaseUser.uid)
 
-            overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(notesDataStructureList[position][Notes.NoteTextContent].toString(), context.firebaseUser.uid)
+            overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(notesDataStructureList[position].noteTextContent.toString(), context.firebaseUser.uid)
 
         }
 
@@ -80,7 +78,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
             }
         }
 
-        if (notesDataStructureList[position][Notes.NoteHandwritingSnapshotLink] == null) {
+        if (notesDataStructureList[position].noteHandwritingSnapshotLink == null) {
 
             overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.CENTER_CROP
             overviewViewHolder.contentImageView.setColorFilter(context.getColor(R.color.pink_transparent))
@@ -92,7 +90,7 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
             overviewViewHolder.contentImageView.clearColorFilter()
 
             Glide.with(context)
-                .load(notesDataStructureList[position][Notes.NoteHandwritingSnapshotLink].toString())
+                .load(notesDataStructureList[position].noteHandwritingSnapshotLink)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(overviewViewHolder.contentImageView)
 
@@ -102,38 +100,30 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
 
             overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
 
-            (context.application as KeepNoteApplication)
-                .firestoreDatabase.collection(context.databaseEndpoints.paintPathsCollectionEndpoints(notesDataStructureList[position].reference.path))
-                .get()
-                .addOnSuccessListener { querySnapshot ->
+            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
 
-                    if (querySnapshot.isEmpty) {
+            if (paintingPathsJsonArray.isNullOrEmpty()) {
 
-                        overviewViewHolder.waitingViewLoading.visibility = View.GONE
+                overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
-                        context.startActivity(Intent(context, TakeNote::class.java).apply {
-                            putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].id.toLong())
-                            putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position][Notes.NoteTile].toString())
-                            putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position][Notes.NoteTextContent].toString())
-                        }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+                context.startActivity(Intent(context, TakeNote::class.java).apply {
+                    putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                    putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile)
+                    putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent)
+                }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
-                    } else {
+            } else {
 
-                        TakeNote.paintingPathsJsonArray.clear()
-                        TakeNote.paintingPathsJsonArray.addAll(querySnapshot.documents)
+                overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
-                        overviewViewHolder.waitingViewLoading.visibility = View.GONE
+                context.startActivity(Intent(context, TakeNote::class.java).apply {
+                    putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                    putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile.toString())
+                    putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent.toString())
+                    putExtra(TakeNote.NoteTakingWritingType.PaintingPath, paintingPathsJsonArray)
+                }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
-                        context.startActivity(Intent(context, TakeNote::class.java).apply {
-                            putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].id.toLong())
-                            putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position][Notes.NoteTile].toString())
-                            putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position][Notes.NoteTextContent].toString())
-                            putExtra(TakeNote.NoteTakingWritingType.PaintingPath, "Draw Saved Handwriting")
-                        }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
-
-                    }
-
-                }
+            }
 
         }
 

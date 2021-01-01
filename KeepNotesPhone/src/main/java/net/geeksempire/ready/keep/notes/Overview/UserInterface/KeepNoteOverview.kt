@@ -33,7 +33,8 @@ import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OverviewAdapter
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OfflineOverviewAdapter
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OnlineOverviewAdapter
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.loadUserAccountInformation
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.setupActions
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.setupColors
@@ -100,7 +101,7 @@ class KeepNoteOverview : AppCompatActivity(),
             override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
                 super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
-                val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
+                val overviewAdapter = (recyclerView.adapter as OnlineOverviewAdapter)
 
                 if (initialPosition == -1) {
 
@@ -149,7 +150,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 if (initialPosition != -1 && targetPosition != -1) {
 
-                    val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
+                    val overviewAdapter = (recyclerView.adapter as OnlineOverviewAdapter)
 
                     val oldIndex = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteIndex].toString().toLong()
                     val newIndex = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteIndex].toString().toLong()
@@ -166,8 +167,23 @@ class KeepNoteOverview : AppCompatActivity(),
                                 noteHandwritingSnapshotLink = null,
                                 noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteTile].toString().toLong(),
                                 noteEditTime = null,
-                                noteIndex = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteIndex].toString().toLong()
+                                noteIndex = newIndex
                             ))
+
+                        (application as KeepNoteApplication)
+                            .notesRoomDatabaseConfiguration
+                            .updateNoteData(NotesDatabaseModel(
+                                uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].id.toLong(),
+                                noteTile = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteTile].toString(),
+                                noteTextContent = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteTextContent].toString(),
+                                noteHandwritingPaintingPaths = null,
+                                noteHandwritingSnapshotLink = null,
+                                noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteTile].toString().toLong(),
+                                noteEditTime = null,
+                                noteIndex = oldIndex
+                            ))
+
+                        overviewAdapter.rearrangeItemsData(initialPosition, targetPosition)
 
                         (application as KeepNoteApplication)
                             .firestoreDatabase.document(overviewAdapter.notesDataStructureList[initialPosition].reference.path)
@@ -319,29 +335,31 @@ class KeepNoteOverview : AppCompatActivity(),
                 false
             )
 
-            val overviewAdapter = OverviewAdapter(this@KeepNoteOverview)
+            val offlineOverviewAdapter = OfflineOverviewAdapter(this@KeepNoteOverview)
+
+            val onlineOverviewAdapter = OnlineOverviewAdapter(this@KeepNoteOverview)
 
             itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
 
-            notesOverviewViewModel.notesQuerySnapshots.observe(this@KeepNoteOverview, Observer {
+            notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
                 if (it.isNotEmpty()) {
 
                     overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
 
-                    if (overviewAdapter.notesDataStructureList.isNotEmpty()) {
+                    if (offlineOverviewAdapter.notesDataStructureList.isNotEmpty()) {
 
-                        overviewAdapter.notesDataStructureList.clear()
-                        overviewAdapter.notesDataStructureList.addAll(it)
+                        offlineOverviewAdapter.notesDataStructureList.clear()
+                        offlineOverviewAdapter.notesDataStructureList.addAll(it)
 
-                        overviewAdapter.notifyDataSetChanged()
+                        offlineOverviewAdapter.notifyDataSetChanged()
 
                     } else {
 
-                        overviewAdapter.notesDataStructureList.clear()
-                        overviewAdapter.notesDataStructureList.addAll(it)
+                        offlineOverviewAdapter.notesDataStructureList.clear()
+                        offlineOverviewAdapter.notesDataStructureList.addAll(it)
 
-                        overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapter
+                        overviewLayoutBinding.overviewRecyclerView.adapter = offlineOverviewAdapter
 
                     }
 
@@ -349,7 +367,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 } else {
 
-                    overviewAdapter.notesDataStructureList.clear()
+                    offlineOverviewAdapter.notesDataStructureList.clear()
 
                     overviewLayoutBinding.overviewRecyclerView.removeAllViews()
 
@@ -390,6 +408,74 @@ class KeepNoteOverview : AppCompatActivity(),
                 }
 
             })
+
+            /*notesOverviewViewModel.notesFirestoreQuerySnapshots.observe(this@KeepNoteOverview, Observer {
+
+                if (it.isNotEmpty()) {
+
+                    overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
+
+                    if (onlineOverviewAdapter.notesDataStructureList.isNotEmpty()) {
+
+                        onlineOverviewAdapter.notesDataStructureList.clear()
+                        onlineOverviewAdapter.notesDataStructureList.addAll(it)
+
+                        onlineOverviewAdapter.notifyDataSetChanged()
+
+                    } else {
+
+                        onlineOverviewAdapter.notesDataStructureList.clear()
+                        onlineOverviewAdapter.notesDataStructureList.addAll(it)
+
+                        overviewLayoutBinding.overviewRecyclerView.adapter = onlineOverviewAdapter
+
+                    }
+
+                    overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
+
+                } else {
+
+                    onlineOverviewAdapter.notesDataStructureList.clear()
+
+                    overviewLayoutBinding.overviewRecyclerView.removeAllViews()
+
+                    overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
+
+                    SnackbarBuilder(applicationContext).show(
+                        rootView = overviewLayoutBinding.rootView,
+                        messageText = getString(R.string.emptyNotesCollection),
+                        messageDuration = Snackbar.LENGTH_INDEFINITE,
+                        actionButtonText = android.R.string.ok,
+                        snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+
+                            override fun onActionButtonClicked(snackbar: Snackbar) {
+                                super.onActionButtonClicked(snackbar)
+
+                                startActivity(
+                                    Intent(applicationContext, TakeNote::class.java).apply {
+                                        putExtra(
+                                            TakeNote.NoteTakingWritingType.ExtraConfigurations,
+                                            TakeNote.NoteTakingWritingType.Keyboard
+                                        )
+                                        putExtra(
+                                            TakeNote.NoteTakingWritingType.ContentText,
+                                            overviewLayoutBinding.quickTakeNote.text.toString()
+                                        )
+                                    }, ActivityOptions.makeCustomAnimation(
+                                        applicationContext,
+                                        R.anim.fade_in,
+                                        0
+                                    ).toBundle()
+                                )
+
+                            }
+
+                        }
+                    )
+
+                }
+
+            })*/
 
             /*Invoke In Application Update*/
             InApplicationUpdateProcess(this@KeepNoteOverview, overviewLayoutBinding.rootView)

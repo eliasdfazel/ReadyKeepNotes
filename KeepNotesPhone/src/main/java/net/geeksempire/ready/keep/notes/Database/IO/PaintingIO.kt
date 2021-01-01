@@ -100,7 +100,13 @@ class PaintingIO (private val context: Context) {
 
     }
 
-    fun preparePaintingPaths(paintingCanvasView: PaintingCanvasView, paintingPathsJsonArray: ArrayList<DocumentSnapshot>) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+    fun preparePaintingPathsOffline(paintingCanvasView: PaintingCanvasView, paintingPathsJsonArray: String) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+
+
+
+    }
+
+    fun preparePaintingPathsOnline(paintingCanvasView: PaintingCanvasView, paintingPathsJsonArray: ArrayList<DocumentSnapshot>) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
         paintingPathsJsonArray.forEach { paintingPaths ->
 
