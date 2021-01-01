@@ -66,7 +66,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 )
 
                 (keepNoteApplication).notesRoomDatabaseConfiguration
-                    .insertNewWidgetDataSuspend(notesDatabaseModel)
+                    .insertNewNoteData(notesDatabaseModel)
 
                 takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
 
@@ -309,7 +309,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     )
 
                     (keepNoteApplication).notesRoomDatabaseConfiguration
-                        .insertNewWidgetDataSuspend(notesDatabaseModel)
+                        .insertNewNoteData(notesDatabaseModel)
 
                     overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
 
