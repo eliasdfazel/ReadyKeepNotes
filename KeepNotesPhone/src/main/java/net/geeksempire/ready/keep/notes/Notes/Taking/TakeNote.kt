@@ -1,6 +1,7 @@
 package net.geeksempire.ready.keep.notes.Notes.Taking
 
 import android.animation.Animator
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
+import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
@@ -21,6 +23,7 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupToggleKeybo
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Utils.StrokePaintingCanvasView
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Extensions.checkSpecialCharacters
@@ -33,7 +36,6 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
 import net.geeksempire.ready.keep.notes.databinding.TakeNoteLayoutBinding
 import javax.inject.Inject
 import kotlin.math.hypot
-
 
 class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
@@ -84,6 +86,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     var autoEnterPlaced = false
 
+    var incomingActivity = EntryConfigurations::class.java.simpleName
+
     @Inject lateinit var networkCheckpoint: NetworkCheckpoint
 
     @Inject lateinit var networkConnectionListener: NetworkConnectionListener
@@ -123,6 +127,12 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         setupToggleKeyboardHandwriting()
 
         setupPaintingActions()
+
+        if (intent.hasExtra("IncomingActivityName")) {
+
+            incomingActivity = intent.getStringExtra("IncomingActivityName")
+
+        }
 
         firebaseUser?.let { firebaseUser ->
 
@@ -314,6 +324,16 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
             })
 
         } else {
+
+            if (incomingActivity == EntryConfigurations::class.java.simpleName) {
+
+                startActivity(Intent(applicationContext, KeepNoteOverview::class.java))
+
+            } else {
+
+
+
+            }
 
             this@TakeNote.finish()
             overridePendingTransition(0, R.anim.fade_out)
