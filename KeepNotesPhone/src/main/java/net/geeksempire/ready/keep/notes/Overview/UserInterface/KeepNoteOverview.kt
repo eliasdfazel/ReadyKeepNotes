@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -371,7 +370,7 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                     override fun latestVersionAlreadyInstalled() {
                         super.latestVersionAlreadyInstalled()
 
-                        Toast.makeText(applicationContext, "Latest Version Already Installed", Toast.LENGTH_LONG).show()
+
 
                     }
 
