@@ -35,6 +35,7 @@ import com.google.firebase.auth.PhoneAuthProvider
 import net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationProfileData
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
+import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Colors.extractDominantColor
@@ -177,17 +178,16 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
         accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, firebaseAuthentication.currentUser?.displayName)
 
-        val userInformationProfileData: UserInformationProfileData =
-            UserInformationProfileData(
+        val userInformationProfileData = UserInformationProfileData(
                 privacyAgreement = userInformationIO.readPrivacyAgreement(),
                 userIdentification = firebaseUser.uid,
                 userEmailAddress = firebaseUser.email.toString(),
                 userDisplayName = firebaseUser.displayName.toString(),
                 userProfileImage = firebaseUser.photoUrl.toString(),
-                instagramAccount = accountInformationLayoutBinding.instagramAddressView.text.toString()
-                    .toLowerCase(Locale.getDefault()),
+                instagramAccount = accountInformationLayoutBinding.instagramAddressView.text.toString().toLowerCase(Locale.getDefault()),
                 twitterAccount = accountInformationLayoutBinding.twitterAddressView.text.toString(),
                 phoneNumber = accountInformationLayoutBinding.phoneNumberAddressView.text.toString(),
+                isBetaUser = BuildConfig.VERSION_NAME.toUpperCase(Locale.getDefault()).contains("Beta".toUpperCase(Locale.getDefault()))
             )
 
         firestoreDatabase

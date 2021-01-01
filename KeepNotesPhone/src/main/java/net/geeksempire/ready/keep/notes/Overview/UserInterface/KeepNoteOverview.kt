@@ -19,7 +19,11 @@ import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
+import com.google.firebase.inappmessaging.model.Action
+import com.google.firebase.inappmessaging.model.InAppMessage
 import com.google.firebase.ktx.Firebase
+import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
@@ -38,14 +42,19 @@ import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.InApplicationU
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.UpdateResponse
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
+import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteMessageHandler
+import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteSubscriptions
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
+import java.util.*
 import javax.inject.Inject
 
-class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface {
+class KeepNoteOverview : AppCompatActivity(),
+    NetworkConnectionListenerInterface,
+    FirebaseInAppMessagingClickListener {
 
     val firebaseUser = Firebase.auth.currentUser
 
@@ -77,29 +86,15 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                     or ItemTouchHelper.DOWN
                     or ItemTouchHelper.START
                     or ItemTouchHelper.END,
-            0
-        ) {
+            0) {
 
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
 
 
                 return true
             }
 
-            override fun onMoved(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                fromPosition: Int,
-                target: RecyclerView.ViewHolder,
-                toPosition: Int,
-                x: Int,
-                y: Int
-            ) {
+            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
                 super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
                 val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
@@ -118,7 +113,6 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
 
 
             }
@@ -154,8 +148,12 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
                     val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
 
-                    val oldIndex = overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteIndex].toString().toLong()
-                    val newIndex = overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteIndex].toString().toLong()
+                    val oldIndex =
+                        overviewAdapter.notesDataStructureList[initialPosition][Notes.NoteIndex].toString()
+                            .toLong()
+                    val newIndex =
+                        overviewAdapter.notesDataStructureList[targetPosition][Notes.NoteIndex].toString()
+                            .toLong()
 
                     (application as KeepNoteApplication)
                         .firestoreDatabase.document(overviewAdapter.notesDataStructureList[initialPosition].reference.path)
@@ -177,7 +175,8 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
                                         "Database Rearrange Process Completed Successfully | Target Positionb"
                                     )
 
-                                    (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = true
+                                    (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener =
+                                        true
                                     startNetworkOperation()
 
                                     initialPosition = -1
@@ -248,7 +247,8 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
                                     val lastLine = allLines[allLines.size - 2]
 
-                                    val specialCharacterData = lastLine.substring(IntRange(0, 0)).checkSpecialCharacters()
+                                    val specialCharacterData =
+                                        lastLine.substring(IntRange(0, 0)).checkSpecialCharacters()
 
                                     if (specialCharacterData.detected) {
 
@@ -256,15 +256,23 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
                                             autoEnterPlaced = true
 
-                                            overviewLayoutBinding.quickTakeNote.editableText.replace(editable.length - 4, editable.length, "")
+                                            overviewLayoutBinding.quickTakeNote.editableText.replace(
+                                                editable.length - 4,
+                                                editable.length,
+                                                ""
+                                            )
                                             overviewLayoutBinding.quickTakeNote.append("\n")
 
                                         } else {
 
                                             if (!autoEnterPlaced) {
 
-                                                overviewLayoutBinding.quickTakeNote.append(specialCharacterData.specialCharacter)
-                                                overviewLayoutBinding.quickTakeNote.setSelection(editable.length)
+                                                overviewLayoutBinding.quickTakeNote.append(
+                                                    specialCharacterData.specialCharacter
+                                                )
+                                                overviewLayoutBinding.quickTakeNote.setSelection(
+                                                    editable.length
+                                                )
 
                                             }
 
@@ -288,7 +296,12 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
             }
 
-            overviewLayoutBinding.overviewRecyclerView.layoutManager = GridLayoutManager(applicationContext, columnCount(applicationContext, 313), RecyclerView.VERTICAL, false)
+            overviewLayoutBinding.overviewRecyclerView.layoutManager = GridLayoutManager(
+                applicationContext,
+                columnCount(applicationContext, 313),
+                RecyclerView.VERTICAL,
+                false
+            )
 
             val overviewAdapter = OverviewAdapter(this@KeepNoteOverview)
 
@@ -365,16 +378,29 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
             /*Invoke In Application Update*/
             InApplicationUpdateProcess(this@KeepNoteOverview, overviewLayoutBinding.rootView)
-                .initialize (object : UpdateResponse {
+                .initialize(object : UpdateResponse {
 
                     override fun latestVersionAlreadyInstalled() {
                         super.latestVersionAlreadyInstalled()
 
 
-
                     }
 
                 })
+
+        }
+
+        firebaseUser?.let {
+
+            RemoteSubscriptions()
+                .subscribe(it.uid)
+
+        }
+
+        if (BuildConfig.VERSION_NAME.toUpperCase(Locale.getDefault()).contains("Beta".toUpperCase(Locale.getDefault()))) {
+
+            RemoteSubscriptions()
+                .subscribe("Beta")
 
         }
 
@@ -413,7 +439,8 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
 
     override fun networkAvailable() {
 
-        (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = false
+        (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener =
+            false
 
         startNetworkOperation()
 
@@ -422,6 +449,12 @@ class KeepNoteOverview : AppCompatActivity(), NetworkConnectionListenerInterface
     override fun networkLost() {
 
 
+    }
+
+    override fun messageClicked(inAppMessage: InAppMessage, action: Action) {
+
+        RemoteMessageHandler()
+            .extractData(inAppMessage, action)
 
     }
 

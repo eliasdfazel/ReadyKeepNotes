@@ -37,4 +37,5 @@ data class UserInformationProfileData (var privacyAgreement: Boolean? = false,
                                        var twitterAccount: String?,
                                        var phoneNumber: String?,
                                        var phoneNumberVerified: Boolean? = false,
-                                       var userJointDate:  FieldValue = FieldValue.serverTimestamp())
+                                       var userJointDate:  FieldValue = FieldValue.serverTimestamp(),
+                                       var isBetaUser: Boolean = false)
