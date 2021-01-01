@@ -4,16 +4,22 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
 
-fun KeepNoteOverview.startDatabaseOperation() {
+fun KeepNoteOverview.startDatabaseOperation() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
-    (application as KeepNoteApplication)
+    val allNotesData = (application as KeepNoteApplication)
         .notesRoomDatabaseConfiguration
+        .getAllNotesData()
 
+    notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(allNotesData)
 
 }
 

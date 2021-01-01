@@ -35,10 +35,7 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OfflineOverviewAdapter
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OnlineOverviewAdapter
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.loadUserAccountInformation
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.setupActions
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.setupColors
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.startNetworkOperation
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.*
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Extensions.checkSpecialCharacters
@@ -101,7 +98,7 @@ class KeepNoteOverview : AppCompatActivity(),
             override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
                 super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
-                val overviewAdapter = (recyclerView.adapter as OnlineOverviewAdapter)
+                val overviewAdapter = (recyclerView.adapter as OfflineOverviewAdapter)
 
                 if (initialPosition == -1) {
 
@@ -339,7 +336,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
             val onlineOverviewAdapter = OnlineOverviewAdapter(this@KeepNoteOverview)
 
-            itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
+//            itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
 
             notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
@@ -491,6 +488,8 @@ class KeepNoteOverview : AppCompatActivity(),
 
         }
 
+        startDatabaseOperation()
+
         firebaseUser?.let {
 
             RemoteSubscriptions()
@@ -533,6 +532,7 @@ class KeepNoteOverview : AppCompatActivity(),
     }
 
     override fun networkAvailable() {
+        Log.d(this@KeepNoteOverview.javaClass.simpleName, "Network Available")
 
         (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = false
 
@@ -541,6 +541,7 @@ class KeepNoteOverview : AppCompatActivity(),
     }
 
     override fun networkLost() {
+        Log.d(this@KeepNoteOverview.javaClass.simpleName, "Network Not Available")
 
 
     }

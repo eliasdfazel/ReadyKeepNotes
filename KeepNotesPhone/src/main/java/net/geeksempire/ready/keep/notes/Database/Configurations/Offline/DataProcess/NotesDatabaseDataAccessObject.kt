@@ -28,8 +28,8 @@ interface NotesDatabaseDataAccessObject {
     suspend fun deleteSuspend(notesDatabaseModel: NotesDatabaseModel)
 
 
-//    @Query("SELECT * FROM WidgetData ORDER BY AppName ASC")
-//    suspend fun getAllWidgetDataSuspend(): List<WidgetDataModel>
+    @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex ASC")
+    suspend fun getAllNotesData(): List<NotesDatabaseModel>
 //
 //
 //    @Query("SELECT * FROM WidgetData WHERE PackageName IN (:PackageName) AND ClassNameProvider IN (:ClassNameWidgetProvider)")

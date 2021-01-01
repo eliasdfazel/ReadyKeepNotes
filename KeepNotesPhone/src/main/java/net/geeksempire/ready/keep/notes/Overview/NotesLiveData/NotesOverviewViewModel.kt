@@ -10,8 +10,8 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseMode
 
 class NotesOverviewViewModel : ViewModel() {
 
-    val notesDatabaseQuerySnapshots : MutableLiveData<ArrayList<NotesDatabaseModel>> by lazy {
-        MutableLiveData<ArrayList<NotesDatabaseModel>>()
+    val notesDatabaseQuerySnapshots : MutableLiveData<List<NotesDatabaseModel>> by lazy {
+        MutableLiveData<List<NotesDatabaseModel>>()
     }
 
     val notesFirestoreQuerySnapshots : MutableLiveData<ArrayList<DocumentSnapshot>> by lazy {
@@ -20,7 +20,7 @@ class NotesOverviewViewModel : ViewModel() {
 
     fun processDocumentSnapshots(documentSnapshotsList: List<DocumentSnapshot>) = CoroutineScope(Dispatchers.IO).async {
 
-        notesFirestoreQuerySnapshots.postValue(documentSnapshotsList as ArrayList<DocumentSnapshot>?)
+        //Download & Save To Room Database
 
     }
 
