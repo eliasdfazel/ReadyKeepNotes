@@ -3,8 +3,9 @@ package net.geeksempire.ready.keep.notes.Database.IO
 import android.content.Context
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import com.abanabsalan.aban.magazine.Utils.System.hideKeyboard
+import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
@@ -42,10 +43,10 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             try {
 
+                takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+
                 val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
                 val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
-
-                takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 
                 takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
                 takeNoteLayoutBinding.savingView.isEnabled = false
@@ -66,6 +67,11 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 (keepNoteApplication).notesRoomDatabaseConfiguration
                     .insertNewWidgetDataSuspend(notesDatabaseModel)
+
+                takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+
+                takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = true
+                takeNoteLayoutBinding.savingView.isEnabled = true
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -109,11 +115,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
             val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
             val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-            takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
-
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
-            takeNoteLayoutBinding.savingView.isEnabled = false
-
             val notesDataStructure = NotesDataStructure(
                 noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
                 noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
@@ -148,10 +149,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                                         ).addOnSuccessListener {
                                             Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Saved Successfully")
 
-                                            takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
 
-                                            takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = true
-                                            takeNoteLayoutBinding.savingView.isEnabled = true
 
                                         }.addOnFailureListener {
                                             Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Did Not Saved")
@@ -252,10 +250,10 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                                 )
                             )
                             .addOnSuccessListener {
-                                Log.d(
-                                    this@NotesIO.javaClass.simpleName,
-                                    "Handwriting Paths Saved Successfully"
-                                )
+                                Log.d(this@NotesIO.javaClass.simpleName, "Handwriting Paths Saved Successfully")
+
+
+
                             }.addOnFailureListener {
 
 
@@ -279,33 +277,26 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             if (overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
 
-                if (overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
-
-                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
-                    overviewLayoutBinding.textInputQuickTakeNote.error = null
-
-                }
-
-                val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
-
-                overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
-
-                val inputMethodManager: InputMethodManager by lazy {
-                    keepNoteApplication.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                }
-
-                overviewLayoutBinding.quickTakeNote.clearFocus()
-
-                inputMethodManager.hideSoftInputFromWindow(
-                    overviewLayoutBinding.quickTakeNote.windowToken,
-                    InputMethodManager.HIDE_IMPLICIT_ONLY
-                )
-
-                overviewLayoutBinding.savingView.isEnabled = false
-
-                val documentId: Long = System.currentTimeMillis()
-
                 try {
+
+                    if (overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
+
+                        overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                        overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                    }
+
+                    val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
+
+                    overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+
+                    overviewLayoutBinding.quickTakeNote.clearFocus()
+
+                    hideKeyboard(context, overviewLayoutBinding.quickTakeNote)
+
+                    overviewLayoutBinding.savingView.isEnabled = false
+
+                    val documentId: Long = System.currentTimeMillis()
 
                     val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
                         noteTile = null,
@@ -320,11 +311,24 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     (keepNoteApplication).notesRoomDatabaseConfiguration
                         .insertNewWidgetDataSuspend(notesDatabaseModel)
 
+                    overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+
+                    overviewLayoutBinding.savingView.isEnabled = true
+
+                    overviewLayoutBinding.quickTakeNote.text = null
+
+                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                    overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                    showKeyboard(context, overviewLayoutBinding.quickTakeNote)
+
+                    overviewLayoutBinding.quickTakeNote.requestFocus()
+
                 } catch (e: Exception) {
                     e.printStackTrace()
 
                     overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                    overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.errorOccurred)
+                    overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.offlineSavingError)
 
                 }
 
@@ -358,21 +362,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
 
-                overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
-
-                val inputMethodManager: InputMethodManager by lazy {
-                    keepNoteApplication.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                }
-
-                overviewLayoutBinding.quickTakeNote.clearFocus()
-
-                inputMethodManager.hideSoftInputFromWindow(
-                    overviewLayoutBinding.quickTakeNote.windowToken,
-                    InputMethodManager.HIDE_IMPLICIT_ONLY
-                )
-
-                overviewLayoutBinding.savingView.isEnabled = false
-
                 val documentId: Long = System.currentTimeMillis()
 
                 val notesDataStructure = NotesDataStructure(
@@ -398,26 +387,10 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                         }
 
-                        overviewLayoutBinding.savingView.isEnabled = true
-
-                        overviewLayoutBinding.quickTakeNote.text = null
-
-                        overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
-                        overviewLayoutBinding.textInputQuickTakeNote.error = null
-
-                        inputMethodManager.showSoftInput(
-                            overviewLayoutBinding.quickTakeNote,
-                            InputMethodManager.SHOW_IMPLICIT
-                        )
-
-                        overviewLayoutBinding.quickTakeNote.requestFocus()
-
-                        overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
-
                     }.addOnFailureListener {
 
                         overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                        overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.errorOccurred)
+                        overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.onlineSavingError)
 
                     }
 

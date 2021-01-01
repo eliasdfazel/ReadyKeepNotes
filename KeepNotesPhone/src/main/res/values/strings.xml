@@ -30,6 +30,9 @@
 
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 
+    <string name="offlineSavingError">⚠ Error Occurred Saving Data  ⚠</string>
+    <string name="onlineSavingError">⚠ Error Occurred Uploading Data ⚠</string>
+
     <string name="welcomeText">Welcome %1$s To Ready Keep Notes…!</string>
 
     <string name="typeInstagram">Type Your Instagram Username</string>
