@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:padding="57dp"
         android:scaleType="fitCenter"
+        android:alpha="0.5"
         android:src="@drawable/official_business_logo" />
 
     <net.geeksempire.blurry.effect.view.RealtimeBlurView
@@ -30,14 +31,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        apps:realtimeBlurRadius="11dp"
+        apps:realtimeBlurRadius="19dp"
         apps:realtimeOverlayColor="@color/light_blurry_color" />
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/profileImageView"
-        android:layout_width="191dp"
-        android:layout_height="191dp"
-        android:layout_marginTop="11dp"
+        android:layout_width="179dp"
+        android:layout_height="179dp"
+        android:layout_marginTop="13dp"
         android:layout_marginBottom="29dp"
         android:scaleType="centerCrop"
         android:transitionName="@string/profileImageTransitionName"
@@ -86,7 +87,7 @@
         android:fontFamily="@font/houston_regular"
         android:text="@string/welcomeText"
         android:textColor="@color/dark"
-        android:textSize="51sp"
+        android:textSize="43sp"
 
         apps:layout_constraintEnd_toEndOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
@@ -111,7 +112,7 @@
         android:id="@+id/socialMediaScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="3dp"
+        android:layout_marginVertical="7dp"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="7dp"
         android:requiresFadingEdge="vertical"
