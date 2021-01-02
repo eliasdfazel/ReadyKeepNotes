@@ -49,7 +49,7 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
         when (themePreferences.checkThemeLightDark()) {
             ThemeType.ThemeLight -> {
 
-                changeLogLayoutBinding.dialogueView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.lighter))
+                changeLogLayoutBinding.dialogueView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.light))
 
                 changeLogLayoutBinding.dialogueTitle.setTextColor(context.getColor(R.color.darker))
                 changeLogLayoutBinding.dialogueContent.setTextColor(context.getColor(R.color.dark))
@@ -63,7 +63,7 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
             }
             ThemeType.ThemeDark -> {
 
-                changeLogLayoutBinding.dialogueView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.darker))
+                changeLogLayoutBinding.dialogueView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
 
                 changeLogLayoutBinding.dialogueTitle.setTextColor(context.getColor(R.color.lighter))
                 changeLogLayoutBinding.dialogueContent.setTextColor(context.getColor(R.color.light))
