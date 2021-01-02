@@ -83,7 +83,7 @@
                 apps:layout_constraintStart_toStartOf="@id/colorPaletteView"
                 apps:layout_constraintEnd_toStartOf="@id/pickColorView" />
 
-            <com.ramotion.fluidslider.FluidSlider
+            <net.geeksempire.ready.keep.notes.Utils.UI.Views.FluidSlide.FluidSlider
                 android:id="@+id/strokeWidthFluidSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

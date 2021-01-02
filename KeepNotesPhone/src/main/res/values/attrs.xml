@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 12/31/20 10:34 AM
+  ~ Last modified 12/31/20 9:21 AM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <declare-styleable name="FluidSlider">
+        <attr name="bar_color" format="color"/>
+        <attr name="bubble_color" format="color"/>
+        <attr name="bar_text_color" format="color"/>
+        <attr name="bubble_text_color" format="color"/>
+        <attr name="start_text" format="string"/>
+        <attr name="end_text" format="string"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="duration" format="integer"/>
+        <!-- Initial position in range from 0.0 to 1.0 -->
+        <attr name="initial_position" format="float"/>
+        <attr name="size" format="enum">
+            <enum name="small" value="0"/>
+            <enum name="normal" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ZoomageView">
+        <attr name="zoomage_zoomable" format="boolean" />
+        <attr name="zoomage_translatable" format="boolean" />
+        <attr name="zoomage_restrictBounds" format="boolean" />
+        <attr name="zoomage_animateOnReset" format="boolean" />
+        <attr name="zoomage_doubleTapToZoom" format="boolean" />
+        <attr name="zoomage_doubleTapToZoomScaleFactor" format="float" />
+        <attr name="zoomage_autoCenter" format="boolean" />
+        <attr name="zoomage_minScale" format="float" />
+        <attr name="zoomage_maxScale" format="float" />
+        <attr name="zoomage_autoResetMode" format="enum">
+            <enum name="UNDER" value="0" />
+            <enum name="OVER" value="1" />
+            <enum name="ALWAYS" value="2" />
+            <enum name="NEVER" value="3" />
+        </attr>
+    </declare-styleable>
+
+</resources>

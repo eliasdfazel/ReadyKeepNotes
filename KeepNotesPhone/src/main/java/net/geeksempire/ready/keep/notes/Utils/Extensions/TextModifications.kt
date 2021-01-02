@@ -10,6 +10,8 @@
 
 package net.geeksempire.ready.keep.notes.Utils.Extensions
 
+import androidx.annotation.Keep
+
 fun String.capitalizeFirstChar(): String {
 
     if (this@capitalizeFirstChar.isEmpty()) {
@@ -34,6 +36,7 @@ fun String.capitalizeFirstChar(): String {
  *  Special Characters  * # . - ☑ ✅
  *
  **/
+@Keep
 data class SpecialCharacterData(var detected: Boolean, var specialCharacter: String?)
 
 /**

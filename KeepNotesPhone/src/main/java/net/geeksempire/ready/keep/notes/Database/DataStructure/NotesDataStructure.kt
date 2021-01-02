@@ -1,5 +1,6 @@
 package net.geeksempire.ready.keep.notes.Database.DataStructure
 
+import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
@@ -17,6 +18,7 @@ object Notes {
     const val NoteIndex: String = "noteIndex"
 }
 
+@Keep
 data class NotesDataStructure(var noteTile: String = "Untitled Note",
                               var noteTextContent: String = "No Content",
                               var noteHandwritingSnapshotLink: String? = null,
@@ -26,6 +28,7 @@ data class NotesDataStructure(var noteTile: String = "Untitled Note",
 
 const val NotesDatabase = "NotesDatabase"
 
+@Keep
 @Entity(tableName = NotesDatabase)
 data class NotesDatabaseModel(
     @NonNull @PrimaryKey var uniqueNoteId: Long,
