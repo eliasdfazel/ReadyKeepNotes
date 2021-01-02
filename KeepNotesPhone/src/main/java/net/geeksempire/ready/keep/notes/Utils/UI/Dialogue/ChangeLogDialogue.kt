@@ -10,7 +10,6 @@ import android.text.Html
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.change_log_layout.*
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
@@ -19,6 +18,7 @@ import net.geeksempire.ready.keep.notes.Utils.Data.FileIO
 import net.geeksempire.ready.keep.notes.Utils.Data.percentage
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
+import net.geeksempire.ready.keep.notes.databinding.ChangeLogLayoutBinding
 import kotlin.math.roundToInt
 
 class ChangeLogDialogue (val context: AppCompatActivity) {
@@ -29,6 +29,8 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
 
     fun initializeShow() : Dialog {
 
+        val changeLogLayoutBinding = ChangeLogLayoutBinding.inflate(context.layoutInflater)
+
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.width = displayX(context).percentage(70.0).roundToInt() //dialogueWidth
         layoutParams.height = displayY(context).percentage(50.0).roundToInt() //dialogueHeight
@@ -38,7 +40,7 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
 
         val dialogue = Dialog(context)
         dialogue.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogue.setContentView(R.layout.change_log_layout)
+        dialogue.setContentView(changeLogLayoutBinding.root)
         dialogue.setCancelable(true)
         dialogue.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogue.window?.decorView?.setBackgroundColor(Color.TRANSPARENT)
@@ -47,64 +49,54 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
         when (themePreferences.checkThemeLightDark()) {
             ThemeType.ThemeLight -> {
 
-                dialogue.dialogueView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.lighter))
+                changeLogLayoutBinding.dialogueView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.lighter))
 
-                dialogue.dialogueTitle.setTextColor(context.getColor(R.color.darker))
-                dialogue.dialogueContent.setTextColor(context.getColor(R.color.dark))
+                changeLogLayoutBinding.dialogueTitle.setTextColor(context.getColor(R.color.darker))
+                changeLogLayoutBinding.dialogueContent.setTextColor(context.getColor(R.color.dark))
 
-                dialogue.rateIt.setBackgroundColor(context.getColor(R.color.white))
-                dialogue.followIt.setBackgroundColor(context.getColor(R.color.white))
+                changeLogLayoutBinding.rateIt.setBackgroundColor(context.getColor(R.color.white))
+                changeLogLayoutBinding.followIt.setBackgroundColor(context.getColor(R.color.white))
 
-                dialogue.rateIt.setTextColor(context.getColor(R.color.black))
-                dialogue.followIt.setTextColor(context.getColor(R.color.black))
-
-                dialogue.rateIt.setOnClickListener {
-                    dialogue.dismiss()
-
-                    context.startActivity(Intent(Intent.ACTION_VIEW,
-                        Uri.parse(context.getString(R.string.playStoreLink))))
-                }
-
-                dialogue.followIt.setOnClickListener {
-                    dialogue.dismiss()
-
-                    context.startActivity(Intent(Intent.ACTION_VIEW,
-                        Uri.parse(context.getString(R.string.twitterLink))))
-                }
+                changeLogLayoutBinding.rateIt.setTextColor(context.getColor(R.color.black))
+                changeLogLayoutBinding.followIt.setTextColor(context.getColor(R.color.black))
 
             }
             ThemeType.ThemeDark -> {
 
-                dialogue.dialogueView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.darker))
+                changeLogLayoutBinding.dialogueView.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.darker))
 
-                dialogue.dialogueTitle.setTextColor(context.getColor(R.color.lighter))
-                dialogue.dialogueContent.setTextColor(context.getColor(R.color.light))
+                changeLogLayoutBinding.dialogueTitle.setTextColor(context.getColor(R.color.lighter))
+                changeLogLayoutBinding.dialogueContent.setTextColor(context.getColor(R.color.light))
 
-                dialogue.rateIt.setBackgroundColor(context.getColor(R.color.black))
-                dialogue.followIt.setBackgroundColor(context.getColor(R.color.black))
+                changeLogLayoutBinding.rateIt.setBackgroundColor(context.getColor(R.color.black))
+                changeLogLayoutBinding.followIt.setBackgroundColor(context.getColor(R.color.black))
 
-                dialogue.rateIt.setTextColor(context.getColor(R.color.white))
-                dialogue.followIt.setTextColor(context.getColor(R.color.white))
-
-                dialogue.rateIt.setOnClickListener {
-                    dialogue.dismiss()
-
-                    context.startActivity(Intent(Intent.ACTION_VIEW,
-                        Uri.parse(context.getString(R.string.playStoreLink))))
-                }
-
-                dialogue.followIt.setOnClickListener {
-                    dialogue.dismiss()
-
-                    context.startActivity(Intent(Intent.ACTION_VIEW,
-                        Uri.parse(context.getString(R.string.twitterLink))))
-                }
+                changeLogLayoutBinding.rateIt.setTextColor(context.getColor(R.color.white))
+                changeLogLayoutBinding.followIt.setTextColor(context.getColor(R.color.white))
 
             }
         }
 
-        dialogue.dialogueTitle.append(Html.fromHtml("${context.getString(R.string.whatNew)} <small> ${BuildConfig.VERSION_CODE}</small>", Html.FROM_HTML_MODE_COMPACT))
-        dialogue.dialogueContent.text = Html.fromHtml(context.getString(R.string.changelog), Html.FROM_HTML_MODE_COMPACT)
+        changeLogLayoutBinding.dialogueTitle.append(Html.fromHtml("${context.getString(R.string.whatNew)} <small> ${BuildConfig.VERSION_CODE}</small>", Html.FROM_HTML_MODE_COMPACT))
+        changeLogLayoutBinding.dialogueContent.text = Html.fromHtml(context.getString(R.string.changelog), Html.FROM_HTML_MODE_COMPACT)
+
+        changeLogLayoutBinding.rateIt.setOnClickListener {
+            if (!context.isFinishing) {
+                dialogue.dismiss()
+            }
+
+            context.startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse(context.getString(R.string.playStoreLink))))
+        }
+
+        changeLogLayoutBinding.followIt.setOnClickListener {
+            if (!context.isFinishing) {
+                dialogue.dismiss()
+            }
+
+            context.startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse(context.getString(R.string.twitterLink))))
+        }
 
         dialogue.setOnDismissListener {
 
