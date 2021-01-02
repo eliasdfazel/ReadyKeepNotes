@@ -32,8 +32,8 @@ fun TakeNote.paintingActionsStrokeWidthSample() {
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = 0f
 
-    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.startText ="$fluidSliderMinimum"
-    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.endText = "$fluidSlideMaximum"
+//    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.startText ="$fluidSliderMinimum"
+//    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.endText = "$fluidSlideMaximum"
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.beginTrackingListener = {
 

@@ -345,6 +345,7 @@ class FluidSlider @JvmOverloads constructor(
         barCornerRadius = BAR_CORNER_RADIUS * density
         barInnerOffset = BAR_INNER_HORIZONTAL_OFFSET * density
         textOffset = TEXT_OFFSET * density
+
     }
 
     /**

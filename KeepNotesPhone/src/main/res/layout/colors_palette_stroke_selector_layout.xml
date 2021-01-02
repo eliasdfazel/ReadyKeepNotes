@@ -89,8 +89,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="29dp"
 
-                apps:start_text="3.00"
-                apps:end_text="33.00"
+                apps:start_text=""
+                apps:end_text=""
                 apps:size="normal"
                 apps:text_size="13sp"
                 apps:bar_color="@color/default_color"
