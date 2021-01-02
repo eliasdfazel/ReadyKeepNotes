@@ -1,9 +1,24 @@
 <resources>
 
+    <string name="followIt" translatable="false">Follow Us</string>
+    <string name="shareIt" translatable="false">Rate &amp; Share</string>
+
+    <string name="whatNew" translatable="false">What\'s New…</string>
+    <string name="changelog" translatable="false">
+        <![CDATA[
+            🔵 <b><big>Uninstall & Reinstall</big></b> <br/>
+            &bull; 🔁 <br/>
+            <br/>
+            <br/>
+            <b>Explore More Options in Preferences  ⚙️</b> <br/>
+            <b>Please, Go to Application Page for More Details</b> ⭐👍
+        ]]>
+    </string>
+
     <string name="profileImageTransitionName" translatable="false">profileImageTransitionName</string>
     <string name="preferenceImageTransitionName" translatable="false">preferenceImageTransitionName</string>
 
-    <string name="playStoreLink" translatable="false">https://play.google.com/store/apps/details?id=net.geeksempire.keepnotes</string>
+    <string name="playStoreLink" translatable="false">https://play.google.com/store/apps/details?id=net.geeksempire.ready.keep.notes</string>
     <string name="facebookLink" translatable="false">https://www.facebook.com/ReadyKeepNotes</string>
     <string name="twitterLink" translatable="false">https://www.twitter.com/ReadyKeepNotes</string>
 

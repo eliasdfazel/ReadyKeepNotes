@@ -44,6 +44,7 @@ import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerI
 import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteMessageHandler
 import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteSubscriptions
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
+import net.geeksempire.ready.keep.notes.Utils.UI.Dialogue.ChangeLogDialogue
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
@@ -239,6 +240,9 @@ class KeepNoteOverview : AppCompatActivity(),
         setupActions()
 
         overviewLayoutBinding.root.post {
+
+            ChangeLogDialogue(this@KeepNoteOverview)
+                .initializeShow()
 
             overviewLayoutBinding.quickTakeNote.post {
 
