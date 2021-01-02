@@ -454,8 +454,6 @@ class KeepNoteOverview : AppCompatActivity(),
     override fun networkAvailable() {
         Log.d(this@KeepNoteOverview.javaClass.simpleName, "Network Available")
 
-        (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = false
-
         startNetworkOperation()
 
     }
