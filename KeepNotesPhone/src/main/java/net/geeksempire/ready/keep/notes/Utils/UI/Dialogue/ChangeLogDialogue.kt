@@ -77,7 +77,7 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
             }
         }
 
-        changeLogLayoutBinding.dialogueTitle.append(Html.fromHtml("${context.getString(R.string.whatNew)} <small> ${BuildConfig.VERSION_CODE}</small>", Html.FROM_HTML_MODE_COMPACT))
+        changeLogLayoutBinding.dialogueTitle.text = Html.fromHtml("${context.getString(R.string.whatNew)} <small> ${BuildConfig.VERSION_CODE}</small>", Html.FROM_HTML_MODE_COMPACT)
         changeLogLayoutBinding.dialogueContent.text = Html.fromHtml(context.getString(R.string.changelog), Html.FROM_HTML_MODE_COMPACT)
 
         changeLogLayoutBinding.rateIt.setOnClickListener {
