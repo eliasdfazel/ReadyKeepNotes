@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import net.geeksempire.ready.keep.notes.ContentContexts.DataStructure.TextRazorParameters
+import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import java.nio.charset.Charset
 
 class NaturalLanguageProcessNetworkOperation(private val context: AppCompatActivity) {
@@ -42,6 +43,14 @@ class NaturalLanguageProcessNetworkOperation(private val context: AppCompatActiv
                     workInfo.outputData.getByteArray("Note_Tags")?.let {
 
                         val allTags = String(it)
+
+                        CoroutineScope(Dispatchers.IO).async {
+
+                            (context.application as KeepNoteApplication)
+                                .notesRoomDatabaseConfiguration
+                                .updateNoteTagsData(allTags)
+
+                        }
 
                     }
 

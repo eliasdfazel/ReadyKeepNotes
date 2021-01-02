@@ -16,6 +16,7 @@ object Notes {
     const val NoteTakenTime: String = "noteTakenTime"
     const val NoteEditTime: String = "noteEditTime"
     const val NoteIndex: String = "noteIndex"
+    const val NotesTags: String = "noteTags"
 }
 
 @Keep
@@ -41,5 +42,7 @@ data class NotesDatabaseModel(
     @NonNull @ColumnInfo(name = "noteTakenTime") var noteTakenTime: Long,
     @Nullable @ColumnInfo(name = "noteEditTime") var noteEditTime: Long?,
 
-    @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long
+    @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long,
+
+    @Nullable @ColumnInfo(name = "noteTags") var tags: String?
 )

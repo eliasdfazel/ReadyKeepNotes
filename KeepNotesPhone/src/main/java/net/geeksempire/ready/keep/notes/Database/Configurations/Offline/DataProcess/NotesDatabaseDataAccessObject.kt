@@ -32,6 +32,10 @@ interface NotesDatabaseDataAccessObject {
     suspend fun getAllNotesData(): List<NotesDatabaseModel>
 
 
+    @Query("")
+    suspend fun updateNoteTagsData(vararg allTags: String)
+
+
 //    @Query("SELECT * FROM WidgetData WHERE PackageName IN (:PackageName) AND ClassNameProvider IN (:ClassNameWidgetProvider)")
 //    suspend fun loadWidgetByClassNameProviderWidgetSuspend(PackageName: String, ClassNameWidgetProvider: String): WidgetDataModel
 
@@ -51,7 +55,7 @@ interface NotesDatabaseDataAccessObject {
 //    @Query("DELETE FROM WidgetData WHERE PackageName = :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
 //    suspend fun deleteByWidgetClassNameProviderWidgetSuspend(PackageName: String, ClassNameWidgetProvider: String)
 
-    
+
 //    @Query("SELECT COUNT(WidgetNumber) FROM WidgetData")
 //    suspend fun getRowCountSuspend(): Int
 

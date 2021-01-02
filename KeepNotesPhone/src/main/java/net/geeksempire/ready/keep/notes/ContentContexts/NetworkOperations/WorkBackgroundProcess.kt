@@ -9,6 +9,7 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.ContentContexts.DataStructure.TagsData
 import net.geeksempire.ready.keep.notes.ContentContexts.DataStructure.TextRazorParameters
 import net.geeksempire.ready.keep.notes.ContentContexts.Endpoints.NaturalLanguageProcessingEndpoints
+import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.R
@@ -97,7 +98,7 @@ class WorkBackgroundProcess(appContext: Context, val workerParams: WorkerParamet
                 Firebase.firestore
                     .document(databaseEndpoints.generalEndpoints(firebaseUserId) + "/" + firebaseDocumentId)
                     .update(
-                        "tags", jsonIO.writeTagsData(allTags)
+                        Notes.NotesTags, jsonIO.writeTagsData(allTags)
                     ).addOnSuccessListener {
 
 
