@@ -49,8 +49,9 @@ class NotesOverviewViewModel : ViewModel() {
                                 noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].toString(),
                                 noteTakenTime = documentSnapshot[Notes.NoteTakenTime].toString().toLong(),
                                 noteHandwritingPaintingPaths = paintingPaths,
+                                noteEditTime = null,
                                 noteIndex = documentSnapshot[Notes.NoteIndex].toString().toLong(),
-                                noteEditTime = null
+                                noteTags = null
                             ))
 
                     }

@@ -44,5 +44,5 @@ data class NotesDatabaseModel(
 
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long,
 
-    @Nullable @ColumnInfo(name = "noteTags") var tags: String?
+    @Nullable @ColumnInfo(name = "noteTags") var noteTags: String?
 )

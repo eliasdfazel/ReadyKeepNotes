@@ -158,7 +158,8 @@ class KeepNoteOverview : AppCompatActivity(),
                                 noteHandwritingSnapshotLink = null,
                                 noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString().toLong(),
                                 noteEditTime = null,
-                                noteIndex = newIndex
+                                noteIndex = newIndex,
+                                noteTags = null
                             ))
 
                         (application as KeepNoteApplication)
@@ -171,7 +172,8 @@ class KeepNoteOverview : AppCompatActivity(),
                                 noteHandwritingSnapshotLink = null,
                                 noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString().toLong(),
                                 noteEditTime = null,
-                                noteIndex = oldIndex
+                                noteIndex = oldIndex,
+                                noteTags = null
                             ))
 
                         overviewAdapter.rearrangeItemsData(initialPosition, targetPosition)

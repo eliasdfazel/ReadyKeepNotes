@@ -63,7 +63,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     noteHandwritingSnapshotLink = context.getFileStreamPath("${documentId}.PNG").absolutePath,
                     noteTakenTime = documentId,
                     noteEditTime = null,
-                    noteIndex = documentId
+                    noteIndex = documentId,
+                    noteTags = null
                 )
 
                 (keepNoteApplication).notesRoomDatabaseConfiguration
@@ -318,7 +319,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         noteHandwritingSnapshotLink = null,
                         noteTakenTime = documentId,
                         noteEditTime = null,
-                        noteIndex = documentId
+                        noteIndex = documentId,
+                        noteTags = null
                     )
 
                     (keepNoteApplication).notesRoomDatabaseConfiguration

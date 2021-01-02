@@ -15,11 +15,7 @@ import java.nio.charset.Charset
 
 class NaturalLanguageProcessNetworkOperation(private val context: AppCompatActivity) {
 
-    fun start(
-        firebaseUserId: String,
-        documentId: String,
-        textContent: String
-    ) = CoroutineScope(Dispatchers.IO).async {
+    fun start(firebaseUserId: String, documentId: String, textContent: String) = CoroutineScope(Dispatchers.IO).async {
 
         val workRequest = OneTimeWorkRequestBuilder<WorkBackgroundProcess>()
             .setInputData(
@@ -30,13 +26,11 @@ class NaturalLanguageProcessNetworkOperation(private val context: AppCompatActiv
                 ))
             .build()
 
-
         val tagsWorkManager = WorkManager.getInstance(context)
         tagsWorkManager.enqueue(workRequest)
 
         tagsWorkManager.getWorkInfoByIdLiveData(workRequest.id)
             .observe(context, Observer { workInfo ->
-
 
                 if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
 
