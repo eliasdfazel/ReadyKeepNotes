@@ -102,7 +102,19 @@ class PaintingIO (private val context: Context) {
 
     fun preparePaintingPathsOffline(paintingCanvasView: PaintingCanvasView, paintingPathsJsonArray: String) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
+        val allPaintingPathsJsonArray = JSONArray(paintingPathsJsonArray)
 
+        for (index in 0 until allPaintingPathsJsonArray.length()) {
+
+            val aPaintingPathsJsonArray = allPaintingPathsJsonArray[index] as JSONArray
+
+            for (pathIndex in 0 until aPaintingPathsJsonArray.length()) {
+
+
+
+            }
+
+        }
 
     }
 
