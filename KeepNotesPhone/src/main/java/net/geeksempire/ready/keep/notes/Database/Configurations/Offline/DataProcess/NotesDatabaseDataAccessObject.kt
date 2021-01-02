@@ -32,8 +32,8 @@ interface NotesDatabaseDataAccessObject {
     suspend fun getAllNotesData(): List<NotesDatabaseModel>
 
 
-    @Query("")
-    suspend fun updateNoteTagsData(vararg allTags: String)
+    @Query("UPDATE NotesDatabase SET noteTags = :allTags WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateNoteTagsData(uniqueNoteId: Long, allTags: String)
 
 
 //    @Query("SELECT * FROM WidgetData WHERE PackageName IN (:PackageName) AND ClassNameProvider IN (:ClassNameWidgetProvider)")

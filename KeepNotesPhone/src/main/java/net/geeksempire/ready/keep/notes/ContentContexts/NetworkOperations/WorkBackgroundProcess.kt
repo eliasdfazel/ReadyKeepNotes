@@ -106,7 +106,9 @@ class WorkBackgroundProcess(appContext: Context, val workerParams: WorkerParamet
 
                     }
 
-                val workOutputData = workDataOf("Note_Tags" to allTags.toString().toByteArray(Charset.defaultCharset()))
+                val workOutputData = workDataOf(
+                    "Document_Id" to firebaseDocumentId.toByteArray(Charset.defaultCharset()),
+                    "Note_Tags" to allTags.toString().toByteArray(Charset.defaultCharset()))
 
                 workerResult = Result.success(workOutputData)
 

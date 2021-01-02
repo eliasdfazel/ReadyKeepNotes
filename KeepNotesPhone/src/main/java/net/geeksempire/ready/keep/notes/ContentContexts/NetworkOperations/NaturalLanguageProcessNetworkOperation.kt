@@ -40,15 +40,19 @@ class NaturalLanguageProcessNetworkOperation(private val context: AppCompatActiv
 
                 if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
 
-                    workInfo.outputData.getByteArray("Note_Tags")?.let {
+                    workInfo.outputData.getByteArray("Note_Tags")?.let { notesTags ->
 
-                        val allTags = String(it)
+                        val allTags = String(notesTags)
 
-                        CoroutineScope(Dispatchers.IO).async {
+                        workInfo.outputData.getByteArray("Document_Id")?.let { documentId ->
 
-                            (context.application as KeepNoteApplication)
-                                .notesRoomDatabaseConfiguration
-                                .updateNoteTagsData(allTags)
+                            CoroutineScope(Dispatchers.IO).async {
+
+                                (context.application as KeepNoteApplication)
+                                    .notesRoomDatabaseConfiguration
+                                    .updateNoteTagsData(String(documentId).toLong(), allTags)
+
+                            }
 
                         }
 
