@@ -53,7 +53,7 @@ class FluidSlider @JvmOverloads constructor(
     private companion object {
         const val BAR_CORNER_RADIUS = 51
         const val BAR_VERTICAL_OFFSET = 1.5f
-        const val BAR_INNER_HORIZONTAL_OFFSET = 50
+        const val BAR_INNER_HORIZONTAL_OFFSET = 49
 
         const val SLIDER_WIDTH = 4
         const val SLIDER_HEIGHT = 1 + BAR_VERTICAL_OFFSET
@@ -563,13 +563,20 @@ class FluidSlider @JvmOverloads constructor(
 
         with(path) {
             reset()
+
             moveTo(fp1a[0], fp1a[1] + cornerRadius)
+
             lineTo(fp1a[0], fp1a[1])
+
             cubicTo(fp1a[0] + sp1[0], fp1a[1] + sp1[1], p2a[0] + sp2[0], p2a[1] + sp2[1], p2a[0], p2a[1])
+
             lineTo(circle2.centerX(), circle2.centerY())
             lineTo(p2b[0], p2b[1])
+
             cubicTo(p2b[0] + sp3[0], p2b[1] + sp3[1], fp1b[0] + sp4[0], fp1b[1] + sp4[1], fp1b[0], fp1b[1])
+
             lineTo(fp1b[0], fp1b[1] + cornerRadius)
+
             close()
         }
 
