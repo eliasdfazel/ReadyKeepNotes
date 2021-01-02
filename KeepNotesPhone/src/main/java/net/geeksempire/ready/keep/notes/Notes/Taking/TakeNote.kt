@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
+import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions

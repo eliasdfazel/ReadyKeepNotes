@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.view.View
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.*
+import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.RedrawPaintingData
 import net.geeksempire.ready.keep.notes.R
@@ -118,13 +119,17 @@ class PaintingIO (private val context: Context) {
 
     }
 
-    fun preparePaintingPathsOnline(paintingCanvasView: PaintingCanvasView, paintingPathsJsonArray: ArrayList<DocumentSnapshot>) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+    fun preparePaintingPathsOnline(paintingPathsJsonArray: List<DocumentSnapshot>) : String {
+
+        val overallRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
+
+        var allRedrawPaintingPathData: ArrayList<RedrawPaintingData>
 
         paintingPathsJsonArray.forEach { paintingPaths ->
 
             val jsonArrayPaths = JSONArray(paintingPaths["paintPath"].toString())
 
-            paintingCanvasView.allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
+            allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
 
             for (pathIndex in 0 until jsonArrayPaths.length()) {
 
@@ -134,7 +139,7 @@ class PaintingIO (private val context: Context) {
                 val paintColor = jsonArrayPaths.getJSONObject(pathIndex).get("paintColor").toString().toInt()
                 val paintStrokeWidth = jsonArrayPaths.getJSONObject(pathIndex).get("paintStrokeWidth").toString().toFloat()
 
-                paintingCanvasView.allRedrawPaintingPathData.add(RedrawPaintingData(
+                allRedrawPaintingPathData.add(RedrawPaintingData(
                     xDrawPosition = xDrawPosition,
                     yDrawPosition = yDrawPosition,
                     paintColor = paintColor,
@@ -143,10 +148,11 @@ class PaintingIO (private val context: Context) {
 
             }
 
-            paintingCanvasView.overallRedrawPaintingData.add(paintingCanvasView.allRedrawPaintingPathData)
+            overallRedrawPaintingData.add(allRedrawPaintingPathData)
 
         }
 
+        return JsonIO().writeAllPaintingPathData(overallRedrawPaintingData)
     }
 
 }

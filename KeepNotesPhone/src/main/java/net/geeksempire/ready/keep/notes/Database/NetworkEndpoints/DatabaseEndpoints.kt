@@ -1,4 +1,4 @@
-package net.geeksempire.ready.keep.notes.Database.GeneralEndpoints
+package net.geeksempire.ready.keep.notes.Database.NetworkEndpoints
 
 class DatabaseEndpoints {
 

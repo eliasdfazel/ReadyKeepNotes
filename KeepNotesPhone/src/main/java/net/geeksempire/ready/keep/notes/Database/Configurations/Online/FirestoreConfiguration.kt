@@ -19,8 +19,6 @@ import com.google.firebase.ktx.Firebase
 
 class FirestoreConfiguration (private val context: Context) {
 
-    var justRegisterChangeListener: Boolean = true
-
     private val firebaseFirestore = Firebase.firestore
 
     fun initialize() : FirebaseFirestore {

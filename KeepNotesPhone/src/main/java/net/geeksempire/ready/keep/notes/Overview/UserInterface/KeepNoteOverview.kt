@@ -27,8 +27,8 @@ import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
-import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
+import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
@@ -195,9 +195,7 @@ class KeepNoteOverview : AppCompatActivity(),
                                         ).addOnSuccessListener {
                                             Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Target Positionb")
 
-                                            (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = true
 
-                                            startNetworkOperation()
 
                                         }
 

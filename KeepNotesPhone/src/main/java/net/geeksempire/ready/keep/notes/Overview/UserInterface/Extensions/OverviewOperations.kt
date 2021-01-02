@@ -34,27 +34,16 @@ fun KeepNoteOverview.startNetworkOperation() {
 
         (application as KeepNoteApplication)
             .firestoreDatabase.collection(databaseEndpoints.generalEndpoints(firebaseUser.uid))
-
-        (application as KeepNoteApplication)
-            .firestoreDatabase.collection(databaseEndpoints.generalEndpoints(firebaseUser.uid))
             .orderBy(Notes.NoteIndex, Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, firestoreException ->
 
-                if (!(application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener) {
+                querySnapshot?.let {
 
-                    querySnapshot?.let {
-
-                        notesOverviewViewModel.processDocumentSnapshots(querySnapshot.documents)
-
-                    }
-
-                    firestoreException?.printStackTrace()
-
-                } else {
-
-                    (application as KeepNoteApplication).firestoreConfiguration.justRegisterChangeListener = false
+                    notesOverviewViewModel.downloadNotesData(this@startNetworkOperation, querySnapshot.documents)
 
                 }
+
+                firestoreException?.printStackTrace()
 
             }
 

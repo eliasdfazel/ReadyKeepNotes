@@ -9,8 +9,8 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.ContentContexts.DataStructure.TagsData
 import net.geeksempire.ready.keep.notes.ContentContexts.DataStructure.TextRazorParameters
 import net.geeksempire.ready.keep.notes.ContentContexts.Endpoints.NaturalLanguageProcessingEndpoints
-import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
+import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.R
 import org.json.JSONArray
 import org.json.JSONException
@@ -48,7 +48,9 @@ class WorkBackgroundProcess(appContext: Context, val workerParams: WorkerParamet
             httpsConnection.setRequestProperty("accept", "application/json")
             httpsConnection.setRequestProperty("x-textrazor-key", applicationContext.getString(R.string.textRazorKey))
 
-            httpsConnection.setDoOutput(true)
+            httpsConnection.doOutput = true
+
+            httpsConnection.connect()
 
             val dataOutputStream = DataOutputStream(httpsConnection.outputStream)
             dataOutputStream.writeBytes(requestBody)

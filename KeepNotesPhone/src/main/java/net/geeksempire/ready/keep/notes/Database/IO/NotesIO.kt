@@ -12,8 +12,8 @@ import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.NaturalLanguageProcessNetworkOperation
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
-import net.geeksempire.ready.keep.notes.Database.GeneralEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
+import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
