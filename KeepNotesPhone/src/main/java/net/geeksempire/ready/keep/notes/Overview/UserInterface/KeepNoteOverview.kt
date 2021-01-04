@@ -1,6 +1,5 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface
 
-import android.accounts.AccountManager
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
@@ -479,21 +478,10 @@ class KeepNoteOverview : AppCompatActivity(),
 
     override fun onBackPressed() {
 
-        if (firebaseUser != null
-            && firebaseUser.isAnonymous) {
-
-            startActivity(Intent(applicationContext, AccountManager::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK },
-                ActivityOptions.makeCustomAnimation(applicationContext, 0, android.R.anim.fade_out).toBundle())
-
-        } else {
-
-            startActivity(Intent(Intent.ACTION_MAIN).apply {
-                addCategory(Intent.CATEGORY_HOME)
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK },
-                ActivityOptions.makeCustomAnimation(applicationContext, 0, android.R.anim.fade_out).toBundle())
-
-        }
+        startActivity(Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_HOME)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK },
+            ActivityOptions.makeCustomAnimation(applicationContext, 0, android.R.anim.fade_out).toBundle())
 
     }
 
