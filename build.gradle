@@ -12,7 +12,7 @@
 buildscript {
 
     ext {
-        majorVersion = "1"
+        majorVersion = "0"
     }
 
     repositories {
