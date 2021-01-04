@@ -126,12 +126,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     fun insertAllNotesIntoCloudDatabase(context: AppCompatActivity, firebaseUser: FirebaseUser) = CoroutineScope(Dispatchers.IO).async {
 
         (keepNoteApplication).notesRoomDatabaseConfiguration
-            .getAllNotesData().takeIf {
-
-                it.isNullOrEmpty()
-            }?.let {
-
-                it.forEach { notesDatabaseModel ->
+            .getAllNotesData().forEach { notesDatabaseModel ->
 
                     val uniqueNoteId = notesDatabaseModel.uniqueNoteId
 
@@ -270,7 +265,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 }
 
-            }
+
 
     }
 
