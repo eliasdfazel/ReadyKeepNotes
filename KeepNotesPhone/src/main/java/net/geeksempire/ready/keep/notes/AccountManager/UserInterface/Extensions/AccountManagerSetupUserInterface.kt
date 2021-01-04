@@ -32,10 +32,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationDataStructure
 import net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationProfileData
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.BuildConfig
+import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
+import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Colors.extractDominantColor
@@ -190,7 +193,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
                 isBetaUser = BuildConfig.VERSION_NAME.toUpperCase(Locale.getDefault()).contains("Beta".toUpperCase(Locale.getDefault()))
             )
 
-        firestoreDatabase
+        (application as KeepNoteApplication).firestoreDatabase
             .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
             .set(userInformationProfileData)
             .addOnSuccessListener {
@@ -206,7 +209,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
                             override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
                                 Log.d(this@createUserProfile.javaClass.simpleName, "Phone Number Verified")
 
-                                firestoreDatabase
+                                (application as KeepNoteApplication).firestoreDatabase
                                     .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
                                     .update(
                                         "phoneNumberVerified", true,
@@ -292,7 +295,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
             }
 
-        firestoreDatabase
+        (application as KeepNoteApplication).firestoreDatabase
             .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
             .get()
             .addOnSuccessListener { documentSnapshot ->
@@ -303,17 +306,19 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
                     accountInformationLayoutBinding.socialMediaScrollView.visibility = View.VISIBLE
 
                     accountInformationLayoutBinding.instagramAddressView.setText(documentData.data?.get(
-                        net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationDataStructure.instagramAccount).toString().toLowerCase(Locale.getDefault()))
+                        UserInformationDataStructure.instagramAccount).toString().toLowerCase(Locale.getDefault()))
 
                     accountInformationLayoutBinding.twitterAddressView.setText(documentData.data?.get(
-                        net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationDataStructure.twitterAccount).toString())
+                        UserInformationDataStructure.twitterAccount).toString())
 
                     accountInformationLayoutBinding.phoneNumberAddressView.setText(documentData.data?.get(
-                        net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationDataStructure.phoneNumber).toString())
+                        UserInformationDataStructure.phoneNumber).toString())
 
                     accountInformationLayoutBinding.inviteFriendsView.visibility = View.VISIBLE
                     accountInformationLayoutBinding.inviteFriendsView.setOnClickListener {
 
+                        //
+                        //
                         //
 
                     }
@@ -366,6 +371,9 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
             })
             .submit()
+
+        NotesIO(application as KeepNoteApplication)
+            .retrieveAllNotes()
 
     }
 

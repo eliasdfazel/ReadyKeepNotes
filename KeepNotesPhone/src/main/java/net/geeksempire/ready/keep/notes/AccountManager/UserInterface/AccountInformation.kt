@@ -26,8 +26,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationDataStructure
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions.accountManagerSetupUserInterface
@@ -62,8 +60,6 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
     }
 
     val firebaseAuthentication = Firebase.auth
-
-    val firestoreDatabase: FirebaseFirestore = Firebase.firestore
 
     var profileUpdating: Boolean = false
 
@@ -107,7 +103,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
             firebaseAuthentication.currentUser?.let { firebaseUser ->
 
-                firestoreDatabase
+                (application as KeepNoteApplication).firestoreDatabase
                     .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
                     .get()
                     .addOnSuccessListener { documentSnapshot ->
@@ -129,6 +125,8 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                             accountInformationLayoutBinding.inviteFriendsView.visibility = View.VISIBLE
                             accountInformationLayoutBinding.inviteFriendsView.setOnClickListener {
 
+                                //
+                                //
                                 //
 
                             }

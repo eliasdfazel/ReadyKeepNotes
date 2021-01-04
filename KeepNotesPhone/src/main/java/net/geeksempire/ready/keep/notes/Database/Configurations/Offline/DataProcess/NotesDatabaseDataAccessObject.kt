@@ -35,6 +35,9 @@ interface NotesDatabaseDataAccessObject {
     @Query("UPDATE NotesDatabase SET noteTags = :allTags WHERE uniqueNoteId = :uniqueNoteId")
     suspend fun updateNoteTagsData(uniqueNoteId: Long, allTags: String)
 
+    @Query("UPDATE NotesDatabase SET noteHandwritingPaintingPaths = :handwritingPaths WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateHandwritingPathsData(uniqueNoteId: String, handwritingPaths: String)
+
 
 //    @Query("SELECT * FROM WidgetData WHERE PackageName IN (:PackageName) AND ClassNameProvider IN (:ClassNameWidgetProvider)")
 //    suspend fun loadWidgetByClassNameProviderWidgetSuspend(PackageName: String, ClassNameWidgetProvider: String): WidgetDataModel

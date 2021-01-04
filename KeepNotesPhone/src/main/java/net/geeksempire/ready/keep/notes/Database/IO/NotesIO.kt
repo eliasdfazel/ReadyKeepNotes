@@ -8,8 +8,15 @@ import com.abanabsalan.aban.magazine.Utils.System.hideKeyboard
 import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.NaturalLanguageProcessNetworkOperation
+import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
@@ -27,7 +34,87 @@ import net.geeksempire.ready.keep.notes.databinding.TakeNoteLayoutBinding
 
 class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
+    private val databaseEndpoints = DatabaseEndpoints()
+
+    private val paintingIO = PaintingIO(keepNoteApplication.applicationContext)
+
     private val jsonIO = JsonIO()
+
+    /* Retrieve Notes */
+    fun retrieveAllNotes(firebaseUser: FirebaseUser?) {
+
+        firebaseUser?.let {
+
+            (keepNoteApplication).firestoreDatabase
+                .collection(DatabaseEndpoints().noteTextsEndpoints(firebaseUser.uid))
+                .orderBy(Notes.NoteIndex, Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+
+                    querySnapshot.takeIf {
+
+                        !querySnapshot.isEmpty
+                    }.also {
+
+                        insertAllNotesIntoLocalDatabase(querySnapshot.documents, firebaseUser)
+
+                    }
+
+
+                }.addOnFailureListener {
+
+
+
+                }
+
+        }
+
+    }
+
+    fun insertAllNotesIntoLocalDatabase(allNotes: List<DocumentSnapshot>, firebaseUser: FirebaseUser) : Flow<NotesDatabaseModel> = flow {
+
+        allNotes.asFlow()
+            .collect { documentSnapshot ->
+
+                val uniqueNoteId = documentSnapshot.id.toLong()
+
+                val noteTitle = documentSnapshot[Notes.NoteTile].toString()
+                val noteTextContent = documentSnapshot[Notes.NoteTextContent].toString()
+
+                val noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].toString()
+
+                keepNoteApplication.firestoreDatabase
+                    .collection(databaseEndpoints.paintPathsCollectionEndpoints(databaseEndpoints.generalEndpoints(firebaseUser.uid)))
+                    .get()
+                    .addOnSuccessListener { documentSnapshotPath ->
+
+                        CoroutineScope(Dispatchers.IO).launch {
+
+                            (keepNoteApplication).notesRoomDatabaseConfiguration
+                                .updateHandwritingPathsData(uniqueNoteId.toString(), paintingIO.preparePaintingPathsOnline(documentSnapshotPath.documents))
+
+                        }
+
+                    }
+
+                val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentSnapshot.id.toLong(),
+                    noteTile = noteTitle,
+                    noteTextContent = noteTextContent,
+                    noteHandwritingPaintingPaths = null,
+                    noteHandwritingSnapshotLink = noteHandwritingSnapshotLink,
+                    noteTakenTime = uniqueNoteId,
+                    noteEditTime = null,
+                    noteIndex = documentSnapshot.id.toLong(),
+                    noteTags = null
+                )
+
+                (keepNoteApplication).notesRoomDatabaseConfiguration
+                    .insertNewNoteData(notesDatabaseModel)
+
+                emit(notesDatabaseModel)
+            }
+
+    }
 
     /* Offline Database */
     fun saveNotesAndPaintingOffline(context: TakeNote,
