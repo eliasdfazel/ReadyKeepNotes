@@ -29,6 +29,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     private val jsonIO = JsonIO()
 
+    /* Offline Database */
     fun saveNotesAndPaintingOffline(context: TakeNote,
                                     firebaseUser: FirebaseUser?,
                                     takeNoteLayoutBinding: TakeNoteLayoutBinding,
@@ -112,6 +113,92 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
+    fun saveQuickNotesOffline(context: KeepNoteOverview,
+                              firebaseUser: FirebaseUser?,
+                              contentEncryption: ContentEncryption) = CoroutineScope(Dispatchers.IO).launch {
+
+        firebaseUser?.let {
+
+            try {
+
+                if (context.overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
+
+                    withContext(SupervisorJob() + Dispatchers.Main) {
+
+                        if (context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
+
+                            context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                            context.overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                        }
+
+                        context.overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+
+                        context.overviewLayoutBinding.quickTakeNote.clearFocus()
+
+                        hideKeyboard(context, context.overviewLayoutBinding.quickTakeNote)
+
+                        context.overviewLayoutBinding.savingView.isEnabled = false
+
+                    }
+
+                    val contentText = context.overviewLayoutBinding.quickTakeNote.text?:"No Content"
+
+                    val documentId: Long = System.currentTimeMillis()
+
+                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                        noteTile = null,
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteHandwritingPaintingPaths = null,
+                        noteHandwritingSnapshotLink = null,
+                        noteTakenTime = documentId,
+                        noteEditTime = null,
+                        noteIndex = documentId,
+                        noteTags = null
+                    )
+
+                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                        .insertNewNoteData(notesDatabaseModel)
+
+                    withContext(SupervisorJob() + Dispatchers.Main) {
+
+                        context.overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+
+                        context.overviewLayoutBinding.savingView.isEnabled = true
+
+                        context.overviewLayoutBinding.quickTakeNote.text = null
+
+                        context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                        context.overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                        showKeyboard(context, context.overviewLayoutBinding.quickTakeNote)
+
+                        context.overviewLayoutBinding.quickTakeNote.requestFocus()
+
+                    }
+
+                    context.notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(arrayListOf(notesDatabaseModel))
+
+                } else {
+
+                    withContext(SupervisorJob() + Dispatchers.Main) {
+
+                        context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
+                        context.overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
+
+                    }
+
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+
+    }
+
+    /* Online Database */
     fun saveNotesAndPaintingOnline(context: TakeNote,
                                    firebaseUser: FirebaseUser?,
                                    takeNoteLayoutBinding: TakeNoteLayoutBinding,
@@ -276,92 +363,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     }
 
-            }
-
-        }
-
-    }
-
-
-    fun saveQuickNotesOffline(context: KeepNoteOverview,
-                              firebaseUser: FirebaseUser?,
-                              contentEncryption: ContentEncryption) = CoroutineScope(Dispatchers.IO).launch {
-
-        firebaseUser?.let {
-
-            try {
-
-                if (context.overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
-
-                    withContext(SupervisorJob() + Dispatchers.Main) {
-
-                        if (context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
-
-                            context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
-                            context.overviewLayoutBinding.textInputQuickTakeNote.error = null
-
-                        }
-
-                        context.overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
-
-                        context.overviewLayoutBinding.quickTakeNote.clearFocus()
-
-                        hideKeyboard(context, context.overviewLayoutBinding.quickTakeNote)
-
-                        context.overviewLayoutBinding.savingView.isEnabled = false
-
-                    }
-
-                    val contentText = context.overviewLayoutBinding.quickTakeNote.text?:"No Content"
-
-                    val documentId: Long = System.currentTimeMillis()
-
-                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                        noteTile = null,
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                        noteHandwritingPaintingPaths = null,
-                        noteHandwritingSnapshotLink = null,
-                        noteTakenTime = documentId,
-                        noteEditTime = null,
-                        noteIndex = documentId,
-                        noteTags = null
-                    )
-
-                    (keepNoteApplication).notesRoomDatabaseConfiguration
-                        .insertNewNoteData(notesDatabaseModel)
-
-                    withContext(SupervisorJob() + Dispatchers.Main) {
-
-                        context.overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
-
-                        context.overviewLayoutBinding.savingView.isEnabled = true
-
-                        context.overviewLayoutBinding.quickTakeNote.text = null
-
-                        context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
-                        context.overviewLayoutBinding.textInputQuickTakeNote.error = null
-
-                        showKeyboard(context, context.overviewLayoutBinding.quickTakeNote)
-
-                        context.overviewLayoutBinding.quickTakeNote.requestFocus()
-
-                    }
-
-                    context.notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(arrayListOf(notesDatabaseModel))
-
-                } else {
-
-                    withContext(SupervisorJob() + Dispatchers.Main) {
-
-                        context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                        context.overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
-
-                    }
-
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
 
         }
