@@ -6,7 +6,7 @@ import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.firebase.firestore.FieldValue
+import com.google.firebase.Timestamp
 
 object Notes {
     const val NoteTile: String = "noteTile"
@@ -23,8 +23,8 @@ object Notes {
 data class NotesDataStructure(var noteTile: String = "Untitled Note",
                               var noteTextContent: String = "No Content",
                               var noteHandwritingSnapshotLink: String? = null,
-                              var noteTakenTime: FieldValue = FieldValue.serverTimestamp(),
-                              var noteEditTime: FieldValue? = null,
+                              var noteTakenTime: Timestamp = Timestamp.now(),
+                              var noteEditTime: Timestamp? = null,
                               var noteIndex: Long)
 
 const val NotesDatabase = "NotesDatabase"

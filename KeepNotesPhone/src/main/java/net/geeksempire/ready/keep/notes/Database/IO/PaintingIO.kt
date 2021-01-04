@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.view.View
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.RedrawPaintingData
@@ -168,6 +170,42 @@ class PaintingIO (private val context: Context) {
         }
 
         return JsonIO().writeAllPaintingPathData(overallRedrawPaintingData)
+    }
+
+    fun convertJsonArrayPathsToArrayList(paintingPathsJsonArray: String) : Flow<ArrayList<ArrayList<RedrawPaintingData>>> = flow {
+
+        val overallRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
+
+        val allPaintingPathsJsonArray = JSONArray(paintingPathsJsonArray)
+
+        for (index in 0 until allPaintingPathsJsonArray.length()) {
+
+            val aPaintingPathsJsonArray = allPaintingPathsJsonArray[index] as JSONArray
+
+            val allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
+
+            for (pathIndex in 0 until aPaintingPathsJsonArray.length()) {
+
+                val xDrawPosition = aPaintingPathsJsonArray.getJSONObject(pathIndex).get("xDrawPosition").toString().toFloat()
+                val yDrawPosition = aPaintingPathsJsonArray.getJSONObject(pathIndex).get("yDrawPosition").toString().toFloat()
+
+                val paintColor = aPaintingPathsJsonArray.getJSONObject(pathIndex).get("paintColor").toString().toInt()
+                val paintStrokeWidth = aPaintingPathsJsonArray.getJSONObject(pathIndex).get("paintStrokeWidth").toString().toFloat()
+
+                allRedrawPaintingPathData.add(RedrawPaintingData(
+                    xDrawPosition = xDrawPosition,
+                    yDrawPosition = yDrawPosition,
+                    paintColor = paintColor,
+                    paintStrokeWidth = paintStrokeWidth
+                ))
+
+            }
+
+            overallRedrawPaintingData.add(allRedrawPaintingPathData)
+
+        }
+
+        emit(overallRedrawPaintingData)
     }
 
 }

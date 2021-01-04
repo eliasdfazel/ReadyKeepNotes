@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.abanabsalan.aban.magazine.Utils.System.hideKeyboard
 import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -83,6 +84,10 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 val noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].toString()
 
+                val noteEditTime = documentSnapshot[Notes.NoteEditTime].toString().toLong()
+
+                val noteTags = documentSnapshot[Notes.NotesTags].toString()
+
                 keepNoteApplication.firestoreDatabase
                     .collection(databaseEndpoints.paintPathsCollectionEndpoints(databaseEndpoints.generalEndpoints(firebaseUser.uid)))
                     .get()
@@ -92,6 +97,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                             (keepNoteApplication).notesRoomDatabaseConfiguration
                                 .updateHandwritingPathsData(uniqueNoteId.toString(), paintingIO.preparePaintingPathsOnline(documentSnapshotPath.documents))
+
+                            insertAllNotesIntoCloudDatabase(firebaseUser)
 
                         }
 
@@ -103,13 +110,111 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     noteHandwritingPaintingPaths = null,
                     noteHandwritingSnapshotLink = noteHandwritingSnapshotLink,
                     noteTakenTime = uniqueNoteId,
-                    noteEditTime = null,
+                    noteEditTime = noteEditTime,
                     noteIndex = documentSnapshot.id.toLong(),
-                    noteTags = null
+                    noteTags = noteTags
                 )
 
                 (keepNoteApplication).notesRoomDatabaseConfiguration
                     .insertNewNoteData(notesDatabaseModel)
+
+            }
+
+    }
+
+    fun insertAllNotesIntoCloudDatabase(firebaseUser: FirebaseUser) = CoroutineScope(Dispatchers.IO).async {
+
+        (keepNoteApplication).notesRoomDatabaseConfiguration
+            .getAllNotesData().takeIf {
+
+                it.isNullOrEmpty()
+            }?.let {
+
+                it.forEach { notesDatabaseModel ->
+
+
+                    val uniqueNoteId = notesDatabaseModel.uniqueNoteId
+
+                    val noteTitle = notesDatabaseModel.noteTile?:"Untitled Note"
+                    val noteTextContent = notesDatabaseModel.noteTextContent?:"No Content"
+
+                    val noteHandwritingPaintingPaths = notesDatabaseModel.noteHandwritingPaintingPaths
+                    val noteHandwritingSnapshotLink = notesDatabaseModel.noteHandwritingSnapshotLink
+
+                    val noteTakenTime = notesDatabaseModel.noteTakenTime
+                    val noteEditTime = notesDatabaseModel.noteEditTime?:0
+
+                    val noteIndex = notesDatabaseModel.noteIndex
+
+                    val notesDataStructure = NotesDataStructure(
+                        noteTile = noteTitle,
+                        noteTextContent = noteTextContent,
+                        noteHandwritingSnapshotLink = null,
+                        noteTakenTime = Timestamp((noteTakenTime / 1000), 0),
+                        noteEditTime = Timestamp((noteEditTime / 1000), 0),
+                        noteIndex = noteIndex
+                    )
+
+                    val databasePath = databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${uniqueNoteId}"
+
+                    /* Save Notes & Snapshot Of Handwriting */
+                    (keepNoteApplication).firestoreDatabase
+                        .document(databasePath)
+                        .set(notesDataStructure)
+                        .addOnSuccessListener {
+                            Log.d(this@NotesIO.javaClass.simpleName, "Note Saved Successfully")
+
+
+
+                        }
+
+                    /* Save Paths Of Handwriting Notes */
+                    noteHandwritingPaintingPaths?.let {
+
+                        (keepNoteApplication).firestoreDatabase
+                            .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
+                            .get().addOnSuccessListener {
+
+                                it.documents.forEach { documentSnapshot ->
+
+                                    documentSnapshot.reference.delete()
+
+                                }
+
+                                this@async.launch {
+
+                                    paintingIO.convertJsonArrayPathsToArrayList(noteHandwritingPaintingPaths).collect { overallRedrawPaintingData ->
+
+                                        overallRedrawPaintingData.forEach { aPathXY ->
+
+                                            (keepNoteApplication).firestoreDatabase
+                                                .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
+                                                .add(
+                                                    hashMapOf(
+                                                        "paintPath" to jsonIO.writePaintingPathData(aPathXY)
+                                                    )
+                                                )
+                                                .addOnSuccessListener {
+                                                    Log.d(this@NotesIO.javaClass.simpleName, "Handwriting Paths Saved Successfully")
+
+
+
+                                                }.addOnFailureListener {
+
+
+                                                }
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                    }
+
+                }
 
             }
 
