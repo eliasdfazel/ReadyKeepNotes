@@ -38,74 +38,70 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
-            if (!firebaseUser.isAnonymous) {
+            try {
 
-                try {
+                withContext(SupervisorJob() + Dispatchers.Main) {
 
-                    withContext(SupervisorJob() + Dispatchers.Main) {
+                    takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 
-                        takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+                    takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
+                    takeNoteLayoutBinding.savingView.isEnabled = false
 
-                        takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
-                        takeNoteLayoutBinding.savingView.isEnabled = false
+                }
 
-                    }
+                val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
+                val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-                    val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
-                    val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
+                val noteHandwritingSnapshot = context.openFileOutput("${documentId}.PNG", Context.MODE_PRIVATE)
 
-                    val noteHandwritingSnapshot = context.openFileOutput("${documentId}.PNG", Context.MODE_PRIVATE)
+                noteHandwritingSnapshot.write(paintingIO.takeScreenshot(paintingCanvasView))
 
-                    noteHandwritingSnapshot.write(paintingIO.takeScreenshot(paintingCanvasView))
+                val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                    noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                    noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
+                    noteHandwritingSnapshotLink = context.getFileStreamPath("${documentId}.PNG").absolutePath,
+                    noteTakenTime = documentId,
+                    noteEditTime = null,
+                    noteIndex = documentId,
+                    noteTags = null
+                )
 
-                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                        noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
-                        noteHandwritingSnapshotLink = context.getFileStreamPath("${documentId}.PNG").absolutePath,
-                        noteTakenTime = documentId,
-                        noteEditTime = null,
-                        noteIndex = documentId,
-                        noteTags = null
-                    )
+                (keepNoteApplication).notesRoomDatabaseConfiguration
+                    .insertNewNoteData(notesDatabaseModel)
 
-                    (keepNoteApplication).notesRoomDatabaseConfiguration
-                        .insertNewNoteData(notesDatabaseModel)
+                withContext(SupervisorJob() + Dispatchers.Main) {
 
-                    withContext(SupervisorJob() + Dispatchers.Main) {
+                    takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
 
-                        takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+                    takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = true
+                    takeNoteLayoutBinding.savingView.isEnabled = true
 
-                        takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = true
-                        takeNoteLayoutBinding.savingView.isEnabled = true
+                }
 
-                    }
+            } catch (e: Exception) {
+                e.printStackTrace()
 
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                withContext(SupervisorJob() + Dispatchers.Main) {
 
-                    withContext(SupervisorJob() + Dispatchers.Main) {
+                    Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
 
-                        Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
+                    SnackbarBuilder(context).show (
+                        rootView = takeNoteLayoutBinding.rootView,
+                        messageText= context.getString(R.string.emptyNotesCollection),
+                        messageDuration = Snackbar.LENGTH_INDEFINITE,
+                        actionButtonText = R.string.retryText,
+                        snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
 
-                        SnackbarBuilder(context).show (
-                            rootView = takeNoteLayoutBinding.rootView,
-                            messageText= context.getString(R.string.emptyNotesCollection),
-                            messageDuration = Snackbar.LENGTH_INDEFINITE,
-                            actionButtonText = R.string.retryText,
-                            snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
-
-                                override fun onActionButtonClicked(snackbar: Snackbar) {
-                                    super.onActionButtonClicked(snackbar)
+                            override fun onActionButtonClicked(snackbar: Snackbar) {
+                                super.onActionButtonClicked(snackbar)
 
 
-
-                                }
 
                             }
-                        )
 
-                    }
+                        }
+                    )
 
                 }
 
@@ -293,7 +289,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
-            if (!firebaseUser.isAnonymous) {
+            try {
 
                 if (overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
 
@@ -376,6 +372,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 }
 
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
 
         }
