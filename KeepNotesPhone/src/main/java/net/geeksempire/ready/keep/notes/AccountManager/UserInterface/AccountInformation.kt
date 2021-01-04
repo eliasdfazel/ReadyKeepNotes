@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -38,7 +39,10 @@ import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
+import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
+import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.AccountInformationLayoutBinding
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -138,6 +142,33 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        firebaseAuthentication.addAuthStateListener { authentication ->
+
+            if (authentication.currentUser == null) {
+                Log.d(this@AccountInformation.javaClass.simpleName, "Firebase Authenticator Couldn't Find Firebase User.")
+
+                firebaseAuthentication.signOut().also {
+                    Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Information Delete Locally.")
+
+                    try {
+                        File("/data/data/${packageName}/").delete()
+                    } catch (e: Exception){
+                        e.printStackTrace()
+                    }
+
+                    userInformation.startSignInProcess()
+
+                }
+
+            }
+
+        }
+
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -228,7 +259,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                 createUserProfile()
 
                             }.addOnFailureListener {
-
+                                it.printStackTrace()
 
                             }
 
@@ -237,8 +268,12 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                     }.addOnFailureListener {
                         it.printStackTrace()
 
+                        println(">>>>>>>>>>>>>> ERROR 268")
+
                         when ((it as ApiException).statusCode) {
                             GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS -> {
+
+                                println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> email ${googleSignInAccountTask.result.email}")
 
                             }
                             else -> {
@@ -266,19 +301,42 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
     override fun onBackPressed() {
 
-        if (profileUpdating) {
+        if (firebaseAuthentication.currentUser == null) {
 
-            profileUpdating = false
+            SnackbarBuilder(applicationContext).show(
+                rootView = accountInformationLayoutBinding.rootView,
+                messageText = getString(R.string.anonymouslySignInError),
+                messageDuration = Snackbar.LENGTH_INDEFINITE,
+                actionButtonText = R.string.signInText,
+                snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
 
-            this@AccountInformation.finish()
+                    override fun onActionButtonClicked(snackbar: Snackbar) {
+                        super.onActionButtonClicked(snackbar)
+
+                        userInformation.startSignInProcess()
+
+                    }
+
+                }
+            )
 
         } else {
 
-            this@AccountInformation.finish()
+            if (profileUpdating) {
+
+                profileUpdating = false
+
+                this@AccountInformation.finish()
+
+            } else {
+
+                this@AccountInformation.finish()
+
+            }
+
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
         }
-
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
     }
 

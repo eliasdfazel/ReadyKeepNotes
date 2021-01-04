@@ -1,5 +1,6 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface
 
+import android.accounts.AccountManager
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
@@ -24,12 +25,12 @@ import com.google.firebase.inappmessaging.model.Action
 import com.google.firebase.inappmessaging.model.InAppMessage
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
+import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
-import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
@@ -50,6 +51,7 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -445,12 +447,18 @@ class KeepNoteOverview : AppCompatActivity(),
         firebaseAuthentication.addAuthStateListener { authentication ->
 
             if (authentication.currentUser == null) {
+                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Firebase Authenticator Couldn't Find Firebase User.")
 
                 firebaseAuthentication.signOut().also {
+                    Log.d(this@KeepNoteOverview.javaClass.simpleName, "Firebase User Information Delete Locally.")
 
-                    cacheDir.delete()
+                    try {
+                        File("/data/data/${packageName}/").delete()
+                    } catch (e: Exception){
+                        e.printStackTrace()
+                    }
 
-                    startActivity(Intent(this@KeepNoteOverview, EntryConfigurations::class.java))
+                    startActivity(Intent(this@KeepNoteOverview, AccountInformation::class.java))
 
                     this@KeepNoteOverview.finish()
 
@@ -471,10 +479,21 @@ class KeepNoteOverview : AppCompatActivity(),
 
     override fun onBackPressed() {
 
-        startActivity(Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_HOME)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK },
-            ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        if (firebaseUser != null
+            && firebaseUser.isAnonymous) {
+
+            startActivity(Intent(applicationContext, AccountManager::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK },
+                ActivityOptions.makeCustomAnimation(applicationContext, 0, android.R.anim.fade_out).toBundle())
+
+        } else {
+
+            startActivity(Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK },
+                ActivityOptions.makeCustomAnimation(applicationContext, 0, android.R.anim.fade_out).toBundle())
+
+        }
 
     }
 

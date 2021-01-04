@@ -27,7 +27,7 @@ class UserInformation(private val context: AccountInformation) {
 
     fun startSignInProcess() {
 
-        context.firebaseAuthentication.currentUser?.let { firebaseUser ->
+        if (context.firebaseAuthentication.currentUser != null) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(context.getString(R.string.webClientId))
@@ -39,8 +39,7 @@ class UserInformation(private val context: AccountInformation) {
                 context.startActivityForResult(this@run, UserInformation.GoogleSignInLinkRequestCode)
             }
 
-            firebaseUser
-        }.let {
+        } else {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(context.getString(R.string.webClientId))

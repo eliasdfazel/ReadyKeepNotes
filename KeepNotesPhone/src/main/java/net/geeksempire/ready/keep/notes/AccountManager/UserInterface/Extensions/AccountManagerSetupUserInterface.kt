@@ -86,7 +86,7 @@ fun AccountInformation.accountManagerSetupUserInterface() {
     window.navigationBarColor = Color.TRANSPARENT
     window.statusBarColor = Color.TRANSPARENT
 
-    accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, firebaseAuthentication.currentUser?.displayName)
+    accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, firebaseAuthentication.currentUser?.displayName?:"")
 
     var dominantColor = getColor(R.color.yellow)
     var vibrantColor = getColor(R.color.default_color_light)
