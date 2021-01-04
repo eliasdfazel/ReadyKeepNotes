@@ -73,6 +73,8 @@ class InApplicationReviewProcess (private val context: AppCompatActivity) {
 
         } else {
 
+
+
         }
 
     }
