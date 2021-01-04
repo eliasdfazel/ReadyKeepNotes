@@ -342,7 +342,11 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 if (it.isNotEmpty()) {
 
-                    overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
+                    if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
+
+                        overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
+
+                    }
 
                     if (it.size == 1) {
 
