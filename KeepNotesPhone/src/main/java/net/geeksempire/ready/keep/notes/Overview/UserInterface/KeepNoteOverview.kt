@@ -29,6 +29,7 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
+import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
@@ -56,7 +57,9 @@ class KeepNoteOverview : AppCompatActivity(),
     NetworkConnectionListenerInterface,
     FirebaseInAppMessagingClickListener {
 
-    val firebaseUser = Firebase.auth.currentUser
+    val firebaseAuthentication = Firebase.auth
+
+    val firebaseUser = firebaseAuthentication.currentUser
 
     val databaseEndpoints = DatabaseEndpoints()
 
@@ -438,6 +441,24 @@ class KeepNoteOverview : AppCompatActivity(),
         setupColors()
 
         loadUserAccountInformation()
+
+        firebaseAuthentication.addAuthStateListener { authentication ->
+
+            if (authentication.currentUser == null) {
+
+                firebaseAuthentication.signOut().also {
+
+                    cacheDir.delete()
+
+                    startActivity(Intent(this@KeepNoteOverview, EntryConfigurations::class.java))
+
+                    this@KeepNoteOverview.finish()
+
+                }
+
+            }
+
+        }
 
     }
 

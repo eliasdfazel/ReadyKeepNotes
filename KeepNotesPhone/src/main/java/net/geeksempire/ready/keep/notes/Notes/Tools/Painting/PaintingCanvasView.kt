@@ -279,9 +279,11 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
         allDrawingInformation.clear()
 
-        allRedrawPaintingPathData.clear()
-
         overallRedrawPaintingData.clear()
+
+        if (::allRedrawPaintingPathData.isInitialized) {
+            allRedrawPaintingPathData.clear()
+        }
 
         invalidate()
 
