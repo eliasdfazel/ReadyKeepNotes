@@ -54,11 +54,11 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     if (querySnapshot.documents.isNullOrEmpty()) {
 
-                        insertAllNotesIntoCloudDatabase(firebaseUser)
+                        insertAllNotesIntoCloudDatabase(context, firebaseUser)
 
                     } else {
 
-                        insertAllNotesIntoLocalDatabase(querySnapshot.documents, firebaseUser)
+                        insertAllNotesIntoLocalDatabase(context, querySnapshot.documents, firebaseUser)
 
                     }
 
@@ -73,7 +73,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    fun insertAllNotesIntoLocalDatabase(allNotes: List<DocumentSnapshot>, firebaseUser: FirebaseUser) : Flow<NotesDatabaseModel> = flow {
+    fun insertAllNotesIntoLocalDatabase(context: AppCompatActivity, allNotes: List<DocumentSnapshot>, firebaseUser: FirebaseUser) : Flow<NotesDatabaseModel> = flow {
 
         allNotes.asFlow()
             .collect { documentSnapshot ->
@@ -99,7 +99,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                             (keepNoteApplication).notesRoomDatabaseConfiguration
                                 .updateHandwritingPathsData(uniqueNoteId.toString(), paintingIO.preparePaintingPathsOnline(documentSnapshotPath.documents))
 
-                            insertAllNotesIntoCloudDatabase(firebaseUser)
+                            insertAllNotesIntoCloudDatabase(context, firebaseUser)
 
                         }
 
