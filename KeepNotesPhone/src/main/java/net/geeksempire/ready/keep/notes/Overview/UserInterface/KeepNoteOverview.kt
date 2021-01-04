@@ -85,10 +85,9 @@ class KeepNoteOverview : AppCompatActivity(),
 
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP
-                    or ItemTouchHelper.DOWN
-                    or ItemTouchHelper.START
-                    or ItemTouchHelper.END,
-            0) {
+                    or ItemTouchHelper.DOWN,
+            ItemTouchHelper.START
+                    or ItemTouchHelper.END) {
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
 
