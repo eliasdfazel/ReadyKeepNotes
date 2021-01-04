@@ -17,6 +17,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
@@ -223,6 +224,8 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                         when ((it as ApiException).statusCode) {
                             GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS -> {
 
+                                Toast.makeText(applicationContext, getString(R.string.waitingInformation), Toast.LENGTH_LONG).show()
+
                             }
                             else -> {
 
@@ -268,12 +271,10 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                     }.addOnFailureListener {
                         it.printStackTrace()
 
-                        println(">>>>>>>>>>>>>> ERROR 268")
-
                         when ((it as ApiException).statusCode) {
                             GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS -> {
 
-                                println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> email ${googleSignInAccountTask.result.email}")
+                                Toast.makeText(applicationContext, getString(R.string.waitingInformation), Toast.LENGTH_LONG).show()
 
                             }
                             else -> {
