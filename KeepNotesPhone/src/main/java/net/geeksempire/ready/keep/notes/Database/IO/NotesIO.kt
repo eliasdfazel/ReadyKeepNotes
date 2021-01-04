@@ -38,70 +38,74 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
-            try {
+            if (!firebaseUser.isAnonymous) {
 
-                withContext(SupervisorJob() + Dispatchers.Main) {
+                try {
 
-                    takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+                    withContext(SupervisorJob() + Dispatchers.Main) {
 
-                    takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
-                    takeNoteLayoutBinding.savingView.isEnabled = false
+                        takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 
-                }
+                        takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = false
+                        takeNoteLayoutBinding.savingView.isEnabled = false
 
-                val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
-                val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
+                    }
 
-                val noteHandwritingSnapshot = context.openFileOutput("${documentId}.PNG", Context.MODE_PRIVATE)
+                    val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
+                    val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-                noteHandwritingSnapshot.write(paintingIO.takeScreenshot(paintingCanvasView))
+                    val noteHandwritingSnapshot = context.openFileOutput("${documentId}.PNG", Context.MODE_PRIVATE)
 
-                val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                    noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                    noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
-                    noteHandwritingSnapshotLink = context.getFileStreamPath("${documentId}.PNG").absolutePath,
-                    noteTakenTime = documentId,
-                    noteEditTime = null,
-                    noteIndex = documentId,
-                    noteTags = null
-                )
+                    noteHandwritingSnapshot.write(paintingIO.takeScreenshot(paintingCanvasView))
 
-                (keepNoteApplication).notesRoomDatabaseConfiguration
-                    .insertNewNoteData(notesDatabaseModel)
+                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
+                        noteHandwritingSnapshotLink = context.getFileStreamPath("${documentId}.PNG").absolutePath,
+                        noteTakenTime = documentId,
+                        noteEditTime = null,
+                        noteIndex = documentId,
+                        noteTags = null
+                    )
 
-                withContext(SupervisorJob() + Dispatchers.Main) {
+                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                        .insertNewNoteData(notesDatabaseModel)
 
-                    takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+                    withContext(SupervisorJob() + Dispatchers.Main) {
 
-                    takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = true
-                    takeNoteLayoutBinding.savingView.isEnabled = true
+                        takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
 
-                }
+                        takeNoteLayoutBinding.toggleKeyboardHandwriting.isEnabled = true
+                        takeNoteLayoutBinding.savingView.isEnabled = true
 
-            } catch (e: Exception) {
-                e.printStackTrace()
+                    }
 
-                withContext(SupervisorJob() + Dispatchers.Main) {
+                } catch (e: Exception) {
+                    e.printStackTrace()
 
-                    Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
+                    withContext(SupervisorJob() + Dispatchers.Main) {
 
-                    SnackbarBuilder(context).show (
-                        rootView = takeNoteLayoutBinding.rootView,
-                        messageText= context.getString(R.string.emptyNotesCollection),
-                        messageDuration = Snackbar.LENGTH_INDEFINITE,
-                        actionButtonText = R.string.retryText,
-                        snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+                        Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
 
-                            override fun onActionButtonClicked(snackbar: Snackbar) {
-                                super.onActionButtonClicked(snackbar)
+                        SnackbarBuilder(context).show (
+                            rootView = takeNoteLayoutBinding.rootView,
+                            messageText= context.getString(R.string.emptyNotesCollection),
+                            messageDuration = Snackbar.LENGTH_INDEFINITE,
+                            actionButtonText = R.string.retryText,
+                            snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+
+                                override fun onActionButtonClicked(snackbar: Snackbar) {
+                                    super.onActionButtonClicked(snackbar)
 
 
+
+                                }
 
                             }
+                        )
 
-                        }
-                    )
+                    }
 
                 }
 
@@ -122,156 +126,160 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
-            val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
-            val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
+            if (!firebaseUser.isAnonymous) {
 
-            val notesDataStructure = NotesDataStructure(
-                noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                noteHandwritingSnapshotLink = null,
-                noteIndex = documentId
-            )
+                val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
+                val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-            val databasePath = databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}"
+                val notesDataStructure = NotesDataStructure(
+                    noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                    noteHandwritingSnapshotLink = null,
+                    noteIndex = documentId
+                )
 
-            /* Save Notes & Snapshot Of Handwriting */
-            (keepNoteApplication).firestoreDatabase
-                .document(databasePath)
-                .set(notesDataStructure)
-                .addOnSuccessListener {
-                    Log.d(this@NotesIO.javaClass.simpleName, "Note Saved Successfully")
+                val databasePath = databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}"
 
-                    (keepNoteApplication).firebaseStorage
-                        .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
-                        .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
-                        .addOnSuccessListener { uploadTaskSnapshot ->
-                            Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
+                /* Save Notes & Snapshot Of Handwriting */
+                (keepNoteApplication).firestoreDatabase
+                    .document(databasePath)
+                    .set(notesDataStructure)
+                    .addOnSuccessListener {
+                        Log.d(this@NotesIO.javaClass.simpleName, "Note Saved Successfully")
 
-                            (keepNoteApplication).firebaseStorage
-                                .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
-                                .downloadUrl
-                                .addOnSuccessListener { downloadUrl ->
+                        (keepNoteApplication).firebaseStorage
+                            .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
+                            .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
+                            .addOnSuccessListener { uploadTaskSnapshot ->
+                                Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
 
-                                    (keepNoteApplication).firestoreDatabase
-                                        .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + documentId)
-                                        .update(
-                                            "noteHandwritingSnapshotLink", downloadUrl.toString(),
-                                        ).addOnSuccessListener {
-                                            Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Saved Successfully")
+                                (keepNoteApplication).firebaseStorage
+                                    .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
+                                    .downloadUrl
+                                    .addOnSuccessListener { downloadUrl ->
 
-
-
-                                        }.addOnFailureListener {
-                                            Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Did Not Saved")
+                                        (keepNoteApplication).firestoreDatabase
+                                            .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + documentId)
+                                            .update(
+                                                "noteHandwritingSnapshotLink", downloadUrl.toString(),
+                                            ).addOnSuccessListener {
+                                                Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Saved Successfully")
 
 
-                                        }
+
+                                            }.addOnFailureListener {
+                                                Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Did Not Saved")
+
+
+                                            }
+
+                                    }.addOnFailureListener {
+
+
+
+                                    }
+
+                            }.addOnFailureListener {
+                                Log.d(this@NotesIO.javaClass.simpleName, "Paint Did Note Saved")
+
+
+                            }
+
+                        if (contentText.isNotBlank()
+                            || contentText != "No Content") {
+
+                            NaturalLanguageProcessNetworkOperation(context)
+                                .start(
+                                    firebaseUserId = firebaseUser.uid,
+                                    documentId = documentId.toString(),
+                                    textContent = contentText.toString()
+                                )
+
+                        }
+
+                    }.addOnFailureListener {
+                        Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
+
+                        SnackbarBuilder(context).show (
+                            rootView = takeNoteLayoutBinding.rootView,
+                            messageText= context.getString(R.string.emptyNotesCollection),
+                            messageDuration = Snackbar.LENGTH_INDEFINITE,
+                            actionButtonText = R.string.retryText,
+                            snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+
+                                override fun onActionButtonClicked(snackbar: Snackbar) {
+                                    super.onActionButtonClicked(snackbar)
+
+                                    saveNotesAndPaintingOnline(
+                                        context,
+                                        firebaseUser,
+                                        takeNoteLayoutBinding,
+                                        databaseEndpoints,
+                                        paintingIO,
+                                        paintingCanvasView,
+                                        contentEncryption,
+                                        documentId
+                                    )
+
+                                }
+
+                            }
+                        )
+
+                    }
+
+                /* Save Text Content Archive */
+                (keepNoteApplication).firestoreDatabase
+                    .collection(databaseEndpoints.noteTextsEndpoints(databasePath))
+                    .add(hashMapOf(
+                        "noteTile" to notesDataStructure.noteTile,
+                        "noteTextContent" to notesDataStructure.noteTextContent
+                    ))
+                    .addOnSuccessListener {
+                        Log.d(this@NotesIO.javaClass.simpleName, "Note Archive Saved Successfully")
+
+
+                    }.addOnFailureListener {
+
+
+
+                    }
+
+                /* Save Paths Of Handwriting Notes */
+                (keepNoteApplication).firestoreDatabase
+                    .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
+                    .get().addOnSuccessListener {
+
+                        it.documents.forEach { documentSnapshot ->
+
+                            documentSnapshot.reference.delete()
+
+                        }
+
+                        paintingCanvasView.overallRedrawPaintingData.forEach { aPathXY ->
+
+                            (keepNoteApplication).firestoreDatabase
+                                .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
+                                .add(
+                                    hashMapOf(
+                                        "paintPath" to jsonIO.writePaintingPathData(aPathXY)
+                                    )
+                                )
+                                .addOnSuccessListener {
+                                    Log.d(this@NotesIO.javaClass.simpleName, "Handwriting Paths Saved Successfully")
+
+
 
                                 }.addOnFailureListener {
 
 
-
                                 }
 
-                        }.addOnFailureListener {
-                            Log.d(this@NotesIO.javaClass.simpleName, "Paint Did Note Saved")
-
-
                         }
 
-                    if (contentText.isNotBlank()
-                        || contentText != "No Content") {
-
-                        NaturalLanguageProcessNetworkOperation(context)
-                            .start(
-                                firebaseUserId = firebaseUser.uid,
-                                documentId = documentId.toString(),
-                                textContent = contentText.toString()
-                            )
-
                     }
 
-                }.addOnFailureListener {
-                    Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
-
-                    SnackbarBuilder(context).show (
-                        rootView = takeNoteLayoutBinding.rootView,
-                        messageText= context.getString(R.string.emptyNotesCollection),
-                        messageDuration = Snackbar.LENGTH_INDEFINITE,
-                        actionButtonText = R.string.retryText,
-                        snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
-
-                            override fun onActionButtonClicked(snackbar: Snackbar) {
-                                super.onActionButtonClicked(snackbar)
-
-                                saveNotesAndPaintingOnline(
-                                    context,
-                                    firebaseUser,
-                                    takeNoteLayoutBinding,
-                                    databaseEndpoints,
-                                    paintingIO,
-                                    paintingCanvasView,
-                                    contentEncryption,
-                                    documentId
-                                )
-
-                            }
-
-                        }
-                    )
-
-                }
-
-            /* Save Text Content Archive */
-            (keepNoteApplication).firestoreDatabase
-                .collection(databaseEndpoints.noteTextsEndpoints(databasePath))
-                .add(hashMapOf(
-                    "noteTile" to notesDataStructure.noteTile,
-                    "noteTextContent" to notesDataStructure.noteTextContent
-                ))
-                .addOnSuccessListener {
-                    Log.d(this@NotesIO.javaClass.simpleName, "Note Archive Saved Successfully")
-
-
-                }.addOnFailureListener {
-
-
-
-                }
-
-            /* Save Paths Of Handwriting Notes */
-            (keepNoteApplication).firestoreDatabase
-                .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
-                .get().addOnSuccessListener {
-
-                    it.documents.forEach { documentSnapshot ->
-
-                        documentSnapshot.reference.delete()
-
-                    }
-
-                    paintingCanvasView.overallRedrawPaintingData.forEach { aPathXY ->
-
-                        (keepNoteApplication).firestoreDatabase
-                            .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
-                            .add(
-                                hashMapOf(
-                                    "paintPath" to jsonIO.writePaintingPathData(aPathXY)
-                                )
-                            )
-                            .addOnSuccessListener {
-                                Log.d(this@NotesIO.javaClass.simpleName, "Handwriting Paths Saved Successfully")
-
-
-
-                            }.addOnFailureListener {
-
-
-                            }
-
-                    }
-
-                }
+            }
 
         }
 
@@ -285,82 +293,86 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
-            if (overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
+            if (!firebaseUser.isAnonymous) {
 
-                try {
+                if (overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
 
-                    withContext(SupervisorJob() + Dispatchers.Main) {
+                    try {
 
-                        if (overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
+                        withContext(SupervisorJob() + Dispatchers.Main) {
+
+                            if (overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
+
+                                overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                                overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                            }
+
+                            overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+
+                            overviewLayoutBinding.quickTakeNote.clearFocus()
+
+                            hideKeyboard(context, overviewLayoutBinding.quickTakeNote)
+
+                            overviewLayoutBinding.savingView.isEnabled = false
+
+                        }
+
+                        val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
+
+                        val documentId: Long = System.currentTimeMillis()
+
+                        val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                            noteTile = null,
+                            noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                            noteHandwritingPaintingPaths = null,
+                            noteHandwritingSnapshotLink = null,
+                            noteTakenTime = documentId,
+                            noteEditTime = null,
+                            noteIndex = documentId,
+                            noteTags = null
+                        )
+
+                        (keepNoteApplication).notesRoomDatabaseConfiguration
+                            .insertNewNoteData(notesDatabaseModel)
+
+                        withContext(SupervisorJob() + Dispatchers.Main) {
+
+                            overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+
+                            overviewLayoutBinding.savingView.isEnabled = true
+
+                            overviewLayoutBinding.quickTakeNote.text = null
 
                             overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
                             overviewLayoutBinding.textInputQuickTakeNote.error = null
 
+                            showKeyboard(context, overviewLayoutBinding.quickTakeNote)
+
+                            overviewLayoutBinding.quickTakeNote.requestFocus()
+
                         }
 
-                        overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+                    } catch (e: Exception) {
+                        e.printStackTrace()
 
-                        overviewLayoutBinding.quickTakeNote.clearFocus()
+                        withContext(SupervisorJob() + Dispatchers.Main) {
 
-                        hideKeyboard(context, overviewLayoutBinding.quickTakeNote)
+                            overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
+                            overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.offlineSavingError)
 
-                        overviewLayoutBinding.savingView.isEnabled = false
-
-                    }
-
-                    val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
-
-                    val documentId: Long = System.currentTimeMillis()
-
-                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                        noteTile = null,
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                        noteHandwritingPaintingPaths = null,
-                        noteHandwritingSnapshotLink = null,
-                        noteTakenTime = documentId,
-                        noteEditTime = null,
-                        noteIndex = documentId,
-                        noteTags = null
-                    )
-
-                    (keepNoteApplication).notesRoomDatabaseConfiguration
-                        .insertNewNoteData(notesDatabaseModel)
-
-                    withContext(SupervisorJob() + Dispatchers.Main) {
-
-                        overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
-
-                        overviewLayoutBinding.savingView.isEnabled = true
-
-                        overviewLayoutBinding.quickTakeNote.text = null
-
-                        overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
-                        overviewLayoutBinding.textInputQuickTakeNote.error = null
-
-                        showKeyboard(context, overviewLayoutBinding.quickTakeNote)
-
-                        overviewLayoutBinding.quickTakeNote.requestFocus()
+                        }
 
                     }
 
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                } else {
 
                     withContext(SupervisorJob() + Dispatchers.Main) {
 
                         overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                        overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.offlineSavingError)
+                        overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
 
                     }
-
-                }
-
-            } else {
-
-                withContext(SupervisorJob() + Dispatchers.Main) {
-
-                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                    overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
 
                 }
 
@@ -378,53 +390,58 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         firebaseUser?.let {
 
-            if (overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
+            if (!firebaseUser.isAnonymous) {
 
-                if (overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
+                if (overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
 
-                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
-                    overviewLayoutBinding.textInputQuickTakeNote.error = null
+                    if (overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
 
-                }
-
-                val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
-
-                val documentId: Long = System.currentTimeMillis()
-
-                val notesDataStructure = NotesDataStructure(
-                    noteTile = contentEncryption.encryptEncodedData("Untitled Note", firebaseUser.uid).asList().toString(),
-                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                    noteIndex = documentId
-                )
-
-                (keepNoteApplication).firestoreDatabase
-                    .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}")
-                    .set(notesDataStructure)
-                    .addOnSuccessListener {
-
-                        if (contentText.isNotBlank()
-                            || contentText != "No Content") {
-
-                            NaturalLanguageProcessNetworkOperation(context)
-                                .start(
-                                    firebaseUserId = firebaseUser.uid,
-                                    documentId = documentId.toString(),
-                                    textContent =  contentText.toString()
-                                )
-
-                        }
-
-                    }.addOnFailureListener {
-
-                        overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                        overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.onlineSavingError)
+                        overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                        overviewLayoutBinding.textInputQuickTakeNote.error = null
 
                     }
 
-            } else {
+                    val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
 
-                overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
+                    val documentId: Long = System.currentTimeMillis()
+
+                    val notesDataStructure = NotesDataStructure(
+                        noteTile = contentEncryption.encryptEncodedData("Untitled Note", firebaseUser.uid).asList().toString(),
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteIndex = documentId
+                    )
+
+                    (keepNoteApplication).firestoreDatabase
+                        .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}")
+                        .set(notesDataStructure)
+                        .addOnSuccessListener {
+
+                            if (contentText.isNotBlank()
+                                || contentText != "No Content") {
+
+                                NaturalLanguageProcessNetworkOperation(context)
+                                    .start(
+                                        firebaseUserId = firebaseUser.uid,
+                                        documentId = documentId.toString(),
+                                        textContent =  contentText.toString()
+                                    )
+
+                            }
+
+                        }.addOnFailureListener {
+
+                            overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
+                            overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.onlineSavingError)
+
+                        }
+
+                } else {
+
+                    overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
+                    overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
+
+                }
+
 
             }
 
