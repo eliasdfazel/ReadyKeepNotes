@@ -32,7 +32,6 @@ import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions.
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions.createUserProfile
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
-import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
@@ -139,13 +138,6 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
             }
 
         }
-
-
-
-
-
-        NotesIO(application as KeepNoteApplication)
-            .insertAllNotesIntoCloudDatabase(this@AccountInformation, firebaseAuthentication.currentUser!!)
 
     }
 
