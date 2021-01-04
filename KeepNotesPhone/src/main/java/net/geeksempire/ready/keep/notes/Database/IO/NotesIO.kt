@@ -42,7 +42,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     private val jsonIO = JsonIO()
 
     /* Retrieve Notes */
-    fun retrieveAllNotes(firebaseUser: FirebaseUser?) {
+    fun retrieveAllNotes(context: AppCompatActivity, firebaseUser: FirebaseUser?) {
 
         firebaseUser?.let {
 
@@ -123,7 +123,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    fun insertAllNotesIntoCloudDatabase(firebaseUser: FirebaseUser) = CoroutineScope(Dispatchers.IO).async {
+    fun insertAllNotesIntoCloudDatabase(context: AppCompatActivity, firebaseUser: FirebaseUser) = CoroutineScope(Dispatchers.IO).async {
 
         (keepNoteApplication).notesRoomDatabaseConfiguration
             .getAllNotesData().takeIf {
@@ -132,7 +132,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
             }?.let {
 
                 it.forEach { notesDatabaseModel ->
-
 
                     val uniqueNoteId = notesDatabaseModel.uniqueNoteId
 
@@ -165,9 +164,57 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         .addOnSuccessListener {
                             Log.d(this@NotesIO.javaClass.simpleName, "Note Saved Successfully")
 
+                            (keepNoteApplication).firebaseStorage
+                                .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${uniqueNoteId}.PNG")
+                                .putBytes(context.getFileStreamPath("${uniqueNoteId}.PNG").readBytes())
+                                .addOnSuccessListener { uploadTaskSnapshot ->
+                                    Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
 
+                                    (keepNoteApplication).firebaseStorage
+                                        .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${uniqueNoteId}.PNG")
+                                        .downloadUrl
+                                        .addOnSuccessListener { downloadUrl ->
+
+                                            (keepNoteApplication).firestoreDatabase
+                                                .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + uniqueNoteId)
+                                                .update(
+                                                    "noteHandwritingSnapshotLink", downloadUrl.toString(),
+                                                ).addOnSuccessListener {
+                                                    Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Saved Successfully")
+
+
+
+                                                }.addOnFailureListener {
+                                                    Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Did Not Saved")
+
+
+                                                }
+
+                                        }.addOnFailureListener {
+
+
+
+                                        }
+
+                                }.addOnFailureListener {
+                                    Log.d(this@NotesIO.javaClass.simpleName, "Paint Did Note Saved")
+
+
+                                }
 
                         }
+
+                    if (noteTextContent.isNotBlank()
+                        || noteTextContent != "No Content") {
+
+                        NaturalLanguageProcessNetworkOperation(context)
+                            .start(
+                                firebaseUserId = firebaseUser.uid,
+                                documentId = uniqueNoteId.toString(),
+                                textContent = noteTextContent.toString()
+                            )
+
+                    }
 
                     /* Save Paths Of Handwriting Notes */
                     noteHandwritingPaintingPaths?.let {
