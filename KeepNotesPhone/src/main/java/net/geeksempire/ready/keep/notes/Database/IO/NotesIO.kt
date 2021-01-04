@@ -17,6 +17,7 @@ import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoi
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
@@ -282,91 +283,78 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     }
 
 
-    fun saveQuickNotesOffline(context: AppCompatActivity,
+    fun saveQuickNotesOffline(context: KeepNoteOverview,
                               firebaseUser: FirebaseUser?,
-                              overviewLayoutBinding: OverviewLayoutBinding,
                               contentEncryption: ContentEncryption) = CoroutineScope(Dispatchers.IO).launch {
 
         firebaseUser?.let {
 
             try {
 
-                if (overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
+                if (context.overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
 
-                    try {
+                    withContext(SupervisorJob() + Dispatchers.Main) {
 
-                        withContext(SupervisorJob() + Dispatchers.Main) {
+                        if (context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
 
-                            if (overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled) {
-
-                                overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
-                                overviewLayoutBinding.textInputQuickTakeNote.error = null
-
-                            }
-
-                            overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
-
-                            overviewLayoutBinding.quickTakeNote.clearFocus()
-
-                            hideKeyboard(context, overviewLayoutBinding.quickTakeNote)
-
-                            overviewLayoutBinding.savingView.isEnabled = false
+                            context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                            context.overviewLayoutBinding.textInputQuickTakeNote.error = null
 
                         }
 
-                        val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
+                        context.overviewLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 
-                        val documentId: Long = System.currentTimeMillis()
+                        context.overviewLayoutBinding.quickTakeNote.clearFocus()
 
-                        val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                            noteTile = null,
-                            noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                            noteHandwritingPaintingPaths = null,
-                            noteHandwritingSnapshotLink = null,
-                            noteTakenTime = documentId,
-                            noteEditTime = null,
-                            noteIndex = documentId,
-                            noteTags = null
-                        )
+                        hideKeyboard(context, context.overviewLayoutBinding.quickTakeNote)
 
-                        (keepNoteApplication).notesRoomDatabaseConfiguration
-                            .insertNewNoteData(notesDatabaseModel)
-
-                        withContext(SupervisorJob() + Dispatchers.Main) {
-
-                            overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
-
-                            overviewLayoutBinding.savingView.isEnabled = true
-
-                            overviewLayoutBinding.quickTakeNote.text = null
-
-                            overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
-                            overviewLayoutBinding.textInputQuickTakeNote.error = null
-
-                            showKeyboard(context, overviewLayoutBinding.quickTakeNote)
-
-                            overviewLayoutBinding.quickTakeNote.requestFocus()
-
-                        }
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-
-                        withContext(SupervisorJob() + Dispatchers.Main) {
-
-                            overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                            overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.offlineSavingError)
-
-                        }
+                        context.overviewLayoutBinding.savingView.isEnabled = false
 
                     }
+
+                    val contentText = context.overviewLayoutBinding.quickTakeNote.text?:"No Content"
+
+                    val documentId: Long = System.currentTimeMillis()
+
+                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                        noteTile = null,
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteHandwritingPaintingPaths = null,
+                        noteHandwritingSnapshotLink = null,
+                        noteTakenTime = documentId,
+                        noteEditTime = null,
+                        noteIndex = documentId,
+                        noteTags = null
+                    )
+
+                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                        .insertNewNoteData(notesDatabaseModel)
+
+                    withContext(SupervisorJob() + Dispatchers.Main) {
+
+                        context.overviewLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+
+                        context.overviewLayoutBinding.savingView.isEnabled = true
+
+                        context.overviewLayoutBinding.quickTakeNote.text = null
+
+                        context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = false
+                        context.overviewLayoutBinding.textInputQuickTakeNote.error = null
+
+                        showKeyboard(context, context.overviewLayoutBinding.quickTakeNote)
+
+                        context.overviewLayoutBinding.quickTakeNote.requestFocus()
+
+                    }
+
+                    context.notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(arrayListOf(notesDatabaseModel))
 
                 } else {
 
                     withContext(SupervisorJob() + Dispatchers.Main) {
 
-                        overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
-                        overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
+                        context.overviewLayoutBinding.textInputQuickTakeNote.isErrorEnabled = true
+                        context.overviewLayoutBinding.textInputQuickTakeNote.error = keepNoteApplication.getString(R.string.noNotesTyped)
 
                     }
 

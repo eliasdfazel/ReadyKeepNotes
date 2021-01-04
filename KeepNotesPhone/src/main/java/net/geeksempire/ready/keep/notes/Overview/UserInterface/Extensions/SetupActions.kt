@@ -30,7 +30,6 @@ fun KeepNoteOverview.setupActions() {
 
         notesIO.saveQuickNotesOffline(context = this@setupActions,
             firebaseUser = firebaseUser,
-            overviewLayoutBinding = overviewLayoutBinding,
             contentEncryption = contentEncryption)
 
     }

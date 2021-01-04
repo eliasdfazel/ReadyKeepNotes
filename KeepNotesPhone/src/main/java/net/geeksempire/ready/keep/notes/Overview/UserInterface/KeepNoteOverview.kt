@@ -336,25 +336,26 @@ class KeepNoteOverview : AppCompatActivity(),
 
             itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
 
+            overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapter
+
             notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
                 if (it.isNotEmpty()) {
 
                     overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
 
-                    if (overviewAdapter.notesDataStructureList.isNotEmpty()) {
+                    if (it.size == 1) {
 
-                        overviewAdapter.notesDataStructureList.clear()
-                        overviewAdapter.notesDataStructureList.addAll(it)
+                        overviewAdapter.notesDataStructureList.add(it.first())
 
-                        overviewAdapter.notifyDataSetChanged()
+                        overviewAdapter.notifyItemInserted(overviewAdapter.notesDataStructureList.size)
 
                     } else {
 
                         overviewAdapter.notesDataStructureList.clear()
                         overviewAdapter.notesDataStructureList.addAll(it)
 
-                        overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapter
+                        overviewAdapter.notifyDataSetChanged()
 
                     }
 
