@@ -47,15 +47,16 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
         firebaseUser?.let {
 
             (keepNoteApplication).firestoreDatabase
-                .collection(DatabaseEndpoints().noteTextsEndpoints(firebaseUser.uid))
+                .collection(databaseEndpoints.generalEndpoints(firebaseUser.uid))
                 .orderBy(Notes.NoteIndex, Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
 
-                    querySnapshot.takeIf {
+                    if (querySnapshot.documents.isNullOrEmpty()) {
 
-                        !querySnapshot.isEmpty
-                    }.also {
+                        insertAllNotesIntoCloudDatabase(firebaseUser)
+
+                    } else {
 
                         insertAllNotesIntoLocalDatabase(querySnapshot.documents, firebaseUser)
 

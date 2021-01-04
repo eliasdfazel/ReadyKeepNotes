@@ -373,7 +373,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
             .submit()
 
         NotesIO(application as KeepNoteApplication)
-            .retrieveAllNotes()
+            .retrieveAllNotes(firebaseUser)
 
     }
 
