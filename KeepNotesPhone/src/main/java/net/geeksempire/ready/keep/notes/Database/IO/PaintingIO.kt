@@ -172,9 +172,7 @@ class PaintingIO (private val context: Context) {
         return JsonIO().writeAllPaintingPathData(overallRedrawPaintingData)
     }
 
-    fun convertJsonArrayPathsToArrayList(paintingPathsJsonArray: String) : Flow<ArrayList<ArrayList<RedrawPaintingData>>> = flow {
-
-        val overallRedrawPaintingData: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
+    fun convertJsonArrayPathsToArrayList(paintingPathsJsonArray: String) : Flow<ArrayList<RedrawPaintingData>> = flow {
 
         val allPaintingPathsJsonArray = JSONArray(paintingPathsJsonArray)
 
@@ -201,11 +199,10 @@ class PaintingIO (private val context: Context) {
 
             }
 
-            overallRedrawPaintingData.add(allRedrawPaintingPathData)
+            emit(allRedrawPaintingPathData)
 
         }
 
-        emit(overallRedrawPaintingData)
     }
 
 }

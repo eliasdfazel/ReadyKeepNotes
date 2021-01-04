@@ -195,6 +195,18 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                                             }
 
+                                        if (noteTextContent.isNotBlank()
+                                            || noteTextContent != "No Content") {
+
+                                            NaturalLanguageProcessNetworkOperation(context)
+                                                .start(
+                                                    firebaseUserId = firebaseUser.uid,
+                                                    documentId = uniqueNoteId.toString(),
+                                                    textContent = noteTextContent.toString()
+                                                )
+
+                                        }
+
                                     }.addOnFailureListener {
                                         Log.d(this@NotesIO.javaClass.simpleName, "Paint Did Note Saved")
 
@@ -205,67 +217,50 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                         }
 
-                    if (noteTextContent.isNotBlank()
-                        || noteTextContent != "No Content") {
 
-                        NaturalLanguageProcessNetworkOperation(context)
-                            .start(
-                                firebaseUserId = firebaseUser.uid,
-                                documentId = uniqueNoteId.toString(),
-                                textContent = noteTextContent.toString()
-                            )
+                /* Save Paths Of Handwriting Notes */
+                noteHandwritingPaintingPaths?.let {
 
-                    }
+                    (keepNoteApplication).firestoreDatabase
+                        .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
+                        .get().addOnSuccessListener { querySnapshot ->
 
-                    /* Save Paths Of Handwriting Notes */
-                    noteHandwritingPaintingPaths?.let {
+                            querySnapshot.documents.forEach { documentSnapshot ->
 
-                        (keepNoteApplication).firestoreDatabase
-                            .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
-                            .get().addOnSuccessListener {
+                                documentSnapshot.reference.delete()
 
-                                it.documents.forEach { documentSnapshot ->
+                            }
 
-                                    documentSnapshot.reference.delete()
+                            CoroutineScope(Dispatchers.IO).async {
 
-                                }
+                                paintingIO.convertJsonArrayPathsToArrayList(noteHandwritingPaintingPaths).collect { overallRedrawPaintingData ->
 
-                                this@async.launch {
-
-                                    paintingIO.convertJsonArrayPathsToArrayList(noteHandwritingPaintingPaths).collect { overallRedrawPaintingData ->
-
-                                        overallRedrawPaintingData.forEach { aPathXY ->
-
-                                            (keepNoteApplication).firestoreDatabase
-                                                .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
-                                                .add(
-                                                    hashMapOf(
-                                                        "paintPath" to jsonIO.writePaintingPathData(aPathXY)
-                                                    )
-                                                )
-                                                .addOnSuccessListener {
-                                                    Log.d(this@NotesIO.javaClass.simpleName, "Handwriting Paths Saved Successfully")
+                                    (keepNoteApplication).firestoreDatabase
+                                        .collection(databaseEndpoints.paintPathsCollectionEndpoints(databasePath))
+                                        .add(
+                                            hashMapOf(
+                                                "paintPath" to jsonIO.writePaintingPathData(overallRedrawPaintingData)
+                                            )
+                                        )
+                                        .addOnSuccessListener {
+                                            Log.d(this@NotesIO.javaClass.simpleName, "Handwriting Paths Saved Successfully")
 
 
 
-                                                }.addOnFailureListener {
+                                        }.addOnFailureListener {
 
-
-                                                }
 
                                         }
-
-                                    }
 
                                 }
 
                             }
 
-                    }
+                        }
 
                 }
 
-
+            }
 
     }
 

@@ -145,7 +145,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
 
         NotesIO(application as KeepNoteApplication)
-            .retrieveAllNotes(this@AccountInformation, firebaseAuthentication.currentUser!!)
+            .insertAllNotesIntoCloudDatabase(this@AccountInformation, firebaseAuthentication.currentUser!!)
 
     }
 
