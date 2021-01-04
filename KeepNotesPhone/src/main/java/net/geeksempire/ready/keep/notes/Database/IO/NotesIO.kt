@@ -111,7 +111,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 (keepNoteApplication).notesRoomDatabaseConfiguration
                     .insertNewNoteData(notesDatabaseModel)
 
-                emit(notesDatabaseModel)
             }
 
     }
