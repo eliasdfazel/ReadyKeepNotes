@@ -1,6 +1,7 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -14,4 +15,6 @@ class OverviewViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val contentTextView: TextView = view.contentTextView
     val contentImageView: ShapesImage = view.contentImageView
     val waitingViewLoading: SpinKitView = view.waitingViewLoading
+
+    val optionsView: ImageView = view.optionsView
 }

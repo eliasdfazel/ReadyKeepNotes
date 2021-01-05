@@ -1,8 +1,10 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -69,6 +71,7 @@ class OverviewAdapter (val context: KeepNoteOverview) : RecyclerView.Adapter<Ove
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int) {
 
         context.firebaseUser?.let {
@@ -161,6 +164,33 @@ class OverviewAdapter (val context: KeepNoteOverview) : RecyclerView.Adapter<Ove
 
             }
 
+        }
+
+        overviewViewHolder.rootItemView.setOnTouchListener { view, motionEvent ->
+
+            val initialX = motionEvent.x
+
+            when(motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+
+
+
+                }
+                MotionEvent.ACTION_MOVE -> {
+
+
+                    overviewViewHolder.rootItemView.translationX = motionEvent.x
+
+                }
+                MotionEvent.ACTION_UP -> {
+
+//            //add data to array list as selected = true/fasles
+
+
+                }
+            }
+
+            false
         }
 
     }

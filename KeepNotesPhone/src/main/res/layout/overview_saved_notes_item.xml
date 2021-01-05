@@ -17,63 +17,84 @@
     apps:layout_constraintStart_toStartOf="parent"
     apps:layout_constraintEnd_toEndOf="parent">
 
-    <net.geekstools.imageview.customshapes.ShapesImage
-        android:id="@+id/contentImageView"
-        android:layout_width="77dp"
-        android:layout_height="113dp"
-        android:scaleType="fitCenter"
-        android:background="@drawable/round_corner_background"
-
-        apps:shape="rounded"
-
-        apps:layout_constraintTop_toTopOf="parent"
-        apps:layout_constraintBottom_toBottomOf="parent"
-        apps:layout_constraintEnd_toEndOf="parent"/>
-    
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/titleTextView"
-        android:layout_width="0dp"
-        android:layout_height="39dp"
-        android:paddingHorizontal="11dp"
-        android:gravity="center_vertical"
-        android:textSize="19sp"
-        android:textStyle="bold"
-        android:textColor="@color/dark"
-        android:fontFamily="monospace"
-
-        apps:layout_constraintTop_toTopOf="parent"
-        apps:layout_constraintStart_toStartOf="parent"
-        apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/contentTextView"
-        android:layout_width="0dp"
+    <ImageView
+        android:id="@+id/optionsView"
+        android:layout_width="100dp"
         android:layout_height="0dp"
-        android:paddingHorizontal="11dp"
-        android:paddingVertical="7dp"
-        android:ellipsize="end"
-        android:lines="3"
-        android:textSize="15sp"
-        android:textColor="@color/dark"
-        android:fontFamily="monospace"
-
-        apps:layout_constraintTop_toBottomOf="@id/titleTextView"
-        apps:layout_constraintBottom_toBottomOf="@id/contentImageView"
-        apps:layout_constraintStart_toStartOf="parent"
-        apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
-
-    <net.geeksempire.loadingspin.SpinKitView
-        android:id="@+id/waitingViewLoading"
-        android:layout_width="33dp"
-        android:layout_height="33dp"
+        android:background="@color/red"
         android:visibility="gone"
 
-        apps:SpinKit_Style="CubeGrid"
-        apps:SpinKit_Color="@color/cyan_transparent"
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
         apps:layout_constraintTop_toTopOf="parent"
-        apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
-        apps:layout_constraintEnd_toEndOf="parent"/>
+        apps:layout_constraintEnd_toStartOf="@id/optionsView">
+
+        <net.geekstools.imageview.customshapes.ShapesImage
+            android:id="@+id/contentImageView"
+            android:layout_width="77dp"
+            android:layout_height="113dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/round_corner_background"
+
+            apps:shape="rounded"
+
+            apps:layout_constraintTop_toTopOf="parent"
+            apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:paddingHorizontal="11dp"
+            android:gravity="center_vertical"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="@color/dark"
+            android:fontFamily="monospace"
+
+            apps:layout_constraintTop_toTopOf="parent"
+            apps:layout_constraintStart_toStartOf="parent"
+            apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/contentTextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingHorizontal="11dp"
+            android:paddingVertical="7dp"
+            android:ellipsize="end"
+            android:lines="3"
+            android:textSize="15sp"
+            android:textColor="@color/dark"
+            android:fontFamily="monospace"
+
+            apps:layout_constraintTop_toBottomOf="@id/titleTextView"
+            apps:layout_constraintBottom_toBottomOf="@id/contentImageView"
+            apps:layout_constraintStart_toStartOf="parent"
+            apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
+
+        <net.geeksempire.loadingspin.SpinKitView
+            android:id="@+id/waitingViewLoading"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:visibility="invisible"
+
+            apps:SpinKit_Style="CubeGrid"
+            apps:SpinKit_Color="@color/cyan_transparent"
+
+            apps:layout_constraintTop_toTopOf="parent"
+            apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintStart_toStartOf="parent"
+            apps:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,8 +2,6 @@ package net.geeksempire.ready.keep.notes.Overview.UserInterface
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -91,37 +89,8 @@ class KeepNoteOverview : AppCompatActivity(),
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP
                     or ItemTouchHelper.DOWN,
-            ItemTouchHelper.START
-                    or ItemTouchHelper.END
+            0
         ) {
-
-            override fun onChildDraw(
-                canvas: Canvas,
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                dX: Float,
-                dY: Float,
-                actionState: Int,
-                isCurrentlyActive: Boolean
-            ) {
-                super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-
-                (viewHolder as OverviewViewHolder)
-
-
-                if (isCurrentlyActive) {
-
-                    println(">>> 1 >> > " + dX)
-
-                } else {
-
-                    println(">>> 2 >> > " + dX)
-
-                }
-
-
-
-            }
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
 
@@ -152,23 +121,12 @@ class KeepNoteOverview : AppCompatActivity(),
                 when (direction) {
                     ItemTouchHelper.START -> {
 
-                        viewHolder.contentTextView.setTextColor(Color.RED)
-
-
                     }
                     ItemTouchHelper.END -> {
-
-                        viewHolder.contentTextView.setTextColor(Color.CYAN)
 
                     }
                 }
 
-            }
-
-            override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
-
-
-                return 0.97531f
             }
 
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -294,8 +252,6 @@ class KeepNoteOverview : AppCompatActivity(),
 
         ItemTouchHelper(simpleItemTouchCallback)
     }
-
-
 
     var autoEnterPlaced = false
 
