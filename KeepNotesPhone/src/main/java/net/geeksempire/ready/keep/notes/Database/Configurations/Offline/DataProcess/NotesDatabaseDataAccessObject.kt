@@ -28,15 +28,16 @@ interface NotesDatabaseDataAccessObject {
     suspend fun deleteSuspend(notesDatabaseModel: NotesDatabaseModel)
 
 
-    @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex ASC")
-    suspend fun getAllNotesData(): List<NotesDatabaseModel>
-
-
     @Query("UPDATE NotesDatabase SET noteTags = :allTags WHERE uniqueNoteId = :uniqueNoteId")
     suspend fun updateNoteTagsData(uniqueNoteId: Long, allTags: String)
 
+
     @Query("UPDATE NotesDatabase SET noteHandwritingPaintingPaths = :handwritingPaths WHERE uniqueNoteId = :uniqueNoteId")
     suspend fun updateHandwritingPathsData(uniqueNoteId: String, handwritingPaths: String)
+
+
+    @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex DESC")
+    suspend fun getAllNotesData(): List<NotesDatabaseModel>
 
 
     @Query("SELECT COUNT(uniqueNoteId) FROM NotesDatabase")
