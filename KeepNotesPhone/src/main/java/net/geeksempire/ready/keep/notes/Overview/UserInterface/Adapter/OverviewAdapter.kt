@@ -168,18 +168,34 @@ class OverviewAdapter (val context: KeepNoteOverview) : RecyclerView.Adapter<Ove
 
         overviewViewHolder.rootItemView.setOnTouchListener { view, motionEvent ->
 
-            val initialX = motionEvent.x
+            val initialX = motionEvent.rawX
+            var differentiateX = motionEvent.rawX
 
             when(motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
 
-
+                    differentiateX = view.x - motionEvent.rawX
 
                 }
                 MotionEvent.ACTION_MOVE -> {
 
+                    if (motionEvent.x <= initialX) {
 
-                    overviewViewHolder.rootItemView.translationX = motionEvent.x
+                        println(">>> " + (motionEvent.x))
+//                        println(">>> " + (differentiateX - motionEvent.x))
+
+//                        overviewViewHolder.rootItemView.x = initialX - motionEvent.x
+
+                        view.animate()
+                            .x(motionEvent.x)
+                            .setDuration(0)
+                            .start()
+
+                    } else {
+
+
+
+                    }
 
                 }
                 MotionEvent.ACTION_UP -> {
