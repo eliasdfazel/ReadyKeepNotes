@@ -17,7 +17,7 @@
     apps:layout_constraintStart_toStartOf="parent"
     apps:layout_constraintEnd_toEndOf="parent">
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/optionsView"
         android:layout_width="100dp"
         android:layout_height="0dp"
@@ -26,9 +26,12 @@
 
         apps:layout_constraintEnd_toEndOf="parent"
         apps:layout_constraintTop_toTopOf="parent"
-        apps:layout_constraintBottom_toBottomOf="parent"/>
+        apps:layout_constraintBottom_toBottomOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootItemContentView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
