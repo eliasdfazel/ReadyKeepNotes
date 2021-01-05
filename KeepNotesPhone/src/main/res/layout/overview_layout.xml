@@ -206,7 +206,8 @@
             android:scrollbars="none"
             android:persistentDrawingCache="animation|scrolling"
             android:saveEnabled="true"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:layoutAnimation="@anim/fade_in_layout_animation"/>
 
         <net.geeksempire.loadingspin.SpinKitView
             android:id="@+id/waitingViewDownload"

@@ -2,6 +2,8 @@ package net.geeksempire.ready.keep.notes.Overview.UserInterface
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -34,6 +36,7 @@ import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OverviewAdapter
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OverviewViewHolder
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.*
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
@@ -87,7 +90,36 @@ class KeepNoteOverview : AppCompatActivity(),
             ItemTouchHelper.UP
                     or ItemTouchHelper.DOWN,
             ItemTouchHelper.START
-                    or ItemTouchHelper.END) {
+                    or ItemTouchHelper.END
+        ) {
+
+            override fun onChildDraw(
+                canvas: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
+                (viewHolder as OverviewViewHolder)
+
+
+                if (isCurrentlyActive) {
+
+                    println(">>> 1 >> > " + dX)
+
+                } else {
+
+                    println(">>> 2 >> > " + dX)
+
+                }
+
+
+
+            }
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
 
@@ -113,7 +145,28 @@ class KeepNoteOverview : AppCompatActivity(),
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
+                (viewHolder as OverviewViewHolder)
 
+                when (direction) {
+                    ItemTouchHelper.START -> {
+
+                        viewHolder.contentTextView.setTextColor(Color.RED)
+
+
+                    }
+                    ItemTouchHelper.END -> {
+
+                        viewHolder.contentTextView.setTextColor(Color.CYAN)
+
+                    }
+                }
+
+            }
+
+            override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+
+
+                return 0.97531f
             }
 
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -154,31 +207,37 @@ class KeepNoteOverview : AppCompatActivity(),
 
                         (application as KeepNoteApplication)
                             .notesRoomDatabaseConfiguration
-                            .updateNoteData(NotesDatabaseModel(
-                                uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(),
-                                noteTile = overviewAdapter.notesDataStructureList[initialPosition].noteTile.toString(),
-                                noteTextContent = overviewAdapter.notesDataStructureList[initialPosition].noteTextContent.toString(),
-                                noteHandwritingPaintingPaths = null,
-                                noteHandwritingSnapshotLink = null,
-                                noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString().toLong(),
-                                noteEditTime = null,
-                                noteIndex = newIndex,
-                                noteTags = null
-                            ))
+                            .updateNoteData(
+                                NotesDatabaseModel(
+                                    uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(),
+                                    noteTile = overviewAdapter.notesDataStructureList[initialPosition].noteTile.toString(),
+                                    noteTextContent = overviewAdapter.notesDataStructureList[initialPosition].noteTextContent.toString(),
+                                    noteHandwritingPaintingPaths = null,
+                                    noteHandwritingSnapshotLink = null,
+                                    noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString()
+                                        .toLong(),
+                                    noteEditTime = null,
+                                    noteIndex = newIndex,
+                                    noteTags = null
+                                )
+                            )
 
                         (application as KeepNoteApplication)
                             .notesRoomDatabaseConfiguration
-                            .updateNoteData(NotesDatabaseModel(
-                                uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(),
-                                noteTile = overviewAdapter.notesDataStructureList[targetPosition].noteTile.toString(),
-                                noteTextContent = overviewAdapter.notesDataStructureList[targetPosition].noteTextContent.toString(),
-                                noteHandwritingPaintingPaths = null,
-                                noteHandwritingSnapshotLink = null,
-                                noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString().toLong(),
-                                noteEditTime = null,
-                                noteIndex = oldIndex,
-                                noteTags = null
-                            ))
+                            .updateNoteData(
+                                NotesDatabaseModel(
+                                    uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(),
+                                    noteTile = overviewAdapter.notesDataStructureList[targetPosition].noteTile.toString(),
+                                    noteTextContent = overviewAdapter.notesDataStructureList[targetPosition].noteTextContent.toString(),
+                                    noteHandwritingPaintingPaths = null,
+                                    noteHandwritingSnapshotLink = null,
+                                    noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString()
+                                        .toLong(),
+                                    noteEditTime = null,
+                                    noteIndex = oldIndex,
+                                    noteTags = null
+                                )
+                            )
 
                         overviewAdapter.rearrangeItemsData(initialPosition, targetPosition)
 
@@ -188,18 +247,32 @@ class KeepNoteOverview : AppCompatActivity(),
                         firebaseUser?.let {
 
                             (application as KeepNoteApplication)
-                                .firestoreDatabase.document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${initialPosition}")
+                                .firestoreDatabase.document(
+                                    databaseEndpoints.generalEndpoints(
+                                        firebaseUser.uid
+                                    ) + "/" + "${initialPosition}"
+                                )
                                 .update(
                                     Notes.NoteIndex, newIndex,
                                 ).addOnSuccessListener {
-                                    Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Initial Position")
+                                    Log.d(
+                                        this@KeepNoteOverview.javaClass.simpleName,
+                                        "Database Rearrange Process Completed Successfully | Initial Position"
+                                    )
 
                                     (application as KeepNoteApplication)
-                                        .firestoreDatabase.document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${targetPosition}")
+                                        .firestoreDatabase.document(
+                                            databaseEndpoints.generalEndpoints(
+                                                firebaseUser.uid
+                                            ) + "/" + "${targetPosition}"
+                                        )
                                         .update(
                                             Notes.NoteIndex, oldIndex,
                                         ).addOnSuccessListener {
-                                            Log.d(this@KeepNoteOverview.javaClass.simpleName, "Database Rearrange Process Completed Successfully | Target Positionb")
+                                            Log.d(
+                                                this@KeepNoteOverview.javaClass.simpleName,
+                                                "Database Rearrange Process Completed Successfully | Target Positionb"
+                                            )
 
 
 
@@ -219,6 +292,8 @@ class KeepNoteOverview : AppCompatActivity(),
 
         ItemTouchHelper(simpleItemTouchCallback)
     }
+
+
 
     var autoEnterPlaced = false
 
@@ -377,7 +452,8 @@ class KeepNoteOverview : AppCompatActivity(),
                         messageText = getString(R.string.emptyNotesCollection),
                         messageDuration = Snackbar.LENGTH_INDEFINITE,
                         actionButtonText = android.R.string.ok,
-                        snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+                        snackbarActionHandlerInterface = object :
+                            SnackbarActionHandlerInterface {
 
                             override fun onActionButtonClicked(snackbar: Snackbar) {
                                 super.onActionButtonClicked(snackbar)
@@ -450,10 +526,16 @@ class KeepNoteOverview : AppCompatActivity(),
         firebaseAuthentication.addAuthStateListener { authentication ->
 
             if (authentication.currentUser == null) {
-                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Firebase Authenticator Couldn't Find Firebase User.")
+                Log.d(
+                    this@KeepNoteOverview.javaClass.simpleName,
+                    "Firebase Authenticator Couldn't Find Firebase User."
+                )
 
                 firebaseAuthentication.signOut().also {
-                    Log.d(this@KeepNoteOverview.javaClass.simpleName, "Firebase User Information Delete Locally.")
+                    Log.d(
+                        this@KeepNoteOverview.javaClass.simpleName,
+                        "Firebase User Information Delete Locally."
+                    )
 
                     try {
                         File("/data/data/${packageName}/").delete()
@@ -482,10 +564,14 @@ class KeepNoteOverview : AppCompatActivity(),
 
     override fun onBackPressed() {
 
-        startActivity(Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_HOME)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK },
-            ActivityOptions.makeCustomAnimation(applicationContext, 0, android.R.anim.fade_out).toBundle())
+        startActivity(
+            Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            },
+            ActivityOptions.makeCustomAnimation(applicationContext, 0, android.R.anim.fade_out)
+                .toBundle()
+        )
 
     }
 
