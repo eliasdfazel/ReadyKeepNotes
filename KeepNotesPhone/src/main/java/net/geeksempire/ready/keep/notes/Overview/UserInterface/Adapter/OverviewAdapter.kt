@@ -9,17 +9,13 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
-class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
+class OverviewAdapter (val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
 
     val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
 
@@ -31,6 +27,46 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
     override fun getItemCount() : Int {
 
         return notesDataStructureList.size
+    }
+
+    override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(overviewViewHolder, position, payloads)
+
+        when (context.themePreferences.checkThemeLightDark()) {
+            ThemeType.ThemeLight -> {
+
+                val tintedBackgroundDrawable = context.getDrawable(R.drawable.round_corner_background)
+                tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
+
+                overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
+
+                val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
+                imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
+
+                overviewViewHolder.contentImageView.background = imageContentBackground
+
+                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
+                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
+
+            }
+            ThemeType.ThemeDark -> {
+
+                val tintedBackgroundDrawable = context.getDrawable(R.drawable.round_corner_background)
+                tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
+
+                overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
+
+                val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
+                imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
+
+                overviewViewHolder.contentImageView.background = imageContentBackground
+
+                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
+                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
+
+            }
+        }
+
     }
 
     override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int) {
@@ -124,23 +160,6 @@ class OverviewAdapter (private val context: KeepNoteOverview) : RecyclerView.Ada
                 }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
             }
-
-        }
-
-    }
-
-    fun rearrangeItemsData(fromPosition: Int, toPosition: Int) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-
-        val selectedItem = notesDataStructureList[fromPosition]
-        notesDataStructureList.removeAt(fromPosition)
-
-        if (toPosition < fromPosition) {
-
-            notesDataStructureList.add(toPosition, selectedItem)
-
-        } else {
-
-            notesDataStructureList.add(toPosition - 1, selectedItem)
 
         }
 

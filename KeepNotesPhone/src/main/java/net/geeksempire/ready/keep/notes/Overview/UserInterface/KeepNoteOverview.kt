@@ -37,6 +37,8 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OverviewAdapter
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OverviewViewHolder
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.addItemToFirst
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.rearrangeItemsData
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.*
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
@@ -403,7 +405,7 @@ class KeepNoteOverview : AppCompatActivity(),
                 applicationContext,
                 columnCount(applicationContext, 313),
                 RecyclerView.VERTICAL,
-                false
+                true
             )
 
             val overviewAdapter = OverviewAdapter(this@KeepNoteOverview)
@@ -424,9 +426,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                     if (it.size == 1) {
 
-                        overviewAdapter.notesDataStructureList.add(it.first())
-
-                        overviewAdapter.notifyItemInserted(overviewAdapter.notesDataStructureList.size)
+                        overviewAdapter.addItemToFirst(it.first())
 
                     } else {
 
@@ -436,6 +436,8 @@ class KeepNoteOverview : AppCompatActivity(),
                         overviewAdapter.notifyDataSetChanged()
 
                     }
+
+                    overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(overviewAdapter.notesDataStructureList.size)
 
                     overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
 
