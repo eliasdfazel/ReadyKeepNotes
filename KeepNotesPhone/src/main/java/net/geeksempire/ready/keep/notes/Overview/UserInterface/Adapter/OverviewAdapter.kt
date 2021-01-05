@@ -181,13 +181,13 @@ class OverviewAdapter (val context: KeepNoteOverview) : RecyclerView.Adapter<Ove
 
                     if (motionEvent.x <= initialX) {
 
-                        println(">>> " + (motionEvent.x))
+                        println(">>> " + (initialX - motionEvent.rawX))
 //                        println(">>> " + (differentiateX - motionEvent.x))
 
 //                        overviewViewHolder.rootItemView.x = initialX - motionEvent.x
 
                         view.animate()
-                            .x(motionEvent.x)
+                            .x(initialX - motionEvent.rawX)
                             .setDuration(0)
                             .start()
 
