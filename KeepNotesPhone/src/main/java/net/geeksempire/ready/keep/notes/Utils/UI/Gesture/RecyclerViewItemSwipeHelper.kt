@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
@@ -220,8 +221,8 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
         init {
             val paint = Paint()
             paint.textSize = textSizeInPixel
-            paint.typeface = Typeface.DEFAULT_BOLD
-            paint.textAlign = Paint.Align.CENTER
+            paint.typeface = Typeface.MONOSPACE
+            paint.textAlign = Paint.Align.LEFT
             val titleBounds = Rect()
             paint.getTextBounds(title, 0, title.length, titleBounds)
             intrinsicWidth = titleBounds.width() + 2 * horizontalPadding
@@ -231,12 +232,12 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
             val paint = Paint()
 
             paint.color = ContextCompat.getColor(context, colorRes)
-            canvas.drawRoundRect(rect, 5f, 5f, paint)
+            canvas.drawRoundRect(rect, DpToInteger(context, 5).toFloat(), DpToInteger(context, 5).toFloat(), paint)
 
             paint.color = ContextCompat.getColor(context, R.color.lighter)
             paint.textSize = textSizeInPixel
             paint.typeface = Typeface.MONOSPACE
-            paint.textAlign = Paint.Align.CENTER
+            paint.textAlign = Paint.Align.LEFT
 
             val titleBounds = Rect()
             paint.getTextBounds(title, 0, title.length, titleBounds)
