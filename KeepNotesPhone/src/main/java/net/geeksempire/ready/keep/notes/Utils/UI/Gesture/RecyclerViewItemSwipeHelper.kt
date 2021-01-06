@@ -163,7 +163,8 @@ abstract class SwipeHelper(private val context: KeepNoteOverview) : ItemTouchHel
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        return false
+
+        return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
