@@ -36,6 +36,7 @@ import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewView
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OverviewAdapter
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.addItemToFirst
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.rearrangeItemsData
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.setupDeleteView
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.*
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
@@ -49,7 +50,8 @@ import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteSu
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Dialogue.ChangeLogDialogue
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
-import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeHelper
+import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.RecyclerViewItemSwipeHelper
+import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeActions
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
@@ -91,26 +93,27 @@ class KeepNoteOverview : AppCompatActivity(),
         var initialPosition = -1
         var targetPosition = -1
 
-        val simpleItemTouchCallback = object : SwipeHelper(this@KeepNoteOverview) {
+        val swipeActions = object : SwipeActions {
 
-            override fun instantiateUnderlayButton(position: Int): List<SwipeHelper.UnderlayButton> {
+            override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) {
+                super.onSwipeToEnd(context, position)
+
+
+
+            }
+
+        }
+
+        val simpleItemTouchCallback = object : RecyclerViewItemSwipeHelper(this@KeepNoteOverview, swipeActions) {
+
+            override fun instantiateUnderlayButton(position: Int): List<RecyclerViewItemSwipeHelper.UnderlayButton> {
 
                 return listOf(
-                    deleteButton(position),
-                    markAsUnreadButton(position),
-                    archiveButton(position)
+                    overviewAdapter.setupDeleteView(position)
                 )
             }
 
-            override fun onMoved(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                fromPosition: Int,
-                target: RecyclerView.ViewHolder,
-                toPosition: Int,
-                x: Int,
-                y: Int
-            ) {
+            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
                 super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
                 val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
@@ -151,10 +154,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
             }
 
-            override fun clearView(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder
-            ) {
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
 
                 doVibrate(applicationContext, 57)
@@ -264,44 +264,6 @@ class KeepNoteOverview : AppCompatActivity(),
 
         ItemTouchHelper(simpleItemTouchCallback)
     }
-
-
-    private fun deleteButton(position: Int): SwipeHelper.UnderlayButton {
-        return SwipeHelper.UnderlayButton(
-            this,
-            "Delete",
-            14.0f,
-            android.R.color.holo_red_light,
-            object : SwipeHelper.UnderlayButtonClickListener {
-                override fun onClick() {
-                }
-            })
-    }
-
-    private fun markAsUnreadButton(position: Int): SwipeHelper.UnderlayButton {
-        return SwipeHelper.UnderlayButton(
-            this,
-            "Mark as unread",
-            14.0f,
-            android.R.color.holo_green_light,
-            object : SwipeHelper.UnderlayButtonClickListener {
-                override fun onClick() {
-                }
-            })
-    }
-
-    private fun archiveButton(position: Int): SwipeHelper.UnderlayButton {
-        return SwipeHelper.UnderlayButton(
-            this,
-            "Archive",
-            14.0f,
-            android.R.color.holo_blue_light,
-            object : SwipeHelper.UnderlayButtonClickListener {
-                override fun onClick() {
-                }
-            })
-    }
-
 
     var autoEnterPlaced = false
 

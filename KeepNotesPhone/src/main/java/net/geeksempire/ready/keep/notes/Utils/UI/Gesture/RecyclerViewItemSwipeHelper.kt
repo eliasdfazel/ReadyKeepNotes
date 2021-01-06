@@ -15,7 +15,12 @@ import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
 
-abstract class SwipeHelper(private val context: KeepNoteOverview) : ItemTouchHelper.SimpleCallback(
+interface SwipeActions {
+    fun onSwipeToStart(context: KeepNoteOverview, position: Int) {}
+    fun onSwipeToEnd(context: KeepNoteOverview, position: Int) {}
+}
+
+abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview, private val swipeActions: SwipeActions) : ItemTouchHelper.SimpleCallback(
     ItemTouchHelper.UP
             or ItemTouchHelper.DOWN,
     ItemTouchHelper.START
@@ -168,16 +173,32 @@ abstract class SwipeHelper(private val context: KeepNoteOverview) : ItemTouchHel
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
         val position = viewHolder.adapterPosition
+
         if (swipedPosition != position) recoverQueue.add(swipedPosition)
         swipedPosition = position
+
         recoverSwipedItem()
+
+        when (direction) {
+            ItemTouchHelper.START -> {
+
+                swipeActions.onSwipeToStart(context, viewHolder.adapterPosition)
+
+            }
+            ItemTouchHelper.END -> {
+
+                swipeActions.onSwipeToEnd(context, viewHolder.adapterPosition)
+
+            }
+        }
+
     }
 
     abstract fun instantiateUnderlayButton(position: Int): List<UnderlayButton>
 
-    //region UnderlayButton
-    interface UnderlayButtonClickListener {
+    interface UnderlayOptionsActions {
         fun onClick()
     }
 
@@ -186,11 +207,10 @@ abstract class SwipeHelper(private val context: KeepNoteOverview) : ItemTouchHel
         private val title: String,
         textSize: Float,
         @ColorRes private val colorRes: Int,
-        private val clickListener: UnderlayButtonClickListener
+        private val clickListener: UnderlayOptionsActions
     ) {
         private var clickableRegion: RectF? = null
-        private val textSizeInPixel: Float =
-            textSize * context.resources.displayMetrics.density // dp to px
+        private val textSizeInPixel: Float = textSize * context.resources.displayMetrics.density // dp to px
         private val horizontalPadding = 50.0f
         val intrinsicWidth: Float
 
@@ -237,7 +257,11 @@ abstract class SwipeHelper(private val context: KeepNoteOverview) : ItemTouchHel
     //endregion
 }
 
-private fun List<SwipeHelper.UnderlayButton>.intrinsicWidth(): Float {
-    if (isEmpty()) return 0.0f
+private fun List<RecyclerViewItemSwipeHelper.UnderlayButton>.intrinsicWidth(): Float {
+
+    if (isEmpty()) {
+        return 0.0f
+    }
+
     return map { it.intrinsicWidth }.reduce { acc, fl -> acc + fl }
 }
