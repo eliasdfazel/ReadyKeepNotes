@@ -20,12 +20,15 @@ object Notes {
 }
 
 @Keep
-data class NotesDataStructure(var noteTile: String = "Untitled Note",
+data class NotesDataStructure(var uniqueNoteId: Long,
+                              var noteTile: String = "Untitled Note",
                               var noteTextContent: String = "No Content",
+                              var noteHandwritingPaintingPaths: String? = null,
                               var noteHandwritingSnapshotLink: String? = null,
                               var noteTakenTime: Timestamp = Timestamp.now(),
                               var noteEditTime: Timestamp? = null,
-                              var noteIndex: Long)
+                              var noteIndex: Long,
+                              var noteTags: String? = null)
 
 const val NotesDatabase = "NotesDatabase"
 
@@ -34,15 +37,16 @@ const val NotesDatabase = "NotesDatabase"
 data class NotesDatabaseModel(
     @NonNull @PrimaryKey var uniqueNoteId: Long,
 
-    @Nullable @ColumnInfo(name = "noteTile") var noteTile: String?,
-    @Nullable @ColumnInfo(name = "noteTextContent") var noteTextContent: String?,
-    @Nullable @ColumnInfo(name = "noteHandwritingPaintingPaths") var noteHandwritingPaintingPaths: String?,
-    @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink") var noteHandwritingSnapshotLink: String?,
+    @Nullable @ColumnInfo(name = "noteTile", typeAffinity = ColumnInfo.TEXT) var noteTile: String?,
+    @Nullable @ColumnInfo(name = "noteTextContent", typeAffinity = ColumnInfo.TEXT) var noteTextContent: String?,
+    @Nullable @ColumnInfo(name = "noteHandwritingPaintingPaths", typeAffinity = ColumnInfo.TEXT) var noteHandwritingPaintingPaths: String?,
+    @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink", typeAffinity = ColumnInfo.TEXT) var noteHandwritingSnapshotLink: String?,
 
     @NonNull @ColumnInfo(name = "noteTakenTime") var noteTakenTime: Long,
     @Nullable @ColumnInfo(name = "noteEditTime") var noteEditTime: Long?,
 
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long,
 
-    @Nullable @ColumnInfo(name = "noteTags") var noteTags: String?
+    @Nullable @ColumnInfo(name = "noteTags", typeAffinity = ColumnInfo.TEXT) var noteTags: String?,
+    @NonNull @ColumnInfo(name = "dataSelected") var dataSelected: Int = 0
 )

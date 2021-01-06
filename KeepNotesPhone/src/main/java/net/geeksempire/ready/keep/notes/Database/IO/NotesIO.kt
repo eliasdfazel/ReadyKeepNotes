@@ -12,10 +12,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.NaturalLanguageProcessNetworkOperation
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
@@ -73,7 +71,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    fun insertAllNotesIntoLocalDatabase(context: AppCompatActivity, allNotes: List<DocumentSnapshot>, firebaseUser: FirebaseUser) : Flow<NotesDatabaseModel> = flow {
+    fun insertAllNotesIntoLocalDatabase(context: AppCompatActivity, allNotes: List<DocumentSnapshot>, firebaseUser: FirebaseUser) = CoroutineScope(Dispatchers.IO).launch {
 
         allNotes.asFlow()
             .collect { documentSnapshot ->
@@ -85,12 +83,15 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 val noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].toString()
 
-                val noteEditTime = documentSnapshot[Notes.NoteEditTime].toString().toLong()
+                val noteTakenTime = (documentSnapshot[Notes.NoteTakenTime] as Timestamp).toDate().time
+                val noteEditTime = documentSnapshot[Notes.NoteEditTime]?.let {
+                    (documentSnapshot[Notes.NoteEditTime] as Timestamp).toDate().time
+                }
 
                 val noteTags = documentSnapshot[Notes.NotesTags].toString()
 
                 keepNoteApplication.firestoreDatabase
-                    .collection(databaseEndpoints.paintPathsCollectionEndpoints(databaseEndpoints.generalEndpoints(firebaseUser.uid)))
+                    .collection(databaseEndpoints.paintPathsCollectionEndpoints(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + documentSnapshot.id))
                     .get()
                     .addOnSuccessListener { documentSnapshotPath ->
 
@@ -113,7 +114,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     noteTakenTime = uniqueNoteId,
                     noteEditTime = noteEditTime,
                     noteIndex = documentSnapshot.id.toLong(),
-                    noteTags = noteTags
+                    noteTags = noteTags,
+                    dataSelected = 0
                 )
 
                 (keepNoteApplication).notesRoomDatabaseConfiguration
@@ -142,6 +144,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     val noteIndex = notesDatabaseModel.noteIndex
 
                     val notesDataStructure = NotesDataStructure(
+                        uniqueNoteId = uniqueNoteId,
                         noteTile = noteTitle,
                         noteTextContent = noteTextContent,
                         noteHandwritingSnapshotLink = null,
@@ -451,6 +454,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
                 val notesDataStructure = NotesDataStructure(
+                    uniqueNoteId = documentId,
                     noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
                     noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
                     noteHandwritingSnapshotLink = null,
@@ -628,6 +632,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     val documentId: Long = System.currentTimeMillis()
 
                     val notesDataStructure = NotesDataStructure(
+                        uniqueNoteId = documentId,
                         noteTile = contentEncryption.encryptEncodedData("Untitled Note", firebaseUser.uid).asList().toString(),
                         noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
                         noteIndex = documentId

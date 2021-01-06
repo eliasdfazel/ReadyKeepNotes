@@ -17,9 +17,9 @@ class DatabaseEndpoints {
         return generalEndpoints.plus("/PaintingNote").plus("/Paths")
     }
 
-    fun paintPathsCollectionEndpoints (generalEndpoints: String) : String {
+    fun paintPathsCollectionEndpoints (documentReference: String) : String {
 
-        return generalEndpoints.plus("/PaintingNote").plus("/Paths").plus("/Content")
+        return documentReference.plus("/PaintingNote").plus("/Paths").plus("/Content")
     }
 
 }

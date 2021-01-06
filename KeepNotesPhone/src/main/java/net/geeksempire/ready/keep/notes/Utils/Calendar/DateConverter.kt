@@ -29,3 +29,13 @@ fun String.formatToCurrentTimeZone() : java.sql.Timestamp {
 
     return java.sql.Timestamp(date.time)
 }
+
+fun Long.formatMillisecondCurrentTime(): String {
+
+    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = this@formatMillisecondCurrentTime
+
+    return simpleDateFormat.format(calendar.time)
+}

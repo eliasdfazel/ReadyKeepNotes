@@ -1,17 +1,23 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
+import kotlin.math.abs
 
 
 class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
@@ -48,7 +54,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                     context.getDrawable(R.drawable.round_corner_background)
                 tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
 
-                overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
+                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
                 imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
@@ -65,7 +71,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                     context.getDrawable(R.drawable.round_corner_background)
                 tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
 
-                overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
+                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
                 imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
@@ -104,7 +110,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                     context.getDrawable(R.drawable.round_corner_background)
                 tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
 
-                overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
+                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
                 imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
@@ -121,7 +127,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                     context.getDrawable(R.drawable.round_corner_background)
                 tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
 
-                overviewViewHolder.rootItemView.background = tintedBackgroundDrawable
+                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
                 imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
@@ -154,89 +160,38 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         overviewViewHolder.rootItemContentView.setOnClickListener {
 
-//            overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
-//
-//            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
-//
-//            if (paintingPathsJsonArray.isNullOrEmpty()) {
-//
-//                overviewViewHolder.waitingViewLoading.visibility = View.GONE
-//
-//                context.startActivity(Intent(context, TakeNote::class.java).apply {
-//                    putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
-//                    putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile)
-//                    putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent)
-//                }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
-//
-//            } else {
-//
-//                overviewViewHolder.waitingViewLoading.visibility = View.GONE
-//
-//                context.startActivity(Intent(context, TakeNote::class.java).apply {
-//                    putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
-//                    putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile.toString())
-//                    putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent.toString())
-//                    putExtra(TakeNote.NoteTakingWritingType.PaintingPath, paintingPathsJsonArray)
-//                }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
-//
-//            }
-//
-        }
+            if (!overviewViewHolder.optionsView.isShown) {
 
-        /*overviewViewHolder.rootItemContentView.setOnTouchListener { view, motionEvent ->
+                overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
 
-            val initialViewX = view.x
+                val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
 
-            when(motionEvent.action) {
-                MotionEvent.ACTION_MOVE -> {
+                if (paintingPathsJsonArray.isNullOrEmpty()) {
 
-                    print(">>> >> > " + motionEvent.x)
+                    overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
-                    if (motionEvent.x <= initialViewX) {
+                    context.startActivity(Intent(context, TakeNote::class.java).apply {
+                        putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                        putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile)
+                        putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent)
+                    }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
-                        println(">>> 1")
+                } else {
 
-                        val colorAnimation = ValueAnimator.ofFloat(0f, 133f)
-                        colorAnimation.addUpdateListener { animator ->
-                            val animatorValue = animator.animatedValue as Float
+                    overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
-                            overviewViewHolder.rootItemView.translationX = -animatorValue
-
-                        }
-
-                        if (!colorAnimation.isPaused) {
-                            colorAnimation.start()
-                        }
-
-                    } else {
-
-                        println(">>> 2")
-
-                        val colorAnimation = ValueAnimator.ofFloat(133f, 0f)
-                        colorAnimation.addUpdateListener { animator ->
-                            val animatorValue = animator.animatedValue as Float
-
-                            overviewViewHolder.rootItemView.translationX = -animatorValue
-
-                        }
-
-                        if (!colorAnimation.isPaused) {
-                            colorAnimation.start()
-                        }
-
-                    }
+                    context.startActivity(Intent(context, TakeNote::class.java).apply {
+                        putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                        putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile.toString())
+                        putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent.toString())
+                        putExtra(TakeNote.NoteTakingWritingType.PaintingPath, paintingPathsJsonArray)
+                    }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
                 }
-                MotionEvent.ACTION_UP -> {
 
-//            //add data to array list as selected = true/fasles
-
-
-                }
             }
 
-            false
-        }*/
+        }
 
         var differentiateX: Float = 0f
 
@@ -251,20 +206,38 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                 }
                 MotionEvent.ACTION_MOVE -> {
 
-                    if ()
-                    overviewViewHolder.rootItemContentView.animate()
-                        .x(motionEvent.rawX + differentiateX)
-                        .setDuration(0)
-                        .start();
+                    val dxAbsolute = abs(motionEvent.rawX + differentiateX)
+
+                    if (motionEvent.rawX < abs(differentiateX)) {
+
+                        if (dxAbsolute < overviewViewHolder.optionsView.width) {
+
+                            overviewViewHolder.rootItemContentView.x = motionEvent.rawX + differentiateX
+
+                            if (!overviewViewHolder.optionsView.isShown) {
+
+                                overviewViewHolder.optionsView.visibility = View.VISIBLE
+                                overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
+
+                            }
+
+                        }
+
+                    } else {
+
+                        overviewViewHolder.rootItemContentView.x = 0f
+
+                    }
 
                 }
                 MotionEvent.ACTION_UP -> {
 
-
+                    overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
 
                 }
                 MotionEvent.ACTION_CANCEL -> {
 
+                    overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
 
                 }
                 else -> {
