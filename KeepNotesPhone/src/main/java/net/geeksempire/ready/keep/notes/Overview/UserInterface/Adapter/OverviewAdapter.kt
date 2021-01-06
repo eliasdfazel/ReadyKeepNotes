@@ -40,11 +40,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
         return notesDataStructureList.size
     }
 
-    override fun onBindViewHolder(
-        overviewViewHolder: OverviewViewHolder,
-        position: Int,
-        payloads: MutableList<Any>
-    ) {
+    override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int, payloads: MutableList<Any>) {
         super.onBindViewHolder(overviewViewHolder, position, payloads)
 
         when (context.themePreferences.checkThemeLightDark()) {
