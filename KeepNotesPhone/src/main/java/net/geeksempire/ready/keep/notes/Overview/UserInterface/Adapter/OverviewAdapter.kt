@@ -3,6 +3,7 @@ package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
@@ -154,39 +156,19 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
-        overviewViewHolder.rootItemContentView.setOnClickListener {
+        when (notesDataStructureList[position].dataSelected) {
+            NotesTemporaryModification.NoteIsSelected -> {
+                Log.d(this@OverviewAdapter.javaClass.simpleName, "Note Is Selected")
 
-            if (!overviewViewHolder.optionsView.isShown) {
-
-                overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
-
-                val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
-
-                if (paintingPathsJsonArray.isNullOrEmpty()) {
-
-                    overviewViewHolder.waitingViewLoading.visibility = View.GONE
-
-                    context.startActivity(Intent(context, TakeNote::class.java).apply {
-                        putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                        putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile)
-                        putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent)
-                    }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
-
-                } else {
-
-                    overviewViewHolder.waitingViewLoading.visibility = View.GONE
-
-                    context.startActivity(Intent(context, TakeNote::class.java).apply {
-                        putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                        putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile.toString())
-                        putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent.toString())
-                        putExtra(TakeNote.NoteTakingWritingType.PaintingPath, paintingPathsJsonArray)
-                    }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
-
-                }
+                overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
 
             }
+            NotesTemporaryModification.NoteIsNotSelected -> {
+                Log.d(this@OverviewAdapter.javaClass.simpleName, "Note Is Not Selected")
 
+                overviewViewHolder.rootItemContentView.x = 0f
+
+            }
         }
 
         var differentiateX: Float = 0f
@@ -221,6 +203,11 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
                     } else {
 
+                        overviewViewHolder.optionsView.visibility = View.GONE
+                        overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out))
+
+                        notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsNotSelected
+
                         overviewViewHolder.rootItemContentView.x = 0f
 
                     }
@@ -228,12 +215,28 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                 }
                 MotionEvent.ACTION_UP -> {
 
-                    overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+                    if (overviewViewHolder.optionsView.isShown) {
+
+                        overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+
+                    } else {
+
+                        overviewViewHolder.rootItemContentView.x = 0f
+
+                    }
 
                 }
                 MotionEvent.ACTION_CANCEL -> {
 
-                    overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+                    if (overviewViewHolder.optionsView.isShown) {
+
+                        overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+
+                    } else {
+
+                        overviewViewHolder.rootItemContentView.x = 0f
+
+                    }
 
                 }
                 else -> {
@@ -245,6 +248,40 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
             false
         }
 
+        overviewViewHolder.rootItemContentView.setOnClickListener {
+
+            if (!overviewViewHolder.optionsView.isShown) {
+
+                overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
+
+                val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
+
+                if (paintingPathsJsonArray.isNullOrEmpty()) {
+
+                    overviewViewHolder.waitingViewLoading.visibility = View.GONE
+
+                    context.startActivity(Intent(context, TakeNote::class.java).apply {
+                        putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                        putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile)
+                        putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent)
+                    }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+
+                } else {
+
+                    overviewViewHolder.waitingViewLoading.visibility = View.GONE
+
+                    context.startActivity(Intent(context, TakeNote::class.java).apply {
+                        putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                        putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile.toString())
+                        putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent.toString())
+                        putExtra(TakeNote.NoteTakingWritingType.PaintingPath, paintingPathsJsonArray)
+                    }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+
+                }
+
+            }
+
+        }
 
     }
 

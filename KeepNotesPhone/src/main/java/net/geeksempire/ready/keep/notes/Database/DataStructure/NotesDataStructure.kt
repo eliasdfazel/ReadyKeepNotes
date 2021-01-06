@@ -19,6 +19,11 @@ object Notes {
     const val NotesTags: String = "noteTags"
 }
 
+object NotesTemporaryModification {
+    const val NoteIsNotSelected = 0
+    const val NoteIsSelected = 1
+}
+
 @Keep
 data class NotesDataStructure(var uniqueNoteId: Long,
                               var noteTile: String = "Untitled Note",
