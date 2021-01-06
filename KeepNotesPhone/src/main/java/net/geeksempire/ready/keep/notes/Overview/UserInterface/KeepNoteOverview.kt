@@ -98,12 +98,14 @@ class KeepNoteOverview : AppCompatActivity(),
             override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).async {
                 super.onSwipeToEnd(context, position)
 
-                (application as KeepNoteApplication)
-                    .notesRoomDatabaseConfiguration
-                    .deleteNoteData(context.overviewAdapter.notesDataStructureList[position])
+                val dataToDelete = context.overviewAdapter.notesDataStructureList[position]
 
                 context.overviewAdapter.notesDataStructureList.removeAt(position)
                 context.overviewAdapter.notifyItemRemoved(position)
+
+                (application as KeepNoteApplication)
+                    .notesRoomDatabaseConfiguration
+                    .deleteNoteData(dataToDelete)
 
             }
 
