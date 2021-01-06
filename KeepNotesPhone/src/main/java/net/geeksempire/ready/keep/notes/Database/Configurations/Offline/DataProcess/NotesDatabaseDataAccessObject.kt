@@ -25,7 +25,7 @@ interface NotesDatabaseDataAccessObject {
 
 
     @Delete
-    suspend fun deleteSuspend(notesDatabaseModel: NotesDatabaseModel)
+    suspend fun deleteNoteData(notesDatabaseModel: NotesDatabaseModel)
 
 
     @Query("UPDATE NotesDatabase SET noteTags = :allTags WHERE uniqueNoteId = :uniqueNoteId")

@@ -23,7 +23,7 @@ import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
 import com.google.firebase.inappmessaging.model.Action
 import com.google.firebase.inappmessaging.model.InAppMessage
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
@@ -95,10 +95,15 @@ class KeepNoteOverview : AppCompatActivity(),
 
         val swipeActions = object : SwipeActions {
 
-            override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) {
+            override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.IO).async {
                 super.onSwipeToEnd(context, position)
 
+                (application as KeepNoteApplication)
+                    .notesRoomDatabaseConfiguration
+                    .deleteNoteData(context.overviewAdapter.notesDataStructureList[position])
 
+                context.overviewAdapter.notesDataStructureList.removeAt(position)
+                context.overviewAdapter.notifyItemRemoved(position)
 
             }
 

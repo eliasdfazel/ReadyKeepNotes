@@ -9,6 +9,9 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
 import java.util.*
@@ -16,8 +19,8 @@ import kotlin.math.abs
 import kotlin.math.max
 
 interface SwipeActions {
-    fun onSwipeToStart(context: KeepNoteOverview, position: Int) {}
-    fun onSwipeToEnd(context: KeepNoteOverview, position: Int) {}
+    fun onSwipeToStart(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.IO).async {}
+    fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.IO).async {}
 }
 
 abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview, private val swipeActions: SwipeActions) : ItemTouchHelper.SimpleCallback(
