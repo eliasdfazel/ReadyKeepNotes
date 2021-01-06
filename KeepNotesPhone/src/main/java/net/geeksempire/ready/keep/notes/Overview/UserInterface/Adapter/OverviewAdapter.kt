@@ -11,25 +11,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
-
-class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
+class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : OverviewViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : RecyclerView.ViewHolder {
 
-        return OverviewViewHolder(
-            LayoutInflater.from(context).inflate(
-                R.layout.overview_saved_notes_item,
-                viewGroup,
-                false
-            )
-        )
+        return when (viewType) {
+            NotesTemporaryModification.NoteIsSelected -> {
+                OverviewOptionsViewHolder(LayoutInflater.from(context).inflate(R.layout.overview_options_item, viewGroup, false))
+            }
+            NotesTemporaryModification.NoteIsNotSelected -> {
+                OverviewViewHolder(LayoutInflater.from(context).inflate(R.layout.overview_saved_notes_item, viewGroup, false))
+            }
+            else -> OverviewViewHolder(LayoutInflater.from(context).inflate(R.layout.overview_saved_notes_item, viewGroup, false))
+        }
     }
 
     override fun getItemCount() : Int {
@@ -37,42 +39,62 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
         return notesDataStructureList.size
     }
 
-    override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun getItemViewType(position: Int): Int {
+        super.getItemViewType(position)
+
+        return notesDataStructureList[position].dataSelected
+    }
+
+    override fun onBindViewHolder(overviewViewHolder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         super.onBindViewHolder(overviewViewHolder, position, payloads)
 
-        when (context.themePreferences.checkThemeLightDark()) {
-            ThemeType.ThemeLight -> {
+        when (notesDataStructureList[position].dataSelected) {
+            NotesTemporaryModification.NoteIsNotSelected -> {
 
-                val tintedBackgroundDrawable =
-                    context.getDrawable(R.drawable.round_corner_background)
-                tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
+                (overviewViewHolder as OverviewViewHolder)
 
-                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
+                when (context.themePreferences.checkThemeLightDark()) {
+                    ThemeType.ThemeLight -> {
 
-                val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
-                imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
+                        val tintedBackgroundDrawable =
+                            context.getDrawable(R.drawable.round_corner_background)
+                        tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
 
-                overviewViewHolder.contentImageView.background = imageContentBackground
+                        overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
-                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
-                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
+                        val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
+                        imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
+
+                        overviewViewHolder.contentImageView.background = imageContentBackground
+
+                        overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
+                        overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
+
+                    }
+                    ThemeType.ThemeDark -> {
+
+                        val tintedBackgroundDrawable =
+                            context.getDrawable(R.drawable.round_corner_background)
+                        tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
+
+                        overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
+
+                        val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
+                        imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
+
+                        overviewViewHolder.contentImageView.background = imageContentBackground
+
+                        overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
+                        overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
+
+                    }
+                }
 
             }
-            ThemeType.ThemeDark -> {
+            NotesTemporaryModification.NoteIsSelected -> {
 
-                val tintedBackgroundDrawable =
-                    context.getDrawable(R.drawable.round_corner_background)
-                tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
+                (overviewViewHolder as OverviewOptionsViewHolder)
 
-                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
-
-                val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
-                imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
-
-                overviewViewHolder.contentImageView.background = imageContentBackground
-
-                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
-                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
 
             }
         }
@@ -80,239 +102,239 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int) {
+    override fun onBindViewHolder(overviewViewHolder: RecyclerView.ViewHolder, position: Int) {
 
-        context.firebaseUser?.let {
+        when (notesDataStructureList[position].dataSelected) {
+            NotesTemporaryModification.NoteIsNotSelected -> {
 
-            overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(
-                notesDataStructureList[position].noteTile.toString(),
-                context.firebaseUser.uid
-            )
+                (overviewViewHolder as OverviewViewHolder)
 
-            overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(
-                notesDataStructureList[position].noteTextContent.toString(),
-                context.firebaseUser.uid
-            )
+                context.firebaseUser?.let {
 
-        }
+                    overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(
+                        notesDataStructureList[position].noteTile.toString(),
+                        context.firebaseUser.uid
+                    )
 
-        when (context.themePreferences.checkThemeLightDark()) {
-            ThemeType.ThemeLight -> {
+                    overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(
+                        notesDataStructureList[position].noteTextContent.toString(),
+                        context.firebaseUser.uid
+                    )
 
-                val tintedBackgroundDrawable =
-                    context.getDrawable(R.drawable.round_corner_background)
-                tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
+                }
 
-                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
+                when (context.themePreferences.checkThemeLightDark()) {
+                    ThemeType.ThemeLight -> {
 
-                val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
-                imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
+                        val tintedBackgroundDrawable =
+                            context.getDrawable(R.drawable.round_corner_background)
+                        tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
 
-                overviewViewHolder.contentImageView.background = imageContentBackground
+                        overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
-                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
-                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
+                        val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
+                        imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
 
-            }
-            ThemeType.ThemeDark -> {
+                        overviewViewHolder.contentImageView.background = imageContentBackground
 
-                val tintedBackgroundDrawable =
-                    context.getDrawable(R.drawable.round_corner_background)
-                tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
+                        overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
+                        overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
 
-                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
+                    }
+                    ThemeType.ThemeDark -> {
 
-                val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
-                imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
+                        val tintedBackgroundDrawable =
+                            context.getDrawable(R.drawable.round_corner_background)
+                        tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
 
-                overviewViewHolder.contentImageView.background = imageContentBackground
+                        overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
-                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
-                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
+                        val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
+                        imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
 
-            }
-        }
+                        overviewViewHolder.contentImageView.background = imageContentBackground
 
-        if (notesDataStructureList[position].noteHandwritingSnapshotLink == null) {
+                        overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
+                        overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
 
-            overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            overviewViewHolder.contentImageView.setColorFilter(context.getColor(R.color.pink_transparent))
-            overviewViewHolder.contentImageView.setImageDrawable(context.getDrawable(R.drawable.icon_no_content))
+                    }
+                }
 
-        } else {
+                if (notesDataStructureList[position].noteHandwritingSnapshotLink == null) {
 
-            overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.FIT_CENTER
-            overviewViewHolder.contentImageView.clearColorFilter()
+                    overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                    overviewViewHolder.contentImageView.setColorFilter(context.getColor(R.color.pink_transparent))
+                    overviewViewHolder.contentImageView.setImageDrawable(context.getDrawable(R.drawable.icon_no_content))
 
-            Glide.with(context)
-                .load(notesDataStructureList[position].noteHandwritingSnapshotLink)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(overviewViewHolder.contentImageView)
+                } else {
 
-        }
+                    overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.FIT_CENTER
+                    overviewViewHolder.contentImageView.clearColorFilter()
 
-//        when (notesDataStructureList[position].dataSelected) {
-//            NotesTemporaryModification.NoteIsSelected -> {
-//                Log.d(this@OverviewAdapter.javaClass.simpleName, "Note Is Selected")
+                    Glide.with(context)
+                        .load(notesDataStructureList[position].noteHandwritingSnapshotLink)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(overviewViewHolder.contentImageView)
+
+                }
+
+                overviewViewHolder.rootItemContentView.setOnClickListener {
+
+                    overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
+
+                    val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
+
+                    if (paintingPathsJsonArray.isNullOrEmpty()) {
+
+                        overviewViewHolder.waitingViewLoading.visibility = View.GONE
+
+                        context.startActivity(Intent(context, TakeNote::class.java).apply {
+                            putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                            putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile)
+                            putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent)
+                        }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+
+                    } else {
+
+                        overviewViewHolder.waitingViewLoading.visibility = View.GONE
+
+                        context.startActivity(Intent(context, TakeNote::class.java).apply {
+                            putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                            putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile.toString())
+                            putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent.toString())
+                            putExtra(TakeNote.NoteTakingWritingType.PaintingPath, paintingPathsJsonArray)
+                        }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+
+                    }
+
+                }
+
+//                overviewViewHolder.rootItemContentView.setOnLongClickListener {
 //
-//                overviewViewHolder.rootItemOptionsView.visibility = View.VISIBLE
+//                    val valueAnimator = ValueAnimator.ofFloat(0f, overviewViewHolder.optionsView.width.toFloat())
+//                    valueAnimator.addUpdateListener {
 //
-//                overviewViewHolder.rootItemContentView.x = -overviewViewHolder.rootItemOptionsView.width.toFloat()
+//                        overviewViewHolder.rootItemContentView.x = -(it.animatedValue as Float)
 //
-//            }
-//            NotesTemporaryModification.NoteIsNotSelected -> {
-//                Log.d(this@OverviewAdapter.javaClass.simpleName, "Note Is Not Selected")
+//                    }
+//                    valueAnimator.duration = 333
+//                    valueAnimator.start()
 //
-//                overviewViewHolder.rootItemOptionsView.visibility = View.INVISIBLE
+//                    notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsSelected
 //
-//                overviewViewHolder.rootItemContentView.x = 0f
+//                    overviewViewHolder.optionsView.visibility = View.VISIBLE
+//                    overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
 //
-//            }
-//        }
-
-        overviewViewHolder.rootItemContentView.setOnClickListener {
-
-            overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
-
-            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
-
-            if (paintingPathsJsonArray.isNullOrEmpty()) {
-
-                overviewViewHolder.waitingViewLoading.visibility = View.GONE
-
-                context.startActivity(Intent(context, TakeNote::class.java).apply {
-                    putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                    putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile)
-                    putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent)
-                }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
-
-            } else {
-
-                overviewViewHolder.waitingViewLoading.visibility = View.GONE
-
-                context.startActivity(Intent(context, TakeNote::class.java).apply {
-                    putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                    putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile.toString())
-                    putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent.toString())
-                    putExtra(TakeNote.NoteTakingWritingType.PaintingPath, paintingPathsJsonArray)
-                }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
-
-            }
-
-        }
-
-//        overviewViewHolder.rootItemContentView.setOnLongClickListener {
-//
-//            val valueAnimator = ValueAnimator.ofFloat(0f, overviewViewHolder.optionsView.width.toFloat())
-//            valueAnimator.addUpdateListener {
-//
-//                overviewViewHolder.rootItemContentView.x = -(it.animatedValue as Float)
-//
-//            }
-//            valueAnimator.duration = 333
-//            valueAnimator.start()
-//
-//            notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsSelected
-//
-//            overviewViewHolder.optionsView.visibility = View.VISIBLE
-//            overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
-//
-//            true
-//        }
-
-//        var differentiateX: Float = 0f
-//
-//        overviewViewHolder.rootItemContentView.setOnTouchListener { view, motionEvent ->
-//
-//            when (motionEvent.action) {
-//
-//                MotionEvent.ACTION_DOWN -> {
-//
-//                    differentiateX = overviewViewHolder.rootItemContentView.x - motionEvent.rawX
-//
+//                    true
 //                }
-//                MotionEvent.ACTION_MOVE -> {
 //
-//                    val dxAbsolute = abs(motionEvent.rawX + differentiateX)
+//                var differentiateX: Float = 0f
 //
-//                    if (abs(motionEvent.rawX) < abs(differentiateX)) {
+//                overviewViewHolder.rootItemContentView.setOnTouchListener { view, motionEvent ->
 //
-//                        if (dxAbsolute < overviewViewHolder.optionsView.width.percentage(66.6)) {
+//                    when (motionEvent.action) {
 //
-//                            overviewViewHolder.rootItemContentView.x = motionEvent.rawX + differentiateX
+//                        MotionEvent.ACTION_DOWN -> {
 //
-//                            if (!overviewViewHolder.optionsView.isShown) {
+//                            differentiateX = overviewViewHolder.rootItemContentView.x - motionEvent.rawX
 //
-//                                overviewViewHolder.optionsView.visibility = View.VISIBLE
-//                                overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
+//                        }
+//                        MotionEvent.ACTION_MOVE -> {
 //
-//                                notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsSelected
+//                            val dxAbsolute = abs(motionEvent.rawX + differentiateX)
+//
+//                            if (abs(motionEvent.rawX) < abs(differentiateX)) {
+//
+//                                if (dxAbsolute < overviewViewHolder.optionsView.width.percentage(66.6)) {
+//
+//                                    overviewViewHolder.rootItemContentView.x = motionEvent.rawX + differentiateX
+//
+//                                    if (!overviewViewHolder.optionsView.isShown) {
+//
+//                                        overviewViewHolder.optionsView.visibility = View.VISIBLE
+//                                        overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
+//
+//                                        notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsSelected
+//
+//                                    }
+//
+//                                }
+//
+//                            } else {
+//
+//
 //
 //                            }
 //
 //                        }
+//                        MotionEvent.ACTION_UP -> {
 //
-//                    } else {
+//                            if (overviewViewHolder.optionsView.isShown) {
+//
+//                                overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+//
+//                            } else {
 //
 //
 //
+//                            }
+//
+//                        }
+//                        MotionEvent.ACTION_CANCEL -> {
+//
+//                            if (overviewViewHolder.optionsView.isShown) {
+//
+//                                overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+//
+//                            } else {
+//
+//
+//
+//                            }
+//
+//                        }
+//                        else -> {
+//
+//
+//                        }
 //                    }
 //
+//                    false
 //                }
-//                MotionEvent.ACTION_UP -> {
-//
-//                    if (overviewViewHolder.optionsView.isShown) {
-//
-//                        overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
-//
-//                    } else {
 //
 //
+//
+//                overviewViewHolder.closeOptionsMenu.setOnClickListener {
+//
+//                    val valueAnimator = ValueAnimator.ofFloat(overviewViewHolder.optionsView.width.toFloat(), 0f)
+//                    valueAnimator.addUpdateListener {
+//
+//                        overviewViewHolder.rootItemContentView.x = -(it.animatedValue as Float)
 //
 //                    }
+//                    valueAnimator.duration = 333
+//                    valueAnimator.start()
+//
+//                    notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsNotSelected
+//
+//                    overviewViewHolder.optionsView.visibility = View.GONE
+//                    overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out))
 //
 //                }
-//                MotionEvent.ACTION_CANCEL -> {
-//
-//                    if (overviewViewHolder.optionsView.isShown) {
-//
-//                        overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
-//
-//                    } else {
-//
-//
-//
-//                    }
-//
-//                }
-//                else -> {
-//
-//
-//                }
-//            }
-//
-//            false
-//        }
 
+            }
+            NotesTemporaryModification.NoteIsSelected -> {
 
+                (overviewViewHolder as OverviewOptionsViewHolder)
 
-//        overviewViewHolder.closeOptionsMenu.setOnClickListener {
-//
-//            val valueAnimator = ValueAnimator.ofFloat(overviewViewHolder.optionsView.width.toFloat(), 0f)
-//            valueAnimator.addUpdateListener {
-//
-//                overviewViewHolder.rootItemContentView.x = -(it.animatedValue as Float)
-//
-//            }
-//            valueAnimator.duration = 333
-//            valueAnimator.start()
-//
-//            notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsNotSelected
-//
-//            overviewViewHolder.optionsView.visibility = View.GONE
-//            overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out))
-//
-//        }
+                overviewViewHolder.closeOptionsMenu.setOnClickListener {
+
+                    println(">>> >> >")
+
+                }
+
+            }
+        }
 
     }
 

@@ -8,7 +8,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -54,6 +53,7 @@ import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteSu
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Dialogue.ChangeLogDialogue
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
+import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeHelper
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
@@ -84,6 +84,10 @@ class KeepNoteOverview : AppCompatActivity(),
 
     val notesOverviewViewModel: NotesOverviewViewModel by lazy {
         ViewModelProvider(this@KeepNoteOverview).get(NotesOverviewViewModel::class.java)
+    }
+
+    val overviewAdapter: OverviewAdapter by lazy {
+        OverviewAdapter(this@KeepNoteOverview)
     }
 
     private val itemTouchHelper: ItemTouchHelper by lazy {
@@ -257,23 +261,8 @@ class KeepNoteOverview : AppCompatActivity(),
             }
 
 
-            override fun onChildDraw(
-                canvas: Canvas,
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                dX: Float,
-                dY: Float,
-                actionState: Int,
-                isCurrentlyActive: Boolean) {
-                super.onChildDraw(
-                    canvas,
-                    recyclerView,
-                    viewHolder,
-                    dX.percentage(33.333),
-                    dY,
-                    actionState,
-                    isCurrentlyActive
-                )
+            override fun onChildDraw(canvas: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                super.onChildDraw(canvas, recyclerView, viewHolder, dX.percentage(33.333), dY, actionState, isCurrentlyActive)
 
                 val itemView = viewHolder.itemView
 
@@ -328,8 +317,9 @@ class KeepNoteOverview : AppCompatActivity(),
                     ItemTouchHelper.START -> {
                         Log.d(this@KeepNoteOverview.javaClass.simpleName, "Swipe To Start")
 
-                        overviewViewHolder.rootItemOptionsView.visibility = View.VISIBLE
-                        overviewViewHolder.rootItemOptionsView.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in))
+//                        overviewAdapter.notesDataStructureList[overviewViewHolder.adapterPosition].dataSelected = NotesTemporaryModification.NoteIsSelected
+//                        overviewAdapter.notifyItemChanged(overviewViewHolder.adapterPosition)
+//                        overviewAdapter.notifyDataSetChanged()
 
                     }
                     ItemTouchHelper.END -> {
@@ -351,6 +341,52 @@ class KeepNoteOverview : AppCompatActivity(),
 
         ItemTouchHelper(simpleItemTouchCallback)
     }
+
+
+    private fun deleteButton(position: Int) : SwipeHelper.UnderlayButton {
+        return SwipeHelper.UnderlayButton(
+            this,
+            "Delete",
+            14.0f,
+            android.R.color.holo_red_light,
+            object : SwipeHelper.UnderlayButtonClickListener {
+                override fun onClick() {
+//                    toast("Deleted item $position")
+                }
+            })
+    }
+
+    private fun markAsUnreadButton(position: Int) : SwipeHelper.UnderlayButton {
+        return SwipeHelper.UnderlayButton(
+            this,
+            "Mark as unread",
+            14.0f,
+            android.R.color.holo_green_light,
+            object : SwipeHelper.UnderlayButtonClickListener {
+                override fun onClick() {
+//                    toast("Marked as unread item $position")
+                }
+            })
+    }
+
+    private fun archiveButton(position: Int) : SwipeHelper.UnderlayButton {
+        return SwipeHelper.UnderlayButton(
+            this,
+            "Archive",
+            14.0f,
+            android.R.color.holo_blue_light,
+            object : SwipeHelper.UnderlayButtonClickListener {
+                override fun onClick() {
+//                    toast("Archived item $position")
+                }
+            })
+    }
+
+
+
+
+
+
 
     var autoEnterPlaced = false
 
@@ -473,87 +509,95 @@ class KeepNoteOverview : AppCompatActivity(),
                 true
             )
 
-            val overviewAdapter = OverviewAdapter(this@KeepNoteOverview)
-
-            itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
-
             overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapter
 
-            notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(
-                this@KeepNoteOverview,
-                Observer {
+//            itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
 
-                    if (it.isNotEmpty()) {
+            val swipeHelper = ItemTouchHelper(object : SwipeHelper(this@KeepNoteOverview) {
 
-                        if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
 
-                            overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
+                override fun instantiateUnderlayButton(position: Int): List<SwipeHelper.UnderlayButton> {
 
-                        }
+                    return listOf(deleteButton(position), markAsUnreadButton(position), archiveButton(position))
+                }
 
-                        if (it.size == 1) {
+            })
+            swipeHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
 
-                            overviewAdapter.addItemToFirst(it.first())
 
-                        } else {
+            notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
-                            overviewAdapter.notesDataStructureList.clear()
-                            overviewAdapter.notesDataStructureList.addAll(it)
+                if (it.isNotEmpty()) {
 
-                            overviewAdapter.notifyDataSetChanged()
+                    if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
 
-                        }
+                        overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
 
-                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(
-                            overviewAdapter.notesDataStructureList.size
-                        )
+                    }
 
-                        overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
+                    if (it.size == 1) {
+
+                        overviewAdapter.addItemToFirst(it.first())
 
                     } else {
 
                         overviewAdapter.notesDataStructureList.clear()
+                        overviewAdapter.notesDataStructureList.addAll(it)
 
-                        overviewLayoutBinding.overviewRecyclerView.removeAllViews()
-
-                        overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
-
-                        SnackbarBuilder(applicationContext).show(
-                            rootView = overviewLayoutBinding.rootView,
-                            messageText = getString(R.string.emptyNotesCollection),
-                            messageDuration = Snackbar.LENGTH_INDEFINITE,
-                            actionButtonText = android.R.string.ok,
-                            snackbarActionHandlerInterface = object :
-                                SnackbarActionHandlerInterface {
-
-                                override fun onActionButtonClicked(snackbar: Snackbar) {
-                                    super.onActionButtonClicked(snackbar)
-
-                                    startActivity(
-                                        Intent(applicationContext, TakeNote::class.java).apply {
-                                            putExtra(
-                                                TakeNote.NoteTakingWritingType.ExtraConfigurations,
-                                                TakeNote.NoteTakingWritingType.Keyboard
-                                            )
-                                            putExtra(
-                                                TakeNote.NoteTakingWritingType.ContentText,
-                                                overviewLayoutBinding.quickTakeNote.text.toString()
-                                            )
-                                        }, ActivityOptions.makeCustomAnimation(
-                                            applicationContext,
-                                            R.anim.fade_in,
-                                            0
-                                        ).toBundle()
-                                    )
-
-                                }
-
-                            }
-                        )
+                        overviewAdapter.notifyDataSetChanged()
 
                     }
 
-                })
+                    overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(
+                        overviewAdapter.notesDataStructureList.size
+                    )
+
+                    overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
+
+                } else {
+
+                    overviewAdapter.notesDataStructureList.clear()
+
+                    overviewLayoutBinding.overviewRecyclerView.removeAllViews()
+
+                    overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
+
+                    SnackbarBuilder(applicationContext).show(
+                        rootView = overviewLayoutBinding.rootView,
+                        messageText = getString(R.string.emptyNotesCollection),
+                        messageDuration = Snackbar.LENGTH_INDEFINITE,
+                        actionButtonText = android.R.string.ok,
+                        snackbarActionHandlerInterface = object :
+                            SnackbarActionHandlerInterface {
+
+                            override fun onActionButtonClicked(snackbar: Snackbar) {
+                                super.onActionButtonClicked(snackbar)
+
+                                startActivity(
+                                    Intent(applicationContext, TakeNote::class.java).apply {
+                                        putExtra(
+                                            TakeNote.NoteTakingWritingType.ExtraConfigurations,
+                                            TakeNote.NoteTakingWritingType.Keyboard
+                                        )
+                                        putExtra(
+                                            TakeNote.NoteTakingWritingType.ContentText,
+                                            overviewLayoutBinding.quickTakeNote.text.toString()
+                                        )
+                                    }, ActivityOptions.makeCustomAnimation(
+                                        applicationContext,
+                                        R.anim.fade_in,
+                                        0
+                                    ).toBundle()
+                                )
+
+                            }
+
+                        }
+                    )
+
+                }
+
+            })
 
             overviewLayoutBinding.overviewRecyclerView.addOnScrollListener(object :
                 RecyclerView.OnScrollListener() {
@@ -565,15 +609,12 @@ class KeepNoteOverview : AppCompatActivity(),
                         RecyclerView.SCROLL_STATE_IDLE -> {
 
 
-
                         }
                         RecyclerView.SCROLL_STATE_SETTLING -> {
 
 
-
                         }
                         RecyclerView.SCROLL_STATE_DRAGGING -> {
-
 
 
                         }
