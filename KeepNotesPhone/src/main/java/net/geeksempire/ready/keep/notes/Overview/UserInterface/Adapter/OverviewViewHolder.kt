@@ -16,6 +16,6 @@ class OverviewViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val contentImageView: ShapesImage = view.contentImageView
     val waitingViewLoading: SpinKitView = view.waitingViewLoading
 
-    val optionsView: ConstraintLayout = view.optionsView
+    val rootItemOptionsView: ConstraintLayout = view.rootItemOptionsView
     val closeOptionsMenu: ShapesImage = view.closeOptionsMenu
 }

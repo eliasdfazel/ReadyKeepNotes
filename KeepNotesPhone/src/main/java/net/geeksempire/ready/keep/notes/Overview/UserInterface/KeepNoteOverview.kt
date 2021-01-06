@@ -2,12 +2,15 @@ package net.geeksempire.ready.keep.notes.Overview.UserInterface
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.Canvas
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +43,7 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.rearrange
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.*
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.Data.percentage
 import net.geeksempire.ready.keep.notes.Utils.Extensions.checkSpecialCharacters
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.InApplicationUpdateProcess
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.UpdateResponse
@@ -56,6 +60,7 @@ import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
 import java.io.File
 import java.util.*
 import javax.inject.Inject
+
 
 class KeepNoteOverview : AppCompatActivity(),
     NetworkConnectionListenerInterface,
@@ -89,16 +94,31 @@ class KeepNoteOverview : AppCompatActivity(),
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP
                     or ItemTouchHelper.DOWN,
-            0
+            ItemTouchHelper.START
+                    or ItemTouchHelper.END
         ) {
 
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            private val selectedItemBackground = ContextCompat.getDrawable(applicationContext, R.drawable.round_corner_background)?.mutate()
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
 
 
                 return true
             }
 
-            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
+            override fun onMoved(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                fromPosition: Int,
+                target: RecyclerView.ViewHolder,
+                toPosition: Int,
+                x: Int,
+                y: Int
+            ) {
                 super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
                 val overviewAdapter = (recyclerView.adapter as OverviewAdapter)
@@ -114,36 +134,24 @@ class KeepNoteOverview : AppCompatActivity(),
 
             }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-                (viewHolder as OverviewViewHolder)
-
-                when (direction) {
-                    ItemTouchHelper.START -> {
-
-                    }
-                    ItemTouchHelper.END -> {
-
-                    }
-                }
-
-            }
-
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 super.onSelectedChanged(viewHolder, actionState)
 
-                doVibrate(applicationContext, 157)
+                doVibrate(applicationContext, 77)
 
                 when (actionState) {
                     ItemTouchHelper.ACTION_STATE_DRAG -> {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "Drag & Drop Process")
 
 
                     }
                     ItemTouchHelper.ACTION_STATE_SWIPE -> {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "Swipe Process")
 
 
                     }
                     ItemTouchHelper.ACTION_STATE_IDLE -> {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "No Process. It Is Idle")
 
 
                     }
@@ -248,6 +256,97 @@ class KeepNoteOverview : AppCompatActivity(),
 
             }
 
+
+            override fun onChildDraw(
+                canvas: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean) {
+                super.onChildDraw(
+                    canvas,
+                    recyclerView,
+                    viewHolder,
+                    dX.percentage(33.333),
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+
+                val itemView = viewHolder.itemView
+
+                if (dX > 0) {
+
+                    selectedItemBackground?.let {
+
+                        selectedItemBackground.setTint(getColor(R.color.default_color_game_light))
+                        selectedItemBackground.setBounds(
+                            itemView.left,
+                            itemView.top,
+                            itemView.left + dX.toInt(),
+                            itemView.bottom
+                        )
+
+                    }
+
+                } else if (dX < 0) {
+
+                    selectedItemBackground?.let {
+
+                        selectedItemBackground.setTint(getColor(R.color.default_color_light))
+                        selectedItemBackground.setBounds(
+                            itemView.right + dX.toInt(),
+                            itemView.top,
+                            itemView.right,
+                            itemView.bottom
+                        )
+
+                    }
+
+                } else {
+
+                    selectedItemBackground?.let {
+
+                        selectedItemBackground.setTint(getColor(R.color.light_transparent_high))
+                        selectedItemBackground.setBounds(0, 0, 0, 0)
+
+                    }
+
+                }
+
+                selectedItemBackground?.draw(canvas)
+
+            }
+
+            override fun onSwiped(overviewViewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                (overviewViewHolder as OverviewViewHolder)
+
+                when (direction) {
+                    ItemTouchHelper.START -> {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "Swipe To Start")
+
+                        overviewViewHolder.rootItemOptionsView.visibility = View.VISIBLE
+                        overviewViewHolder.rootItemOptionsView.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in))
+
+                    }
+                    ItemTouchHelper.END -> {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "Swipe To End")
+
+
+                    }
+                }
+
+            }
+
+            override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+                super.getSwipeThreshold(viewHolder)
+
+                return (0.79).toFloat()
+            }
+
         }
 
         ItemTouchHelper(simpleItemTouchCallback)
@@ -288,11 +387,21 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 overviewLayoutBinding.quickTakeNote.addTextChangedListener(object : TextWatcher {
 
-                    override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
+                    override fun beforeTextChanged(
+                        charSequence: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
 
                     }
 
-                    override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                    override fun onTextChanged(
+                        charSequence: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
 
                     }
 
@@ -370,73 +479,105 @@ class KeepNoteOverview : AppCompatActivity(),
 
             overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapter
 
-            notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
+            notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(
+                this@KeepNoteOverview,
+                Observer {
 
-                if (it.isNotEmpty()) {
+                    if (it.isNotEmpty()) {
 
-                    if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
+                        if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
 
-                        overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
+                            overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
 
-                    }
+                        }
 
-                    if (it.size == 1) {
+                        if (it.size == 1) {
 
-                        overviewAdapter.addItemToFirst(it.first())
+                            overviewAdapter.addItemToFirst(it.first())
+
+                        } else {
+
+                            overviewAdapter.notesDataStructureList.clear()
+                            overviewAdapter.notesDataStructureList.addAll(it)
+
+                            overviewAdapter.notifyDataSetChanged()
+
+                        }
+
+                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(
+                            overviewAdapter.notesDataStructureList.size
+                        )
+
+                        overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
 
                     } else {
 
                         overviewAdapter.notesDataStructureList.clear()
-                        overviewAdapter.notesDataStructureList.addAll(it)
 
-                        overviewAdapter.notifyDataSetChanged()
+                        overviewLayoutBinding.overviewRecyclerView.removeAllViews()
+
+                        overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
+
+                        SnackbarBuilder(applicationContext).show(
+                            rootView = overviewLayoutBinding.rootView,
+                            messageText = getString(R.string.emptyNotesCollection),
+                            messageDuration = Snackbar.LENGTH_INDEFINITE,
+                            actionButtonText = android.R.string.ok,
+                            snackbarActionHandlerInterface = object :
+                                SnackbarActionHandlerInterface {
+
+                                override fun onActionButtonClicked(snackbar: Snackbar) {
+                                    super.onActionButtonClicked(snackbar)
+
+                                    startActivity(
+                                        Intent(applicationContext, TakeNote::class.java).apply {
+                                            putExtra(
+                                                TakeNote.NoteTakingWritingType.ExtraConfigurations,
+                                                TakeNote.NoteTakingWritingType.Keyboard
+                                            )
+                                            putExtra(
+                                                TakeNote.NoteTakingWritingType.ContentText,
+                                                overviewLayoutBinding.quickTakeNote.text.toString()
+                                            )
+                                        }, ActivityOptions.makeCustomAnimation(
+                                            applicationContext,
+                                            R.anim.fade_in,
+                                            0
+                                        ).toBundle()
+                                    )
+
+                                }
+
+                            }
+                        )
 
                     }
 
-                    overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(overviewAdapter.notesDataStructureList.size)
+                })
 
-                    overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
+            overviewLayoutBinding.overviewRecyclerView.addOnScrollListener(object :
+                RecyclerView.OnScrollListener() {
 
-                } else {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
 
-                    overviewAdapter.notesDataStructureList.clear()
+                    when (newState) {
+                        RecyclerView.SCROLL_STATE_IDLE -> {
 
-                    overviewLayoutBinding.overviewRecyclerView.removeAllViews()
 
-                    overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
-
-                    SnackbarBuilder(applicationContext).show(
-                        rootView = overviewLayoutBinding.rootView,
-                        messageText = getString(R.string.emptyNotesCollection),
-                        messageDuration = Snackbar.LENGTH_INDEFINITE,
-                        actionButtonText = android.R.string.ok,
-                        snackbarActionHandlerInterface = object :
-                            SnackbarActionHandlerInterface {
-
-                            override fun onActionButtonClicked(snackbar: Snackbar) {
-                                super.onActionButtonClicked(snackbar)
-
-                                startActivity(
-                                    Intent(applicationContext, TakeNote::class.java).apply {
-                                        putExtra(
-                                            TakeNote.NoteTakingWritingType.ExtraConfigurations,
-                                            TakeNote.NoteTakingWritingType.Keyboard
-                                        )
-                                        putExtra(
-                                            TakeNote.NoteTakingWritingType.ContentText,
-                                            overviewLayoutBinding.quickTakeNote.text.toString()
-                                        )
-                                    }, ActivityOptions.makeCustomAnimation(
-                                        applicationContext,
-                                        R.anim.fade_in,
-                                        0
-                                    ).toBundle()
-                                )
-
-                            }
 
                         }
-                    )
+                        RecyclerView.SCROLL_STATE_SETTLING -> {
+
+
+
+                        }
+                        RecyclerView.SCROLL_STATE_DRAGGING -> {
+
+
+
+                        }
+                    }
 
                 }
 
@@ -465,29 +606,17 @@ class KeepNoteOverview : AppCompatActivity(),
 
         }
 
-        if (BuildConfig.VERSION_NAME.toUpperCase(Locale.getDefault()).contains("Beta".toUpperCase(Locale.getDefault()))) {
+        if (BuildConfig.VERSION_NAME.toUpperCase(Locale.getDefault()).contains(
+                "Beta".toUpperCase(
+                    Locale.getDefault()
+                )
+            )) {
 
             RemoteSubscriptions()
                 .subscribe("Beta")
 
         }
 
-
-
-
-        //context.overviewLayoutBinding.overviewRecyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE
-        overviewLayoutBinding.overviewRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                println(">>> " + newState)
-
-//                RecyclerView.Scroll_Sta
-
-            }
-
-        })
     }
 
     override fun onResume() {

@@ -23,6 +23,11 @@ fun Int.percentage(percentageAmount: Double) : Double {
     return (this@percentage * (percentageAmount)) / 100
 }
 
+fun Float.percentage(percentageAmount: Double) : Float {
+
+    return ((this@percentage * (percentageAmount)) / 100).toFloat()
+}
+
 fun Float.convertToDeviceIndependentPixels(context: Context) : Int {
 
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this@convertToDeviceIndependentPixels, context.resources.displayMetrics).toInt()

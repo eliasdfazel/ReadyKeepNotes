@@ -157,15 +157,15 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
             NotesTemporaryModification.NoteIsSelected -> {
                 Log.d(this@OverviewAdapter.javaClass.simpleName, "Note Is Selected")
 
-                overviewViewHolder.optionsView.visibility = View.VISIBLE
+                overviewViewHolder.rootItemOptionsView.visibility = View.VISIBLE
 
-                overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+                overviewViewHolder.rootItemContentView.x = -overviewViewHolder.rootItemOptionsView.width.toFloat()
 
             }
             NotesTemporaryModification.NoteIsNotSelected -> {
                 Log.d(this@OverviewAdapter.javaClass.simpleName, "Note Is Not Selected")
 
-                overviewViewHolder.optionsView.visibility = View.INVISIBLE
+                overviewViewHolder.rootItemOptionsView.visibility = View.INVISIBLE
 
                 overviewViewHolder.rootItemContentView.x = 0f
 
@@ -174,7 +174,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         overviewViewHolder.rootItemContentView.setOnClickListener {
 
-            if (!overviewViewHolder.optionsView.isShown) {
+            if (!overviewViewHolder.rootItemOptionsView.isShown) {
 
                 overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
 
