@@ -1,15 +1,12 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,8 +17,6 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.Data.percentage
-import kotlin.math.abs
 
 
 class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
@@ -177,80 +172,6 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
             }
         }
 
-        var differentiateX: Float = 0f
-
-        overviewViewHolder.rootItemContentView.setOnTouchListener { view, motionEvent ->
-
-            when (motionEvent.action) {
-
-                MotionEvent.ACTION_DOWN -> {
-
-                    differentiateX = overviewViewHolder.rootItemContentView.x - motionEvent.rawX
-
-                }
-                MotionEvent.ACTION_MOVE -> {
-
-                    val dxAbsolute = abs(motionEvent.rawX + differentiateX)
-
-                    if (abs(motionEvent.rawX) < abs(differentiateX)) {
-
-                        if (dxAbsolute < overviewViewHolder.optionsView.width.percentage(66.6)) {
-
-                            overviewViewHolder.rootItemContentView.x = motionEvent.rawX + differentiateX
-
-                            if (!overviewViewHolder.optionsView.isShown) {
-
-                                overviewViewHolder.optionsView.visibility = View.VISIBLE
-                                overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
-
-                                notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsSelected
-
-                            }
-
-                        }
-
-                    } else {
-
-
-
-                    }
-
-                }
-                MotionEvent.ACTION_UP -> {
-
-                    if (overviewViewHolder.optionsView.isShown) {
-
-                        overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
-
-                    } else {
-
-
-
-                    }
-
-                }
-                MotionEvent.ACTION_CANCEL -> {
-
-                    if (overviewViewHolder.optionsView.isShown) {
-
-                        overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
-
-                    } else {
-
-
-
-                    }
-
-                }
-                else -> {
-
-
-                }
-            }
-
-            false
-        }
-
         overviewViewHolder.rootItemContentView.setOnClickListener {
 
             if (!overviewViewHolder.optionsView.isShown) {
@@ -286,51 +207,118 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
+//        overviewViewHolder.rootItemContentView.setOnLongClickListener {
+//
+//            val valueAnimator = ValueAnimator.ofFloat(0f, overviewViewHolder.optionsView.width.toFloat())
+//            valueAnimator.addUpdateListener {
+//
+//                overviewViewHolder.rootItemContentView.x = -(it.animatedValue as Float)
+//
+//            }
+//            valueAnimator.duration = 333
+//            valueAnimator.start()
+//
+//            notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsSelected
+//
+//            overviewViewHolder.optionsView.visibility = View.VISIBLE
+//            overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
+//
+//            true
+//        }
+
+//        var differentiateX: Float = 0f
+//
+//        overviewViewHolder.rootItemContentView.setOnTouchListener { view, motionEvent ->
+//
+//            when (motionEvent.action) {
+//
+//                MotionEvent.ACTION_DOWN -> {
+//
+//                    differentiateX = overviewViewHolder.rootItemContentView.x - motionEvent.rawX
+//
+//                }
+//                MotionEvent.ACTION_MOVE -> {
+//
+//                    val dxAbsolute = abs(motionEvent.rawX + differentiateX)
+//
+//                    if (abs(motionEvent.rawX) < abs(differentiateX)) {
+//
+//                        if (dxAbsolute < overviewViewHolder.optionsView.width.percentage(66.6)) {
+//
+//                            overviewViewHolder.rootItemContentView.x = motionEvent.rawX + differentiateX
+//
+//                            if (!overviewViewHolder.optionsView.isShown) {
+//
+//                                overviewViewHolder.optionsView.visibility = View.VISIBLE
+//                                overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
+//
+//                                notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsSelected
+//
+//                            }
+//
+//                        }
+//
+//                    } else {
+//
+//
+//
+//                    }
+//
+//                }
+//                MotionEvent.ACTION_UP -> {
+//
+//                    if (overviewViewHolder.optionsView.isShown) {
+//
+//                        overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+//
+//                    } else {
+//
+//
+//
+//                    }
+//
+//                }
+//                MotionEvent.ACTION_CANCEL -> {
+//
+//                    if (overviewViewHolder.optionsView.isShown) {
+//
+//                        overviewViewHolder.rootItemContentView.x = -overviewViewHolder.optionsView.width.toFloat()
+//
+//                    } else {
+//
+//
+//
+//                    }
+//
+//                }
+//                else -> {
+//
+//
+//                }
+//            }
+//
+//            false
+//        }
 
 
-        val valueAnimator = ValueAnimator.ofFloat(overviewViewHolder.optionsView.width.toFloat(), 0f)
-        overviewViewHolder.closeOptionsMenu.setOnClickListener {
 
-            valueAnimator.addUpdateListener {
-
-                overviewViewHolder.rootItemContentView.x = -(it.animatedValue as Float)
-
-            }
-            valueAnimator.duration = 333
-            valueAnimator.start()
-
-            notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsNotSelected
-
-            overviewViewHolder.optionsView.visibility = View.GONE
-            overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out))
-
-        }
-
-        context.overviewLayoutBinding.overviewRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                when (newState) {
-                    RecyclerView.SCROLL_STATE_DRAGGING -> {
-
-                        overviewViewHolder.rootItemContentView.x = 0f
-
-                        notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsNotSelected
-
-                        if (overviewViewHolder.optionsView.isShown) {
-
-                            overviewViewHolder.optionsView.visibility = View.GONE
-                            overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out))
-
-                        }
-
-                    }
-                }
-
-            }
-
-        })
+//        overviewViewHolder.closeOptionsMenu.setOnClickListener {
+//
+//            val valueAnimator = ValueAnimator.ofFloat(overviewViewHolder.optionsView.width.toFloat(), 0f)
+//            valueAnimator.addUpdateListener {
+//
+//                overviewViewHolder.rootItemContentView.x = -(it.animatedValue as Float)
+//
+//            }
+//            valueAnimator.duration = 333
+//            valueAnimator.start()
+//
+//            notesDataStructureList[position].dataSelected = NotesTemporaryModification.NoteIsNotSelected
+//
+//            overviewViewHolder.optionsView.visibility = View.GONE
+//            overviewViewHolder.optionsView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out))
+//
+//        }
 
     }
 

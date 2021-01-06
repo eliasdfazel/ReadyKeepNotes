@@ -472,6 +472,22 @@ class KeepNoteOverview : AppCompatActivity(),
 
         }
 
+
+
+
+        //context.overviewLayoutBinding.overviewRecyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE
+        overviewLayoutBinding.overviewRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                println(">>> " + newState)
+
+//                RecyclerView.Scroll_Sta
+
+            }
+
+        })
     }
 
     override fun onResume() {
