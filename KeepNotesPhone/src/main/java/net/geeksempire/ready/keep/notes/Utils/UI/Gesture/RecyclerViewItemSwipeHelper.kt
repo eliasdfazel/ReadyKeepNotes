@@ -136,6 +136,30 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
                     itemView.bottom
                 )
 
+
+
+                /* *** */
+                val rect = RectF(itemView.left.toFloat(), itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
+
+                val paint = Paint()
+
+                canvas.drawRoundRect(rect, DpToInteger(context, 5).toFloat(), DpToInteger(context, 5).toFloat(), paint)
+
+                paint.color = ContextCompat.getColor(context, R.color.lighter)
+                paint.textSize = 53f
+                paint.typeface = Typeface.MONOSPACE
+                paint.textAlign = Paint.Align.CENTER
+
+                val titleBounds = Rect()
+                paint.getTextBounds(context.getString(R.string.deletedText), 0, context.getString(R.string.deletedText).length, titleBounds)
+
+                val y = rect.height() / 2 + titleBounds.height() / 2 - titleBounds.bottom
+
+                canvas.drawText(context.getString(R.string.deletedText), 50f, rect.top + y, paint)
+                /* *** */
+
+
+
             }
 
         } else if (dX < 0) {

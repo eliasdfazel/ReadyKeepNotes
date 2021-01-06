@@ -28,6 +28,7 @@
     <string name="emptyNotesCollection">You Don\'t Have Any Saved Notes</string>
 
     <string name="deleteText">Delete</string>
+    <string name="deletedText">Note Will Be Deleted</string>
     <string name="editText">Edit</string>
     <string name="shareText">Share</string>
 
