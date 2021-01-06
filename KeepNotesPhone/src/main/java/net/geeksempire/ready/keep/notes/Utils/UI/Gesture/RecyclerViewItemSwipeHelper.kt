@@ -128,7 +128,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
 
             selectedItemBackground?.let {
 
-                selectedItemBackground.setTint(context.getColor(R.color.default_color_game_light))
+                selectedItemBackground.setTint(context.getColor(R.color.default_color_game_light_transparent))
                 selectedItemBackground.setBounds(
                     itemView.left,
                     itemView.top,
@@ -153,10 +153,10 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
 
                 paint.getTextBounds(context.getString(R.string.deletedText), 0, context.getString(R.string.deletedText).length, titleBounds)
 
-                val x = rect.width() / 2 + titleBounds.width() / 2 - titleBounds.left
-                val y = rect.height() / 2 + titleBounds.height() / 2 - titleBounds.bottom
+                val x = (canvas.width / 2f) - titleBounds.centerX()
+                val y = rect.top + rect.height() / 2 + titleBounds.height() / 2 - titleBounds.bottom
 
-                canvas.drawText(context.getString(R.string.deletedText), rect.left + x, rect.top + y, paint)
+                canvas.drawText(context.getString(R.string.deletedText), x.toFloat(), y, paint)
                 /* *** */
 
 
@@ -167,7 +167,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
 
             selectedItemBackground?.let {
 
-                selectedItemBackground.setTint(context.getColor(R.color.default_color_light))
+                selectedItemBackground.setTint(context.getColor(R.color.default_color_light_transparent))
                 selectedItemBackground.setBounds(
                     itemView.right + dX.toInt(),
                     itemView.top,

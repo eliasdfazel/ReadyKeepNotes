@@ -9,7 +9,7 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseMode
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.NotesDatabaseDataAccessObject
 
 
-@Database(entities = [NotesDatabaseModel::class], version = 1000, exportSchema = false)
+@Database(entities = [NotesDatabaseModel::class], version = 10000, exportSchema = false)
 abstract class NotesRoomDatabaseInterface : RoomDatabase() {
     abstract fun initializeDataAccessObject(): NotesDatabaseDataAccessObject
 }
@@ -20,6 +20,7 @@ class NotesRoomDatabaseConfiguration {
 
         val notesRoomDatabaseConfiguration: NotesRoomDatabaseInterface = Room.databaseBuilder(context, NotesRoomDatabaseInterface::class.java, NotesDatabase)
             .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigrationOnDowngrade()
             .build()
 
         return notesRoomDatabaseConfiguration.initializeDataAccessObject()
