@@ -10,12 +10,9 @@ import net.geekstools.imageview.customshapes.ShapesImage
 
 class OverviewViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val rootItemView: ConstraintLayout = view.rootItemView
-    val rootItemContentView: ConstraintLayout = view.rootItemContentView
+    val rootItemContentView: ConstraintLayout = view.rootItemView
     val titleTextView: TextView = view.titleTextView
     val contentTextView: TextView = view.contentTextView
     val contentImageView: ShapesImage = view.contentImageView
     val waitingViewLoading: SpinKitView = view.waitingViewLoading
-
-    val rootItemOptionsView: ConstraintLayout = view.rootItemOptionsView
-    val closeOptionsMenu: ShapesImage = view.closeOptionsMenu
 }
