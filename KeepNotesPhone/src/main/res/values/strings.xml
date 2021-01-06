@@ -27,6 +27,10 @@
     <string name="noNotesTyped">You Didn\'t Type Anything</string>
     <string name="emptyNotesCollection">You Don\'t Have Any Saved Notes</string>
 
+    <string name="deleteText">Delete</string>
+    <string name="editText">Edit</string>
+    <string name="shareText">Share</string>
+
     <string name="drawForWidthSample">Draw Here For Sample</string>
 
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>

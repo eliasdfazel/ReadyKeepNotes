@@ -202,7 +202,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
     abstract fun instantiateUnderlayButton(position: Int): List<UnderlayButton>
 
     interface UnderlayOptionsActions {
-        fun onClick()
+        fun onClick() = CoroutineScope(Dispatchers.Main).async {  }
     }
 
     class UnderlayButton(
@@ -221,7 +221,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
             val paint = Paint()
             paint.textSize = textSizeInPixel
             paint.typeface = Typeface.DEFAULT_BOLD
-            paint.textAlign = Paint.Align.LEFT
+            paint.textAlign = Paint.Align.CENTER
             val titleBounds = Rect()
             paint.getTextBounds(title, 0, title.length, titleBounds)
             intrinsicWidth = titleBounds.width() + 2 * horizontalPadding
@@ -248,11 +248,16 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
         }
 
         fun handle(event: MotionEvent) {
+
             clickableRegion?.let {
                 if (it.contains(event.x, event.y)) {
+
                     clickListener.onClick()
+
                 }
+
             }
+
         }
     }
 

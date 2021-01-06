@@ -33,10 +33,7 @@ import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoi
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.OverviewAdapter
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.addItemToFirst
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.rearrangeItemsData
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.setupDeleteView
+import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.*
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.*
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
@@ -116,7 +113,8 @@ class KeepNoteOverview : AppCompatActivity(),
             override fun instantiateUnderlayButton(position: Int): List<RecyclerViewItemSwipeHelper.UnderlayButton> {
 
                 return listOf(
-                    overviewAdapter.setupDeleteView(position)
+                    overviewAdapter.setupDeleteView(position),
+                    overviewAdapter.setupShareView(position)
                 )
             }
 
