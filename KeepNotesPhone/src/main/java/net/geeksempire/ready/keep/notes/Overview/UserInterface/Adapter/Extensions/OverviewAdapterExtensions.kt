@@ -2,6 +2,7 @@ package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.RecyclerViewItemSwipeHelper
 
 fun OverviewAdapter.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
@@ -39,7 +40,7 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
         this@setupDeleteView.context,
         "Delete",
         14.0f,
-        android.R.color.holo_red_light,
+        R.color.red,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
             override fun onClick() {

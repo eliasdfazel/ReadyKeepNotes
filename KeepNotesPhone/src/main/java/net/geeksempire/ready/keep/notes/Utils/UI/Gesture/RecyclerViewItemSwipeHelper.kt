@@ -213,7 +213,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
         private val clickListener: UnderlayOptionsActions
     ) {
         private var clickableRegion: RectF? = null
-        private val textSizeInPixel: Float = textSize * context.resources.displayMetrics.density // dp to px
+        private val textSizeInPixel: Float = textSize * context.resources.displayMetrics.density
         private val horizontalPadding = 50.0f
         val intrinsicWidth: Float
 
@@ -230,12 +230,10 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
         fun draw(canvas: Canvas, rect: RectF) {
             val paint = Paint()
 
-            // Draw background
             paint.color = ContextCompat.getColor(context, colorRes)
             canvas.drawRect(rect, paint)
 
-            // Draw title
-            paint.color = ContextCompat.getColor(context, android.R.color.white)
+            paint.color = ContextCompat.getColor(context, R.color.lighter)
             paint.textSize = textSizeInPixel
             paint.typeface = Typeface.DEFAULT_BOLD
             paint.textAlign = Paint.Align.LEFT
@@ -257,7 +255,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
             }
         }
     }
-    //endregion
+
 }
 
 private fun List<RecyclerViewItemSwipeHelper.UnderlayButton>.intrinsicWidth(): Float {
