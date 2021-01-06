@@ -231,12 +231,12 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
             val paint = Paint()
 
             paint.color = ContextCompat.getColor(context, colorRes)
-            canvas.drawRect(rect, paint)
+            canvas.drawRoundRect(rect, 5f, 5f, paint)
 
             paint.color = ContextCompat.getColor(context, R.color.lighter)
             paint.textSize = textSizeInPixel
-            paint.typeface = Typeface.DEFAULT_BOLD
-            paint.textAlign = Paint.Align.LEFT
+            paint.typeface = Typeface.MONOSPACE
+            paint.textAlign = Paint.Align.CENTER
 
             val titleBounds = Rect()
             paint.getTextBounds(title, 0, title.length, titleBounds)
