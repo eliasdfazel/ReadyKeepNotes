@@ -18,14 +18,23 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/optionsView"
-        android:layout_width="133dp"
+        android:layout_width="173dp"
         android:layout_height="0dp"
-        android:background="@color/red"
         android:visibility="invisible"
 
         apps:layout_constraintTop_toTopOf="parent"
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintEnd_toEndOf="parent">
+
+        <net.geekstools.imageview.customshapes.ShapesImage
+            android:id="@+id/closeOptionsMenu"
+            android:layout_width="51dp"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+
+            apps:shape="circle"
+
+            apps:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
