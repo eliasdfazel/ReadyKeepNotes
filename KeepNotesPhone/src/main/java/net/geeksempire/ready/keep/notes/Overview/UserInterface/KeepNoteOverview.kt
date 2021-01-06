@@ -95,7 +95,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
         val swipeActions = object : SwipeActions {
 
-            override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.IO).async {
+            override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).async {
                 super.onSwipeToEnd(context, position)
 
                 (application as KeepNoteApplication)
