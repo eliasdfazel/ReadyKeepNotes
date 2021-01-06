@@ -136,9 +136,6 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
                     itemView.bottom
                 )
 
-
-
-                /* *** */
                 val rect = RectF(itemView.left.toFloat(), itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
                 val titleBounds = Rect()
 
@@ -157,9 +154,6 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
                 val y = rect.top + rect.height() / 2 + titleBounds.height() / 2 - titleBounds.bottom
 
                 canvas.drawText(context.getString(R.string.deletedText), x.toFloat(), y, paint)
-                /* *** */
-
-
 
             }
 
