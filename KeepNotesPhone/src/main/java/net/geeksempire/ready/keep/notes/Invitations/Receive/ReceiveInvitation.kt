@@ -26,6 +26,8 @@ class ReceiveInvitation : AppCompatActivity() {
 
     val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -77,8 +79,7 @@ class ReceiveInvitation : AppCompatActivity() {
 
                 }
 
-            }
-            .addOnFailureListener(this) { exception ->
+            }.addOnFailureListener(this) { exception ->
                 exception.printStackTrace()
 
             }
