@@ -37,6 +37,11 @@
 
     <string name="drawForWidthSample">Draw Here For Sample</string>
 
+    <string name="searchText">Search</string>
+    <string name="handwritingText">Handwriting</string>
+    <string name="keyboardTypingText">Keyboard Typing</string>
+    <string name="voiceRecordingText">Voice Recording</string>
+
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 
     <string name="offlineSavingError">⚠ Error Occurred Saving Data  ⚠</string>
