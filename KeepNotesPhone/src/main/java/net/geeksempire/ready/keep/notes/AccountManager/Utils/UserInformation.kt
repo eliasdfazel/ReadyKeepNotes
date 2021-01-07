@@ -23,6 +23,8 @@ class UserInformation(private val context: AccountInformation) {
 
         fun userProfileDatabasePath(userUniqueIdentifier: String) : String = "ReadyKeepNotes/UserInformation/${userUniqueIdentifier}/Profile"
 
+        fun invitedSuccessDatabasePath(invitingFriendUniqueIdentifier: String, userUniqueIdentifier: String) : String = "ReadyKeepNotes/UserInformation/${invitingFriendUniqueIdentifier}/SuccessfulInvitations/Friends/${userUniqueIdentifier}"
+
     }
 
     fun startSignInProcess() {

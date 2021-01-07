@@ -34,6 +34,7 @@ class SendInvitation (val context: Context, val rootView: ViewGroup) {
             link = Uri.parse("https://www.geeksempire.net/ReadyKeepNotesInvitation.html")
                 .buildUpon()
                 .appendQueryParameter(InvitationConstant.UniqueUserId, firebaseUser.uid)
+                .appendQueryParameter(InvitationConstant.UserEmailAddress, firebaseUser.email)
                 .appendQueryParameter(InvitationConstant.UserDisplayName, firebaseUser.displayName)
                 .appendQueryParameter(InvitationConstant.UserProfileImage, firebaseUser.photoUrl.toString())
                 .build()
@@ -59,8 +60,8 @@ class SendInvitation (val context: Context, val rootView: ViewGroup) {
         val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newHtmlText(
             firebaseUser.displayName,
-            InvitationConstant.generateBusinessInvitationText(dynamicLinkUri, firebaseUser.displayName.toString()),
-            InvitationConstant.generateBusinessInvitationText(dynamicLinkUri, firebaseUser.displayName.toString())
+            InvitationConstant.generateInvitationText(dynamicLinkUri, firebaseUser.displayName.toString()),
+            InvitationConstant.generateInvitationText(dynamicLinkUri, firebaseUser.displayName.toString())
         )
         clipboardManager.setPrimaryClip(clipData).also {
 
@@ -75,7 +76,7 @@ class SendInvitation (val context: Context, val rootView: ViewGroup) {
                         super.onActionButtonClicked(snackbar)
 
                         ShareIt(context)
-                            .invoke(InvitationConstant.generateBusinessInvitationText(dynamicLinkUri, firebaseUser.displayName.toString()))
+                            .invoke(InvitationConstant.generateInvitationText(dynamicLinkUri, firebaseUser.displayName.toString()))
 
                     }
 

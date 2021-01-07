@@ -16,7 +16,11 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
+import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.Invitations.Utils.InvitationConstant
+import net.geeksempire.ready.keep.notes.KeepNoteApplication
+
+
 
 class ReceiveInvitation : AppCompatActivity() {
 
@@ -35,16 +39,33 @@ class ReceiveInvitation : AppCompatActivity() {
 
                         if (firebaseUser != null) {
 
-                            val invitationType = dynamicLinkUri.getQueryParameter(InvitationConstant.InvitationType)!!
-
+                            //Data Of User Who Invited This User
                             val uniqueUserId = dynamicLinkUri.getQueryParameter(InvitationConstant.UniqueUserId)!!
                             val userDisplayName = dynamicLinkUri.getQueryParameter(InvitationConstant.UserDisplayName)!!
                             val userProfileImage = dynamicLinkUri.getQueryParameter(InvitationConstant.UserProfileImage)!!
 
+                            val invitedFriend = LinkedHashMap<String, String>()
+                            invitedFriend[InvitationConstant.UniqueUserId] = firebaseUser.uid
+                            invitedFriend[InvitationConstant.UserEmailAddress] = firebaseUser.email.toString()
+                            invitedFriend[InvitationConstant.UserDisplayName] = firebaseUser.displayName.toString()
+                            invitedFriend[InvitationConstant.UserProfileImage] = firebaseUser.photoUrl.toString()
 
-                            /*Complete Later*/
+                            if (firebaseUser.uid != uniqueUserId) {
 
-                            //Get User Who Invited & Add This User Uid as Invited to His Firestore
+                                (application as KeepNoteApplication).firestoreDatabase
+                                    .document(UserInformation.invitedSuccessDatabasePath(invitingFriendUniqueIdentifier = firebaseUser.uid, userUniqueIdentifier = uniqueUserId))
+                                    .set(invitedFriend)
+                                    .addOnSuccessListener {
+
+
+
+                                    }.addOnFailureListener {
+
+
+
+                                    }
+
+                            }
 
                         } else {
 
