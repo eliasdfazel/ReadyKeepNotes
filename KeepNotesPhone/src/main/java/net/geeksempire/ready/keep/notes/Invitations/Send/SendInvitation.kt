@@ -82,7 +82,6 @@ class SendInvitation (val context: Context, val rootView: ViewGroup) {
                 }
             )
 
-
         }
 
     }
