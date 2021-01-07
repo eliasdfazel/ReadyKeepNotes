@@ -81,53 +81,61 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
 
     takeNoteLayoutBinding.toggleKeyboardHandwriting.setOnClickListener {
 
-        if (toggleKeyboardHandwriting) {
+        if (!contentDescriptionShowing) {
 
-            toggleKeyboardHandwriting = false
+            if (toggleKeyboardHandwriting) {
 
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
+                toggleKeyboardHandwriting = false
 
-            takeNoteLayoutBinding.editTextTitleView.isEnabled = true
-            takeNoteLayoutBinding.editTextContentView.isEnabled = true
+                takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
+                takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
 
-            takeNoteLayoutBinding.editTextContentView.requestFocus()
+                takeNoteLayoutBinding.editTextTitleView.isEnabled = true
+                takeNoteLayoutBinding.editTextContentView.isEnabled = true
 
-            showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
+                takeNoteLayoutBinding.editTextContentView.requestFocus()
 
-            takeNoteLayoutBinding.editTextContentView.bringToFront()
+                showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
-            takeNoteLayoutBinding.paintingToolbarInclude.root.visibility = View.INVISIBLE
-            takeNoteLayoutBinding.paintingToolbarInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
+                takeNoteLayoutBinding.editTextContentView.bringToFront()
 
-            if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
-                takeNoteLayoutBinding.colorPaletteInclude.root.visibility = View.INVISIBLE
-                takeNoteLayoutBinding.colorPaletteInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
+                takeNoteLayoutBinding.paintingToolbarInclude.root.visibility = View.INVISIBLE
+                takeNoteLayoutBinding.paintingToolbarInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
+
+                if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
+                    takeNoteLayoutBinding.colorPaletteInclude.root.visibility = View.INVISIBLE
+                    takeNoteLayoutBinding.colorPaletteInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
+                }
+
+            } else {
+
+                toggleKeyboardHandwriting = true
+
+                takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_handwriting)
+                takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 51)
+
+                takeNoteLayoutBinding.editTextTitleView.isEnabled = false
+                takeNoteLayoutBinding.editTextContentView.isEnabled = false
+
+                takeNoteLayoutBinding.editTextTitleView.clearFocus()
+                takeNoteLayoutBinding.editTextContentView.clearFocus()
+
+                hideKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
+
+                takeNoteLayoutBinding.paintingCanvasContainer.bringToFront()
+
+                takeNoteLayoutBinding.paintingToolbarInclude.root.visibility = View.VISIBLE
+                takeNoteLayoutBinding.paintingToolbarInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in))
+
+                takeNoteLayoutBinding.paintingToolbarInclude.root.bringToFront()
+
+                takeNoteLayoutBinding.colorPaletteInclude.root.bringToFront()
+
             }
 
         } else {
 
-            toggleKeyboardHandwriting = true
 
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_handwriting)
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 51)
-
-            takeNoteLayoutBinding.editTextTitleView.isEnabled = false
-            takeNoteLayoutBinding.editTextContentView.isEnabled = false
-
-            takeNoteLayoutBinding.editTextTitleView.clearFocus()
-            takeNoteLayoutBinding.editTextContentView.clearFocus()
-
-            hideKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
-
-            takeNoteLayoutBinding.paintingCanvasContainer.bringToFront()
-
-            takeNoteLayoutBinding.paintingToolbarInclude.root.visibility = View.VISIBLE
-            takeNoteLayoutBinding.paintingToolbarInclude.root.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in))
-
-            takeNoteLayoutBinding.paintingToolbarInclude.root.bringToFront()
-
-            takeNoteLayoutBinding.colorPaletteInclude.root.bringToFront()
 
         }
 

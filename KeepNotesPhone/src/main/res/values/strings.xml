@@ -16,8 +16,6 @@
 
     <string name="retryText">Retry</string>
 
-    <string name="toggleKeyboardHandwriting">Toggle Keyboard and Handwriting</string>
-
     <string name="titleHintText">Title Undefined</string>
     <string name="contentHintText">Type Here…</string>
     <string name="pickColor">Pick</string>
@@ -31,6 +29,9 @@
     <string name="deletedText">Note Will Be Deleted</string>
     <string name="editText">Edit</string>
     <string name="shareText">Share</string>
+
+    <string name="descriptionToggleText">Toggle Between Keyboard Typing &amp; Handwriting</string>
+    <string name="descriptionSavingText">Save Everything Into Online &amp; Offline Database</string>
 
     <string name="drawForWidthSample">Draw Here For Sample</string>
 

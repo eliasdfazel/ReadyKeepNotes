@@ -86,6 +86,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     var autoEnterPlaced = false
 
+    var contentDescriptionShowing = false
+
     var incomingActivity = EntryConfigurations::class.java.simpleName
 
     @Inject lateinit var networkCheckpoint: NetworkCheckpoint
@@ -240,26 +242,34 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             takeNoteLayoutBinding.savingView.setOnClickListener {
 
-                notesIO.saveNotesAndPaintingOnline(
-                    context = this@TakeNote,
-                    firebaseUser = firebaseUser,
-                    takeNoteLayoutBinding = takeNoteLayoutBinding,
-                    databaseEndpoints = databaseEndpoints,
-                    paintingIO = paintingIO,
-                    paintingCanvasView = paintingCanvasView,
-                    contentEncryption = contentEncryption,
-                    documentId = documentId
-                )
+                if (!contentDescriptionShowing) {
 
-                notesIO.saveNotesAndPaintingOffline(
-                    context = this@TakeNote,
-                    firebaseUser = firebaseUser,
-                    takeNoteLayoutBinding = takeNoteLayoutBinding,
-                    paintingIO = paintingIO,
-                    paintingCanvasView = paintingCanvasView,
-                    contentEncryption = contentEncryption,
-                    documentId = documentId
-                )
+                    notesIO.saveNotesAndPaintingOnline(
+                        context = this@TakeNote,
+                        firebaseUser = firebaseUser,
+                        takeNoteLayoutBinding = takeNoteLayoutBinding,
+                        databaseEndpoints = databaseEndpoints,
+                        paintingIO = paintingIO,
+                        paintingCanvasView = paintingCanvasView,
+                        contentEncryption = contentEncryption,
+                        documentId = documentId
+                    )
+
+                    notesIO.saveNotesAndPaintingOffline(
+                        context = this@TakeNote,
+                        firebaseUser = firebaseUser,
+                        takeNoteLayoutBinding = takeNoteLayoutBinding,
+                        paintingIO = paintingIO,
+                        paintingCanvasView = paintingCanvasView,
+                        contentEncryption = contentEncryption,
+                        documentId = documentId
+                    )
+
+                } else {
+
+                    
+
+                }
 
             }
 
