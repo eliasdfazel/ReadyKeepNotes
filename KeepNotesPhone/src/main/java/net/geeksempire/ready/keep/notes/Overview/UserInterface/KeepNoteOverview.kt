@@ -448,11 +448,11 @@ class KeepNoteOverview : AppCompatActivity(),
                                     startActivity(
                                         Intent(applicationContext, TakeNote::class.java).apply {
                                             putExtra(
-                                                TakeNote.NoteTakingWritingType.ExtraConfigurations,
-                                                TakeNote.NoteTakingWritingType.Keyboard
+                                                TakeNote.NoteConfigurations.ExtraConfigurations,
+                                                TakeNote.NoteConfigurations.KeyboardTyping
                                             )
                                             putExtra(
-                                                TakeNote.NoteTakingWritingType.ContentText,
+                                                TakeNote.NoteExtraData.ContentText,
                                                 overviewLayoutBinding.quickTakeNote.text.toString()
                                             )
                                         }, ActivityOptions.makeCustomAnimation(

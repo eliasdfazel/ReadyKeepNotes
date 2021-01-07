@@ -10,10 +10,10 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
 
 fun TakeNote.setupToggleKeyboardHandwriting() {
 
-    if (intent.hasExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations)) {
+    if (intent.hasExtra(TakeNote.NoteConfigurations.ExtraConfigurations)) {
 
-       when (intent.getStringExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations)) {
-           TakeNote.NoteTakingWritingType.Keyboard -> {
+       when (intent.getStringExtra(TakeNote.NoteConfigurations.ExtraConfigurations)) {
+           TakeNote.NoteConfigurations.KeyboardTyping -> {
 
                takeNoteLayoutBinding.editTextContentView.post {
 
@@ -30,7 +30,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                }
 
            }
-           TakeNote.NoteTakingWritingType.Handwriting -> {
+           TakeNote.NoteConfigurations.Handwriting -> {
 
                toggleKeyboardHandwriting = true
 
@@ -57,6 +57,11 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                takeNoteLayoutBinding.paintingToolbarInclude.root.bringToFront()
 
                takeNoteLayoutBinding.colorPaletteInclude.root.bringToFront()
+
+           }
+           TakeNote.NoteConfigurations.VoiceRecording ->{
+
+
 
            }
        }

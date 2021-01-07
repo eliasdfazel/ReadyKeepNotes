@@ -13,8 +13,8 @@ fun KeepNoteOverview.setupActions() {
     overviewLayoutBinding.fullNoteTaking.setOnClickListener {
 
         startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-            putExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations, TakeNote.NoteTakingWritingType.Handwriting)
-            putExtra(TakeNote.NoteTakingWritingType.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
+            putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.Handwriting)
+            putExtra(TakeNote.NoteExtraData.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
     }
@@ -36,8 +36,8 @@ fun KeepNoteOverview.setupActions() {
     overviewLayoutBinding.startNewNoteView.setOnClickListener {
 
         startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-            putExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations, TakeNote.NoteTakingWritingType.Keyboard)
-            putExtra(TakeNote.NoteTakingWritingType.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
+            putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.KeyboardTyping)
+            putExtra(TakeNote.NoteExtraData.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
     }

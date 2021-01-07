@@ -80,19 +80,19 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
 
 
                     context.startActivity(Intent(context, TakeNote::class.java).apply {
-                        putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                        putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile)
-                        putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent)
+                        putExtra(TakeNote.NoteExtraData.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                        putExtra(TakeNote.NoteExtraData.TitleText, notesDataStructureList[position].noteTile)
+                        putExtra(TakeNote.NoteExtraData.ContentText, notesDataStructureList[position].noteTextContent)
                     }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
                 } else {
 
 
                     context.startActivity(Intent(context, TakeNote::class.java).apply {
-                        putExtra(TakeNote.NoteTakingWritingType.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                        putExtra(TakeNote.NoteTakingWritingType.TitleText, notesDataStructureList[position].noteTile.toString())
-                        putExtra(TakeNote.NoteTakingWritingType.ContentText, notesDataStructureList[position].noteTextContent.toString())
-                        putExtra(TakeNote.NoteTakingWritingType.PaintingPath, paintingPathsJsonArray)
+                        putExtra(TakeNote.NoteExtraData.DocumentId, notesDataStructureList[position].uniqueNoteId)
+                        putExtra(TakeNote.NoteExtraData.TitleText, notesDataStructureList[position].noteTile.toString())
+                        putExtra(TakeNote.NoteExtraData.ContentText, notesDataStructureList[position].noteTextContent.toString())
+                        putExtra(TakeNote.NoteExtraData.PaintingPath, paintingPathsJsonArray)
                     }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
                 }

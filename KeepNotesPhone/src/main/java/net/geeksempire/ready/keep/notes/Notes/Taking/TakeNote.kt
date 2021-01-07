@@ -96,11 +96,14 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     lateinit var takeNoteLayoutBinding: TakeNoteLayoutBinding
 
-    object NoteTakingWritingType {
+    object NoteConfigurations {
         const val ExtraConfigurations = "NoteTakingWritingType"
-        const val Keyboard = "Keyboard"
+        const val KeyboardTyping = "KeyboardTyping"
         const val Handwriting = "Handwriting"
+        const val VoiceRecording = "VoiceRecording"
+    }
 
+    object NoteExtraData {
         const val DocumentId = "DocumentId"
         const val TitleText = "TitleText"
         const val ContentText = "ContentText"
@@ -138,9 +141,9 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         firebaseUser?.let { firebaseUser ->
 
-            val documentId = if (intent.hasExtra(NoteTakingWritingType.DocumentId)) {
+            val documentId = if (intent.hasExtra(NoteExtraData.DocumentId)) {
 
-                intent.getLongExtra(NoteTakingWritingType.DocumentId, System.currentTimeMillis())
+                intent.getLongExtra(NoteExtraData.DocumentId, System.currentTimeMillis())
 
             } else {
 
@@ -148,29 +151,29 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             }
 
-            if (intent.hasExtra(NoteTakingWritingType.TitleText)) {
+            if (intent.hasExtra(NoteExtraData.TitleText)) {
 
                 takeNoteLayoutBinding.editTextTitleView.setText(intent.getStringExtra(
-                    NoteTakingWritingType.TitleText
+                    NoteExtraData.TitleText
                 )?.let {
                     contentEncryption.decryptEncodedData(it, firebaseUser.uid)
                 })
 
             }
 
-            if (intent.hasExtra(NoteTakingWritingType.ContentText)) {
+            if (intent.hasExtra(NoteExtraData.ContentText)) {
 
                 takeNoteLayoutBinding.editTextContentView.setText(intent.getStringExtra(
-                    NoteTakingWritingType.ContentText
+                    NoteExtraData.ContentText
                 )?.let {
                     contentEncryption.decryptEncodedData(it, firebaseUser.uid)
                 })
 
             }
 
-            if (intent.hasExtra(NoteTakingWritingType.PaintingPath)) {
+            if (intent.hasExtra(NoteExtraData.PaintingPath)) {
 
-                val paintingPathsData = intent.getStringExtra(NoteTakingWritingType.PaintingPath)!!
+                val paintingPathsData = intent.getStringExtra(NoteExtraData.PaintingPath)!!
 
                 paintingIO.preparePaintingPathsOffline(paintingCanvasView, paintingPathsData).invokeOnCompletion {
 
