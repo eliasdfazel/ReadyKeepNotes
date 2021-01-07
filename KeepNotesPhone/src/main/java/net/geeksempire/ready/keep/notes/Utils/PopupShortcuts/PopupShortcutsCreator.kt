@@ -29,7 +29,11 @@ object PopupShortcutsItems {
     const val ShortcutDescription = "ShortcutDescription"
 }
 
+/**
+ * @param shortcutAction = POPUP_SHORTCUTS_QUICK_TAKE_NOTE & POPUP_SHORTCUTS_TAKE_NOTE
+ **/
 data class PopupShortcutsItemsData(var shortcutClass: Class<AppCompatActivity>,
+                                   var shortcutAction: String,
                                    var shortcutIndex: Int,
                                    var shortcutId: String,
                                    var shortcutLink: String?,
@@ -55,7 +59,7 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
         shortcutsHomeLauncherCategories.addAll(arrayOf("Fashion", "Beauty", "News", "Magazine"))
 
         val intent = Intent(context, popupShortcutsItemsData.shortcutClass)
-        intent.action = "POPUP_SHORTCUTS"
+        intent.action = popupShortcutsItemsData.shortcutAction
         intent.addCategory(Intent.CATEGORY_DEFAULT)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra(PopupShortcutsItems.ShortcutId, popupShortcutsItemsData.shortcutId)
