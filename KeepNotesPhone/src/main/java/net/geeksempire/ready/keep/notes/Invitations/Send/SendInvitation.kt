@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
 import net.geeksempire.ready.keep.notes.Invitations.Utils.InvitationConstant
 import net.geeksempire.ready.keep.notes.Invitations.Utils.ShareIt
 import net.geeksempire.ready.keep.notes.R
@@ -27,8 +26,6 @@ import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandle
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 
 class SendInvitation (val context: Context, val rootView: ViewGroup) {
-
-    private val userInformationIO = UserInformationIO(context)
 
     fun invite(firebaseUser: FirebaseUser) {
 
