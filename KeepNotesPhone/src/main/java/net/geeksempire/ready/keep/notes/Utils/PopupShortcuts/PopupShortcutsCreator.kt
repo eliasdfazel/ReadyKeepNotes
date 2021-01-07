@@ -56,7 +56,7 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
         shortcutsInformation.clear()
 
         val shortcutsHomeLauncherCategories: HashSet<String> = HashSet<String>()
-        shortcutsHomeLauncherCategories.addAll(arrayOf("Fashion", "Beauty", "News", "Magazine"))
+        shortcutsHomeLauncherCategories.addAll(arrayOf("Note", "Keyboard", "Type", "Handwriting", "Productivity", "Voice", "Record"))
 
         val intent = Intent(context, popupShortcutsItemsData.shortcutClass)
         intent.action = popupShortcutsItemsData.shortcutAction
