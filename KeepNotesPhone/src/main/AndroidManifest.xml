@@ -55,7 +55,13 @@
             android:windowSoftInputMode="adjustPan"
             android:resizeableActivity="true"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/GeeksEmpire.Overview" />
+            android:theme="@style/GeeksEmpire.Overview" >
+            <intent-filter>
+                <action android:name="POPUP_SHORTCUTS"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".Notes.Taking.TakeNote"
@@ -68,6 +74,11 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="POPUP_SHORTCUTS"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
 
         <activity
@@ -79,7 +90,8 @@
             android:screenOrientation="sensorPortrait"
             android:supportsPictureInPicture="true"
             android:theme="@style/GeeksEmpire.Material.SignIn"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
 
         <activity
             android:name=".Preferences.UserInterface.PreferencesControl"
