@@ -9,14 +9,22 @@ import androidx.room.PrimaryKey
 import com.google.firebase.Timestamp
 
 object Notes {
-    const val NoteTile: String = "noteTile"
-    const val NoteTextContent: String = "noteTextContent"
-    const val NoteHandwritingSnapshotLink: String = "noteHandwritingSnapshotLink"
-    const val noteHandwritingPaintingPaths: String = "noteHandwritingPaintingPaths"
-    const val NoteTakenTime: String = "noteTakenTime"
-    const val NoteEditTime: String = "noteEditTime"
-    const val NoteIndex: String = "noteIndex"
-    const val NotesTags: String = "noteTags"
+    const val NoteTile = "noteTile"
+    const val NoteTextContent = "noteTextContent"
+
+    const val NoteHandwritingSnapshotLink = "noteHandwritingSnapshotLink"
+    const val noteHandwritingPaintingPaths = "noteHandwritingPaintingPaths"
+
+    const val noteVoiceContent = "noteVoiceContent"
+    const val noteImageContent = "noteImageContent"
+    const val noteGifContent = "noteGifContent"
+
+    const val NoteTakenTime = "noteTakenTime"
+    const val NoteEditTime = "noteEditTime"
+
+    const val NoteIndex = "noteIndex"
+
+    const val NotesTags = "noteTags"
 }
 
 object NotesTemporaryModification {
@@ -42,19 +50,23 @@ const val NotesDatabase = "NotesDatabase"
 data class NotesDatabaseModel(
     @NonNull @PrimaryKey var uniqueNoteId: Long,
 
-    @Nullable @ColumnInfo(name = "noteTile", typeAffinity = ColumnInfo.TEXT) var noteTile: String?,
-    @Nullable @ColumnInfo(name = "noteTextContent", typeAffinity = ColumnInfo.TEXT) var noteTextContent: String?,
+    @Nullable @ColumnInfo(name = "noteTile", typeAffinity = ColumnInfo.TEXT) var noteTile: String? = null,
+    @Nullable @ColumnInfo(name = "noteTextContent", typeAffinity = ColumnInfo.TEXT) var noteTextContent: String? = null,
 
     @Nullable @ColumnInfo(name = "noteHandwritingPaintingPaths", typeAffinity = ColumnInfo.TEXT) var noteHandwritingPaintingPaths: String?,
     @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink", typeAffinity = ColumnInfo.TEXT) var noteHandwritingSnapshotLink: String?,
 
+    @Nullable @ColumnInfo(name = "noteVoiceContent", typeAffinity = ColumnInfo.BLOB) var noteVoiceContent: ByteArray? = byteArrayOf(),
+    @Nullable @ColumnInfo(name = "noteImageContent", typeAffinity = ColumnInfo.BLOB) var noteImageContent: ByteArray? = byteArrayOf(),
+    @Nullable @ColumnInfo(name = "noteGifContent", typeAffinity = ColumnInfo.BLOB) var noteGifContent: ByteArray? = byteArrayOf(),
+
     @NonNull @ColumnInfo(name = "noteTakenTime") var noteTakenTime: Long,
-    @Nullable @ColumnInfo(name = "noteEditTime") var noteEditTime: Long?,
+    @Nullable @ColumnInfo(name = "noteEditTime") var noteEditTime: Long? = null,
 
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long,
 
     @Nullable @ColumnInfo(name = "noteTags", typeAffinity = ColumnInfo.TEXT) var noteTags: String? = null,
     @Nullable @ColumnInfo(name = "noteHashTags", typeAffinity = ColumnInfo.TEXT) var noteHashTags: String? = null,
 
-    @NonNull @ColumnInfo(name = "dataSelected") var dataSelected: Int = 0
+    @NonNull @ColumnInfo(name = "dataSelected") var dataSelected: Int = NotesTemporaryModification.NoteIsNotSelected
 )
