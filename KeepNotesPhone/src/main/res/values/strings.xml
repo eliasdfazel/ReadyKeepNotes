@@ -9,6 +9,8 @@
     <string name="grantPermission">Grant</string>
     <string name="permissionMessage">Application Can Not Work Properly Without Permissions</string>
 
+    <string name="proceedText">Proceed</string>
+
     <string name="waitingInformation">Setting Up Your Account…</string>
 
     <string name="signInText">Sign In</string>
@@ -47,6 +49,7 @@
     <string name="typeFacebook">Type Your Facebook Username</string>
     <string name="typePhoneNumber">Type Your Phone Number; +19876543210</string>
 
+    <string name="receiveInvitationText">%1$s Invited You 🎉</string>
     <string name="inviteAction">Invite</string>
     <string name="inviteTitle">Invite To Ready Keep Notes</string>
     <string name="invitationDataReady">Invitation Data Copied &amp; Ready To Share</string>
