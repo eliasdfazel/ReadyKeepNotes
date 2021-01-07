@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -145,7 +146,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
 
                 paint.color = ContextCompat.getColor(context, R.color.lighter)
                 paint.textSize = 29f
-                paint.typeface = Typeface.MONOSPACE
+                paint.typeface = ResourcesCompat.getFont(context, R.font.houston_regular)
                 paint.textAlign = Paint.Align.LEFT
 
                 paint.getTextBounds(context.getString(R.string.deletedText), 0, context.getString(R.string.deletedText).length, titleBounds)

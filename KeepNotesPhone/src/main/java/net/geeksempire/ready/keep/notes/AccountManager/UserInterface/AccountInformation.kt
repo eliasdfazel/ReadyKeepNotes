@@ -10,7 +10,9 @@
 
 package net.geeksempire.ready.keep.notes.AccountManager.UserInterface
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -32,6 +34,8 @@ import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions.
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions.createUserProfile
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
+import net.geeksempire.ready.keep.notes.EntryConfigurations
+import net.geeksempire.ready.keep.notes.Invitations.Send.SendInvitation
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
@@ -125,9 +129,23 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                             accountInformationLayoutBinding.inviteFriendsView.visibility = View.VISIBLE
                             accountInformationLayoutBinding.inviteFriendsView.setOnClickListener {
 
-                                //
-                                //
-                                //
+                                if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+
+                                    SendInvitation(applicationContext, accountInformationLayoutBinding.root)
+                                        .invite(firebaseUser)
+
+                                } else {
+
+                                    val permissionsList = arrayListOf(
+                                        Manifest.permission.GET_ACCOUNTS
+                                    )
+
+                                    requestPermissions(
+                                        permissionsList.toTypedArray(),
+                                        EntryConfigurations.PermissionRequestCode
+                                    )
+
+                                }
 
                             }
 

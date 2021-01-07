@@ -90,6 +90,22 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/GeeksEmpire.Material.Preferences" />
 
+        <activity
+            android:name=".Invitations.Receive.ReceiveInvitation"
+            android:theme="@style/GeeksEmpire.Material.Transparent" >
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:scheme="https"
+                    android:host="www.geeksempire.net"
+                    android:pathPrefix="/ReadyKeepNotesInvitation.html" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".Utils.RemoteTasks.Notifications.RemoteNotificationHandler">
             <intent-filter>

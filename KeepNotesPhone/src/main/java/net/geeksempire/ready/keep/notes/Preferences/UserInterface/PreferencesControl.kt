@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.BuildConfig
+import net.geeksempire.ready.keep.notes.Invitations.Utils.ShareIt
 import net.geeksempire.ready.keep.notes.Preferences.DataStructure.PreferencesLiveData
 import net.geeksempire.ready.keep.notes.Preferences.Extensions.preferencesControlSetupUserInterface
 import net.geeksempire.ready.keep.notes.Preferences.Extensions.toggleLightDark
@@ -102,11 +103,11 @@ class PreferencesControl : AppCompatActivity() {
                     "\n" +
                     "Always Ready To Keep Your Notes" +
                     "\n" +
-                    "Use Both Keyboard Typing and Handwriting Quickly To Take Your Idea." +
+                    "Use Keyboard Typing, Handwriting, Voice Recording To Quickly Take Your Ideas." +
                     "\n" + "\n" +
                     "⬇ Install Our Application ⬇" +
                     "\n" +
-                    "${getString(R.string.playStoreLink)}" +
+                    getString(R.string.playStoreLink) +
                     "\n" + "\n" +
                     "https://www.GeeksEmpire.net" +
                     "\n" +
@@ -115,12 +116,8 @@ class PreferencesControl : AppCompatActivity() {
                     "#KeyboardTyping" + " " + "#Handwriting" +
                     ""
 
-            val shareIntent: Intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, shareText)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            startActivity(shareIntent)
+            ShareIt(applicationContext)
+                .invoke(shareText)
 
         }
 

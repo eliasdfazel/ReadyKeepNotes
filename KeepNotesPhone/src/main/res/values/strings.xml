@@ -48,9 +48,8 @@
     <string name="typePhoneNumber">Type Your Phone Number; +19876543210</string>
 
     <string name="inviteAction">Invite</string>
-    <string name="inviteTitle">Invite To Vicinity</string>
+    <string name="inviteTitle">Invite To Ready Keep Notes</string>
     <string name="invitationDataReady">Invitation Data Copied &amp; Ready To Share</string>
-    <string name="switchAccountType">Click Here To Switch Account Type To Business &amp; Personal</string>
 
     <string name="inAppUpdateDescription">An Update Has Just Been Installed</string>
     <string name="inAppUpdateAction">
@@ -65,6 +64,7 @@
             <small>Login To Sync Your Data</small>
         ]]>
     </string>
+
     <string name="followFacebook">Like Us</string>
     <string name="followTwitter">Follow Us</string>
 
