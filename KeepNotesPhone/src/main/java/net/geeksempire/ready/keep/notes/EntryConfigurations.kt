@@ -214,7 +214,6 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
             Manifest.permission.CHANGE_NETWORK_STATE,
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.CHANGE_WIFI_STATE,
-            Manifest.permission.GET_ACCOUNTS,
             Manifest.permission.WAKE_LOCK,
             Manifest.permission.VIBRATE
         )
