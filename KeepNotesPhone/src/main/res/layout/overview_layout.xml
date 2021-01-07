@@ -19,24 +19,10 @@
         apps:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/applicationLogoView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="23dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/official_business_logo"
-
-            apps:layout_constraintWidth_percent="0.3"
-            apps:layout_constraintTop_toTopOf="parent"
-            apps:layout_constraintBottom_toBottomOf="parent"
-            apps:layout_constraintStart_toStartOf="parent"
-            apps:layout_constraintEnd_toEndOf="parent"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profileImageView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="23dp"
+            android:layout_marginHorizontal="7dp"
             android:padding="3dp"
             android:scaleType="fitCenter"
             android:transitionName="@string/profileImageTransitionName"
@@ -51,7 +37,7 @@
             android:id="@+id/preferencesView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="23dp"
+            android:layout_marginHorizontal="7dp"
             android:scaleType="fitCenter"
             android:transitionName="@string/preferenceImageTransitionName"
             android:src="@drawable/preference_icon"
@@ -70,7 +56,7 @@
         apps:layout_constraintHeight_percent="0.23"
         apps:layout_constraintTop_toBottomOf="@id/informationBar">
 
-        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputQuickTakeNote"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -102,11 +88,12 @@
             apps:layout_constraintStart_toStartOf="parent"
             apps:layout_constraintBottom_toBottomOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText xmlns:apps="http://schemas.android.com/apk/res-auto"
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/quickTakeNote"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="23dp"
+                android:paddingStart="11dp"
                 android:paddingEnd="47dp"
                 android:gravity="start|top"
                 android:ellipsize="start"
@@ -116,7 +103,6 @@
                 android:textColorHint="@color/dark"
                 android:fontFamily="monospace"
                 android:cursorVisible="true"
-                android:textCursorDrawable="@color/pink"
 
                 apps:textInputLayoutFocusedRectEnabled="true"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -190,6 +176,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingBottom="79dp"
 
         apps:layout_constraintHeight_percent="0.70"
         apps:layout_constraintBottom_toBottomOf="parent">
@@ -198,11 +185,12 @@
             android:id="@+id/overviewRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:fadingEdge="vertical"
             android:fadingEdgeLength="7dp"
             android:requiresFadingEdge="vertical"
+            android:cacheColorHint="@android:color/transparent"
             android:scrollbars="none"
             android:persistentDrawingCache="animation|scrolling"
             android:saveEnabled="true"
@@ -224,5 +212,29 @@
             apps:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/startNewNoteView"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginHorizontal="23dp"
+        android:layout_marginVertical="23dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetLeft="0dp"
+        android:insetRight="0dp"
+
+        apps:cornerRadius="51dp"
+        apps:icon="@drawable/brand"
+        apps:iconTintMode="multiply"
+        apps:iconGravity="textStart"
+        apps:iconSize="67dp"
+        apps:rippleColor="@color/pink"
+        apps:backgroundTint="@color/light_transparent"
+
+        apps:layout_constraintWidth_percent="0.59"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

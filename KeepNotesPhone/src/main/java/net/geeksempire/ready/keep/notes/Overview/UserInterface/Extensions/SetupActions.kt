@@ -7,7 +7,6 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.UserInterface.PreferencesControl
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.InApplicationReview.InApplicationReviewProcess
 
 fun KeepNoteOverview.setupActions() {
 
@@ -34,10 +33,12 @@ fun KeepNoteOverview.setupActions() {
 
     }
 
-    overviewLayoutBinding.applicationLogoView.setOnClickListener {
+    overviewLayoutBinding.startNewNoteView.setOnClickListener {
 
-        InApplicationReviewProcess(this@setupActions)
-            .start(true)
+        startActivity(Intent(applicationContext, TakeNote::class.java).apply {
+            putExtra(TakeNote.NoteTakingWritingType.ExtraConfigurations, TakeNote.NoteTakingWritingType.Keyboard)
+            putExtra(TakeNote.NoteTakingWritingType.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
+        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
     }
 
