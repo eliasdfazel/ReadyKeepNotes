@@ -10,14 +10,13 @@
 
 package net.geeksempire.ready.keep.notes.Database.Configurations.Online
 
-import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 
-class FirestoreConfiguration (private val context: Context) {
+class FirestoreConfiguration () {
 
     private val firebaseFirestore = Firebase.firestore
 

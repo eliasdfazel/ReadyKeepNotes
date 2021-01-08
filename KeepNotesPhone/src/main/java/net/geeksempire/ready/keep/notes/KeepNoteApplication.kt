@@ -20,7 +20,7 @@ class KeepNoteApplication : Application() {
     }
 
     val firestoreConfiguration: FirestoreConfiguration by lazy {
-        FirestoreConfiguration(applicationContext)
+        FirestoreConfiguration()
     }
 
     val firebaseStorage: FirebaseStorage = Firebase.storage
