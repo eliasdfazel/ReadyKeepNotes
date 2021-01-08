@@ -5,10 +5,13 @@ import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.SearchLiveData.SearchViewModel
 import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Extensions.setupColors
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.databinding.SearchProcessLayoutBinding
 
 class SearchProcess : AppCompatActivity() {
@@ -31,6 +34,13 @@ class SearchProcess : AppCompatActivity() {
         setupColors()
 
         searchProcessLayoutBinding.root.post {
+
+            searchProcessLayoutBinding.recyclerViewSearchResults.layoutManager = GridLayoutManager(
+                applicationContext,
+                columnCount(applicationContext, 313),
+                RecyclerView.VERTICAL,
+                true
+            )
 
             searchProcessLayoutBinding.goBackView.setOnClickListener {
 

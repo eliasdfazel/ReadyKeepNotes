@@ -19,11 +19,19 @@ class KeepNoteApplication : Application() {
         NotesRoomDatabaseConfiguration().initialize(applicationContext)
     }
 
-    val firestoreConfiguration: FirestoreConfiguration = FirestoreConfiguration()
+    val firestoreConfiguration: FirestoreConfiguration by lazy {
+        FirestoreConfiguration(applicationContext)
+    }
 
-    val firebaseStorage: FirebaseStorage = Firebase.storage
+    /**
+     * Define After FirebaseApp.initializeApp(applicationContext)
+     **/
+    lateinit var firebaseStorage: FirebaseStorage
 
-    val firestoreDatabase: FirebaseFirestore = firestoreConfiguration.initialize()
+    /**
+     * Define After FirebaseApp.initializeApp(applicationContext)
+     **/
+    lateinit var firestoreDatabase: FirebaseFirestore
 
     val dependencyGraph: DependencyGraph by lazy {
         DaggerDependencyGraph.factory().create(applicationContext)
@@ -36,6 +44,10 @@ class KeepNoteApplication : Application() {
         val firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
 
         firebaseAnalytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
+
+        firestoreDatabase = firestoreConfiguration.initialize()
+
+        firebaseStorage = Firebase.storage
 
     }
 
