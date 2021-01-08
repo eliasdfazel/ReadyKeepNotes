@@ -19,11 +19,79 @@
         apps:layout_constraintTop_toTopOf="parent"
         apps:layout_constraintStart_toStartOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputSearchTerm"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:layout_marginHorizontal="3dp"
+        android:layout_marginVertical="19dp"
+        android:paddingHorizontal="11dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="7dp"
+        android:gravity="center_vertical"
+        android:hint="@string/typeToSearch"
+        android:textColorHint="@color/default_color_game_light"
+
+        apps:boxBackgroundMode="outline"
+        apps:boxBackgroundColor="@color/dark_transparent_high"
+        apps:boxCornerRadiusTopStart="13dp"
+        apps:boxCornerRadiusTopEnd="41dp"
+        apps:boxCornerRadiusBottomStart="13dp"
+        apps:boxCornerRadiusBottomEnd="41dp"
+        apps:boxStrokeColor="@color/default_color_game_light"
+        apps:boxStrokeWidth="2dp"
+        apps:hintEnabled="true"
+        apps:hintAnimationEnabled="true"
+        apps:hintTextColor="@color/default_color_game_light"
+        apps:endIconDrawable="@drawable/layer_icon_search"
+        apps:errorEnabled="true"
+        apps:errorTextColor="@color/red"
+
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchTerm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="23dp"
+            android:paddingStart="29dp"
+            android:paddingEnd="29dp"
+            android:gravity="center_vertical"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:lines="1"
+            android:inputType="text|textAutoComplete"
+            android:textSize="29sp"
+            android:textColor="@color/light"
+            android:textColorHint="@color/light"
+            android:fontFamily="@font/upcil"
+            android:cursorVisible="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSearchResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        apps:layout_constraintTop_toBottomOf="@id/goBackView"/>
+        apps:layout_constraintTop_toBottomOf="@id/goBackView"
+        apps:layout_constraintBottom_toTopOf="@id/textInputSearchTerm"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loadingView"
+        android:layout_width="159dp"
+        android:layout_height="159dp"
+        android:layout_marginBottom="33dp"
+        android:visibility="invisible"
+
+        apps:lottie_rawRes="@raw/searching_loading_animation"
+        apps:lottie_repeatMode="restart"
+        apps:lottie_loop="true"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

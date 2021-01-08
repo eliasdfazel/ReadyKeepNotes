@@ -42,6 +42,8 @@
     <string name="handwritingText">Handwriting</string>
     <string name="voiceRecordingText">Voice Recording</string>
 
+    <string name="typeToSearch">Type To Search…</string>
+
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 
     <string name="offlineSavingError">⚠ Error Occurred Saving Data  ⚠</string>
