@@ -167,13 +167,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                             if (handwritingSnapshot.exists()) {
 
                                 (keepNoteApplication).firebaseStorage
-                                    .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${uniqueNoteId}.PNG")
+                                    .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid) + "/${uniqueNoteId}.PNG")
                                     .putBytes(handwritingSnapshot.readBytes())
                                     .addOnSuccessListener { uploadTaskSnapshot ->
                                         Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
 
                                         (keepNoteApplication).firebaseStorage
-                                            .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${uniqueNoteId}.PNG")
+                                            .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid) + "/${uniqueNoteId}.PNG")
                                             .downloadUrl
                                             .addOnSuccessListener { downloadUrl ->
 
@@ -471,13 +471,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         Log.d(this@NotesIO.javaClass.simpleName, "Note Saved Successfully")
 
                         (keepNoteApplication).firebaseStorage
-                            .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
+                            .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid) + "/${documentId}.PNG")
                             .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
                             .addOnSuccessListener { uploadTaskSnapshot ->
                                 Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
 
                                 (keepNoteApplication).firebaseStorage
-                                    .getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/${documentId}.PNG")
+                                    .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid) + "/${documentId}.PNG")
                                     .downloadUrl
                                     .addOnSuccessListener { downloadUrl ->
 

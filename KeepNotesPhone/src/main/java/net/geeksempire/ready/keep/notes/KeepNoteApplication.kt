@@ -23,7 +23,7 @@ class KeepNoteApplication : Application() {
         FirestoreConfiguration(applicationContext)
     }
 
-    lateinit var firebaseStorage: FirebaseStorage
+    val firebaseStorage: FirebaseStorage = Firebase.storage
 
     lateinit var firestoreDatabase: FirebaseFirestore
 
@@ -40,8 +40,6 @@ class KeepNoteApplication : Application() {
         firebaseAnalytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
 
         firestoreDatabase = firestoreConfiguration.initialize()
-
-        firebaseStorage = Firebase.storage
 
     }
 
