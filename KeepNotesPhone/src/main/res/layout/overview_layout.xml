@@ -182,7 +182,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/overviewRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:fadingEdge="vertical"
@@ -193,7 +193,9 @@
             android:persistentDrawingCache="animation|scrolling"
             android:saveEnabled="true"
             android:visibility="visible"
-            android:layoutAnimation="@anim/fade_in_layout_animation"/>
+            android:layoutAnimation="@anim/fade_in_layout_animation"
+
+            apps:layout_constraintTop_toTopOf="parent"/>
 
         <net.geeksempire.loadingspin.SpinKitView
             android:id="@+id/waitingViewDownload"

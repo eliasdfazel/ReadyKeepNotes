@@ -27,7 +27,7 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
 
@@ -51,13 +51,12 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
 
     val shortcutManager: ShortcutManager = context.getSystemService(ShortcutManager::class.java) as ShortcutManager
 
-    fun configure() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
+    fun configure() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
         shortcutManager.removeAllDynamicShortcuts()
 
         addShortcutKeyboardTyping()
 
-        addShortcutRateShare()
     }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
@@ -75,37 +74,141 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
         intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
         intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.handwritingText))
         intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.handwritingText))
-        intent.putExtra(TakeNote.NoteConfigurations.KeyboardTyping, TakeNote.NoteConfigurations.KeyboardTyping)
-
-        val iconDrawable = context.getDrawable(R.drawable.icon_keyboard)?.mutate()
-        iconDrawable?.setTint(context.getColor(R.color.default_color_game_light))
+        intent.putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.KeyboardTyping)
 
         Glide.with(context)
             .asBitmap()
-            .load(iconDrawable)
+            .load(R.drawable.layer_icon_keyboard)
             .listener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                    e?.printStackTrace()
 
                     return true
                 }
 
                 override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    println(">>>>>>>> 0")
 
                     resource?.let {
-                        println(">>>>>>>> 1")
 
                         shortcutManager.addDynamicShortcuts(arrayListOf(
-                            ShortcutInfo.Builder(context, "${shortcutManager.dynamicShortcuts.size}")
+                            ShortcutInfo.Builder(context, "addShortcutKeyboardTyping")
+                                .setShortLabel(context.getString(R.string.keyboardTypingText))
+                                .setLongLabel(context.getString(R.string.keyboardTypingText))
+                                .setIcon(Icon.createWithBitmap(resource))
+                                .setIntent(intent)
+                                .setCategories(shortcutsHomeLauncherCategories)
+                                .setRank(1)
+                                .build()))
+
+                    }
+
+                    addShortcutHandwriting()
+
+                    return true
+                }
+
+            })
+            .submit()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
+    private fun addShortcutHandwriting() {
+
+        val shortcutsHomeLauncherCategories: HashSet<String> = HashSet<String>()
+        shortcutsHomeLauncherCategories.addAll(arrayOf("Note", "Keyboard", "Type", "Handwriting", "Productivity", "Voice", "Record"))
+
+        val intent = Intent(context, TakeNote::class.java).apply {
+            action = PopupShortcutsActions.TakeNote
+            addCategory(Intent.CATEGORY_DEFAULT)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        intent.putExtra(PopupShortcutsItems.ShortcutId, TakeNote::class.java.simpleName)
+        intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
+        intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.handwritingText))
+        intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.handwritingText))
+        intent.putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.Handwriting)
+
+        Glide.with(context)
+            .asBitmap()
+            .load(R.drawable.layer_icon_handwriting)
+            .listener(object : RequestListener<Bitmap> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                    e?.printStackTrace()
+
+                    return true
+                }
+
+                override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+
+                    resource?.let {
+
+                        shortcutManager.addDynamicShortcuts(arrayListOf(
+                            ShortcutInfo.Builder(context, "addShortcutHandwriting")
                                 .setShortLabel(context.getString(R.string.handwritingText))
                                 .setLongLabel(context.getString(R.string.handwritingText))
                                 .setIcon(Icon.createWithBitmap(resource))
                                 .setIntent(intent)
                                 .setCategories(shortcutsHomeLauncherCategories)
-                                .setRank(shortcutManager.dynamicShortcuts.size)
+                                .setRank(2)
                                 .build()))
 
                     }
+
+                    addShortcutVoiceRecording()
+
+                    return true
+                }
+
+            })
+            .submit()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
+    private fun addShortcutVoiceRecording() {
+
+        val shortcutsHomeLauncherCategories: HashSet<String> = HashSet<String>()
+        shortcutsHomeLauncherCategories.addAll(arrayOf("Note", "Keyboard", "Type", "Handwriting", "Productivity", "Voice", "Record"))
+
+        val intent = Intent(context, TakeNote::class.java).apply {
+            action = PopupShortcutsActions.TakeNote
+            addCategory(Intent.CATEGORY_DEFAULT)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        intent.putExtra(PopupShortcutsItems.ShortcutId, TakeNote::class.java.simpleName)
+        intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
+        intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.handwritingText))
+        intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.handwritingText))
+        intent.putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.VoiceRecording)
+
+        Glide.with(context)
+            .asBitmap()
+            .load(R.drawable.layer_icon_voice_recording)
+            .listener(object : RequestListener<Bitmap> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                    e?.printStackTrace()
+
+                    return true
+                }
+
+                override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+
+                    resource?.let {
+
+                        shortcutManager.addDynamicShortcuts(arrayListOf(
+                            ShortcutInfo.Builder(context, "addShortcutVoiceRecording")
+                                .setShortLabel(context.getString(R.string.handwritingText))
+                                .setLongLabel(context.getString(R.string.handwritingText))
+                                .setIcon(Icon.createWithBitmap(resource))
+                                .setIntent(intent)
+                                .setCategories(shortcutsHomeLauncherCategories)
+                                .setRank(3)
+                                .build()))
+
+                    }
+
+                    addShortcutRateShare()
 
                     return true
                 }
@@ -132,13 +235,12 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
         intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.handwritingText))
         intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.handwritingText))
 
-        val iconDrawable = context.getDrawable(R.drawable.rate_icon)?.mutate()
-
         Glide.with(context)
             .asBitmap()
-            .load(iconDrawable)
+            .load(R.drawable.rate_icon)
             .listener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                    e?.printStackTrace()
 
                     return true
                 }
@@ -148,13 +250,13 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
                     resource?.let {
 
                         shortcutManager.addDynamicShortcuts(arrayListOf(
-                            ShortcutInfo.Builder(context, "${shortcutManager.dynamicShortcuts.size}")
+                            ShortcutInfo.Builder(context, "addShortcutRateShare")
                                 .setShortLabel(context.getString(R.string.rateShare))
                                 .setLongLabel(context.getString(R.string.rateShare))
                                 .setIcon(Icon.createWithBitmap(resource))
                                 .setIntent(intent)
                                 .setCategories(shortcutsHomeLauncherCategories)
-                                .setRank(shortcutManager.dynamicShortcuts.size)
+                                .setRank(5)
                                 .build()))
 
                     }

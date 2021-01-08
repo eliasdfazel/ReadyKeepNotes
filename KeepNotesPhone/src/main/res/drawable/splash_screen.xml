@@ -33,8 +33,8 @@
 
     <item
         android:gravity="center"
-        android:height="248dp"
-        android:width="248dp"
+        android:height="243dp"
+        android:width="243dp"
         android:drawable="@drawable/official_business_logo">
     </item>
 
