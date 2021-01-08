@@ -40,6 +40,12 @@ interface NotesDatabaseDataAccessObject {
     suspend fun getAllNotesData(): List<NotesDatabaseModel>
 
 
+
+    @Query("SELECT * FROM NotesDatabase WHERE noteTile LIKE :searchTerm OR noteTextContent LIKE :searchTerm ORDER BY noteIndex ASC")
+    suspend fun searchAllNotesData(searchTerm: String): List<NotesDatabaseModel>
+
+
+
     @Query("SELECT COUNT(uniqueNoteId) FROM NotesDatabase")
     suspend fun getSizeOfDatabase(): Int
 
