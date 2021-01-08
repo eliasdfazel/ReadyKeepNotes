@@ -72,8 +72,8 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
         }
         intent.putExtra(PopupShortcutsItems.ShortcutId, TakeNote::class.java.simpleName)
         intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
-        intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.handwritingText))
-        intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.handwritingText))
+        intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.keyboardTypingText))
+        intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.keyboardTypingText))
         intent.putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.KeyboardTyping)
 
         Glide.with(context)
@@ -178,8 +178,8 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
         }
         intent.putExtra(PopupShortcutsItems.ShortcutId, TakeNote::class.java.simpleName)
         intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
-        intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.handwritingText))
-        intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.handwritingText))
+        intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.voiceRecordingText))
+        intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.voiceRecordingText))
         intent.putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.VoiceRecording)
 
         Glide.with(context)
@@ -198,8 +198,8 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
 
                         shortcutManager.addDynamicShortcuts(arrayListOf(
                             ShortcutInfo.Builder(context, "addShortcutVoiceRecording")
-                                .setShortLabel(context.getString(R.string.handwritingText))
-                                .setLongLabel(context.getString(R.string.handwritingText))
+                                .setShortLabel(context.getString(R.string.voiceRecordingText))
+                                .setLongLabel(context.getString(R.string.voiceRecordingText))
                                 .setIcon(Icon.createWithBitmap(resource))
                                 .setIntent(intent)
                                 .setCategories(shortcutsHomeLauncherCategories)
