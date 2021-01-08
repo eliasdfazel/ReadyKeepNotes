@@ -30,6 +30,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.SearchProcess
 
 object PopupShortcutsItems {
     const val ShortcutId = "ShortcutId"
@@ -41,11 +42,12 @@ object PopupShortcutsItems {
 object PopupShortcutsActions {
     const val TakeNote = "POPUP_SHORTCUTS_TAKE_NOTE"
     const val QuickTakeNote = "POPUP_SHORTCUTS_QUICK_TAKE_NOTE"
+    const val SearchProcess = "POPUP_SHORTCUTS_SEARCH_PROCESS"
     const val Browser = "POPUP_SHORTCUTS_BROWSER"
 }
 
 /**
- * POPUP_SHORTCUTS_TAKE_NOTE & POPUP_SHORTCUTS_QUICK_TAKE_NOTE & POPUP_SHORTCUTS_BROWSER
+ * POPUP_SHORTCUTS_TAKE_NOTE & POPUP_SHORTCUTS_QUICK_TAKE_NOTE & POPUP_SHORTCUTS_SEARCH_PROCESS & POPUP_SHORTCUTS_BROWSER
  **/
 class PopupShortcutsCreator (private val context: AppCompatActivity) {
 
@@ -70,7 +72,7 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
             addCategory(Intent.CATEGORY_DEFAULT)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        intent.putExtra(PopupShortcutsItems.ShortcutId, TakeNote::class.java.simpleName)
+        intent.putExtra(PopupShortcutsItems.ShortcutId, "addShortcutKeyboardTyping")
         intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
         intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.keyboardTypingText))
         intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.keyboardTypingText))
@@ -123,7 +125,7 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
             addCategory(Intent.CATEGORY_DEFAULT)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        intent.putExtra(PopupShortcutsItems.ShortcutId, TakeNote::class.java.simpleName)
+        intent.putExtra(PopupShortcutsItems.ShortcutId, "addShortcutHandwriting")
         intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
         intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.handwritingText))
         intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.handwritingText))
@@ -176,7 +178,7 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
             addCategory(Intent.CATEGORY_DEFAULT)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        intent.putExtra(PopupShortcutsItems.ShortcutId, TakeNote::class.java.simpleName)
+        intent.putExtra(PopupShortcutsItems.ShortcutId, "addShortcutVoiceRecording")
         intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
         intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.voiceRecordingText))
         intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.voiceRecordingText))
@@ -204,6 +206,58 @@ class PopupShortcutsCreator (private val context: AppCompatActivity) {
                                 .setIntent(intent)
                                 .setCategories(shortcutsHomeLauncherCategories)
                                 .setRank(3)
+                                .build()))
+
+                    }
+
+                    addShortcutSearching()
+
+                    return true
+                }
+
+            })
+            .submit()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
+    private fun addShortcutSearching() {
+
+        val shortcutsHomeLauncherCategories: HashSet<String> = HashSet<String>()
+        shortcutsHomeLauncherCategories.addAll(arrayOf("Note", "Keyboard", "Type", "Handwriting", "Productivity", "Voice", "Record", "Search"))
+
+        val intent = Intent(context, SearchProcess::class.java).apply {
+            action = PopupShortcutsActions.SearchProcess
+            addCategory(Intent.CATEGORY_DEFAULT)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        intent.putExtra(PopupShortcutsItems.ShortcutId, "addShortcutSearching")
+        intent.putExtra(PopupShortcutsItems.ShortcutLink, context.getString(R.string.playStoreLink))
+        intent.putExtra(PopupShortcutsItems.ShortcutLabel, context.getString(R.string.voiceRecordingText))
+        intent.putExtra(PopupShortcutsItems.ShortcutDescription, context.getString(R.string.voiceRecordingText))
+
+        Glide.with(context)
+            .asBitmap()
+            .load(R.drawable.layer_icon_search)
+            .listener(object : RequestListener<Bitmap> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                    e?.printStackTrace()
+
+                    return true
+                }
+
+                override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+
+                    resource?.let {
+
+                        shortcutManager.addDynamicShortcuts(arrayListOf(
+                            ShortcutInfo.Builder(context, "addShortcutSearching")
+                                .setShortLabel(context.getString(R.string.searchText))
+                                .setLongLabel(context.getString(R.string.searchText))
+                                .setIcon(Icon.createWithBitmap(resource))
+                                .setIntent(intent)
+                                .setCategories(shortcutsHomeLauncherCategories)
+                                .setRank(4)
                                 .build()))
 
                     }
