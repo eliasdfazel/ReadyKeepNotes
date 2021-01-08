@@ -11,11 +11,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
-import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.SearchProcess
 
-class SearchResultAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<SearchResultViewHolder>() {
+class SearchResultAdapter(val context: SearchProcess) : RecyclerView.Adapter<SearchResultViewHolder>() {
 
     val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
 

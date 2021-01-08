@@ -51,8 +51,6 @@
 
     <style name="GeeksEmpire.Search" parent="GeeksEmpire.Material">
 
-        <item name="android:windowBackground">@color/default_color</item>
-
         <item name="android:navigationBarColor">@color/default_color</item>
         <item name="android:statusBarColor">@color/default_color</item>
 

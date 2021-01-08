@@ -1,5 +1,7 @@
 package net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
@@ -7,14 +9,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.SearchLiveData.SearchViewModel
+import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Adapter.SearchResultAdapter
 import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Extensions.setupColors
+import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.databinding.SearchProcessLayoutBinding
 
 class SearchProcess : AppCompatActivity() {
+
+    val contentEncryption = ContentEncryption()
+
+    val firebaseUser = Firebase.auth.currentUser
 
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(applicationContext)
@@ -35,45 +47,73 @@ class SearchProcess : AppCompatActivity() {
 
         searchProcessLayoutBinding.root.post {
 
-            searchProcessLayoutBinding.recyclerViewSearchResults.layoutManager = GridLayoutManager(
-                applicationContext,
-                columnCount(applicationContext, 313),
-                RecyclerView.VERTICAL,
-                true
-            )
+            if (firebaseUser != null) {
 
-            searchProcessLayoutBinding.goBackView.setOnClickListener {
+                searchProcessLayoutBinding.searchTerm.requestFocus()
+                showKeyboard(applicationContext, searchProcessLayoutBinding.searchTerm)
 
-                this@SearchProcess.finishAffinity()
-                overridePendingTransition(0, R.anim.fade_out)
+                searchProcessLayoutBinding.recyclerViewSearchResults.layoutManager = GridLayoutManager(
+                    applicationContext,
+                    columnCount(applicationContext, 313),
+                    RecyclerView.VERTICAL,
+                    true
+                )
 
-            }
+                val searchResultAdapter = SearchResultAdapter(this@SearchProcess)
 
-            searchViewModel.searchResults.observe(this@SearchProcess, Observer {
+                searchProcessLayoutBinding.recyclerViewSearchResults.adapter = searchResultAdapter
 
-                if (it.isEmpty()) {
+                searchProcessLayoutBinding.goBackView.setOnClickListener {
 
-
-
-                } else {
-
-
+                    this@SearchProcess.finishAffinity()
+                    overridePendingTransition(0, R.anim.fade_out)
 
                 }
 
-            })
+                searchViewModel.searchResults.observe(this@SearchProcess, Observer {
 
-            searchProcessLayoutBinding.searchTerm.setOnEditorActionListener { textView, actionId, keyEvent ->
+                    if (it.isEmpty()) {
 
-                when (actionId) {
-                    EditorInfo.IME_ACTION_SEARCH -> {
 
-                        val searchTermText = searchProcessLayoutBinding.searchTerm.text
+
+                    } else {
+
+                        searchResultAdapter.notesDataStructureList.clear()
+                        searchResultAdapter.notesDataStructureList.addAll(it)
+
+                        searchResultAdapter.notifyDataSetChanged()
 
                     }
+
+                })
+
+                searchProcessLayoutBinding.searchTerm.setOnEditorActionListener { textView, actionId, keyEvent ->
+
+                    when (actionId) {
+                        EditorInfo.IME_ACTION_SEARCH -> {
+
+                            val searchTermText = searchProcessLayoutBinding.searchTerm.text
+
+                        }
+                    }
+
+                    true
                 }
 
-                true
+                searchProcessLayoutBinding.searchActionView.setOnClickListener {
+
+                    val searchTermText = searchProcessLayoutBinding.searchTerm.text
+
+
+                }
+
+            } else {
+
+                startActivity(Intent(this@SearchProcess, AccountInformation::class.java),
+                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+
+                this@SearchProcess.finish()
+
             }
 
         }

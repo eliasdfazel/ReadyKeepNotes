@@ -43,7 +43,6 @@
         apps:hintEnabled="true"
         apps:hintAnimationEnabled="true"
         apps:hintTextColor="@color/default_color_game_light"
-        apps:endIconDrawable="@drawable/layer_icon_search"
         apps:errorEnabled="true"
         apps:errorTextColor="@color/red"
 
@@ -56,27 +55,51 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="23dp"
-            android:paddingStart="29dp"
-            android:paddingEnd="29dp"
+            android:paddingStart="23dp"
+            android:paddingEnd="59dp"
             android:gravity="center_vertical"
             android:imeOptions="actionSearch"
+            android:ellipsize="start"
             android:singleLine="true"
-            android:lines="1"
             android:inputType="text|textAutoComplete"
-            android:textSize="29sp"
+            android:textSize="19sp"
             android:textColor="@color/light"
             android:textColorHint="@color/light"
-            android:fontFamily="@font/upcil"
+            android:fontFamily="monospace"
             android:cursorVisible="true" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/searchActionView"
+        android:layout_width="59dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginHorizontal="19dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetLeft="0dp"
+        android:insetRight="0dp"
+
+        apps:icon="@drawable/icon_search"
+        apps:iconTintMode="multiply"
+        apps:iconSize="33dp"
+        apps:iconGravity="textStart"
+        apps:cornerRadius="51dp"
+        apps:rippleColor="@color/cyan"
+        apps:backgroundTint="@color/light"
+
+        apps:layout_constraintTop_toTopOf="@id/textInputSearchTerm"
+        apps:layout_constraintBottom_toBottomOf="@id/textInputSearchTerm"
+        apps:layout_constraintEnd_toEndOf="@id/textInputSearchTerm"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSearchResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="93dp"
 
-        apps:layout_constraintTop_toBottomOf="@id/goBackView"
-        apps:layout_constraintBottom_toTopOf="@id/textInputSearchTerm"/>
+        apps:layout_constraintTop_toBottomOf="@id/goBackView"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadingView"
