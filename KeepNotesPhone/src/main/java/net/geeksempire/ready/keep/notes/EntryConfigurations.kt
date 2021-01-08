@@ -5,10 +5,12 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.offline_indicator.view.*
 import net.geeksempire.ready.keep.notes.AccountManager.SignInProcess.SetupAccount
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
 import net.geeksempire.ready.keep.notes.Browser.BuiltInBrowser
@@ -17,6 +19,7 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
+import net.geeksempire.ready.keep.notes.Utils.PopupShortcuts.PopupShortcutsCreator
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.EntryConfigurationLayoutBinding
@@ -51,49 +54,79 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
         networkConnectionListener.networkConnectionListenerInterface = this@EntryConfigurations
 
-        if (userInformationIO.readPrivacyAgreement()) {
+        if (networkCheckpoint.networkConnection()) {
 
-            entryConfigurationLayoutBinding.agreementDataView.visibility = View.INVISIBLE
-            entryConfigurationLayoutBinding.proceedButton.visibility = View.INVISIBLE
+            if (userInformationIO.readPrivacyAgreement()) {
 
-            runtimePermission()
-
-        } else {
-
-            entryConfigurationLayoutBinding.agreementDataView.visibility = View.VISIBLE
-            entryConfigurationLayoutBinding.proceedButton.visibility = View.VISIBLE
-
-            entryConfigurationLayoutBinding.rootView.post {
-
-                entryConfigurationLayoutBinding.blurryBackground.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                entryConfigurationLayoutBinding.blurryBackground.visibility = View.VISIBLE
-
-            }
-
-            entryConfigurationLayoutBinding.proceedButton.setOnClickListener {
-
-                entryConfigurationLayoutBinding.agreementDataView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
                 entryConfigurationLayoutBinding.agreementDataView.visibility = View.INVISIBLE
-
-                entryConfigurationLayoutBinding.proceedButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
                 entryConfigurationLayoutBinding.proceedButton.visibility = View.INVISIBLE
 
                 runtimePermission()
 
+            } else {
+
+                entryConfigurationLayoutBinding.agreementDataView.visibility = View.VISIBLE
+                entryConfigurationLayoutBinding.proceedButton.visibility = View.VISIBLE
+
+                entryConfigurationLayoutBinding.rootView.post {
+
+                    entryConfigurationLayoutBinding.blurryBackground.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                    entryConfigurationLayoutBinding.blurryBackground.visibility = View.VISIBLE
+
+                }
+
+                entryConfigurationLayoutBinding.proceedButton.setOnClickListener {
+
+                    entryConfigurationLayoutBinding.agreementDataView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                    entryConfigurationLayoutBinding.agreementDataView.visibility = View.INVISIBLE
+
+                    entryConfigurationLayoutBinding.proceedButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                    entryConfigurationLayoutBinding.proceedButton.visibility = View.INVISIBLE
+
+                    runtimePermission()
+
+                }
+
+                entryConfigurationLayoutBinding.agreementDataView.setOnClickListener {
+
+                    BuiltInBrowser.show(
+                        context = applicationContext,
+                        linkToLoad = getString(R.string.privacyAgreementLink),
+                        gradientColorOne = getColor(R.color.default_color_dark),
+                        gradientColorTwo = getColor(R.color.default_color_game_dark)
+                    )
+
+                }
+
             }
 
-            entryConfigurationLayoutBinding.agreementDataView.setOnClickListener {
+        } else {
 
-                BuiltInBrowser.show(
-                    context = applicationContext,
-                    linkToLoad = getString(R.string.privacyAgreementLink),
-                    gradientColorOne = getColor(R.color.default_color_dark),
-                    gradientColorTwo = getColor(R.color.default_color_game_dark)
-                )
+            SnackbarBuilder(applicationContext).show (
+                rootView = entryConfigurationLayoutBinding.rootView,
+                messageText= getString(R.string.noNetworkConnection),
+                messageDuration = Snackbar.LENGTH_INDEFINITE,
+                actionButtonText = android.R.string.ok,
+                snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
 
-            }
+                    override fun onActionButtonClicked(snackbar: Snackbar) {
+                        super.onActionButtonClicked(snackbar)
+
+                        startActivity(
+                            Intent(Settings.ACTION_WIFI_SETTINGS)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+
+                        this@EntryConfigurations.finish()
+
+                    }
+
+                }
+            )
 
         }
+
+        PopupShortcutsCreator(this@EntryConfigurations)
+            .configure()
 
     }
 

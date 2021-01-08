@@ -44,7 +44,7 @@
         android:textAllCaps="false"
         android:textSize="12sp"
         android:textColor="@color/dark"
-        android:text="@string/shareIt"
+        android:text="@string/rateShare"
         android:stateListAnimator="@null"
 
         apps:backgroundTint="@color/lighter"

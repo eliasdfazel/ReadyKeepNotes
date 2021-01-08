@@ -1,7 +1,7 @@
 <resources>
 
     <string name="followIt" translatable="false">Follow Us</string>
-    <string name="shareIt" translatable="false">Rate &amp; Share</string>
+    <string name="rateShare" translatable="false">Rate &amp; Share</string>
 
     <string name="whatNew" translatable="false">What\'s New…</string>
     <string name="changelog" translatable="false">

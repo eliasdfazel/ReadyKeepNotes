@@ -38,14 +38,15 @@
     <string name="drawForWidthSample">Draw Here For Sample</string>
 
     <string name="searchText">Search</string>
-    <string name="handwritingText">Handwriting</string>
     <string name="keyboardTypingText">Keyboard Typing</string>
+    <string name="handwritingText">Handwriting</string>
     <string name="voiceRecordingText">Voice Recording</string>
 
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 
     <string name="offlineSavingError">⚠ Error Occurred Saving Data  ⚠</string>
     <string name="onlineSavingError">⚠ Error Occurred Uploading Data ⚠</string>
+    <string name="noNetworkConnection">No Network Connection</string>
 
     <string name="welcomeText">Welcome %1$s To Ready Keep Notes…!</string>
 

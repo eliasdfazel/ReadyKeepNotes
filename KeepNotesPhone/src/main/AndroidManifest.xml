@@ -113,6 +113,21 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:exported="false"
+            android:label="@string/applicationName"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:theme="@style/GeeksEmpire.Material.WebView"
+            android:screenOrientation="sensorPortrait"
+            android:name=".Browser.BuiltInBrowser" >
+            <intent-filter>
+                <action android:name="POPUP_SHORTCUTS_BROWSER"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".Utils.RemoteTasks.Notifications.RemoteNotificationHandler">
             <intent-filter>
