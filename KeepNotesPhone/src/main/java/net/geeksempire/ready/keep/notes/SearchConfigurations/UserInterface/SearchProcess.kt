@@ -14,6 +14,7 @@ import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.EntryConfigurations
+import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.SearchLiveData.SearchViewModel
@@ -22,6 +23,7 @@ import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Exten
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.databinding.SearchProcessLayoutBinding
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.NotesDatabaseDataAccessObject
 
 class SearchProcess : AppCompatActivity() {
 
@@ -45,6 +47,8 @@ class SearchProcess : AppCompatActivity() {
         setContentView(searchProcessLayoutBinding.root)
 
         setupColors()
+
+        val notesDatabaseDataAccessObject = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
 
         searchProcessLayoutBinding.root.post {
 
@@ -99,7 +103,7 @@ class SearchProcess : AppCompatActivity() {
 
                             searchProcessLayoutBinding.searchTerm.text?.let { searchTermText ->
 
-                                invokeSearchOperations(searchTermText.toString())
+                                invokeSearchOperations(searchTermText.toString(), notesDatabaseDataAccessObject)
 
                             }
 
@@ -113,7 +117,7 @@ class SearchProcess : AppCompatActivity() {
 
                     searchProcessLayoutBinding.searchTerm.text?.let { searchTermText ->
 
-                        invokeSearchOperations(searchTermText.toString())
+                        invokeSearchOperations(searchTermText.toString(), notesDatabaseDataAccessObject)
 
                     }
 
@@ -133,12 +137,14 @@ class SearchProcess : AppCompatActivity() {
 
     }
 
-    private fun invokeSearchOperations(searchTerm: String) {
+    private fun invokeSearchOperations(searchTerm: String, notesDatabaseDataAccessObject: NotesDatabaseDataAccessObject) {
 
         searchProcessLayoutBinding.loadingView.visibility = View.VISIBLE
 
         searchProcessLayoutBinding.loadingView.setAnimation(R.raw.searching_loading_animation)
         searchProcessLayoutBinding.loadingView.playAnimation()
+
+        searchViewModel.searchInDatabase(searchTerm, notesDatabaseDataAccessObject)
 
     }
 

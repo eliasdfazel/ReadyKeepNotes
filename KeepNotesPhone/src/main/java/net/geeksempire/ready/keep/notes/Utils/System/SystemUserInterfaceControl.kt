@@ -20,7 +20,7 @@ import android.view.inputmethod.InputMethodManager
 fun showKeyboard(context: Context, toggleView: View) {
 
     val inputMethodManager: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.showSoftInput(toggleView, InputMethodManager.SHOW_FORCED)
+    inputMethodManager.showSoftInput(toggleView, InputMethodManager.SHOW_IMPLICIT)
 
 }
 
