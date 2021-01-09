@@ -52,7 +52,7 @@ fun SearchProcess.setupColors() {
                 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             }
 
-//            searchProcessLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
+            searchProcessLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
 
             searchProcessLayoutBinding.textInputSearchTerm.boxBackgroundColor = getColor(R.color.dark_transparent_high)
             searchProcessLayoutBinding.textInputSearchTerm.boxStrokeColor = getColor(R.color.dark_transparent_higher)
