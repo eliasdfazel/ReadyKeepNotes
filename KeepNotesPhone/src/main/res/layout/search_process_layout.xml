@@ -8,10 +8,11 @@
     tools:context=".SearchConfigurations.UserInterface.SearchProcess">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/brandView"
         android:layout_width="153dp"
         android:layout_height="153dp"
         android:alpha="0.13"
-        android:src="@drawable/official_business_logo"
+        android:src="@drawable/brand"
 
         apps:layout_constraintTop_toTopOf="parent"
         apps:layout_constraintBottom_toBottomOf="parent"

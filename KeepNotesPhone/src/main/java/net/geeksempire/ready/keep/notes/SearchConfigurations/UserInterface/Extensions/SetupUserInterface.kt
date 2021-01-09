@@ -61,6 +61,8 @@ fun SearchProcess.setupColors() {
 
             searchProcessLayoutBinding.searchActionView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.dark_transparent_high))
 
+            searchProcessLayoutBinding.brandView.imageTintList = ColorStateList.valueOf(getColor(R.color.dark))
+
         }
         ThemeType.ThemeDark -> {
 
@@ -75,6 +77,8 @@ fun SearchProcess.setupColors() {
             searchProcessLayoutBinding.searchTerm.setTextColor(getColor(R.color.lighter))
 
             searchProcessLayoutBinding.searchActionView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.light_transparent_high))
+
+            searchProcessLayoutBinding.brandView.imageTintList = ColorStateList.valueOf(getColor(R.color.light))
 
         }
     }
