@@ -76,7 +76,7 @@
         apps:cornerRadius="51dp"
         apps:elevation="23dp"
         apps:icon="@drawable/icon_keyboard"
-        apps:iconSize="71dp"
+        apps:iconSize="31dp"
         apps:iconGravity="textStart"
         apps:iconTint="@color/light"
         apps:iconPadding="0dp"

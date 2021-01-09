@@ -31,7 +31,6 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseMode
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
-import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.*
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions.*
@@ -445,22 +444,9 @@ class KeepNoteOverview : AppCompatActivity(),
                                 override fun onActionButtonClicked(snackbar: Snackbar) {
                                     super.onActionButtonClicked(snackbar)
 
-                                    startActivity(
-                                        Intent(applicationContext, TakeNote::class.java).apply {
-                                            putExtra(
-                                                TakeNote.NoteConfigurations.ExtraConfigurations,
-                                                TakeNote.NoteConfigurations.KeyboardTyping
-                                            )
-                                            putExtra(
-                                                TakeNote.NoteExtraData.ContentText,
-                                                overviewLayoutBinding.quickTakeNote.text.toString()
-                                            )
-                                        }, ActivityOptions.makeCustomAnimation(
-                                            applicationContext,
-                                            R.anim.fade_in,
-                                            0
-                                        ).toBundle()
-                                    )
+                                    snackbar.dismiss()
+
+                                    overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
 
                                 }
 

@@ -18,7 +18,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                takeNoteLayoutBinding.editTextContentView.post {
 
                    takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
-                   takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
+                   takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 31)
 
                    showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
@@ -71,7 +71,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
         takeNoteLayoutBinding.editTextContentView.post {
 
             takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 31)
 
             showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
@@ -93,7 +93,7 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                 toggleKeyboardHandwriting = false
 
                 takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
-                takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 71)
+                takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 31)
 
                 takeNoteLayoutBinding.editTextTitleView.isEnabled = true
                 takeNoteLayoutBinding.editTextContentView.isEnabled = true

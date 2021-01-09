@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.EntryConfigurations
@@ -21,6 +20,7 @@ import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.SearchLiveData.SearchViewModel
 import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Adapter.SearchResultAdapter
 import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Extensions.setupColors
+import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Extensions.setupViews
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.databinding.SearchProcessLayoutBinding
@@ -51,16 +51,13 @@ class SearchProcess : AppCompatActivity() {
         searchProcessLayoutBinding = SearchProcessLayoutBinding.inflate(layoutInflater)
         setContentView(searchProcessLayoutBinding.root)
 
-        setupColors()
+        setupViews()
 
         val notesDatabaseDataAccessObject = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
 
         searchProcessLayoutBinding.root.post {
 
             if (firebaseUser != null) {
-
-                searchProcessLayoutBinding.searchTerm.requestFocus()
-                showKeyboard(applicationContext, searchProcessLayoutBinding.searchTerm)
 
                 searchProcessLayoutBinding.recyclerViewSearchResults.layoutManager = GridLayoutManager(
                     applicationContext,
@@ -144,6 +141,13 @@ class SearchProcess : AppCompatActivity() {
             }
 
         }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        setupColors()
 
     }
 
