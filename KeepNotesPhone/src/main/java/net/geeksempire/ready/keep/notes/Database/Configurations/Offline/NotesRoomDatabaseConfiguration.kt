@@ -20,7 +20,6 @@ class NotesRoomDatabaseConfiguration {
 
         val notesRoomDatabaseConfiguration: NotesRoomDatabaseInterface = Room.databaseBuilder(context, NotesRoomDatabaseInterface::class.java, NotesDatabase)
             .fallbackToDestructiveMigration()
-            .fallbackToDestructiveMigrationOnDowngrade()
             .build()
 
         return notesRoomDatabaseConfiguration.initializeDataAccessObject()
