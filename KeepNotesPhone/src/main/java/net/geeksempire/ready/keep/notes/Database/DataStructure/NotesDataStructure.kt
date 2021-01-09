@@ -45,8 +45,8 @@ data class NotesDataStructure(var uniqueNoteId: Long,
 
 const val NotesDatabase = "NotesDatabase"
 
-@Keep
 @Entity(tableName = NotesDatabase)
+@Keep
 data class NotesDatabaseModel(
     @NonNull @PrimaryKey var uniqueNoteId: Long,
 
@@ -56,12 +56,21 @@ data class NotesDatabaseModel(
     @Nullable @ColumnInfo(name = "noteHandwritingPaintingPaths", typeAffinity = ColumnInfo.TEXT) var noteHandwritingPaintingPaths: String?,
     @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink", typeAffinity = ColumnInfo.TEXT) var noteHandwritingSnapshotLink: String?,
 
-    @Nullable @ColumnInfo(name = "noteVoiceContent", typeAffinity = ColumnInfo.BLOB) var noteVoiceContent: ByteArray? = byteArrayOf(),
-    @Nullable @ColumnInfo(name = "noteImageContent", typeAffinity = ColumnInfo.BLOB) var noteImageContent: ByteArray? = byteArrayOf(),
-    @Nullable @ColumnInfo(name = "noteGifContent", typeAffinity = ColumnInfo.BLOB) var noteGifContent: ByteArray? = byteArrayOf(),
+    /**
+     * Json Of Paths (Download Link) From Firestore
+     **/
+    @Nullable @ColumnInfo(name = "noteVoicePaths", typeAffinity = ColumnInfo.BLOB) var noteVoiceContent: String? = null,
+    /**
+     * Json Of Paths (Download Link) From Firestore
+     **/
+    @Nullable @ColumnInfo(name = "noteImagePaths", typeAffinity = ColumnInfo.BLOB) var noteImageContent: String? = null,
+    /**
+     * Json Of Paths (Download Link) From Firestore
+     **/
+    @Nullable @ColumnInfo(name = "noteGifPaths", typeAffinity = ColumnInfo.BLOB) var noteGifContent: String? = null,
 
-    @NonNull @ColumnInfo(name = "noteTakenTime") var noteTakenTime: Long,
-    @Nullable @ColumnInfo(name = "noteEditTime") var noteEditTime: Long? = null,
+    @NonNull @ColumnInfo(name = "noteTakenTime", typeAffinity = ColumnInfo.INTEGER) var noteTakenTime: Long,
+    @Nullable @ColumnInfo(name = "noteEditTime", typeAffinity = ColumnInfo.INTEGER) var noteEditTime: Long? = null,
 
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long,
 
