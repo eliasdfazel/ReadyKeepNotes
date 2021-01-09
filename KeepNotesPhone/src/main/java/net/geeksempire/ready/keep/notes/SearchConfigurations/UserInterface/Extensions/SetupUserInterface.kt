@@ -3,6 +3,7 @@ package net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Exte
 import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
+import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.SearchProcess
@@ -18,8 +19,8 @@ fun SearchProcess.setupViews() {
         override fun animationFinished() {
             super.animationFinished()
 
-//            searchProcessLayoutBinding.searchTerm.requestFocus()
-//            showKeyboard(applicationContext, searchProcessLayoutBinding.searchTerm)
+            searchProcessLayoutBinding.searchTerm.requestFocus()
+            showKeyboard(applicationContext, searchProcessLayoutBinding.searchTerm)
 
         }
 
