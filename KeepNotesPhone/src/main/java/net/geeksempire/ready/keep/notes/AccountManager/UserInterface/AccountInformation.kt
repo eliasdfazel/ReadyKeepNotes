@@ -97,7 +97,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                 Handler(Looper.getMainLooper()).postDelayed({
 
-                    userInformation.startSignInProcess()
+//                    userInformation.startSignInProcess()
 
                 }, 531)
 

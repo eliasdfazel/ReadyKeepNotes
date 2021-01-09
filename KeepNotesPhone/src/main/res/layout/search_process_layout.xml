@@ -22,7 +22,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputSearchTerm"
         android:layout_width="0dp"
-        android:layout_height="93dp"
+        android:layout_height="79dp"
         android:layout_marginHorizontal="3dp"
         android:layout_marginVertical="19dp"
         android:paddingHorizontal="11dp"
@@ -54,7 +54,7 @@
             android:id="@+id/searchTerm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="23dp"
+            android:paddingBottom="25dp"
             android:paddingStart="23dp"
             android:paddingEnd="59dp"
             android:gravity="center_vertical"
@@ -62,7 +62,7 @@
             android:ellipsize="start"
             android:singleLine="true"
             android:inputType="text|textAutoComplete"
-            android:textSize="19sp"
+            android:textSize="17sp"
             android:textColor="@color/light"
             android:textColorHint="@color/light"
             android:fontFamily="monospace"
@@ -71,8 +71,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/searchActionView"
-        android:layout_width="59dp"
-        android:layout_height="59dp"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
         android:layout_marginBottom="1dp"
         android:layout_marginHorizontal="19dp"
         android:insetTop="0dp"
@@ -82,7 +82,7 @@
 
         apps:icon="@drawable/icon_search"
         apps:iconTintMode="multiply"
-        apps:iconSize="33dp"
+        apps:iconSize="37dp"
         apps:iconGravity="textStart"
         apps:cornerRadius="51dp"
         apps:rippleColor="@color/cyan"

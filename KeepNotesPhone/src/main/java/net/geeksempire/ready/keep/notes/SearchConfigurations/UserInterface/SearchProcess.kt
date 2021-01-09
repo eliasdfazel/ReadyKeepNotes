@@ -3,6 +3,7 @@ package net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
+import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.SearchLiveData.SearchViewModel
@@ -74,9 +75,13 @@ class SearchProcess : AppCompatActivity() {
 
                     if (it.isEmpty()) {
 
-
+                        searchProcessLayoutBinding.loadingView.setAnimation(R.raw.search_no_results_found)
+                        searchProcessLayoutBinding.loadingView.playAnimation()
 
                     } else {
+
+                        searchProcessLayoutBinding.loadingView.pauseAnimation()
+                        searchProcessLayoutBinding.loadingView.visibility = View.INVISIBLE
 
                         searchResultAdapter.notesDataStructureList.clear()
                         searchResultAdapter.notesDataStructureList.addAll(it)
@@ -92,7 +97,11 @@ class SearchProcess : AppCompatActivity() {
                     when (actionId) {
                         EditorInfo.IME_ACTION_SEARCH -> {
 
-                            val searchTermText = searchProcessLayoutBinding.searchTerm.text
+                            searchProcessLayoutBinding.searchTerm.text?.let { searchTermText ->
+
+                                invokeSearchOperations(searchTermText.toString())
+
+                            }
 
                         }
                     }
@@ -102,21 +111,34 @@ class SearchProcess : AppCompatActivity() {
 
                 searchProcessLayoutBinding.searchActionView.setOnClickListener {
 
-                    val searchTermText = searchProcessLayoutBinding.searchTerm.text
+                    searchProcessLayoutBinding.searchTerm.text?.let { searchTermText ->
 
+                        invokeSearchOperations(searchTermText.toString())
+
+                    }
 
                 }
 
             } else {
 
-                startActivity(Intent(this@SearchProcess, AccountInformation::class.java),
-                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+                startActivity(Intent(applicationContext, EntryConfigurations::class.java).apply {
+                   flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
                 this@SearchProcess.finish()
 
             }
 
         }
+
+    }
+
+    private fun invokeSearchOperations(searchTerm: String) {
+
+        searchProcessLayoutBinding.loadingView.visibility = View.VISIBLE
+
+        searchProcessLayoutBinding.loadingView.setAnimation(R.raw.searching_loading_animation)
+        searchProcessLayoutBinding.loadingView.playAnimation()
 
     }
 
