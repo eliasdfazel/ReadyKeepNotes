@@ -65,6 +65,8 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
     val firebaseAuthentication = Firebase.auth
 
+    val firebaseUser = firebaseAuthentication.currentUser
+
     var profileUpdating: Boolean = false
 
     @Inject lateinit var networkCheckpoint: NetworkCheckpoint
@@ -88,7 +90,8 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
         networkConnectionListener.networkConnectionListenerInterface = this@AccountInformation
 
-        if (firebaseAuthentication.currentUser?.isAnonymous == true) {
+        if (firebaseUser != null
+            && firebaseUser.isAnonymous) {
 
             accountInformationLayoutBinding.signupLoadingView.visibility = View.VISIBLE
             accountInformationLayoutBinding.signupLoadingView.playAnimation()
@@ -97,55 +100,51 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                 Handler(Looper.getMainLooper()).postDelayed({
 
-//                    userInformation.startSignInProcess()
+                    userInformation.startSignInProcess()
 
                 }, 531)
 
             }
 
-        } else {
+        } else if (firebaseUser != null) {
 
-            firebaseAuthentication.currentUser?.let { firebaseUser ->
+            (application as KeepNoteApplication).firestoreDatabase
+                .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
 
-                (application as KeepNoteApplication).firestoreDatabase
-                    .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
-                    .get()
-                    .addOnSuccessListener { documentSnapshot ->
+                    documentSnapshot?.let { documentData ->
 
-                        documentSnapshot?.let { documentData ->
+                        accountInformationLayoutBinding.socialMediaScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in))
+                        accountInformationLayoutBinding.socialMediaScrollView.visibility = View.VISIBLE
 
-                            accountInformationLayoutBinding.socialMediaScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in))
-                            accountInformationLayoutBinding.socialMediaScrollView.visibility = View.VISIBLE
+                        accountInformationLayoutBinding.instagramAddressView.setText(documentData.data?.get(
+                            UserInformationDataStructure.instagramAccount).toString().toLowerCase(Locale.getDefault()))
 
-                            accountInformationLayoutBinding.instagramAddressView.setText(documentData.data?.get(
-                                UserInformationDataStructure.instagramAccount).toString().toLowerCase(Locale.getDefault()))
+                        accountInformationLayoutBinding.twitterAddressView.setText(documentData.data?.get(
+                            UserInformationDataStructure.twitterAccount).toString())
 
-                            accountInformationLayoutBinding.twitterAddressView.setText(documentData.data?.get(
-                                UserInformationDataStructure.twitterAccount).toString())
+                        accountInformationLayoutBinding.phoneNumberAddressView.setText(documentData.data?.get(
+                            UserInformationDataStructure.phoneNumber).toString())
 
-                            accountInformationLayoutBinding.phoneNumberAddressView.setText(documentData.data?.get(
-                                UserInformationDataStructure.phoneNumber).toString())
+                        accountInformationLayoutBinding.inviteFriendsView.visibility = View.VISIBLE
+                        accountInformationLayoutBinding.inviteFriendsView.setOnClickListener {
 
-                            accountInformationLayoutBinding.inviteFriendsView.visibility = View.VISIBLE
-                            accountInformationLayoutBinding.inviteFriendsView.setOnClickListener {
+                            if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
 
-                                if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+                                SendInvitation(applicationContext, accountInformationLayoutBinding.root)
+                                    .invite(firebaseUser)
 
-                                    SendInvitation(applicationContext, accountInformationLayoutBinding.root)
-                                        .invite(firebaseUser)
+                            } else {
 
-                                } else {
+                                val permissionsList = arrayListOf(
+                                    Manifest.permission.GET_ACCOUNTS
+                                )
 
-                                    val permissionsList = arrayListOf(
-                                        Manifest.permission.GET_ACCOUNTS
-                                    )
-
-                                    requestPermissions(
-                                        permissionsList.toTypedArray(),
-                                        EntryConfigurations.PermissionRequestCode
-                                    )
-
-                                }
+                                requestPermissions(
+                                    permissionsList.toTypedArray(),
+                                    EntryConfigurations.PermissionRequestCode
+                                )
 
                             }
 
@@ -153,14 +152,9 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                     }
 
-            }
+                }
 
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         firebaseAuthentication.addAuthStateListener { authentication ->
 
@@ -183,6 +177,13 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
             }
 
         }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        firebaseUser?.reload()
 
     }
 

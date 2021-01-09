@@ -519,40 +519,20 @@ class KeepNoteOverview : AppCompatActivity(),
 
         }
 
-        if (BuildConfig.VERSION_NAME.toUpperCase(Locale.getDefault()).contains(
-                "Beta".toUpperCase(
-                    Locale.getDefault()
-                )
-            )
-        ) {
+        if (BuildConfig.VERSION_NAME.toUpperCase(Locale.getDefault()).contains("Beta".toUpperCase(Locale.getDefault()))) {
 
             RemoteSubscriptions()
                 .subscribe("Beta")
 
         }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        setupColors()
-
-        loadUserAccountInformation()
-
         firebaseAuthentication.addAuthStateListener { authentication ->
 
             if (authentication.currentUser == null) {
-                Log.d(
-                    this@KeepNoteOverview.javaClass.simpleName,
-                    "Firebase Authenticator Couldn't Find Firebase User."
-                )
+                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Firebase Authenticator Couldn't Find Firebase User.")
 
                 firebaseAuthentication.signOut().also {
-                    Log.d(
-                        this@KeepNoteOverview.javaClass.simpleName,
-                        "Firebase User Information Delete Locally."
-                    )
+                    Log.d(this@KeepNoteOverview.javaClass.simpleName, "Firebase User Information Delete Locally.")
 
                     try {
                         File("/data/data/${packageName}/").delete()
@@ -569,6 +549,17 @@ class KeepNoteOverview : AppCompatActivity(),
             }
 
         }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        setupColors()
+
+        loadUserAccountInformation()
+
+        firebaseUser?.reload()
 
     }
 
