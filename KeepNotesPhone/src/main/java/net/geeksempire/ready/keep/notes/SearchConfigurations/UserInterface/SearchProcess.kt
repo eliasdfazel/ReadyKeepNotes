@@ -73,7 +73,7 @@ class SearchProcess : AppCompatActivity() {
 
                 searchProcessLayoutBinding.goBackView.setOnClickListener {
 
-                    this@SearchProcess.finishAffinity()
+                    this@SearchProcess.finish()
                     overridePendingTransition(0, R.anim.fade_out)
 
                 }
@@ -144,6 +144,13 @@ class SearchProcess : AppCompatActivity() {
             }
 
         }
+
+    }
+
+    override fun onBackPressed() {
+
+        this@SearchProcess.finish()
+        overridePendingTransition(0, R.anim.fade_out)
 
     }
 

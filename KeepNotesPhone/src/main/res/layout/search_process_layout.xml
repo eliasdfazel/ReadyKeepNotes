@@ -11,7 +11,7 @@
         android:id="@+id/informationBar"
         android:layout_width="match_parent"
         android:layout_height="59dp"
-        android:paddingTop="7dp"
+        android:layout_marginTop="11dp"
 
         apps:layout_constraintTop_toTopOf="parent">
 
