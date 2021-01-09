@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.abanabsalan.aban.magazine.Utils.System.hideKeyboard
 import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
 import com.google.android.material.snackbar.Snackbar
@@ -18,6 +21,7 @@ import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.Natura
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.BackgroundSavingWork
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -30,6 +34,7 @@ import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandle
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
 import net.geeksempire.ready.keep.notes.databinding.TakeNoteLayoutBinding
+import java.nio.charset.Charset
 
 class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
@@ -677,9 +682,18 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     }
 
     /* Save Data In Complete Background */
-    fun startBackgroundSavingProcess() {
+    fun startBackgroundSavingProcess(documentId: String) {
 
+        val workRequest = OneTimeWorkRequestBuilder<BackgroundSavingWork>()
+            .setInputData(
+                workDataOf(
+                    "FirebaseDocumentId" to documentId.toByteArray(Charset.defaultCharset())
+                )
+            )
+            .build()
 
+        val tagsWorkManager = WorkManager.getInstance(keepNoteApplication.applicationContext)
+        tagsWorkManager.enqueue(workRequest)
 
     }
 
