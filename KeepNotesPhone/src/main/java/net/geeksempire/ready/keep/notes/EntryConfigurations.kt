@@ -5,6 +5,8 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -77,13 +79,17 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
                 entryConfigurationLayoutBinding.proceedButton.setOnClickListener {
 
-                    entryConfigurationLayoutBinding.agreementDataView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                    entryConfigurationLayoutBinding.agreementDataView.visibility = View.INVISIBLE
+                    Handler(Looper.getMainLooper()).postDelayed({
 
-                    entryConfigurationLayoutBinding.proceedButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                    entryConfigurationLayoutBinding.proceedButton.visibility = View.INVISIBLE
+                        entryConfigurationLayoutBinding.agreementDataView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                        entryConfigurationLayoutBinding.agreementDataView.visibility = View.INVISIBLE
 
-                    runtimePermission()
+                        entryConfigurationLayoutBinding.proceedButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                        entryConfigurationLayoutBinding.proceedButton.visibility = View.INVISIBLE
+
+                        runtimePermission()
+
+                    }, 333)
 
                 }
 
