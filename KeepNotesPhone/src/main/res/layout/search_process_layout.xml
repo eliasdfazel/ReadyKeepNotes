@@ -7,32 +7,74 @@
     android:layout_height="match_parent"
     tools:context=".SearchConfigurations.UserInterface.SearchProcess">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/goBackView"
-        android:layout_width="0dp"
+<!--    <androidx.appcompat.widget.AppCompatImageView-->
+<!--        android:id="@+id/goBackView"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:paddingTop="11dp"-->
+<!--        android:layout_marginHorizontal="13dp"-->
+<!--        android:scaleType="fitCenter"-->
+<!--        android:src="@drawable/back_icon"-->
+
+<!--        apps:layout_constraintWidth_percent="0.12"-->
+<!--        apps:layout_constraintHeight_percent="0.09"-->
+<!--        apps:layout_constraintTop_toTopOf="parent"-->
+<!--        apps:layout_constraintStart_toStartOf="parent" />-->
+
+<!--    <androidx.appcompat.widget.AppCompatImageView-->
+<!--        android:id="@+id/preferencesView"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:paddingTop="11dp"-->
+<!--        android:layout_marginHorizontal="13dp"-->
+<!--        android:scaleType="fitCenter"-->
+<!--        android:transitionName="@string/preferenceImageTransitionName"-->
+<!--        android:src="@drawable/preference_icon"-->
+
+<!--        apps:layout_constraintWidth_percent="0.12"-->
+<!--        apps:layout_constraintHeight_percent="0.09"-->
+<!--        apps:layout_constraintTop_toTopOf="parent"-->
+<!--        apps:layout_constraintEnd_toEndOf="parent" />-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/informationBar"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="13dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/back_icon"
+        android:paddingTop="7dp"
 
-        apps:layout_constraintWidth_percent="0.12"
-        apps:layout_constraintHeight_percent="0.09"
-        apps:layout_constraintTop_toTopOf="parent"
-        apps:layout_constraintStart_toStartOf="parent" />
+        apps:layout_constraintHeight_percent="0.07"
+        apps:layout_constraintTop_toTopOf="parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/preferencesView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="13dp"
-        android:scaleType="fitCenter"
-        android:transitionName="@string/preferenceImageTransitionName"
-        android:src="@drawable/preference_icon"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/preferencesView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="7dp"
+            android:padding="3dp"
+            android:scaleType="fitCenter"
+            android:transitionName="@string/preferenceImageTransitionName"
+            android:src="@drawable/preference_icon"
 
-        apps:layout_constraintWidth_percent="0.12"
-        apps:layout_constraintHeight_percent="0.09"
-        apps:layout_constraintTop_toTopOf="parent"
-        apps:layout_constraintEnd_toEndOf="parent" />
+            apps:layout_constraintWidth_percent="0.3"
+            apps:layout_constraintTop_toTopOf="parent"
+            apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/goBackView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:padding="1dp"
+            android:layout_marginHorizontal="7dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back_icon"
+
+            apps:layout_constraintWidth_percent="0.3"
+            apps:layout_constraintTop_toTopOf="parent"
+            apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputSearchTerm"
@@ -87,8 +129,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/searchActionView"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
+        android:layout_width="63dp"
+        android:layout_height="63dp"
         android:layout_marginBottom="17dp"
         android:layout_marginHorizontal="19dp"
         android:insetTop="0dp"
@@ -112,10 +154,10 @@
         android:id="@+id/recyclerViewSearchResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="11dp"
         android:layout_marginBottom="93dp"
 
-        apps:layout_constraintTop_toBottomOf="@id/goBackView"/>
+        apps:layout_constraintTop_toBottomOf="@id/informationBar"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadingView"

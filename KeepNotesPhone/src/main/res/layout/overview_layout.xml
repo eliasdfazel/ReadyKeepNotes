@@ -8,7 +8,6 @@
     android:background="@color/light"
     tools:context=".Overview.UserInterface.KeepNoteOverview">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/informationBar"
         android:layout_width="match_parent"

@@ -16,6 +16,7 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
+import net.geeksempire.ready.keep.notes.Preferences.UserInterface.PreferencesControl
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.SearchLiveData.SearchViewModel
 import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Adapter.SearchResultAdapter
@@ -74,6 +75,13 @@ class SearchProcess : AppCompatActivity() {
 
                     this@SearchProcess.finishAffinity()
                     overridePendingTransition(0, R.anim.fade_out)
+
+                }
+
+                searchProcessLayoutBinding.preferencesView.setOnClickListener {
+
+                    val accountInformation = Intent(applicationContext, PreferencesControl::class.java)
+                    startActivity(accountInformation, ActivityOptions.makeSceneTransitionAnimation(this@SearchProcess, searchProcessLayoutBinding.preferencesView, getString(R.string.preferenceImageTransitionName)).toBundle())
 
                 }
 
