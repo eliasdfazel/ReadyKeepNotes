@@ -35,9 +35,9 @@
         apps:boxBackgroundMode="outline"
         apps:boxBackgroundColor="@color/dark_transparent_high"
         apps:boxCornerRadiusTopStart="13dp"
-        apps:boxCornerRadiusTopEnd="41dp"
+        apps:boxCornerRadiusTopEnd="33dp"
         apps:boxCornerRadiusBottomStart="13dp"
-        apps:boxCornerRadiusBottomEnd="41dp"
+        apps:boxCornerRadiusBottomEnd="33dp"
         apps:boxStrokeColor="@color/default_color_game_light"
         apps:boxStrokeWidth="2dp"
         apps:hintEnabled="true"
@@ -66,7 +66,8 @@
             android:textColor="@color/light"
             android:textColorHint="@color/light"
             android:fontFamily="monospace"
-            android:cursorVisible="true" />
+            android:cursorVisible="true"
+            android:focusable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton

@@ -35,6 +35,10 @@ class SearchProcess : AppCompatActivity() {
         ThemePreferences(applicationContext)
     }
 
+    val searchResultAdapter: SearchResultAdapter by lazy {
+        SearchResultAdapter(this@SearchProcess)
+    }
+
     val searchViewModel: SearchViewModel by lazy {
         ViewModelProvider(this@SearchProcess).get(SearchViewModel::class.java)
     }
@@ -63,8 +67,6 @@ class SearchProcess : AppCompatActivity() {
                     RecyclerView.VERTICAL,
                     true
                 )
-
-                val searchResultAdapter = SearchResultAdapter(this@SearchProcess)
 
                 searchProcessLayoutBinding.recyclerViewSearchResults.adapter = searchResultAdapter
 
@@ -139,12 +141,15 @@ class SearchProcess : AppCompatActivity() {
 
     private fun invokeSearchOperations(searchTerm: String, notesDatabaseDataAccessObject: NotesDatabaseDataAccessObject) {
 
+        searchProcessLayoutBinding.recyclerViewSearchResults.removeAllViews()
+        searchResultAdapter.notesDataStructureList.clear()
+
         searchProcessLayoutBinding.loadingView.visibility = View.VISIBLE
 
         searchProcessLayoutBinding.loadingView.setAnimation(R.raw.searching_loading_animation)
         searchProcessLayoutBinding.loadingView.playAnimation()
 
-        searchViewModel.searchInDatabase(searchTerm, notesDatabaseDataAccessObject)
+        searchViewModel.searchInDatabase(contentEncryption.encryptEncodedData(searchTerm, firebaseUser!!.uid).asList().toString(), notesDatabaseDataAccessObject)
 
     }
 
