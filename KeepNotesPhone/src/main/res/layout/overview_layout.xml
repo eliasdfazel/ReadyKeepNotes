@@ -231,9 +231,56 @@
         apps:rippleColor="@color/pink"
         apps:backgroundTint="@color/light"
 
-        apps:layout_constraintWidth_percent="0.59"
+        apps:layout_constraintWidth_percent="0.53"
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/goToSearch"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginHorizontal="13dp"
+        android:layout_marginVertical="23dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetLeft="0dp"
+        android:insetRight="0dp"
+
+        apps:cornerRadius="51dp"
+        apps:icon="@drawable/icon_search"
+        apps:iconTintMode="multiply"
+        apps:iconGravity="textStart"
+        apps:iconSize="29dp"
+        apps:rippleColor="@color/pink"
+        apps:backgroundTint="@color/light"
+
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toEndOf="@id/startNewNoteView"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/unknownDuty"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginHorizontal="13dp"
+        android:layout_marginVertical="23dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetLeft="0dp"
+        android:insetRight="0dp"
+        android:visibility="invisible"
+
+        apps:cornerRadius="51dp"
+        apps:icon="@drawable/icon_search"
+        apps:iconTintMode="multiply"
+        apps:iconGravity="textStart"
+        apps:iconSize="23dp"
+        apps:rippleColor="@color/pink"
+        apps:backgroundTint="@color/light"
+
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintEnd_toStartOf="@id/startNewNoteView"
+        apps:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

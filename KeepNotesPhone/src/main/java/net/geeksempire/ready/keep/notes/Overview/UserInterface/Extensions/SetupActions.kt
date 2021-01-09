@@ -7,6 +7,7 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.UserInterface.PreferencesControl
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.SearchProcess
 
 fun KeepNoteOverview.setupActions() {
 
@@ -38,6 +39,14 @@ fun KeepNoteOverview.setupActions() {
         startActivity(Intent(applicationContext, TakeNote::class.java).apply {
             putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.KeyboardTyping)
             putExtra(TakeNote.NoteExtraData.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
+        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+
+    }
+
+    overviewLayoutBinding.goToSearch.setOnClickListener {
+
+        startActivity(Intent(applicationContext, SearchProcess::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
     }

@@ -676,4 +676,11 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
+    /* Save Data In Complete Background */
+    fun startBackgroundSavingProcess() {
+
+
+
+    }
+
 }

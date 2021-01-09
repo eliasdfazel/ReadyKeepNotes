@@ -575,6 +575,20 @@ class KeepNoteOverview : AppCompatActivity(),
     override fun onPause() {
         super.onPause()
 
+        if (!overviewLayoutBinding.quickTakeNote.text.isNullOrBlank()) {
+
+            notesIO.saveQuickNotesOnline(context = this@KeepNoteOverview,
+                firebaseUser = firebaseUser,
+                overviewLayoutBinding = overviewLayoutBinding,
+                contentEncryption = contentEncryption,
+                databaseEndpoints = databaseEndpoints)
+
+            notesIO.saveQuickNotesOffline(context = this@KeepNoteOverview,
+                firebaseUser = firebaseUser,
+                contentEncryption = contentEncryption)
+
+        }
+
         hideKeyboard(applicationContext, overviewLayoutBinding.quickTakeNote)
 
     }
