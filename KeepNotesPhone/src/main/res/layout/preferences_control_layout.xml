@@ -72,8 +72,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/accountManagerView"
                 android:layout_width="match_parent"
-                android:layout_height="79dp"
+                android:layout_height="wrap_content"
                 android:paddingHorizontal="23dp"
+                android:paddingVertical="13dp"
                 android:background="@drawable/preferences_account_view_background"
 
                 apps:layout_constraintTop_toBottomOf="@id/preferencesView">
@@ -95,7 +96,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/userDisplayName"
                     android:layout_width="0dp"
-                    android:layout_height="53dp"
+                    android:layout_height="wrap_content"
                     android:paddingHorizontal="19dp"
                     android:gravity="center_vertical"
                     android:lines="1"
