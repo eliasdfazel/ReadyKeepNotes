@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowInsetsController
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
@@ -27,10 +28,21 @@ fun TakeNote.setupTakeNoteTheme() {
             window.statusBarColor = getColor(R.color.light)
             window.navigationBarColor = getColor(R.color.light)
 
-            window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+                window.insetsController?.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS)
+
             } else {
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                } else {
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
+
             }
 
             takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))

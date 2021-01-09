@@ -2,6 +2,7 @@ package net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions
 
 import android.os.Build
 import android.view.View
+import android.view.WindowInsetsController
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
@@ -14,10 +15,21 @@ fun KeepNoteOverview.setupColors() {
             window.statusBarColor = getColor(R.color.light)
             window.navigationBarColor = getColor(R.color.light)
 
-            window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+                window.insetsController?.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS)
+
             } else {
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                } else {
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
+
             }
 
             overviewLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
