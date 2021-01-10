@@ -17,9 +17,9 @@ interface AnimationListener {
 
 class CircularRevealAnimation (private val animationListener: AnimationListener) {
 
-    fun startForActivityRoot(activity: AppCompatActivity, xPosition: Int = (displayX(activity) / 2), yPosition: Int = (displayY(activity) / 2)) {
+    fun startForActivityRoot(activity: AppCompatActivity, rootView: View, xPosition: Int = (displayX(activity) / 2), yPosition: Int = (displayY(activity) / 2)) {
 
-        val rootLayout = activity.window.decorView
+        val rootLayout = rootView
         rootLayout.visibility = View.INVISIBLE
 
         val viewTreeObserver = rootLayout.viewTreeObserver

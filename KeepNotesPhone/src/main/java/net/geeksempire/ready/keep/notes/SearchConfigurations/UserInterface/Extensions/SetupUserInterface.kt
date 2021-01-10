@@ -31,6 +31,7 @@ fun SearchProcess.setupViews() {
 
         startForActivityRoot(
             activity = this@setupViews,
+            rootView = searchProcessLayoutBinding.rootView,
             xPosition = if (intent.hasExtra("xPosition")) { intent.getIntExtra("xPosition", displayX(applicationContext) / 2) } else { displayX(applicationContext) / 2 },
             yPosition = if (intent.hasExtra("yPosition")) {intent.getIntExtra("yPosition", displayY(applicationContext) / 2)} else { displayY(applicationContext) / 2 }
         )

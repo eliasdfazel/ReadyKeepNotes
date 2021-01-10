@@ -21,6 +21,7 @@ fun KeepNoteOverview.setupActions() {
             TakeNote.open(context = applicationContext,
                 incomingActivityName = this@setupActions.javaClass.simpleName,
                 extraConfigurations = TakeNote.NoteConfigurations.Handwriting,
+                uniqueNoteId = documentId,
                 contentText = overviewLayoutBinding.quickTakeNote.text.toString(),
                 encryptedTextContent = false
             )
@@ -58,6 +59,7 @@ fun KeepNoteOverview.setupActions() {
             TakeNote.open(context = applicationContext,
                 incomingActivityName = this@setupActions.javaClass.simpleName,
                 extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                uniqueNoteId = documentId,
                 contentText = overviewLayoutBinding.quickTakeNote.text.toString(),
                 encryptedTextContent = false
             )
