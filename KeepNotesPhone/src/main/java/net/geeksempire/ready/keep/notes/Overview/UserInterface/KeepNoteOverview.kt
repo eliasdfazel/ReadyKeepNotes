@@ -273,7 +273,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
     var databaseSize: Long = System.currentTimeMillis()
 
-    var documentId: Long? = null
+    var documentId: Long = System.currentTimeMillis()
 
     @Inject
     lateinit var networkConnectionListener: NetworkConnectionListener
@@ -308,21 +308,11 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 overviewLayoutBinding.quickTakeNote.addTextChangedListener(object : TextWatcher {
 
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
+                    override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
 
                     }
 
-                    override fun onTextChanged(
-                        charSequence: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
+                    override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
 
                     }
 
@@ -560,8 +550,6 @@ class KeepNoteOverview : AppCompatActivity(),
 
         if (!overviewLayoutBinding.quickTakeNote.text.isNullOrBlank()) {
 
-            documentId = System.currentTimeMillis()
-
             notesIO.saveQuickNotesOnline(context = this@KeepNoteOverview,
                 documentId = documentId!!,
                 firebaseUser = firebaseUser,
@@ -573,6 +561,8 @@ class KeepNoteOverview : AppCompatActivity(),
                 documentId = documentId!!,
                 firebaseUser = firebaseUser,
                 contentEncryption = contentEncryption)
+
+            documentId = System.currentTimeMillis()
 
         }
 
