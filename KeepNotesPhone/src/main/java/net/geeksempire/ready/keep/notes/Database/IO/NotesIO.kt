@@ -44,6 +44,10 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     private val jsonIO = JsonIO()
 
+    lateinit var saveQuickNotesOfflineRetry: Deferred<Any?>
+
+    lateinit var saveNotesAndPaintingOfflineRetry: Deferred<Any?>
+
     /* Retrieve Notes */
     fun retrieveAllNotes(context: AppCompatActivity, firebaseUser: FirebaseUser?) {
 
@@ -341,13 +345,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                             override fun onActionButtonClicked(snackbar: Snackbar) {
                                 super.onActionButtonClicked(snackbar)
 
-                                /*
-                                *
-                                *
-                                *
-                                *
-                                *
-                                * */
+                                if (::saveNotesAndPaintingOfflineRetry.isInitialized) {
+
+                                    saveNotesAndPaintingOfflineRetry.start()
+
+                                }
+
+                                snackbar.dismiss()
 
                             }
 
@@ -440,6 +444,36 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             } catch (e: Exception) {
                 e.printStackTrace()
+
+                withContext(SupervisorJob() + Dispatchers.Main) {
+
+                    Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
+
+                    SnackbarBuilder(context).show (
+                        rootView = context.overviewLayoutBinding.rootView,
+                        messageText= context.getString(R.string.emptyNotesCollection),
+                        messageDuration = Snackbar.LENGTH_INDEFINITE,
+                        actionButtonText = R.string.retryText,
+                        snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+
+                            override fun onActionButtonClicked(snackbar: Snackbar) {
+                                super.onActionButtonClicked(snackbar)
+
+                                if (::saveQuickNotesOfflineRetry.isInitialized) {
+
+                                    saveQuickNotesOfflineRetry.start()
+
+                                }
+
+                                snackbar.dismiss()
+
+                            }
+
+                        }
+                    )
+
+                }
+
             }
 
         }
@@ -553,6 +587,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                                         contentEncryption,
                                         documentId
                                     )
+
+                                    snackbar.dismiss()
 
                                 }
 

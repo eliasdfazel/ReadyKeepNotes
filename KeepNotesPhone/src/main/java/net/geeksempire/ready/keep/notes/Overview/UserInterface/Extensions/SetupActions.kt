@@ -35,7 +35,7 @@ fun KeepNoteOverview.setupActions() {
         documentId = System.currentTimeMillis()
 
         notesIO.saveQuickNotesOnline(
-            documentId = documentId!!,
+            documentId = documentId,
             context = this@setupActions,
             firebaseUser = firebaseUser,
             overviewLayoutBinding = overviewLayoutBinding,
@@ -43,8 +43,8 @@ fun KeepNoteOverview.setupActions() {
             databaseEndpoints = databaseEndpoints
         )
 
-        notesIO.saveQuickNotesOffline(
-            documentId = documentId!!,
+        notesIO.saveQuickNotesOfflineRetry = notesIO.saveQuickNotesOffline(
+            documentId = documentId,
             context = this@setupActions,
             firebaseUser = firebaseUser,
             contentEncryption = contentEncryption

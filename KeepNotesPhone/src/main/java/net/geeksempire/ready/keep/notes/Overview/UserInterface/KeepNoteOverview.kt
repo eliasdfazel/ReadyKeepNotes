@@ -551,14 +551,14 @@ class KeepNoteOverview : AppCompatActivity(),
         if (!overviewLayoutBinding.quickTakeNote.text.isNullOrBlank()) {
 
             notesIO.saveQuickNotesOnline(context = this@KeepNoteOverview,
-                documentId = documentId!!,
+                documentId = documentId,
                 firebaseUser = firebaseUser,
                 overviewLayoutBinding = overviewLayoutBinding,
                 contentEncryption = contentEncryption,
                 databaseEndpoints = databaseEndpoints)
 
-            notesIO.saveQuickNotesOffline(context = this@KeepNoteOverview,
-                documentId = documentId!!,
+            notesIO.saveQuickNotesOfflineRetry = notesIO.saveQuickNotesOffline(context = this@KeepNoteOverview,
+                documentId = documentId,
                 firebaseUser = firebaseUser,
                 contentEncryption = contentEncryption)
 

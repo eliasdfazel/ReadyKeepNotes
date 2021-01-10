@@ -291,7 +291,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                         documentId = documentId
                     )
 
-                    notesIO.saveNotesAndPaintingOffline(
+                    notesIO.saveNotesAndPaintingOfflineRetry = notesIO.saveNotesAndPaintingOffline(
                         context = this@TakeNote,
                         firebaseUser = firebaseUser,
                         takeNoteLayoutBinding = takeNoteLayoutBinding,
