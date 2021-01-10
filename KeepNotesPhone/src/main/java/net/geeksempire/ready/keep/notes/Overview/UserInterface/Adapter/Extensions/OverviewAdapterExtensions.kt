@@ -9,11 +9,12 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.RecyclerViewItemSwipeHe
 
 fun OverviewAdapter.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
-    this@addItemToFirst.notesDataStructureList.add(notesDatabaseModel)
+    this@addItemToFirst.notesDataStructureList.add(0, notesDatabaseModel)
 
     withContext(Dispatchers.Main) {
 
-        this@addItemToFirst.notifyItemInserted(this@addItemToFirst.notesDataStructureList.size)
+//        this@addItemToFirst.notifyItemInserted(this@addItemToFirst.notesDataStructureList.size)
+        this@addItemToFirst.notifyItemInserted(0)
 
     }
 

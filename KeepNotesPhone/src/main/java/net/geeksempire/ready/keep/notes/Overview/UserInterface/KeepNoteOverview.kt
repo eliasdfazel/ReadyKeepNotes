@@ -388,9 +388,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
             itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
 
-            notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(
-                this@KeepNoteOverview,
-                Observer {
+            notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
                     if (it.isNotEmpty()) {
 
@@ -402,7 +400,11 @@ class KeepNoteOverview : AppCompatActivity(),
 
                         if (it.size == 1) {
 
-                            overviewAdapter.addItemToFirst(it.first())
+                            overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
+
+                                overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
+
+                            }
 
                         } else {
 
@@ -411,11 +413,9 @@ class KeepNoteOverview : AppCompatActivity(),
 
                             overviewAdapter.notifyDataSetChanged()
 
-                        }
+                            overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
 
-                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(
-                            overviewAdapter.notesDataStructureList.size
-                        )
+                        }
 
                         overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
 
