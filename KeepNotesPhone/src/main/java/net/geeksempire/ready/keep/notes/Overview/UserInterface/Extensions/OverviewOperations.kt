@@ -1,12 +1,10 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions
 
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
@@ -17,7 +15,24 @@ fun KeepNoteOverview.startDatabaseOperation() = CoroutineScope(SupervisorJob() +
         .notesRoomDatabaseConfiguration
         .getAllNotesData()
 
+    databaseSize = allNotesData.size.toLong()
+
     notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(allNotesData)
+
+}
+
+fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
+
+    val newDatabaseSize = (application as KeepNoteApplication)
+        .notesRoomDatabaseConfiguration
+        .getSizeOfDatabase().toLong()
+
+    if (newDatabaseSize > databaseSize) {
+        Log.d(this@async.javaClass.simpleName, "New Note Added Into Database")
+
+        startDatabaseOperation()
+
+    }
 
 }
 

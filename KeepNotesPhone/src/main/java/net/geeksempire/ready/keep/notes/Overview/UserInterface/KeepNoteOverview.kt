@@ -271,7 +271,9 @@ class KeepNoteOverview : AppCompatActivity(),
 
     var autoEnterPlaced = false
 
-    var documentId: Long = 0
+    var databaseSize: Long = System.currentTimeMillis()
+
+    var documentId: Long? = null
 
     @Inject
     lateinit var networkConnectionListener: NetworkConnectionListener
@@ -547,6 +549,8 @@ class KeepNoteOverview : AppCompatActivity(),
 
         loadUserAccountInformation()
 
+        databaseOperationsCheckpoint()
+
         firebaseUser?.reload()
 
     }
@@ -559,14 +563,14 @@ class KeepNoteOverview : AppCompatActivity(),
             documentId = System.currentTimeMillis()
 
             notesIO.saveQuickNotesOnline(context = this@KeepNoteOverview,
-                documentId = documentId,
+                documentId = documentId!!,
                 firebaseUser = firebaseUser,
                 overviewLayoutBinding = overviewLayoutBinding,
                 contentEncryption = contentEncryption,
                 databaseEndpoints = databaseEndpoints)
 
             notesIO.saveQuickNotesOffline(context = this@KeepNoteOverview,
-                documentId = documentId,
+                documentId = documentId!!,
                 firebaseUser = firebaseUser,
                 contentEncryption = contentEncryption)
 

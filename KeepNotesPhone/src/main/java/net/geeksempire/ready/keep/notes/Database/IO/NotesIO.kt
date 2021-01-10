@@ -341,7 +341,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                             override fun onActionButtonClicked(snackbar: Snackbar) {
                                 super.onActionButtonClicked(snackbar)
 
-
+                                /*
+                                *
+                                *
+                                *
+                                *
+                                *
+                                * */
 
                             }
 
@@ -359,7 +365,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     fun saveQuickNotesOffline(context: KeepNoteOverview,
                               documentId: Long,
                               firebaseUser: FirebaseUser?,
-                              contentEncryption: ContentEncryption) = CoroutineScope(Dispatchers.IO).launch {
+                              contentEncryption: ContentEncryption) = CoroutineScope(Dispatchers.IO).async {
 
         firebaseUser?.let {
 
