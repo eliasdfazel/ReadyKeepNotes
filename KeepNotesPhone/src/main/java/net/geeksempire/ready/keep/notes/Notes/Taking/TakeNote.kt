@@ -1,6 +1,7 @@
 package net.geeksempire.ready.keep.notes.Notes.Taking
 
 import android.animation.Animator
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -114,9 +115,26 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     companion object {
 
-        fun open(context: Context) {
+        fun open(context: Context,
+                 incomingActivityName: String,
+                 extraConfigurations: String,
+                 uniqueNoteId: Long? = null,
+                 noteTile: String? = null,
+                 contentText: String? = null,
+                 paintingPath: String? = null,
+                 encryptedTextContent: Boolean) {
 
+            context.startActivity(Intent(context, TakeNote::class.java).apply {
+                putExtra("IncomingActivityName", incomingActivityName)
+                putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, extraConfigurations)
+                putExtra(TakeNote.NoteExtraData.DocumentId, uniqueNoteId)
+                putExtra(TakeNote.NoteExtraData.TitleText, noteTile)
+                putExtra(TakeNote.NoteExtraData.ContentText, contentText)
+                putExtra(TakeNote.NoteExtraData.PaintingPath, paintingPath)
+                putExtra(TakeNote.NoteConfigurations.EncryptedTextContent, encryptedTextContent)
 
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
 
         }
 
@@ -186,11 +204,13 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             if (intent.hasExtra(NoteExtraData.PaintingPath)) {
 
-                val paintingPathsData = intent.getStringExtra(NoteExtraData.PaintingPath)!!
+                intent.getStringExtra(NoteExtraData.PaintingPath)?.let { paintingPathsData ->
 
-                paintingIO.preparePaintingPathsOffline(paintingCanvasView, paintingPathsData).invokeOnCompletion {
+                    paintingIO.preparePaintingPathsOffline(paintingCanvasView, paintingPathsData).invokeOnCompletion {
 
-                    paintingCanvasView.restorePaints()
+                        paintingCanvasView.restorePaints()
+
+                    }
 
                 }
 

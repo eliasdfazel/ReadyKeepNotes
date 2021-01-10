@@ -357,6 +357,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     }
 
     fun saveQuickNotesOffline(context: KeepNoteOverview,
+                              documentId: Long,
                               firebaseUser: FirebaseUser?,
                               contentEncryption: ContentEncryption) = CoroutineScope(Dispatchers.IO).launch {
 
@@ -386,8 +387,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     }
 
                     val contentText = context.overviewLayoutBinding.quickTakeNote.text?:"No Content"
-
-                    val documentId: Long = System.currentTimeMillis()
 
                     val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
                         noteTile = null,
@@ -614,6 +613,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     }
 
     fun saveQuickNotesOnline(context: AppCompatActivity,
+                             documentId: Long,
                              firebaseUser: FirebaseUser?,
                              overviewLayoutBinding: OverviewLayoutBinding,
                              contentEncryption: ContentEncryption,
@@ -633,8 +633,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     }
 
                     val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
-
-                    val documentId: Long = System.currentTimeMillis()
 
                     val notesDataStructure = NotesDataStructure(
                         uniqueNoteId = documentId,

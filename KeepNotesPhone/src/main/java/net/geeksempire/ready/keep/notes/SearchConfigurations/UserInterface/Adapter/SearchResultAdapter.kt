@@ -1,7 +1,5 @@
 package net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Adapter
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -160,22 +158,28 @@ class SearchResultAdapter(val context: SearchProcess) : RecyclerView.Adapter<Sea
 
                 overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
-                context.startActivity(Intent(context, TakeNote::class.java).apply {
-                    putExtra(TakeNote.NoteExtraData.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                    putExtra(TakeNote.NoteExtraData.TitleText, notesDataStructureList[position].noteTile)
-                    putExtra(TakeNote.NoteExtraData.ContentText, notesDataStructureList[position].noteTextContent)
-                }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+                TakeNote.open(context = context,
+                    incomingActivityName = this@SearchResultAdapter.javaClass.simpleName,
+                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+                    noteTile = notesDataStructureList[position].noteTile,
+                    contentText = notesDataStructureList[position].noteTextContent,
+                    encryptedTextContent = true
+                )
 
             } else {
 
                 overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
-                context.startActivity(Intent(context, TakeNote::class.java).apply {
-                    putExtra(TakeNote.NoteExtraData.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                    putExtra(TakeNote.NoteExtraData.TitleText, notesDataStructureList[position].noteTile.toString())
-                    putExtra(TakeNote.NoteExtraData.ContentText, notesDataStructureList[position].noteTextContent.toString())
-                    putExtra(TakeNote.NoteExtraData.PaintingPath, paintingPathsJsonArray)
-                }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+                TakeNote.open(context = context,
+                    incomingActivityName = this@SearchResultAdapter.javaClass.simpleName,
+                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+                    noteTile = notesDataStructureList[position].noteTile,
+                    contentText = notesDataStructureList[position].noteTextContent,
+                    paintingPath = paintingPathsJsonArray,
+                    encryptedTextContent = true
+                )
 
             }
 

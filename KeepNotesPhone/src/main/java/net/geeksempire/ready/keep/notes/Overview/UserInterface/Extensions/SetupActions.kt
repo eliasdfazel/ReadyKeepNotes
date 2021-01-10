@@ -2,6 +2,8 @@ package net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import androidx.core.app.ActivityOptionsCompat
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
@@ -14,16 +16,25 @@ fun KeepNoteOverview.setupActions() {
 
     overviewLayoutBinding.fullNoteTaking.setOnClickListener {
 
-        startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-            putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.Handwriting)
-            putExtra(TakeNote.NoteExtraData.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
-        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            TakeNote.open(context = applicationContext,
+                incomingActivityName = this@setupActions.javaClass.simpleName,
+                extraConfigurations = TakeNote.NoteConfigurations.Handwriting,
+                contentText = overviewLayoutBinding.quickTakeNote.text.toString(),
+                encryptedTextContent = false
+            )
+
+        }, 333)
 
     }
 
     overviewLayoutBinding.savingView.setOnClickListener {
 
+        documentId = System.currentTimeMillis()
+
         notesIO.saveQuickNotesOnline(
+            documentId = documentId,
             context = this@setupActions,
             firebaseUser = firebaseUser,
             overviewLayoutBinding = overviewLayoutBinding,
@@ -32,6 +43,7 @@ fun KeepNoteOverview.setupActions() {
         )
 
         notesIO.saveQuickNotesOffline(
+            documentId = documentId,
             context = this@setupActions,
             firebaseUser = firebaseUser,
             contentEncryption = contentEncryption
@@ -41,10 +53,16 @@ fun KeepNoteOverview.setupActions() {
 
     overviewLayoutBinding.startNewNoteView.setOnClickListener {
 
-        startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-            putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.KeyboardTyping)
-            putExtra(TakeNote.NoteExtraData.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
-        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            TakeNote.open(context = applicationContext,
+                incomingActivityName = this@setupActions.javaClass.simpleName,
+                extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                contentText = overviewLayoutBinding.quickTakeNote.text.toString(),
+                encryptedTextContent = false
+            )
+
+        }, 333)
 
     }
 

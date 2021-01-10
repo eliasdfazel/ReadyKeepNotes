@@ -235,9 +235,10 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
     private fun openTakeNoteActivity() {
 
-        startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-            putExtra("IncomingActivityName", EntryConfigurations::class.java.simpleName)
-        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+        TakeNote.open(context = applicationContext,
+            incomingActivityName = EntryConfigurations::class.java.simpleName,
+            extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+            encryptedTextContent = false)
 
         this@EntryConfigurations.finish()
 

@@ -1,7 +1,5 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
-import android.app.ActivityOptions
-import android.content.Intent
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -78,22 +76,26 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
 
                 if (paintingPathsJsonArray.isNullOrEmpty()) {
 
-
-                    context.startActivity(Intent(context, TakeNote::class.java).apply {
-                        putExtra(TakeNote.NoteExtraData.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                        putExtra(TakeNote.NoteExtraData.TitleText, notesDataStructureList[position].noteTile)
-                        putExtra(TakeNote.NoteExtraData.ContentText, notesDataStructureList[position].noteTextContent)
-                    }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+                    TakeNote.open(context = context,
+                        incomingActivityName = this@setupShareView.javaClass.simpleName,
+                        extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                        uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+                        noteTile = notesDataStructureList[position].noteTile,
+                        contentText = notesDataStructureList[position].noteTextContent,
+                        encryptedTextContent = true
+                    )
 
                 } else {
 
-
-                    context.startActivity(Intent(context, TakeNote::class.java).apply {
-                        putExtra(TakeNote.NoteExtraData.DocumentId, notesDataStructureList[position].uniqueNoteId)
-                        putExtra(TakeNote.NoteExtraData.TitleText, notesDataStructureList[position].noteTile.toString())
-                        putExtra(TakeNote.NoteExtraData.ContentText, notesDataStructureList[position].noteTextContent.toString())
-                        putExtra(TakeNote.NoteExtraData.PaintingPath, paintingPathsJsonArray)
-                    }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())
+                    TakeNote.open(context = context,
+                        incomingActivityName = this@setupShareView.javaClass.simpleName,
+                        extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                        uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+                        noteTile = notesDataStructureList[position].noteTile,
+                        contentText = notesDataStructureList[position].noteTextContent,
+                        paintingPath = paintingPathsJsonArray,
+                        encryptedTextContent = true
+                    )
 
                 }
 
