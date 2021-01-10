@@ -13,7 +13,6 @@ fun OverviewAdapter.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = Cor
 
     withContext(Dispatchers.Main) {
 
-//        this@addItemToFirst.notifyItemInserted(this@addItemToFirst.notesDataStructureList.size)
         this@addItemToFirst.notifyItemInserted(0)
 
     }
