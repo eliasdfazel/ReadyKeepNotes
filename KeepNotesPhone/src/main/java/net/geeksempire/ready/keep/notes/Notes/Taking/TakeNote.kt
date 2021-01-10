@@ -1,6 +1,7 @@
 package net.geeksempire.ready.keep.notes.Notes.Taking
 
 import android.animation.Animator
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -10,7 +11,6 @@ import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
@@ -113,7 +113,13 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     }
 
     companion object {
-        val paintingPathsJsonArray: ArrayList<DocumentSnapshot> = ArrayList<DocumentSnapshot>()
+
+        fun open(context: Context) {
+
+
+
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -163,11 +169,18 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             }
 
-            if (intent.hasExtra(NoteExtraData.ContentText)) {
+            if (intent.hasExtra(NoteExtraData.ContentText)
+                && intent.hasExtra(NoteConfigurations.EncryptedTextContent)) {
 
-                println(">>>>>>>>>>>>>>>>>>>> " + intent.getStringExtra(NoteExtraData.ContentText))
+                if (intent.getBooleanExtra(NoteConfigurations.EncryptedTextContent, false)) {
 
-                takeNoteLayoutBinding.editTextContentView.setText(intent.getStringExtra(NoteExtraData.ContentText)?.let { contentEncryption.decryptEncodedData(it, firebaseUser.uid) })
+                    takeNoteLayoutBinding.editTextContentView.setText(intent.getStringExtra(NoteExtraData.ContentText)?.let { contentEncryption.decryptEncodedData(it, firebaseUser.uid) })
+
+                } else {
+
+                    takeNoteLayoutBinding.editTextContentView.setText(intent.getStringExtra(NoteExtraData.ContentText))
+
+                }
 
             }
 
