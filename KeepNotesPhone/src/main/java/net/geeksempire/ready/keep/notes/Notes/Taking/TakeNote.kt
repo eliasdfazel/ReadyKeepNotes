@@ -101,6 +101,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         const val KeyboardTyping = "KeyboardTyping"
         const val Handwriting = "Handwriting"
         const val VoiceRecording = "VoiceRecording"
+
+        const val EncryptedTextContent = "EncryptedTextContent"
     }
 
     object NoteExtraData {
@@ -163,11 +165,9 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             if (intent.hasExtra(NoteExtraData.ContentText)) {
 
-                takeNoteLayoutBinding.editTextContentView.setText(intent.getStringExtra(
-                    NoteExtraData.ContentText
-                )?.let {
-                    contentEncryption.decryptEncodedData(it, firebaseUser.uid)
-                })
+                println(">>>>>>>>>>>>>>>>>>>> " + intent.getStringExtra(NoteExtraData.ContentText))
+
+                takeNoteLayoutBinding.editTextContentView.setText(intent.getStringExtra(NoteExtraData.ContentText)?.let { contentEncryption.decryptEncodedData(it, firebaseUser.uid) })
 
             }
 

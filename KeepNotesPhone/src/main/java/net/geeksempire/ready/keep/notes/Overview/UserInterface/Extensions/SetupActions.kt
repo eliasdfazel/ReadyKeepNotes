@@ -15,14 +15,8 @@ fun KeepNoteOverview.setupActions() {
     overviewLayoutBinding.fullNoteTaking.setOnClickListener {
 
         startActivity(Intent(applicationContext, TakeNote::class.java).apply {
-            putExtra(
-                TakeNote.NoteConfigurations.ExtraConfigurations,
-                TakeNote.NoteConfigurations.Handwriting
-            )
-            putExtra(
-                TakeNote.NoteExtraData.ContentText,
-                overviewLayoutBinding.quickTakeNote.text.toString()
-            )
+            putExtra(TakeNote.NoteConfigurations.ExtraConfigurations, TakeNote.NoteConfigurations.Handwriting)
+            putExtra(TakeNote.NoteExtraData.ContentText, overviewLayoutBinding.quickTakeNote.text.toString())
         }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
 
     }
