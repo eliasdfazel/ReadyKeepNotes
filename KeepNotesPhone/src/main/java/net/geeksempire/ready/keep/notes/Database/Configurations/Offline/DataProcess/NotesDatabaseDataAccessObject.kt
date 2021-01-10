@@ -36,7 +36,7 @@ interface NotesDatabaseDataAccessObject {
     suspend fun updateHandwritingPathsData(uniqueNoteId: String, handwritingPaths: String)
 
 
-    @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex ASC")
+    @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex DESC")
     suspend fun getAllNotesData(): List<NotesDatabaseModel>
 
 

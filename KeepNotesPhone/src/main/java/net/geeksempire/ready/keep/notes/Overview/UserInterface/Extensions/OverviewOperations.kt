@@ -28,7 +28,7 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
         .getSizeOfDatabase().toLong()
 
     if (newDatabaseSize > databaseSize) {
-        Log.d(this@async.javaClass.simpleName, "New Note Added Into Database")
+        Log.d(this@databaseOperationsCheckpoint.javaClass.simpleName, "New Note Added Into Database")
 
         startDatabaseOperation()
 

@@ -381,7 +381,7 @@ class KeepNoteOverview : AppCompatActivity(),
                 applicationContext,
                 columnCount(applicationContext, 313),
                 RecyclerView.VERTICAL,
-                true
+                false
             )
 
             overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapter
