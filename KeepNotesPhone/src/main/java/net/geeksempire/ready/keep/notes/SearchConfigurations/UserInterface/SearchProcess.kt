@@ -63,7 +63,7 @@ class SearchProcess : AppCompatActivity() {
                     applicationContext,
                     columnCount(applicationContext, 313),
                     RecyclerView.VERTICAL,
-                    true
+                    false
                 )
 
                 searchProcessLayoutBinding.recyclerViewSearchResults.adapter = searchResultAdapter

@@ -41,7 +41,7 @@ interface NotesDatabaseDataAccessObject {
 
 
 
-    @Query("SELECT * FROM NotesDatabase WHERE noteTile LIKE :searchTerm OR noteTextContent LIKE :searchTerm ORDER BY noteIndex ASC")
+    @Query("SELECT * FROM NotesDatabase WHERE noteTile LIKE :searchTerm OR noteTextContent LIKE :searchTerm ORDER BY noteIndex DESC")
     suspend fun searchAllNotesData(searchTerm: String): List<NotesDatabaseModel>
 
 
