@@ -13,6 +13,10 @@ import android.view.animation.AccelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
@@ -383,18 +387,66 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         } else {
 
-            if (incomingActivity == EntryConfigurations::class.java.simpleName) {
+            if (!takeNoteLayoutBinding.editTextContentView.text.isNullOrBlank() || paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
-                startActivity(Intent(applicationContext, KeepNoteOverview::class.java))
+                takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
+
+                val documentId = if (intent.hasExtra(NoteExtraData.DocumentId)) {
+
+                    intent.getLongExtra(NoteExtraData.DocumentId, System.currentTimeMillis())
+
+                } else {
+
+                    System.currentTimeMillis()
+
+                }
+
+                notesIO.saveNotesAndPaintingOnline(
+                    context = this@TakeNote,
+                    firebaseUser = firebaseUser,
+                    takeNoteLayoutBinding = takeNoteLayoutBinding,
+                    databaseEndpoints = databaseEndpoints,
+                    paintingIO = paintingIO,
+                    paintingCanvasView = paintingCanvasView,
+                    contentEncryption = contentEncryption,
+                    documentId = documentId
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    notesIO.saveNotesAndPaintingOffline(
+                        context = this@TakeNote,
+                        firebaseUser = firebaseUser,
+                        takeNoteLayoutBinding = takeNoteLayoutBinding,
+                        paintingIO = paintingIO,
+                        paintingCanvasView = paintingCanvasView,
+                        contentEncryption = contentEncryption,
+                        documentId = documentId
+                    ).await()
+
+                    withContext(Dispatchers.Main) {
+
+                        takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
+
+                        this@TakeNote.finish()
+                        overridePendingTransition(0, R.anim.fade_out)
+
+                    }
+
+                }
 
             } else {
 
+                if (incomingActivity == EntryConfigurations::class.java.simpleName) {
 
+                    startActivity(Intent(applicationContext, KeepNoteOverview::class.java))
+
+                }
+
+                this@TakeNote.finish()
+                overridePendingTransition(0, R.anim.fade_out)
 
             }
-
-            this@TakeNote.finish()
-            overridePendingTransition(0, R.anim.fade_out)
 
         }
 
