@@ -42,9 +42,14 @@ class NaturalLanguageProcessNetworkOperation(private val context: AppCompatActiv
 
                             CoroutineScope(Dispatchers.IO).async {
 
-                                (context.application as KeepNoteApplication)
+                                val notesRoomDatabaseConfiguration = (context.application as KeepNoteApplication)
                                     .notesRoomDatabaseConfiguration
+
+                                notesRoomDatabaseConfiguration
+                                    .prepareRead()
                                     .updateNoteTagsData(String(documentId).toLong(), allTags)
+
+                                notesRoomDatabaseConfiguration.closeDatabase()
 
                             }
 

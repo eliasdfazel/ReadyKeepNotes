@@ -104,9 +104,13 @@ class KeepNoteOverview : AppCompatActivity(),
                 context.overviewAdapter.notesDataStructureList.removeAt(position)
                 context.overviewAdapter.notifyItemRemoved(position)
 
-                (application as KeepNoteApplication)
-                    .notesRoomDatabaseConfiguration
+                val notesRoomDatabaseConfiguration = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
+
+                notesRoomDatabaseConfiguration
+                    .prepareRead()
                     .deleteNoteData(dataToDelete)
+
+                notesRoomDatabaseConfiguration.closeDatabase()
 
             }
 
@@ -181,41 +185,44 @@ class KeepNoteOverview : AppCompatActivity(),
 
                     lifecycleScope.launch {
 
-                        (application as KeepNoteApplication)
+                        val notesRoomDatabaseConfiguration = (application as KeepNoteApplication)
                             .notesRoomDatabaseConfiguration
-                            .updateNoteData(
-                                NotesDatabaseModel(
-                                    uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(),
-                                    noteTile = overviewAdapter.notesDataStructureList[initialPosition].noteTile.toString(),
-                                    noteTextContent = overviewAdapter.notesDataStructureList[initialPosition].noteTextContent.toString(),
-                                    noteHandwritingPaintingPaths = null,
-                                    noteHandwritingSnapshotLink = null,
-                                    noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString()
-                                        .toLong(),
-                                    noteEditTime = null,
-                                    noteIndex = newIndex,
-                                    noteTags = null
-                                )
-                            )
 
-                        (application as KeepNoteApplication)
-                            .notesRoomDatabaseConfiguration
-                            .updateNoteData(
-                                NotesDatabaseModel(
-                                    uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(),
-                                    noteTile = overviewAdapter.notesDataStructureList[targetPosition].noteTile.toString(),
-                                    noteTextContent = overviewAdapter.notesDataStructureList[targetPosition].noteTextContent.toString(),
-                                    noteHandwritingPaintingPaths = null,
-                                    noteHandwritingSnapshotLink = null,
-                                    noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString()
-                                        .toLong(),
-                                    noteEditTime = null,
-                                    noteIndex = oldIndex,
-                                    noteTags = null
-                                )
+                        val notesDatabaseDataAccessObject = notesRoomDatabaseConfiguration.prepareRead()
+
+                        notesDatabaseDataAccessObject.updateNoteData(
+                            NotesDatabaseModel(
+                                uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(),
+                                noteTile = overviewAdapter.notesDataStructureList[initialPosition].noteTile.toString(),
+                                noteTextContent = overviewAdapter.notesDataStructureList[initialPosition].noteTextContent.toString(),
+                                noteHandwritingPaintingPaths = null,
+                                noteHandwritingSnapshotLink = null,
+                                noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString()
+                                    .toLong(),
+                                noteEditTime = null,
+                                noteIndex = newIndex,
+                                noteTags = null
                             )
+                        )
+
+                        notesDatabaseDataAccessObject.updateNoteData(
+                            NotesDatabaseModel(
+                                uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(),
+                                noteTile = overviewAdapter.notesDataStructureList[targetPosition].noteTile.toString(),
+                                noteTextContent = overviewAdapter.notesDataStructureList[targetPosition].noteTextContent.toString(),
+                                noteHandwritingPaintingPaths = null,
+                                noteHandwritingSnapshotLink = null,
+                                noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString()
+                                    .toLong(),
+                                noteEditTime = null,
+                                noteIndex = oldIndex,
+                                noteTags = null
+                            )
+                        )
 
                         overviewAdapter.rearrangeItemsData(initialPosition, targetPosition)
+
+                        notesRoomDatabaseConfiguration.closeDatabase()
 
                         initialPosition = -1
                         targetPosition = -1

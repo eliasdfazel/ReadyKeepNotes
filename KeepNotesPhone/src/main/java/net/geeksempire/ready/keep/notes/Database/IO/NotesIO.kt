@@ -106,8 +106,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                         CoroutineScope(Dispatchers.IO).launch {
 
-                            (keepNoteApplication).notesRoomDatabaseConfiguration
+                            val notesRoomDatabaseConfiguration = (keepNoteApplication).notesRoomDatabaseConfiguration
+
+                            notesRoomDatabaseConfiguration
+                                .prepareRead()
                                 .updateHandwritingPathsData(uniqueNoteId.toString(), paintingIO.preparePaintingPathsOnline(documentSnapshotPath.documents))
+
+                            notesRoomDatabaseConfiguration.closeDatabase()
 
                             insertAllNotesIntoCloudDatabase(context, firebaseUser)
 
@@ -127,8 +132,14 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     dataSelected = 0
                 )
 
-                (keepNoteApplication).notesRoomDatabaseConfiguration
+                val notesRoomDatabaseConfiguration = (keepNoteApplication).notesRoomDatabaseConfiguration
+
+                notesRoomDatabaseConfiguration
+                    .prepareRead()
                     .insertNewNoteData(notesDatabaseModel)
+
+                notesRoomDatabaseConfiguration.closeDatabase()
+
 
             }
 
@@ -136,7 +147,10 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     fun insertAllNotesIntoCloudDatabase(context: AppCompatActivity, firebaseUser: FirebaseUser) = CoroutineScope(Dispatchers.IO).async {
 
-        (keepNoteApplication).notesRoomDatabaseConfiguration
+        val notesRoomDatabaseConfiguration = (keepNoteApplication).notesRoomDatabaseConfiguration
+
+        notesRoomDatabaseConfiguration
+            .prepareRead()
             .getAllNotesData().forEach { notesDatabaseModel ->
 
                     val uniqueNoteId = notesDatabaseModel.uniqueNoteId
@@ -274,6 +288,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             }
 
+        notesRoomDatabaseConfiguration.closeDatabase()
+
     }
 
     /* Offline Database */
@@ -288,6 +304,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
         firebaseUser?.let {
 
             try {
+
+                val notesRoomDatabaseConfiguration = (keepNoteApplication).notesRoomDatabaseConfiguration
 
                 withContext(SupervisorJob() + Dispatchers.Main) {
 
@@ -318,12 +336,14 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
 
-                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                    notesRoomDatabaseConfiguration
+                        .prepareRead()
                         .updateNoteData(notesDatabaseModel)
 
                 } else {
 
-                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                    notesRoomDatabaseConfiguration
+                        .prepareRead()
                         .insertNewNoteData(notesDatabaseModel)
 
                 }
@@ -338,6 +358,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 }
 
                 context.noteDatabaseConfigurations.lastTimeDatabaseUpdate(System.currentTimeMillis())
+
+                notesRoomDatabaseConfiguration.closeDatabase()
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -386,6 +408,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             try {
 
+                val notesRoomDatabaseConfiguration = (keepNoteApplication).notesRoomDatabaseConfiguration
+
                 if (context.overviewLayoutBinding.quickTakeNote.text?.isNotBlank() == true) {
 
                     withContext(SupervisorJob() + Dispatchers.Main) {
@@ -420,7 +444,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         noteTags = null
                     )
 
-                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                    notesRoomDatabaseConfiguration
+                        .prepareRead()
                         .insertNewNoteData(notesDatabaseModel)
 
                     withContext(SupervisorJob() + Dispatchers.Main) {
@@ -441,6 +466,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     }
 
                     context.notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(arrayListOf(notesDatabaseModel))
+
+                    notesRoomDatabaseConfiguration.closeDatabase()
 
                 } else {
 

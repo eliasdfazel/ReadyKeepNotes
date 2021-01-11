@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.NotesDatabaseDataAccessObject
@@ -14,15 +15,41 @@ abstract class NotesRoomDatabaseInterface : RoomDatabase() {
     abstract fun initializeDataAccessObject(): NotesDatabaseDataAccessObject
 }
 
-class NotesRoomDatabaseConfiguration {
+class NotesRoomDatabaseConfiguration (private val context: Context) {
 
-    fun initialize(context: Context) : NotesDatabaseDataAccessObject {
+    private lateinit var databaseInterface: NotesRoomDatabaseInterface
 
-        val notesRoomDatabaseConfiguration: NotesRoomDatabaseInterface = Room.databaseBuilder(context, NotesRoomDatabaseInterface::class.java, NotesDatabase)
-            .fallbackToDestructiveMigration()
-            .build()
+    private fun initialize() : RoomDatabase.Builder<NotesRoomDatabaseInterface> {
 
-        return notesRoomDatabaseConfiguration.initializeDataAccessObject()
+        return Room.databaseBuilder(context, NotesRoomDatabaseInterface::class.java, NotesDatabase)
+            .fallbackToDestructiveMigration().addCallback(object : RoomDatabase.Callback() {
+
+                override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                    super.onCreate(supportSQLiteDatabase)
+                }
+
+                override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                    super.onOpen(supportSQLiteDatabase)
+                }
+
+            })
+    }
+
+    fun prepareRead() : NotesDatabaseDataAccessObject {
+
+        databaseInterface = initialize().build()
+
+        return databaseInterface.initializeDataAccessObject()
+    }
+
+    fun closeDatabase() {
+
+        if (::databaseInterface.isInitialized) {
+
+            databaseInterface.close()
+
+        }
+
     }
 
 }

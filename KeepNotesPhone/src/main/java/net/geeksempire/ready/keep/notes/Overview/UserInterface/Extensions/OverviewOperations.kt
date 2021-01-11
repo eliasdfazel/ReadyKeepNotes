@@ -11,8 +11,10 @@ import net.geeksempire.ready.keep.notes.R
 
 fun KeepNoteOverview.startDatabaseOperation() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
-    val allNotesData = (application as KeepNoteApplication)
-        .notesRoomDatabaseConfiguration
+    val notesRoomDatabaseConfiguration = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
+
+    val allNotesData = notesRoomDatabaseConfiguration
+        .prepareRead()
         .getAllNotesData()
 
     databaseSize = allNotesData.size.toLong()
@@ -20,12 +22,15 @@ fun KeepNoteOverview.startDatabaseOperation() = CoroutineScope(SupervisorJob() +
 
     notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(allNotesData)
 
+    notesRoomDatabaseConfiguration.closeDatabase()
+
 }
 
 fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
 
-    val newDatabaseSize = (application as KeepNoteApplication)
-        .notesRoomDatabaseConfiguration
+    val notesRoomDatabaseConfiguration = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
+
+    val newDatabaseSize = notesRoomDatabaseConfiguration.prepareRead()
         .getSizeOfDatabase().toLong()
 
     if (newDatabaseSize > databaseSize
@@ -35,6 +40,8 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
         startDatabaseOperation()
 
     }
+
+    notesRoomDatabaseConfiguration.closeDatabase()
 
 }
 

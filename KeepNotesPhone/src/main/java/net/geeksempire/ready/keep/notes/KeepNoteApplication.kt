@@ -11,12 +11,11 @@ import net.geeksempire.ready.keep.notes.Database.Configurations.Offline.NotesRoo
 import net.geeksempire.ready.keep.notes.Database.Configurations.Online.FirestoreConfiguration
 import net.geeksempire.ready.keep.notes.DependencyInjections.DaggerDependencyGraph
 import net.geeksempire.ready.keep.notes.DependencyInjections.DependencyGraph
-import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.NotesDatabaseDataAccessObject
 
 class KeepNoteApplication : Application() {
 
-    val notesRoomDatabaseConfiguration: NotesDatabaseDataAccessObject by lazy {
-        NotesRoomDatabaseConfiguration().initialize(applicationContext)
+    val notesRoomDatabaseConfiguration: NotesRoomDatabaseConfiguration by lazy {
+        NotesRoomDatabaseConfiguration(applicationContext)
     }
 
     val firestoreConfiguration: FirestoreConfiguration by lazy {

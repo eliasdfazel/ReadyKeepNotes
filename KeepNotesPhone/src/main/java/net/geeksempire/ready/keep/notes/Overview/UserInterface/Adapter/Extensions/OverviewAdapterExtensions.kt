@@ -52,9 +52,13 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
                 context.overviewAdapter.notesDataStructureList.removeAt(position)
                 context.overviewAdapter.notifyItemRemoved(position)
 
-                (this@setupDeleteView.context.application as KeepNoteApplication)
-                    .notesRoomDatabaseConfiguration
+                val notesRoomDatabaseConfiguration = (this@setupDeleteView.context.application as KeepNoteApplication).notesRoomDatabaseConfiguration
+
+                notesRoomDatabaseConfiguration
+                    .prepareRead()
                     .deleteNoteData(dataToDelete)
+
+                notesRoomDatabaseConfiguration.closeDatabase()
 
             }
 
