@@ -7,7 +7,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructureSearch
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
@@ -15,7 +15,7 @@ import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Searc
 
 class SearchResultAdapter(val context: SearchProcess) : RecyclerView.Adapter<SearchResultViewHolder>() {
 
-    val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
+    val notesDataStructureList: ArrayList<NotesDataStructureSearch> = ArrayList<NotesDataStructureSearch>()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : SearchResultViewHolder {
 
@@ -27,12 +27,6 @@ class SearchResultAdapter(val context: SearchProcess) : RecyclerView.Adapter<Sea
     override fun getItemCount() : Int {
 
         return notesDataStructureList.size
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        super.getItemViewType(position)
-
-        return notesDataStructureList[position].dataSelected
     }
 
     override fun onBindViewHolder(overviewViewHolder: SearchResultViewHolder, position: Int, payloads: MutableList<Any>) {

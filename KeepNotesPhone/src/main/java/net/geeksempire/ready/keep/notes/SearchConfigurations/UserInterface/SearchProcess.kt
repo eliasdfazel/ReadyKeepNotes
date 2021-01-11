@@ -104,7 +104,6 @@ class SearchProcess : AppCompatActivity() {
                     searchProcessLayoutBinding.loadingView.pauseAnimation()
                     searchProcessLayoutBinding.loadingView.visibility = View.INVISIBLE
 
-                    searchResultAdapter.notesDataStructureList.clear()
                     searchResultAdapter.notesDataStructureList.addAll(it)
 
                     searchResultAdapter.notifyDataSetChanged()
@@ -169,15 +168,19 @@ class SearchProcess : AppCompatActivity() {
 
     private fun invokeSearchOperations(searchTerm: String, allNotesData: List<NotesDataStructureSearch>) {
 
-        searchProcessLayoutBinding.recyclerViewSearchResults.removeAllViews()
-        searchResultAdapter.notesDataStructureList.clear()
+        if (searchTerm.isNotBlank()) {
 
-        searchProcessLayoutBinding.loadingView.visibility = View.VISIBLE
+            searchProcessLayoutBinding.recyclerViewSearchResults.removeAllViews()
+            searchResultAdapter.notesDataStructureList.clear()
 
-        searchProcessLayoutBinding.loadingView.setAnimation(R.raw.searching_loading_animation)
-        searchProcessLayoutBinding.loadingView.playAnimation()
+            searchProcessLayoutBinding.loadingView.visibility = View.VISIBLE
 
-        searchViewModel.searchInDatabase(searchTerm, allNotesData)
+            searchProcessLayoutBinding.loadingView.setAnimation(R.raw.searching_loading_animation)
+            searchProcessLayoutBinding.loadingView.playAnimation()
+
+            searchViewModel.searchInDatabase(searchTerm, allNotesData)
+
+        }
 
     }
 

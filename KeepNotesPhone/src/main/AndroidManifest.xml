@@ -24,6 +24,7 @@
         android:label="@string/applicationName"
         android:supportsRtl="true"
         android:largeHeap="true"
+        android:hardwareAccelerated="false"
         android:theme="@style/GeeksEmpire.Material">
 
         <meta-data

@@ -1,19 +1,20 @@
 package net.geeksempire.ready.keep.notes.SearchConfigurations.SearchLiveData
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructureSearch
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 
 class SearchViewModel : ViewModel() {
 
-    val searchResults: MutableLiveData<List<NotesDatabaseModel>> by lazy {
-        MutableLiveData<List<NotesDatabaseModel>>()
+    val searchResults: MutableLiveData<List<NotesDataStructureSearch>> by lazy {
+        MutableLiveData<List<NotesDataStructureSearch>>()
     }
 
     fun prepareDataForSearch(contentEncryption: ContentEncryption, firebaseUserUniqueId: String, allNotes: List<NotesDatabaseModel>) : Deferred<List<NotesDataStructureSearch>> = CoroutineScope(Dispatchers.IO).async {
@@ -32,7 +33,7 @@ class SearchViewModel : ViewModel() {
                 plainNotesData.add(NotesDataStructureSearch(
                     uniqueNoteId = it.uniqueNoteId,
                     noteTile = contentEncryption.decryptEncodedData(it.noteTile.toString(), firebaseUserUniqueId).toString(),
-                    noteTextContent = it.noteTextContent.toString(),
+                    noteTextContent = contentEncryption.decryptEncodedData(it.noteTextContent.toString(), firebaseUserUniqueId).toString(),
                     noteHandwritingPaintingPaths = it.noteHandwritingPaintingPaths,
                     noteHandwritingSnapshotLink = it.noteHandwritingSnapshotLink,
                     noteTags = noteTags,
@@ -46,12 +47,23 @@ class SearchViewModel : ViewModel() {
         plainNotesData
     }
 
-    fun searchInDatabase(searchTerm: String, allNotesData: List<NotesDataStructureSearch>) = CoroutineScope(Dispatchers.IO).async {
+    fun searchInDatabase(searchTerm: String, allNotesData: List<NotesDataStructureSearch>) = CoroutineScope(Dispatchers.IO).launch {
 
-        allNotesData.filter {
+        val allSearchResults = ArrayList<NotesDataStructureSearch>()
 
-            it.noteTile.contains(searchTerm) || it.noteTextContent.contains(searchTerm) || it.noteTags.contains(searchTerm) || it.noteTranscribeTags.contains(searchTerm)
-        }
+        allNotesData.asFlow()
+            .filter {
+
+
+                it.noteTile.contains(searchTerm) || it.noteTextContent.contains(searchTerm) || it.noteTags.contains(searchTerm) || it.noteTranscribeTags.contains(searchTerm)
+            }
+            .collect { searchResult ->
+                Log.d(this@SearchViewModel.javaClass.simpleName, searchResult.toString())
+
+                allSearchResults.add(searchResult)
+            }
+
+        searchResults.postValue(allSearchResults)
 
     }
 
