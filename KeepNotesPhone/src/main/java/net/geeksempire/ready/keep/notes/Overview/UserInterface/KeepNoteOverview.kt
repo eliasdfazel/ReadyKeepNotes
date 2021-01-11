@@ -411,7 +411,16 @@ class KeepNoteOverview : AppCompatActivity(),
 
                     }
 
-                    if (it.size == 1 && overviewAdapter.notesDataStructureList.size > 0) {
+                    if (it.size == 1 && overviewAdapter.notesDataStructureList.size == 0) {
+
+                        overviewAdapter.notesDataStructureList.clear()
+                        overviewAdapter.notesDataStructureList.addAll(it)
+
+                        overviewAdapter.notifyDataSetChanged()
+
+                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
+
+                    } else if (it.size == 1) {
 
                         overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
 
@@ -429,6 +438,25 @@ class KeepNoteOverview : AppCompatActivity(),
                         overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
 
                     }
+
+//                    if (it.size == 1 && overviewAdapter.notesDataStructureList.size > 0) {
+//
+//                        overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
+//
+//                            overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
+//
+//                        }
+//
+//                    } else {
+//
+//                        overviewAdapter.notesDataStructureList.clear()
+//                        overviewAdapter.notesDataStructureList.addAll(it)
+//
+//                        overviewAdapter.notifyDataSetChanged()
+//
+//                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
+//
+//                    }
 
                     overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
 
