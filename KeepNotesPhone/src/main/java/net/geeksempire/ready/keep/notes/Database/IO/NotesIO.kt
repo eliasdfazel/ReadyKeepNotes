@@ -316,8 +316,17 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     noteTags = null
                 )
 
-                (keepNoteApplication).notesRoomDatabaseConfiguration
-                    .insertNewNoteData(notesDatabaseModel)
+                if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
+
+                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                        .updateNoteData(notesDatabaseModel)
+
+                } else {
+
+                    (keepNoteApplication).notesRoomDatabaseConfiguration
+                        .insertNewNoteData(notesDatabaseModel)
+
+                }
 
                 withContext(SupervisorJob() + Dispatchers.Main) {
 

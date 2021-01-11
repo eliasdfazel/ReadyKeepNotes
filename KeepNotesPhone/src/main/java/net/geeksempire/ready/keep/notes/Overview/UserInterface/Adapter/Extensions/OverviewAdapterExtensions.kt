@@ -82,7 +82,8 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
                         uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
                         noteTile = notesDataStructureList[position].noteTile,
                         contentText = notesDataStructureList[position].noteTextContent,
-                        encryptedTextContent = true
+                        encryptedTextContent = true,
+                        updateExistingNote = true
                     )
 
                 } else {
@@ -94,7 +95,8 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
                         noteTile = notesDataStructureList[position].noteTile,
                         contentText = notesDataStructureList[position].noteTextContent,
                         paintingPath = paintingPathsJsonArray,
-                        encryptedTextContent = true
+                        encryptedTextContent = true,
+                        updateExistingNote = true
                     )
 
                 }

@@ -164,7 +164,8 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
                     noteTile = notesDataStructureList[position].noteTile,
                     contentText = notesDataStructureList[position].noteTextContent,
-                    encryptedTextContent = true
+                    encryptedTextContent = true,
+                    updateExistingNote = true
                 )
 
             } else {
@@ -178,7 +179,8 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                     noteTile = notesDataStructureList[position].noteTile,
                     contentText = notesDataStructureList[position].noteTextContent,
                     paintingPath = paintingPathsJsonArray,
-                    encryptedTextContent = true
+                    encryptedTextContent = true,
+                    updateExistingNote = true
                 )
 
             }
