@@ -411,7 +411,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                     }
 
-                    if (it.size == 1) {
+                    if (it.size == 1 && overviewAdapter.notesDataStructureList.size > 1) {
 
                         overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
 
