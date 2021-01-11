@@ -8,11 +8,13 @@ import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import net.geeksempire.ready.keep.notes.EntryConfigurations
+import net.geeksempire.ready.keep.notes.Database.Configurations.Offline.NotesRoomDatabaseConfiguration
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructureSearch
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.UserInterface.PreferencesControl
@@ -24,13 +26,12 @@ import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Exten
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.databinding.SearchProcessLayoutBinding
-import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.NotesDatabaseDataAccessObject
 
 class SearchProcess : AppCompatActivity() {
 
     val contentEncryption = ContentEncryption()
 
-    val firebaseUser = Firebase.auth.currentUser
+    val firebaseUser = Firebase.auth.currentUser!!
 
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(applicationContext)
@@ -44,6 +45,10 @@ class SearchProcess : AppCompatActivity() {
         ViewModelProvider(this@SearchProcess).get(SearchViewModel::class.java)
     }
 
+    val allNotesData = ArrayList<NotesDataStructureSearch>()
+
+    private lateinit var notesRoomDatabaseConfiguration: NotesRoomDatabaseConfiguration
+
     lateinit var searchProcessLayoutBinding: SearchProcessLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,90 +58,85 @@ class SearchProcess : AppCompatActivity() {
 
         setupViews()
 
-        val notesDatabaseDataAccessObject = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
+        notesRoomDatabaseConfiguration = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
+
+        lifecycleScope.launchWhenCreated {
+
+            allNotesData.addAll(searchViewModel.prepareDataForSearch(
+                contentEncryption, firebaseUser.uid, notesRoomDatabaseConfiguration.prepareRead().getAllNotesData()).await())
+
+        }
 
         searchProcessLayoutBinding.root.post {
 
-            if (firebaseUser != null) {
+            searchProcessLayoutBinding.recyclerViewSearchResults.layoutManager = GridLayoutManager(
+                applicationContext,
+                columnCount(applicationContext, 313),
+                RecyclerView.VERTICAL,
+                false
+            )
 
-                searchProcessLayoutBinding.recyclerViewSearchResults.layoutManager = GridLayoutManager(
-                    applicationContext,
-                    columnCount(applicationContext, 313),
-                    RecyclerView.VERTICAL,
-                    false
-                )
+            searchProcessLayoutBinding.recyclerViewSearchResults.adapter = searchResultAdapter
 
-                searchProcessLayoutBinding.recyclerViewSearchResults.adapter = searchResultAdapter
-
-                searchProcessLayoutBinding.goBackView.setOnClickListener {
-
-                    this@SearchProcess.finish()
-                    overridePendingTransition(0, R.anim.fade_out)
-
-                }
-
-                searchProcessLayoutBinding.preferencesView.setOnClickListener {
-
-                    val accountInformation = Intent(applicationContext, PreferencesControl::class.java)
-                    startActivity(accountInformation, ActivityOptions.makeSceneTransitionAnimation(this@SearchProcess, searchProcessLayoutBinding.preferencesView, getString(R.string.preferenceImageTransitionName)).toBundle())
-
-                }
-
-                searchViewModel.searchResults.observe(this@SearchProcess, Observer {
-
-                    if (it.isEmpty()) {
-
-                        searchProcessLayoutBinding.loadingView.setAnimation(R.raw.search_no_results_found)
-                        searchProcessLayoutBinding.loadingView.playAnimation()
-
-                    } else {
-
-                        searchProcessLayoutBinding.loadingView.pauseAnimation()
-                        searchProcessLayoutBinding.loadingView.visibility = View.INVISIBLE
-
-                        searchResultAdapter.notesDataStructureList.clear()
-                        searchResultAdapter.notesDataStructureList.addAll(it)
-
-                        searchResultAdapter.notifyDataSetChanged()
-
-                    }
-
-                })
-
-                searchProcessLayoutBinding.searchTerm.setOnEditorActionListener { textView, actionId, keyEvent ->
-
-                    when (actionId) {
-                        EditorInfo.IME_ACTION_SEARCH -> {
-
-                            searchProcessLayoutBinding.searchTerm.text?.let { searchTermText ->
-
-                                invokeSearchOperations(searchTermText.toString(), notesDatabaseDataAccessObject)
-
-                            }
-
-                        }
-                    }
-
-                    true
-                }
-
-                searchProcessLayoutBinding.searchActionView.setOnClickListener {
-
-                    searchProcessLayoutBinding.searchTerm.text?.let { searchTermText ->
-
-                        invokeSearchOperations(searchTermText.toString(), notesDatabaseDataAccessObject)
-
-                    }
-
-                }
-
-            } else {
-
-                startActivity(Intent(applicationContext, EntryConfigurations::class.java).apply {
-                   flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+            searchProcessLayoutBinding.goBackView.setOnClickListener {
 
                 this@SearchProcess.finish()
+                overridePendingTransition(0, R.anim.fade_out)
+
+            }
+
+            searchProcessLayoutBinding.preferencesView.setOnClickListener {
+
+                val accountInformation = Intent(applicationContext, PreferencesControl::class.java)
+                startActivity(accountInformation, ActivityOptions.makeSceneTransitionAnimation(this@SearchProcess, searchProcessLayoutBinding.preferencesView, getString(R.string.preferenceImageTransitionName)).toBundle())
+
+            }
+
+            searchViewModel.searchResults.observe(this@SearchProcess, Observer {
+
+                if (it.isEmpty()) {
+
+                    searchProcessLayoutBinding.loadingView.setAnimation(R.raw.search_no_results_found)
+                    searchProcessLayoutBinding.loadingView.playAnimation()
+
+                } else {
+
+                    searchProcessLayoutBinding.loadingView.pauseAnimation()
+                    searchProcessLayoutBinding.loadingView.visibility = View.INVISIBLE
+
+                    searchResultAdapter.notesDataStructureList.clear()
+                    searchResultAdapter.notesDataStructureList.addAll(it)
+
+                    searchResultAdapter.notifyDataSetChanged()
+
+                }
+
+            })
+
+            searchProcessLayoutBinding.searchTerm.setOnEditorActionListener { textView, actionId, keyEvent ->
+
+                when (actionId) {
+                    EditorInfo.IME_ACTION_SEARCH -> {
+
+                        searchProcessLayoutBinding.searchTerm.text?.let { searchTermText ->
+
+                            invokeSearchOperations(searchTermText.toString(), allNotesData)
+
+                        }
+
+                    }
+                }
+
+                true
+            }
+
+            searchProcessLayoutBinding.searchActionView.setOnClickListener {
+
+                searchProcessLayoutBinding.searchTerm.text?.let { searchTermText ->
+
+                    invokeSearchOperations(searchTermText.toString(), allNotesData)
+
+                }
 
             }
 
@@ -151,14 +151,23 @@ class SearchProcess : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        notesRoomDatabaseConfiguration.closeDatabase()
+
+    }
+
     override fun onBackPressed() {
+
+        notesRoomDatabaseConfiguration.closeDatabase()
 
         this@SearchProcess.finish()
         overridePendingTransition(0, R.anim.fade_out)
 
     }
 
-    private fun invokeSearchOperations(searchTerm: String, notesDatabaseDataAccessObject: NotesDatabaseDataAccessObject) {
+    private fun invokeSearchOperations(searchTerm: String, allNotesData: List<NotesDataStructureSearch>) {
 
         searchProcessLayoutBinding.recyclerViewSearchResults.removeAllViews()
         searchResultAdapter.notesDataStructureList.clear()
@@ -168,7 +177,7 @@ class SearchProcess : AppCompatActivity() {
         searchProcessLayoutBinding.loadingView.setAnimation(R.raw.searching_loading_animation)
         searchProcessLayoutBinding.loadingView.playAnimation()
 
-        searchViewModel.searchInDatabase(contentEncryption.encryptEncodedData(searchTerm, firebaseUser!!.uid).asList().toString(), notesDatabaseDataAccessObject)
+        searchViewModel.searchInDatabase(searchTerm, allNotesData)
 
     }
 

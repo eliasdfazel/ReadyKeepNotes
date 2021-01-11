@@ -8,6 +8,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.Timestamp
 
+@Keep
 object Notes {
     const val NoteTile = "noteTile"
     const val NoteTextContent = "noteTextContent"
@@ -27,6 +28,7 @@ object Notes {
     const val NotesTags = "noteTags"
 }
 
+@Keep
 object NotesTemporaryModification {
     const val NoteIsNotSelected = 0
     const val NoteIsSelected = 1
@@ -42,6 +44,15 @@ data class NotesDataStructure(var uniqueNoteId: Long,
                               var noteEditTime: Timestamp? = null,
                               var noteIndex: Long,
                               var noteTags: String? = null)
+
+@Keep
+data class NotesDataStructureSearch(var uniqueNoteId: Long,
+                                    var noteTile: String,
+                                    var noteTextContent: String,
+                                    var noteHandwritingPaintingPaths: String? = null,
+                                    var noteHandwritingSnapshotLink: String? = null,
+                                    var noteTags: String,
+                                    var noteTranscribeTags: String)
 
 const val NotesDatabase = "NotesDatabase"
 
@@ -74,8 +85,18 @@ data class NotesDatabaseModel(
 
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long,
 
+    /**
+     * Json Of Tags
+     **/
     @Nullable @ColumnInfo(name = "noteTags", typeAffinity = ColumnInfo.TEXT) var noteTags: String? = null,
+    /**
+     * Json Of Hash Tags
+     **/
     @Nullable @ColumnInfo(name = "noteHashTags", typeAffinity = ColumnInfo.TEXT) var noteHashTags: String? = null,
+    /**
+     * Json Of Transcribe Tags
+     **/
+    @Nullable @ColumnInfo(name = "noteTranscribeTags", typeAffinity = ColumnInfo.TEXT) var noteTranscribeTags: String? = null,
 
     @NonNull @ColumnInfo(name = "dataSelected") var dataSelected: Int = NotesTemporaryModification.NoteIsNotSelected
 )
