@@ -32,8 +32,6 @@ fun KeepNoteOverview.setupActions() {
 
     overviewLayoutBinding.savingView.setOnClickListener {
 
-        documentId = System.currentTimeMillis()
-
         notesIO.saveQuickNotesOnline(
             documentId = documentId,
             context = this@setupActions,
@@ -49,6 +47,8 @@ fun KeepNoteOverview.setupActions() {
             firebaseUser = firebaseUser,
             contentEncryption = contentEncryption
         )
+
+        documentId = System.currentTimeMillis()
 
     }
 

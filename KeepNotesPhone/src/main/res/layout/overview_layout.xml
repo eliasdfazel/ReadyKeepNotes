@@ -102,6 +102,7 @@
                 android:textColorHint="@color/dark"
                 android:fontFamily="monospace"
                 android:cursorVisible="true"
+                android:focusable="true"
 
                 apps:textInputLayoutFocusedRectEnabled="true"/>
         </com.google.android.material.textfield.TextInputLayout>

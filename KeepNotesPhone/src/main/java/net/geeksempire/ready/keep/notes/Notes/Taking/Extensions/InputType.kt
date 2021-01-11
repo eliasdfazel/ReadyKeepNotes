@@ -20,9 +20,9 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
                    takeNoteLayoutBinding.toggleKeyboardHandwriting.icon = getDrawable(R.drawable.icon_keyboard)
                    takeNoteLayoutBinding.toggleKeyboardHandwriting.iconSize = DpToInteger(applicationContext, 31)
 
-                   showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
-
                    takeNoteLayoutBinding.editTextContentView.requestFocus()
+
+                   showKeyboard(applicationContext, takeNoteLayoutBinding.editTextContentView)
 
                    takeNoteLayoutBinding.editTextContentView.bringToFront()
                    takeNoteLayoutBinding.paintingToolbarInclude.root.bringToFront()
