@@ -328,6 +328,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 }
 
+                context.noteDatabaseConfigurations.lastTimeDatabaseUpdate(System.currentTimeMillis())
+
             } catch (e: Exception) {
                 e.printStackTrace()
 

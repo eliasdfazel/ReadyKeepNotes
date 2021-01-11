@@ -13,6 +13,7 @@ import android.view.animation.AccelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
@@ -68,6 +69,10 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val paintingIO: PaintingIO by lazy {
         PaintingIO(applicationContext)
+    }
+
+    val noteDatabaseConfigurations: NoteDatabaseConfigurations by lazy {
+        NoteDatabaseConfigurations(applicationContext)
     }
 
     val contentEncryption: ContentEncryption  = ContentEncryption()

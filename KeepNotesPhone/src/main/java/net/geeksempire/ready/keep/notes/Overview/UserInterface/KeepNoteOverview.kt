@@ -28,6 +28,7 @@ import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInfo
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -68,6 +69,10 @@ class KeepNoteOverview : AppCompatActivity(),
 
     val notesIO: NotesIO by lazy {
         NotesIO(application as KeepNoteApplication)
+    }
+
+    val noteDatabaseConfigurations: NoteDatabaseConfigurations by lazy {
+        NoteDatabaseConfigurations(applicationContext)
     }
 
     val themePreferences: ThemePreferences by lazy {
@@ -272,6 +277,7 @@ class KeepNoteOverview : AppCompatActivity(),
     var autoEnterPlaced = false
 
     var databaseSize: Long = System.currentTimeMillis()
+    var databaseTime: Long = 0
 
     var documentId: Long = System.currentTimeMillis()
 

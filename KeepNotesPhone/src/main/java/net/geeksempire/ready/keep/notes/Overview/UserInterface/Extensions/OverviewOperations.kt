@@ -16,6 +16,7 @@ fun KeepNoteOverview.startDatabaseOperation() = CoroutineScope(SupervisorJob() +
         .getAllNotesData()
 
     databaseSize = allNotesData.size.toLong()
+    databaseTime = noteDatabaseConfigurations.lastTimeDatabaseUpdate()
 
     notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(allNotesData)
 
@@ -27,7 +28,8 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
         .notesRoomDatabaseConfiguration
         .getSizeOfDatabase().toLong()
 
-    if (newDatabaseSize > databaseSize) {
+    if (newDatabaseSize > databaseSize
+        || noteDatabaseConfigurations.lastTimeDatabaseUpdate() > databaseTime) {
         Log.d(this@databaseOperationsCheckpoint.javaClass.simpleName, "New Note Added Into Database")
 
         startDatabaseOperation()
