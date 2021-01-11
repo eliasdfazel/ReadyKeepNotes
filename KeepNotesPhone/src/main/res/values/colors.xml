@@ -46,6 +46,8 @@
     <color name="purple">#be0193</color>
     <color name="blue">#00acee</color>
     <color name="blueDark">#4576cf</color>
+    <color name="light_gray">#c5cad2</color>
+    <color name="dark_gray">#383d45</color>
 
     <color name="light">#f2f7ff</color>
     <color name="lighter">#fafbff</color>

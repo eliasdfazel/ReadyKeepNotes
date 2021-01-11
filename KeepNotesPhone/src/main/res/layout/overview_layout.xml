@@ -173,7 +173,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingBottom="79dp"
+        android:paddingBottom="89dp"
 
         apps:layout_constraintHeight_percent="0.70"
         apps:layout_constraintBottom_toBottomOf="parent">

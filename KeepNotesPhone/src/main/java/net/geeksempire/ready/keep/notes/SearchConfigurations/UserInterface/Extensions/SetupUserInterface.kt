@@ -46,7 +46,7 @@ fun SearchProcess.setupColors() {
         ThemeType.ThemeLight -> {
 
             window.statusBarColor = getColor(R.color.light)
-            window.navigationBarColor = getColor(R.color.light)
+            window.navigationBarColor = getColor(R.color.light_gray)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 
@@ -71,15 +71,13 @@ fun SearchProcess.setupColors() {
 
             searchProcessLayoutBinding.searchTerm.setTextColor(getColor(R.color.darker))
 
-            searchProcessLayoutBinding.searchActionView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.dark_transparent_high))
-
             searchProcessLayoutBinding.brandView.imageTintList = ColorStateList.valueOf(getColor(R.color.dark))
 
         }
         ThemeType.ThemeDark -> {
 
             window.statusBarColor = getColor(R.color.dark)
-            window.navigationBarColor = getColor(R.color.dark)
+            window.navigationBarColor = getColor(R.color.dark_gray)
 
             searchProcessLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
 
@@ -87,8 +85,6 @@ fun SearchProcess.setupColors() {
             searchProcessLayoutBinding.textInputSearchTerm.boxStrokeColor = getColor(R.color.light_transparent_higher)
 
             searchProcessLayoutBinding.searchTerm.setTextColor(getColor(R.color.lighter))
-
-            searchProcessLayoutBinding.searchActionView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.light_transparent_high))
 
             searchProcessLayoutBinding.brandView.imageTintList = ColorStateList.valueOf(getColor(R.color.light))
 
