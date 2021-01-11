@@ -396,8 +396,6 @@ class KeepNoteOverview : AppCompatActivity(),
 
             notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
-                println(">>> >> > " + it.size)
-
                 if (it.isNotEmpty()) {
 
                     if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
