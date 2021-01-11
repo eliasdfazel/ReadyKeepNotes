@@ -396,66 +396,68 @@ class KeepNoteOverview : AppCompatActivity(),
 
             notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
 
-                    if (it.isNotEmpty()) {
+                println(">>> >> > " + it.size)
 
-                        if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
+                if (it.isNotEmpty()) {
 
-                            overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
+                    if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
 
-                        }
+                        overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
 
-                        if (it.size == 1) {
+                    }
 
-                            overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
+                    if (it.size == 1) {
 
-                                overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
-
-                            }
-
-                        } else {
-
-                            overviewAdapter.notesDataStructureList.clear()
-                            overviewAdapter.notesDataStructureList.addAll(it)
-
-                            overviewAdapter.notifyDataSetChanged()
+                        overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
 
                             overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
 
                         }
 
-                        overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
-
                     } else {
 
                         overviewAdapter.notesDataStructureList.clear()
+                        overviewAdapter.notesDataStructureList.addAll(it)
 
-                        overviewLayoutBinding.overviewRecyclerView.removeAllViews()
+                        overviewAdapter.notifyDataSetChanged()
 
-                        overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
-
-                        SnackbarBuilder(applicationContext).show(
-                            rootView = overviewLayoutBinding.rootView,
-                            messageText = getString(R.string.emptyNotesCollection),
-                            messageDuration = Snackbar.LENGTH_INDEFINITE,
-                            actionButtonText = android.R.string.ok,
-                            snackbarActionHandlerInterface = object :
-                                SnackbarActionHandlerInterface {
-
-                                override fun onActionButtonClicked(snackbar: Snackbar) {
-                                    super.onActionButtonClicked(snackbar)
-
-                                    snackbar.dismiss()
-
-                                    overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
-
-                                }
-
-                            }
-                        )
+                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
 
                     }
 
-                })
+                    overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
+
+                } else {
+
+                    overviewAdapter.notesDataStructureList.clear()
+
+                    overviewLayoutBinding.overviewRecyclerView.removeAllViews()
+
+                    overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
+
+                    SnackbarBuilder(applicationContext).show(
+                        rootView = overviewLayoutBinding.rootView,
+                        messageText = getString(R.string.emptyNotesCollection),
+                        messageDuration = Snackbar.LENGTH_INDEFINITE,
+                        actionButtonText = android.R.string.ok,
+                        snackbarActionHandlerInterface = object :
+                            SnackbarActionHandlerInterface {
+
+                            override fun onActionButtonClicked(snackbar: Snackbar) {
+                                super.onActionButtonClicked(snackbar)
+
+                                snackbar.dismiss()
+
+                                overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
+
+                            }
+
+                        }
+                    )
+
+                }
+
+            })
 
             overviewLayoutBinding.overviewRecyclerView.addOnScrollListener(object :
                 RecyclerView.OnScrollListener() {
