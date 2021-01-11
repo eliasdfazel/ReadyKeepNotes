@@ -86,15 +86,15 @@ data class NotesDatabaseModel(
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long,
 
     /**
-     * Json Of Tags
+     * Json Array Of Tags
      **/
     @Nullable @ColumnInfo(name = "noteTags", typeAffinity = ColumnInfo.TEXT) var noteTags: String? = null,
     /**
-     * Json Of Hash Tags
+     * Json Array Of Hash Tags
      **/
     @Nullable @ColumnInfo(name = "noteHashTags", typeAffinity = ColumnInfo.TEXT) var noteHashTags: String? = null,
     /**
-     * Json Of Transcribe Tags
+     * Json Of Transcribe Tags For Each Recorded Voice
      **/
     @Nullable @ColumnInfo(name = "noteTranscribeTags", typeAffinity = ColumnInfo.TEXT) var noteTranscribeTags: String? = null,
 
