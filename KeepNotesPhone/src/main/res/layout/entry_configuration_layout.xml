@@ -77,9 +77,9 @@
 
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/waitingView"
-        android:layout_width="99dp"
-        android:layout_height="99dp"
-        android:padding="19dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="27dp"
         android:visibility="invisible"
 
         apps:SpinKit_Style="MultiplePulseRing"

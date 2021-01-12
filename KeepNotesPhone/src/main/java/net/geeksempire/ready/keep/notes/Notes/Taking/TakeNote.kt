@@ -343,6 +343,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     override fun onBackPressed() {
 
+        println(">>>>>>>>>>>>>> " + incomingActivity)
+
         if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
 
             val finalRadius = hypot(
@@ -401,18 +403,18 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                 }
 
-                notesIO.saveNotesAndPaintingOnline(
-                    context = this@TakeNote,
-                    firebaseUser = firebaseUser,
-                    takeNoteLayoutBinding = takeNoteLayoutBinding,
-                    databaseEndpoints = databaseEndpoints,
-                    paintingIO = paintingIO,
-                    paintingCanvasView = paintingCanvasView,
-                    contentEncryption = contentEncryption,
-                    documentId = documentId
-                )
-
                 CoroutineScope(Dispatchers.IO).launch {
+
+                    notesIO.saveNotesAndPaintingOnline(
+                        context = this@TakeNote,
+                        firebaseUser = firebaseUser,
+                        takeNoteLayoutBinding = takeNoteLayoutBinding,
+                        databaseEndpoints = databaseEndpoints,
+                        paintingIO = paintingIO,
+                        paintingCanvasView = paintingCanvasView,
+                        contentEncryption = contentEncryption,
+                        documentId = documentId
+                    )
 
                     notesIO.saveNotesAndPaintingOffline(
                         context = this@TakeNote,
@@ -428,8 +430,19 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                         takeNoteLayoutBinding.waitingViewUpload.visibility = View.INVISIBLE
 
-                        this@TakeNote.finish()
-                        overridePendingTransition(0, R.anim.fade_out)
+                        if (incomingActivity == EntryConfigurations::class.java.simpleName) {
+
+                            startActivity(Intent(applicationContext, KeepNoteOverview::class.java),
+                                ActivityOptions.makeCustomAnimation(applicationContext, 0, R.anim.fade_out).toBundle())
+
+                            this@TakeNote.finish()
+
+                        } else {
+
+                            this@TakeNote.finish()
+                            overridePendingTransition(0, R.anim.fade_out)
+
+                        }
 
                     }
 
@@ -439,12 +452,17 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                 if (incomingActivity == EntryConfigurations::class.java.simpleName) {
 
-                    startActivity(Intent(applicationContext, KeepNoteOverview::class.java))
+                    startActivity(Intent(applicationContext, KeepNoteOverview::class.java),
+                        ActivityOptions.makeCustomAnimation(applicationContext, 0, R.anim.fade_out).toBundle())
+
+                    this@TakeNote.finish()
+
+                } else {
+
+                    this@TakeNote.finish()
+                    overridePendingTransition(0, R.anim.fade_out)
 
                 }
-
-                this@TakeNote.finish()
-                overridePendingTransition(0, R.anim.fade_out)
 
             }
 
