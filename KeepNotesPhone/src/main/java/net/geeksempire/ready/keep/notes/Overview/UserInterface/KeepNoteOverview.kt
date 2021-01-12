@@ -557,7 +557,7 @@ class KeepNoteOverview : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
 
-//        setupColors()
+        setupColors()
 
         loadUserAccountInformation()
 

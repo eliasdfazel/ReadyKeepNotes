@@ -248,7 +248,6 @@
         android:insetBottom="0dp"
         android:insetLeft="0dp"
         android:insetRight="0dp"
-        android:background="@color/default_color_game_light"
 
         apps:elevation="13dp"
         apps:cornerRadius="51dp"
