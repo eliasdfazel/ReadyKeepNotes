@@ -28,7 +28,7 @@
         android:paddingHorizontal="11dp"
         android:text="@string/whatNew"
         android:textColor="@color/dark"
-        android:textSize="37sp"
+        android:textSize="29sp"
         android:textStyle="bold"
         android:fontFamily="@font/houston_regular"
 
@@ -93,7 +93,7 @@
             android:paddingHorizontal="13dp"
             android:paddingVertical="7dp"
             android:textColor="@color/dark"
-            android:textSize="17sp"
+            android:textSize="13sp"
             android:fontFamily="monospace"/>
     </ScrollView>
 
