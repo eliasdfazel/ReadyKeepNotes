@@ -18,7 +18,7 @@
         android:gravity="end|bottom"
         android:height="91dp"
         android:width="91dp"
-        android:bottom="59dp"
+        android:bottom="63dp"
         android:end="27dp">
 
         <shape
@@ -49,7 +49,7 @@
         android:gravity="start|bottom"
         android:height="91dp"
         android:width="91dp"
-        android:bottom="59dp"
+        android:bottom="63dp"
         android:start="27dp">
 
         <shape
