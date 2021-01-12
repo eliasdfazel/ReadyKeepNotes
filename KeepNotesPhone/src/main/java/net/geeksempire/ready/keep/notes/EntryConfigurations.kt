@@ -11,8 +11,6 @@ import android.provider.Settings
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.snackbar.Snackbar
@@ -28,7 +26,6 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
-import net.geeksempire.ready.keep.notes.Utils.PopupShortcuts.PopupShortcutsCreator
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.EntryConfigurationLayoutBinding
@@ -150,11 +147,6 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
         }
 
-        val workRequest = OneTimeWorkRequestBuilder<PopupShortcutsCreator>().build()
-
-        val popupShortcutsWorker = WorkManager.getInstance(applicationContext)
-        popupShortcutsWorker.enqueue(workRequest)
-
     }
 
     override fun onPause() {
@@ -250,8 +242,6 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
     }
 
     private fun openOverviewActivity() {
-
-        println(">>>>>>>>> 1")
 
         startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK

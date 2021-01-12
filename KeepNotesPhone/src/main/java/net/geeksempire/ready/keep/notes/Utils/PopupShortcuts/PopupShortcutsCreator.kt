@@ -75,10 +75,13 @@ class PopupShortcutsCreator (initialContext: Context, workerParameters: WorkerPa
 
     fun configure() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
 
-        shortcutManager.removeAllDynamicShortcuts()
+        if (shortcutManager.dynamicShortcuts.size == 5) {
 
-        addShortcutKeyboardTyping()
+            shortcutManager.removeAllDynamicShortcuts()
 
+            addShortcutKeyboardTyping()
+
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)

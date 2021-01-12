@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.abanabsalan.aban.magazine.Utils.System.doVibrate
 import com.abanabsalan.aban.magazine.Utils.System.hideKeyboard
 import com.abanabsalan.aban.magazine.Utils.System.showKeyboard
@@ -42,6 +44,7 @@ import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.InApplicationU
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.UpdateResponse
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
+import net.geeksempire.ready.keep.notes.Utils.PopupShortcuts.PopupShortcutsCreator
 import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteMessageHandler
 import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteSubscriptions
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
@@ -298,8 +301,6 @@ class KeepNoteOverview : AppCompatActivity(),
         overviewLayoutBinding = OverviewLayoutBinding.inflate(layoutInflater)
         setContentView(overviewLayoutBinding.root)
 
-        println(">>>>>>>>> 2")
-
         (application as KeepNoteApplication)
             .dependencyGraph
             .subDependencyGraph()
@@ -553,6 +554,16 @@ class KeepNoteOverview : AppCompatActivity(),
             }
 
         }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val workRequest = OneTimeWorkRequestBuilder<PopupShortcutsCreator>().build()
+
+        val popupShortcutsWorker = WorkManager.getInstance(applicationContext)
+        popupShortcutsWorker.enqueue(workRequest)
 
     }
 
