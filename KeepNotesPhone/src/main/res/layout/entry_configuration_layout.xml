@@ -82,7 +82,7 @@
         android:padding="27dp"
         android:visibility="invisible"
 
-        apps:SpinKit_Style="MultiplePulseRing"
+        apps:SpinKit_Style="FoldingCube"
         apps:SpinKit_Color="@color/default_color_game_light_transparent"
 
         apps:layout_constraintVertical_bias="0.837"
