@@ -55,7 +55,7 @@
         apps:layout_constraintHeight_percent="0.23"
         apps:layout_constraintTop_toBottomOf="@id/informationBar">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/textInputQuickTakeNote"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -107,7 +107,7 @@
                 apps:textInputLayoutFocusedRectEnabled="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/savingView"
             android:layout_width="39dp"
             android:layout_height="39dp"
@@ -131,7 +131,7 @@
             apps:layout_constraintBottom_toBottomOf="parent"
             apps:layout_constraintEnd_toEndOf="parent"/>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/fullNoteTaking"
             android:layout_width="39dp"
             android:layout_height="39dp"
@@ -213,7 +213,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/startNewNoteView"
         android:layout_width="0dp"
         android:layout_height="53dp"
@@ -231,14 +231,14 @@
         apps:iconGravity="textStart"
         apps:iconSize="67dp"
         apps:rippleColor="@color/pink"
-        apps:backgroundTint="@color/light"
+        apps:backgroundTint="@color/lighter"
 
         apps:layout_constraintWidth_percent="0.53"
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/goToSearch"
         android:layout_width="0dp"
         android:layout_height="53dp"
@@ -256,13 +256,13 @@
         apps:iconGravity="textStart"
         apps:iconSize="29dp"
         apps:rippleColor="@color/pink"
-        apps:backgroundTint="@color/light"
+        apps:backgroundTint="@color/lighter"
 
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toEndOf="@id/startNewNoteView"
         apps:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/unknownDuty"
         android:layout_width="0dp"
         android:layout_height="53dp"
@@ -280,7 +280,7 @@
         apps:iconGravity="textStart"
         apps:iconSize="23dp"
         apps:rippleColor="@color/pink"
-        apps:backgroundTint="@color/light"
+        apps:backgroundTint="@color/lighter"
 
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintEnd_toStartOf="@id/startNewNoteView"

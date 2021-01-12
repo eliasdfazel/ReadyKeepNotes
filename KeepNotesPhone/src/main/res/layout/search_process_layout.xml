@@ -121,7 +121,7 @@
         apps:iconGravity="textStart"
         apps:cornerRadius="51dp"
         apps:rippleColor="@color/cyan"
-        apps:backgroundTint="@color/light"
+        apps:backgroundTint="@color/lighter"
 
         apps:layout_constraintTop_toTopOf="@id/textInputSearchTerm"
         apps:layout_constraintBottom_toBottomOf="@id/textInputSearchTerm"
