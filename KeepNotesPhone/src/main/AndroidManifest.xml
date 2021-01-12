@@ -43,6 +43,7 @@
             android:value="${enableCrashReporting}" />
 
         <activity
+            android:excludeFromRecents="true"
             android:name=".EntryConfigurations">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

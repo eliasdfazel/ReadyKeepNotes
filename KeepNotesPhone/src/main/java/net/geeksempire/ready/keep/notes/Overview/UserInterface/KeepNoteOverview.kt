@@ -298,6 +298,8 @@ class KeepNoteOverview : AppCompatActivity(),
         overviewLayoutBinding = OverviewLayoutBinding.inflate(layoutInflater)
         setContentView(overviewLayoutBinding.root)
 
+        println(">>>>>>>>> 2")
+
         (application as KeepNoteApplication)
             .dependencyGraph
             .subDependencyGraph()

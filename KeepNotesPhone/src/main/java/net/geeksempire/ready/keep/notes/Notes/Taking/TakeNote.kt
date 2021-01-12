@@ -343,8 +343,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     override fun onBackPressed() {
 
-        println(">>>>>>>>>>>>>> " + incomingActivity)
-
         if (takeNoteLayoutBinding.colorPaletteInclude.root.isShown) {
 
             val finalRadius = hypot(

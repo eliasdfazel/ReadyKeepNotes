@@ -11,6 +11,8 @@ import android.provider.Settings
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.snackbar.Snackbar
@@ -148,9 +150,15 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
         }
 
-        PopupShortcutsCreator(this@EntryConfigurations)
-            .configure()
+        val workRequest = OneTimeWorkRequestBuilder<PopupShortcutsCreator>().build()
 
+        val popupShortcutsWorker = WorkManager.getInstance(applicationContext)
+        popupShortcutsWorker.enqueue(workRequest)
+
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissionsList: Array<out String>, grantResults: IntArray) {
@@ -243,9 +251,11 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
     private fun openOverviewActivity() {
 
-        startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
+        println(">>>>>>>>> 1")
 
-        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, 0).toBundle())
+        startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
         this@EntryConfigurations.finish()
 

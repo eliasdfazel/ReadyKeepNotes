@@ -10,6 +10,7 @@
 
 package net.geeksempire.ready.keep.notes.Utils.PopupShortcuts
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
@@ -18,7 +19,8 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -27,7 +29,7 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.SearchProcess
@@ -49,11 +51,29 @@ object PopupShortcutsActions {
 /**
  * POPUP_SHORTCUTS_TAKE_NOTE & POPUP_SHORTCUTS_QUICK_TAKE_NOTE & POPUP_SHORTCUTS_SEARCH_PROCESS & POPUP_SHORTCUTS_BROWSER
  **/
-class PopupShortcutsCreator (private val context: AppCompatActivity) {
+class PopupShortcutsCreator (initialContext: Context, workerParameters: WorkerParameters) : CoroutineWorker(initialContext, workerParameters) {
 
-    val shortcutManager: ShortcutManager = context.getSystemService(ShortcutManager::class.java) as ShortcutManager
+    private val context = initialContext
 
-    fun configure() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+    val shortcutManager: ShortcutManager = initialContext.getSystemService(ShortcutManager::class.java) as ShortcutManager
+
+    private var popupShortcutsCreatorResult: Result = Result.failure()
+
+    override suspend fun doWork(): Result {
+
+        configure()
+
+        popupShortcutsCreatorResult = if (shortcutManager.dynamicShortcuts.isNotEmpty()) {
+            Result.success()
+        } else {
+            Result.failure()
+        }
+
+        return popupShortcutsCreatorResult
+    }
+
+
+    fun configure() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
 
         shortcutManager.removeAllDynamicShortcuts()
 
