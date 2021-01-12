@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.PixelFormat
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.text.Html
@@ -38,6 +39,7 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
         layoutParams.windowAnimations = android.R.style.Animation_Dialog
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.57f
+        layoutParams.format = PixelFormat.TRANSPARENT
 
         val dialogue = Dialog(context)
         dialogue.requestWindowFeature(Window.FEATURE_NO_TITLE)

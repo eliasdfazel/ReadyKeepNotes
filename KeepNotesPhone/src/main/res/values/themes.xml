@@ -35,8 +35,6 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
 
-        <item name="android:dialogTheme">@style/TransparentStyle</item>
-
     </style>
 
     <style name="GeeksEmpire.TakeNote" parent="GeeksEmpire.Material">

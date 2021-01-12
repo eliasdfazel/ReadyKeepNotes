@@ -439,25 +439,6 @@ class KeepNoteOverview : AppCompatActivity(),
 
                     }
 
-//                    if (it.size == 1 && overviewAdapter.notesDataStructureList.size > 0) {
-//
-//                        overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
-//
-//                            overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
-//
-//                        }
-//
-//                    } else {
-//
-//                        overviewAdapter.notesDataStructureList.clear()
-//                        overviewAdapter.notesDataStructureList.addAll(it)
-//
-//                        overviewAdapter.notifyDataSetChanged()
-//
-//                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
-//
-//                    }
-
                     overviewLayoutBinding.waitingViewDownload.visibility = View.INVISIBLE
 
                 } else {
@@ -576,7 +557,7 @@ class KeepNoteOverview : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
 
-        setupColors()
+//        setupColors()
 
         loadUserAccountInformation()
 

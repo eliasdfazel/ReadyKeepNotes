@@ -45,6 +45,19 @@ fun KeepNoteOverview.setupColors() {
             window.statusBarColor = getColor(R.color.dark)
             window.navigationBarColor = getColor(R.color.dark)
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+                window.insetsController?.setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS)
+
+            } else {
+
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = 0
+
+            }
+
             overviewLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
 
             overviewLayoutBinding.textInputQuickTakeNote.boxBackgroundColor = getColor(R.color.light_transparent_high)
