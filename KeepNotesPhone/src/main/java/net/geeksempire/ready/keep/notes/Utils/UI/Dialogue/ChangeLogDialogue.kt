@@ -10,6 +10,7 @@ import android.text.Html
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
@@ -27,7 +28,7 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
 
     private val fileIO = FileIO(context)
 
-    fun initializeShow() : Dialog {
+    fun initializeShow() : Deferred<Dialog> = CoroutineScope(Dispatchers.Main).async {
 
         val changeLogLayoutBinding = ChangeLogLayoutBinding.inflate(context.layoutInflater)
 
@@ -43,6 +44,7 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
         dialogue.setContentView(changeLogLayoutBinding.root)
         dialogue.setCancelable(true)
         dialogue.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogue.window?.peekDecorView()?.setBackgroundColor(Color.TRANSPARENT)
         dialogue.window?.decorView?.setBackgroundColor(Color.TRANSPARENT)
         dialogue.window?.attributes = layoutParams
 
@@ -105,6 +107,8 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
             dialogue.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         }
 
+        delay(531)
+
         if (!context.getFileStreamPath(".Updated").exists()) {
 
             if (!context.isFinishing) {
@@ -119,7 +123,9 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
 
         }
 
-        return dialogue
+        dialogue.show()
+
+        dialogue
     }
 
 }
