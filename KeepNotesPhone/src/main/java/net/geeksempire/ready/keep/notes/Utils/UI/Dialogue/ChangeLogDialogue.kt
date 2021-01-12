@@ -123,8 +123,6 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
 
         }
 
-        dialogue.show()
-
         dialogue
     }
 
