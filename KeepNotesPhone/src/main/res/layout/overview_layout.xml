@@ -224,7 +224,7 @@
         android:insetLeft="0dp"
         android:insetRight="0dp"
 
-        apps:elevation="13dp"
+        apps:elevation="23dp"
         apps:cornerRadius="51dp"
         apps:icon="@drawable/brand"
         apps:iconTintMode="multiply"
@@ -249,7 +249,7 @@
         android:insetLeft="0dp"
         android:insetRight="0dp"
 
-        apps:elevation="13dp"
+        apps:elevation="23dp"
         apps:cornerRadius="51dp"
         apps:icon="@drawable/icon_search"
         apps:iconTintMode="multiply"
