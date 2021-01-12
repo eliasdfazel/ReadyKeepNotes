@@ -75,7 +75,7 @@ class PopupShortcutsCreator (initialContext: Context, workerParameters: WorkerPa
 
     fun configure() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
 
-        if (shortcutManager.dynamicShortcuts.size == 5) {
+        if (shortcutManager.dynamicShortcuts.size != 5) {
 
             shortcutManager.removeAllDynamicShortcuts()
 
