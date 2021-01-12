@@ -34,8 +34,8 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
         val changeLogLayoutBinding = ChangeLogLayoutBinding.inflate(context.layoutInflater)
 
         val layoutParams = WindowManager.LayoutParams()
-        layoutParams.width = displayX(context).percentage(70.0).roundToInt() //dialogueWidth
-        layoutParams.height = displayY(context).percentage(50.0).roundToInt() //dialogueHeight
+        layoutParams.width = displayX(context).percentage(77.0).roundToInt() //dialogueWidth
+        layoutParams.height = displayY(context).percentage(55.0).roundToInt() //dialogueHeight
         layoutParams.windowAnimations = android.R.style.Animation_Dialog
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.57f
