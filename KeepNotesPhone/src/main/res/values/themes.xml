@@ -10,7 +10,7 @@
         <item name="colorPrimaryDark">@color/default_color_dark</item>
         <item name="colorAccent">@color/default_color_light</item>
 
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:windowBackground">@drawable/splash_screen_start</item>
 
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -86,7 +86,7 @@
     <style name="GeeksEmpire.Material.WebView" parent="@style/GeeksEmpire.Material">
 
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:windowBackground">@drawable/splash_screen_start</item>
 
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

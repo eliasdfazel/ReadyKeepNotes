@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 9/29/20 6:00 AM
+  ~ Last modified 9/29/20 5:43 AM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@color/default_color" />
+
+    <item
+        android:gravity="end|bottom"
+        android:height="91dp"
+        android:width="91dp"
+        android:bottom="59dp"
+        android:end="27dp">
+
+        <shape
+            android:shape="oval">
+
+            <gradient
+                android:gradientRadius="43%"
+                android:type="radial"
+                android:startColor="@color/dark"
+                android:centerColor="@color/dark_transparent"
+                android:endColor="@android:color/transparent" />
+        </shape>
+
+        <bitmap
+            android:src="@drawable/official_business_logo"/>
+    </item>
+
+    <item
+        android:gravity="end|bottom"
+        android:height="71dp"
+        android:width="71dp"
+        android:bottom="77dp"
+        android:end="37dp"
+        android:drawable="@drawable/official_business_logo">
+    </item>
+
+    <item
+        android:gravity="start|bottom"
+        android:height="91dp"
+        android:width="91dp"
+        android:bottom="59dp"
+        android:start="27dp">
+
+        <shape
+            android:shape="oval">
+
+            <gradient
+                android:gradientRadius="43%"
+                android:type="radial"
+                android:startColor="@color/dark"
+                android:centerColor="@color/dark_transparent"
+                android:endColor="@android:color/transparent" />
+        </shape>
+
+        <bitmap
+            android:src="@drawable/official_business_logo"/>
+    </item>
+
+    <item
+        android:gravity="start|bottom"
+        android:height="71dp"
+        android:width="71dp"
+        android:bottom="77dp"
+        android:start="37dp"
+        android:drawable="@drawable/company_logo">
+    </item>
+
+    <item
+        android:gravity="center_horizontal"
+        android:height="255.38dp"
+        android:width="523.01824dp"
+        android:top="173dp"
+        android:drawable="@drawable/motto_icon">
+    </item>
+
+</layer-list>

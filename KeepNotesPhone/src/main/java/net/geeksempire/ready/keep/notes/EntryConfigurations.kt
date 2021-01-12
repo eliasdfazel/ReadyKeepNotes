@@ -11,7 +11,12 @@ import android.provider.Settings
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.offline_indicator.view.*
 import net.geeksempire.ready.keep.notes.AccountManager.SignInProcess.SetupAccount
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
@@ -32,6 +37,9 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
     private val userInformationIO: UserInformationIO by lazy {
         UserInformationIO(applicationContext)
     }
+
+    lateinit var signInSuccessListener: OnSuccessListener<AuthResult>
+    lateinit var signInFailureListener: OnFailureListener
 
     @Inject lateinit var networkCheckpoint: NetworkCheckpoint
 
@@ -58,7 +66,16 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
         if (networkCheckpoint.networkConnection()) {
 
-            if (userInformationIO.readPrivacyAgreement()) {
+            if (userInformationIO.readPrivacyAgreement()
+                && checkAllPermissions()
+                && Firebase.auth.currentUser != null) {
+
+                entryConfigurationLayoutBinding.agreementDataView.visibility = View.INVISIBLE
+                entryConfigurationLayoutBinding.proceedButton.visibility = View.INVISIBLE
+
+                openOverviewActivity()
+
+            } else if (userInformationIO.readPrivacyAgreement()) {
 
                 entryConfigurationLayoutBinding.agreementDataView.visibility = View.INVISIBLE
                 entryConfigurationLayoutBinding.proceedButton.visibility = View.INVISIBLE
@@ -67,17 +84,17 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
             } else {
 
+                window.setBackgroundDrawable(getDrawable(R.drawable.splash_screen_initial))
+
                 entryConfigurationLayoutBinding.agreementDataView.visibility = View.VISIBLE
                 entryConfigurationLayoutBinding.proceedButton.visibility = View.VISIBLE
 
-                entryConfigurationLayoutBinding.rootView.post {
-
-                    entryConfigurationLayoutBinding.blurryBackground.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                    entryConfigurationLayoutBinding.blurryBackground.visibility = View.VISIBLE
-
-                }
+                entryConfigurationLayoutBinding.blurryBackground.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                entryConfigurationLayoutBinding.blurryBackground.visibility = View.VISIBLE
 
                 entryConfigurationLayoutBinding.proceedButton.setOnClickListener {
+
+                    userInformationIO.savePrivacyAgreement()
 
                     Handler(Looper.getMainLooper()).postDelayed({
 
@@ -162,18 +179,17 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
                         entryConfigurationLayoutBinding.waitingInformationView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
                         entryConfigurationLayoutBinding.waitingInformationView.visibility = View.VISIBLE
 
-                        val signInAnonymously = {
-                            setupAccount.signInAnonymously()
-                        }
-
-                        signInAnonymously.invoke().addOnSuccessListener {
+                        signInSuccessListener = OnSuccessListener<AuthResult> {
 
                             entryConfigurationLayoutBinding.waitingView.visibility = View.GONE
                             entryConfigurationLayoutBinding.waitingInformationView.visibility = View.GONE
 
                             openTakeNoteActivity()
 
-                        }.addOnFailureListener {
+                        }
+
+                        signInFailureListener = OnFailureListener { exception ->
+                            exception.printStackTrace()
 
                             SnackbarBuilder(applicationContext).show (
                                 rootView = entryConfigurationLayoutBinding.rootView,
@@ -185,7 +201,7 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
                                     override fun onActionButtonClicked(snackbar: Snackbar) {
                                         super.onActionButtonClicked(snackbar)
 
-                                        signInAnonymously.invoke()
+                                        invokeAccountSetup(setupAccount, signInSuccessListener, signInFailureListener)
 
                                     }
 
@@ -193,6 +209,8 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
                             )
 
                         }
+
+                        invokeAccountSetup(setupAccount, signInSuccessListener, signInFailureListener)
 
                     } else {
 
@@ -244,9 +262,18 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
     }
 
-    private fun runtimePermission() {
+    private fun invokeAccountSetup(setupAccount: SetupAccount, signInSuccessListener: OnSuccessListener<AuthResult>, signInFailureListener: OnFailureListener) {
 
-        userInformationIO.savePrivacyAgreement()
+        setupAccount.signInAnonymously().also { signInAnonymously ->
+
+            signInAnonymously.addOnSuccessListener(signInSuccessListener)
+            signInAnonymously.addOnFailureListener(signInFailureListener)
+
+        }
+
+    }
+
+    private fun runtimePermission() {
 
         val permissionsList = arrayListOf(
             Manifest.permission.INTERNET,
@@ -263,6 +290,17 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
             EntryConfigurations.PermissionRequestCode
         )
 
+    }
+
+    private fun checkAllPermissions() : Boolean {
+
+        return (checkSelfPermission(Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.CHANGE_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.ACCESS_WIFI_STATE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.CHANGE_WIFI_STATE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED)
     }
 
     private fun runtimePermissionMessage() {
