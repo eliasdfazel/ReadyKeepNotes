@@ -374,8 +374,17 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
             })
             .submit()
 
-        NotesIO(application as KeepNoteApplication)
-            .startBackgroundMigrationProcess(this@createUserProfile, firebaseUser)
+        val notesIO = NotesIO(application as KeepNoteApplication)
+
+        if (userInformationIO.getOldFirebaseUniqueIdentifier() == userInformationIO.getNewFirebaseUniqueIdentifier()) {
+
+            notesIO.retrieveAllNotes(this@createUserProfile, firebaseUser)
+
+        } else {
+
+            notesIO.startBackgroundMigrationProcess(this@createUserProfile, firebaseUser)
+
+        }
 
     }
 

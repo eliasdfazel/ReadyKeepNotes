@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.core.app.ActivityOptionsCompat
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
@@ -35,7 +37,7 @@ fun KeepNoteOverview.setupActions() {
         notesIO.saveQuickNotesOnline(
             documentId = documentId,
             context = this@setupActions,
-            firebaseUser = firebaseUser,
+            firebaseUser = Firebase.auth.currentUser,
             overviewLayoutBinding = overviewLayoutBinding,
             contentEncryption = contentEncryption,
             databaseEndpoints = databaseEndpoints
@@ -44,7 +46,7 @@ fun KeepNoteOverview.setupActions() {
         notesIO.saveQuickNotesOfflineRetry = notesIO.saveQuickNotesOffline(
             documentId = documentId,
             context = this@setupActions,
-            firebaseUser = firebaseUser,
+            firebaseUser = Firebase.auth.currentUser,
             contentEncryption = contentEncryption
         )
 

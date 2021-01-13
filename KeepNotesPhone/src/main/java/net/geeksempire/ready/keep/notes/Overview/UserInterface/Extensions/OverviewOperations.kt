@@ -4,6 +4,8 @@ import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
@@ -51,7 +53,7 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
  **/
 fun KeepNoteOverview.startNetworkOperation() {
 
-    firebaseUser?.let {
+    Firebase.auth.currentUser?.let {
 
         //
 
@@ -61,10 +63,10 @@ fun KeepNoteOverview.startNetworkOperation() {
 
 fun KeepNoteOverview.loadUserAccountInformation() {
 
-    firebaseUser?.let {
+    Firebase.auth.currentUser?.let {
 
         Glide.with(applicationContext)
-            .load(firebaseUser.photoUrl)
+            .load(it.photoUrl)
             .error(getDrawable(R.drawable.not_login_icon))
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .transform(CircleCrop())

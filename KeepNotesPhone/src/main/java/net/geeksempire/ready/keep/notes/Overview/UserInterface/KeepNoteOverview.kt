@@ -26,7 +26,6 @@ import com.google.firebase.inappmessaging.model.Action
 import com.google.firebase.inappmessaging.model.InAppMessage
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
@@ -55,7 +54,6 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeActions
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
-import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -63,10 +61,6 @@ import javax.inject.Inject
 class KeepNoteOverview : AppCompatActivity(),
     NetworkConnectionListenerInterface,
     FirebaseInAppMessagingClickListener {
-
-    val firebaseAuthentication = Firebase.auth
-
-    val firebaseUser = firebaseAuthentication.currentUser
 
     val databaseEndpoints = DatabaseEndpoints()
 
@@ -230,7 +224,7 @@ class KeepNoteOverview : AppCompatActivity(),
                         initialPosition = -1
                         targetPosition = -1
 
-                        firebaseUser?.let {
+                        Firebase.auth.currentUser?.let { firebaseUser ->
 
                             (application as KeepNoteApplication)
                                 .firestoreDatabase.document(
@@ -517,7 +511,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
         startDatabaseOperation()
 
-        firebaseUser?.let {
+        Firebase.auth.currentUser?.let {
 
             RemoteSubscriptions()
                 .subscribe(it.uid)
@@ -528,30 +522,6 @@ class KeepNoteOverview : AppCompatActivity(),
 
             RemoteSubscriptions()
                 .subscribe("Beta")
-
-        }
-
-        firebaseAuthentication.addAuthStateListener { authentication ->
-
-            if (authentication.currentUser == null) {
-                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Firebase Authenticator Couldn't Find Firebase User.")
-
-                firebaseAuthentication.signOut().also {
-                    Log.d(this@KeepNoteOverview.javaClass.simpleName, "Firebase User Information Delete Locally.")
-
-                    try {
-                        File("/data/data/${packageName}/").delete()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-
-                    startActivity(Intent(this@KeepNoteOverview, AccountInformation::class.java))
-
-                    this@KeepNoteOverview.finish()
-
-                }
-
-            }
 
         }
 
@@ -576,7 +546,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
         databaseOperationsCheckpoint()
 
-        firebaseUser?.reload()
+        Firebase.auth.currentUser?.reload()
 
     }
 
@@ -587,14 +557,14 @@ class KeepNoteOverview : AppCompatActivity(),
 
             notesIO.saveQuickNotesOnline(context = this@KeepNoteOverview,
                 documentId = documentId,
-                firebaseUser = firebaseUser,
+                firebaseUser = Firebase.auth.currentUser,
                 overviewLayoutBinding = overviewLayoutBinding,
                 contentEncryption = contentEncryption,
                 databaseEndpoints = databaseEndpoints)
 
             notesIO.saveQuickNotesOfflineRetry = notesIO.saveQuickNotesOffline(context = this@KeepNoteOverview,
                 documentId = documentId,
-                firebaseUser = firebaseUser,
+                firebaseUser = Firebase.auth.currentUser,
                 contentEncryption = contentEncryption)
 
             documentId = System.currentTimeMillis()

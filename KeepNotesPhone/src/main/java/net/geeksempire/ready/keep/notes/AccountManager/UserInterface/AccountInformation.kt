@@ -43,7 +43,6 @@ import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerI
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.AccountInformationLayoutBinding
-import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -93,6 +92,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
             accountInformationLayoutBinding.root.post {
 
                 Handler(Looper.getMainLooper()).postDelayed({
+                    Log.d(this@AccountInformation.javaClass.simpleName, "User Is Anonymous. Start Identification Process")
 
                     userInformation.startSignInProcess()
 
@@ -150,30 +150,6 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
         }
 
-        Firebase.auth.addAuthStateListener { authentication ->
-
-            if (authentication.currentUser == null) {
-                Log.d(this@AccountInformation.javaClass.simpleName, "Firebase Authenticator Couldn't Find Firebase User.")
-
-                Firebase.auth.signOut().also {
-                    Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Information Delete Locally.")
-
-                    try {
-
-                        File("/data/data/${packageName}/").delete()
-
-                        userInformation.startSignInProcess()
-
-                    } catch (e: Exception){
-                        e.printStackTrace()
-                    }
-
-                }
-
-            }
-
-        }
-
     }
 
     override fun onStart() {
@@ -182,8 +158,49 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
     override fun onResume() {
         super.onResume()
+    }
 
-        Firebase.auth.currentUser?.reload()
+    override fun onBackPressed() {
+
+        if (Firebase.auth.currentUser == null) {
+
+            SnackbarBuilder(applicationContext).show(
+                rootView = accountInformationLayoutBinding.rootView,
+                messageText = getString(R.string.anonymouslySignInError),
+                messageDuration = Snackbar.LENGTH_INDEFINITE,
+                actionButtonText = R.string.signInText,
+                snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+
+                    override fun onActionButtonClicked(snackbar: Snackbar) {
+                        super.onActionButtonClicked(snackbar)
+                        Log.d(this@AccountInformation.javaClass.simpleName, "Back Button Pressed. Firebase User Is Null. Retry...")
+
+                        userInformation.startSignInProcess()
+
+                    }
+
+                }
+            )
+
+        } else {
+
+            println(">>>>>>> 555")
+
+            if (profileUpdating) {
+
+                profileUpdating = false
+
+                this@AccountInformation.finish()
+
+            } else {
+
+                this@AccountInformation.finish()
+
+            }
+
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+
+        }
 
     }
 
@@ -291,47 +308,6 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                 }
             }
-
-        }
-
-    }
-
-    override fun onBackPressed() {
-
-        if (Firebase.auth.currentUser == null) {
-
-            SnackbarBuilder(applicationContext).show(
-                rootView = accountInformationLayoutBinding.rootView,
-                messageText = getString(R.string.anonymouslySignInError),
-                messageDuration = Snackbar.LENGTH_INDEFINITE,
-                actionButtonText = R.string.signInText,
-                snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
-
-                    override fun onActionButtonClicked(snackbar: Snackbar) {
-                        super.onActionButtonClicked(snackbar)
-
-                        userInformation.startSignInProcess()
-
-                    }
-
-                }
-            )
-
-        } else {
-
-            if (profileUpdating) {
-
-                profileUpdating = false
-
-                this@AccountInformation.finish()
-
-            } else {
-
-                this@AccountInformation.finish()
-
-            }
-
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
         }
 

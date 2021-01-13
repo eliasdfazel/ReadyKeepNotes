@@ -7,6 +7,8 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
@@ -79,16 +81,16 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
     override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int) {
 
-        context.firebaseUser?.let {
+        Firebase.auth.currentUser?.let {
 
             overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(
                 notesDataStructureList[position].noteTile.toString(),
-                context.firebaseUser.uid
+                it.uid
             )
 
             overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(
                 notesDataStructureList[position].noteTextContent.toString(),
-                context.firebaseUser.uid
+                it.uid
             )
 
         }

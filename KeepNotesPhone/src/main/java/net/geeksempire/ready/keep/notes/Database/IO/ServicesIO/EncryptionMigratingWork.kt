@@ -3,8 +3,6 @@ package net.geeksempire.ready.keep.notes.Database.IO.ServicesIO
 import android.app.*
 import android.content.Context
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -47,8 +45,6 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
 
             val noteTitle = it.noteTile?.let { title -> contentEncryption.decryptEncodedData(title, oldEncryptionPassword) }
             val noteTextContent = it.noteTextContent?.let { content -> contentEncryption.decryptEncodedData(content, oldEncryptionPassword) }
-
-            println(">>> >> > " + noteTextContent)
 
             val newTitle = noteTitle?.let { title -> contentEncryption.encryptEncodedData(title, newEncryptionPassword).asList().toString() }
             val newContent = noteTextContent?.let { content -> contentEncryption.encryptEncodedData(content, newEncryptionPassword).asList().toString() }
@@ -95,25 +91,23 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
         if (notificationDone) {
 
             notificationBuilder.setContentText(applicationContext.getString(R.string.doneText))
-            notificationBuilder.setAutoCancel(true)
-            notificationBuilder.setOngoing(false)
+//            notificationBuilder.setAutoCancel(true)
+//            notificationBuilder.setOngoing(false)
 
-            Handler(Looper.getMainLooper()).postDelayed({
-
-                notificationManager.cancelAll()
-
-            }, 555)
+            notificationManager.notify(EncryptionMigratingWork.Foreground.NotificationId, notificationBuilder.build())
 
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
+            notificationBuilder.setChannelId(applicationContext.packageName)
+
             val notificationChannel = NotificationChannel(
                 applicationContext.packageName,
                 applicationContext.getString(R.string.applicationName),
                 NotificationManager.IMPORTANCE_HIGH)
+
             notificationManager.createNotificationChannel(notificationChannel)
-            notificationBuilder.setChannelId(applicationContext.packageName)
 
         }
 

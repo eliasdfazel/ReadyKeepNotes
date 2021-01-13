@@ -777,8 +777,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             when (it.state) {
                 WorkInfo.State.SUCCEEDED -> {
-
-                    encryptionMigratingWorkManager.cancelAllWorkByTag(EncryptionMigratingWork::class.java.simpleName)
+                    Log.d(this@NotesIO.javaClass.simpleName, "Data Migrated Successfully")
 
                     retrieveAllNotes(activity, firebaseUser)
 
