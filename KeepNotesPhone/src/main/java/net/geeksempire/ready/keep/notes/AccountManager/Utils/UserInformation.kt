@@ -29,30 +29,14 @@ class UserInformation(private val context: AccountInformation) {
 
     fun startSignInProcess() {
 
-        if (context.firebaseAuthentication.currentUser != null) {
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.webClientId))
+            .requestEmail()
+            .build()
 
-            val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.webClientId))
-                .requestEmail()
-                .build()
-
-            val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
-            googleSignInClient.signInIntent.run {
-                context.startActivityForResult(this@run, UserInformation.GoogleSignInLinkRequestCode)
-            }
-
-        } else {
-
-            val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.webClientId))
-                .requestEmail()
-                .build()
-
-            val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
-            googleSignInClient.signInIntent.run {
-                context.startActivityForResult(this@run, UserInformation.GoogleSignInRequestCode)
-            }
-
+        val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+        googleSignInClient.signInIntent.run {
+            context.startActivityForResult(this@run, UserInformation.GoogleSignInRequestCode)
         }
 
     }
