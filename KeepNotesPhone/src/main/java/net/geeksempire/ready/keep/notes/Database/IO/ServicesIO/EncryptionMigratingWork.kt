@@ -78,8 +78,8 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
         val notificationBuilder = NotificationCompat.Builder(applicationContext, this@EncryptionMigratingWork.javaClass.simpleName)
         notificationBuilder.setContentTitle(applicationContext.getString(R.string.applicationName))
         notificationBuilder.setContentText(applicationContext.getString(R.string.migratingDatabaseEncryption))
-        notificationBuilder.setSmallIcon(R.drawable.lock)
-        notificationBuilder.color = applicationContext.getColor(R.color.cyan)
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification)
+        notificationBuilder.color = applicationContext.getColor(R.color.default_color)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 

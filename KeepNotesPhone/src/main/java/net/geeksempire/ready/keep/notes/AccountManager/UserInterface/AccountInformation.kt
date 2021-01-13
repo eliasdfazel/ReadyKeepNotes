@@ -63,7 +63,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
     var firebaseAuthentication = Firebase.auth
 
-    val firebaseUser = firebaseAuthentication.currentUser
+    var firebaseUser = firebaseAuthentication.currentUser
 
     var profileUpdating: Boolean = false
 
@@ -89,7 +89,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
         networkConnectionListener.networkConnectionListenerInterface = this@AccountInformation
 
         if (firebaseUser != null
-            && firebaseUser.isAnonymous) {
+            && firebaseUser!!.isAnonymous) {
 
             accountInformationLayoutBinding.signupLoadingView.visibility = View.VISIBLE
             accountInformationLayoutBinding.signupLoadingView.playAnimation()
@@ -107,7 +107,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
         } else if (firebaseUser != null) {
 
             (application as KeepNoteApplication).firestoreDatabase
-                .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
+                .document(UserInformation.userProfileDatabasePath(firebaseUser!!.uid))
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
 
@@ -131,7 +131,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                             if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
 
                                 SendInvitation(applicationContext, accountInformationLayoutBinding.root)
-                                    .invite(firebaseUser)
+                                    .invite(firebaseUser!!)
 
                             } else {
 
@@ -220,8 +220,8 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                             photoUri = googleSignInAccount.photoUrl
                                         }
 
-                                        firebaseUser.updateProfile(userProfileChangeRequestBuilder.build())
-                                            .addOnSuccessListener {
+                                        firebaseUser?.updateProfile(userProfileChangeRequestBuilder.build())
+                                            ?.addOnSuccessListener {
                                                 Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
 
                                                 val accountName: String = firebaseAuthentication.currentUser?.email.toString()
@@ -239,12 +239,14 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                             is FirebaseAuthUserCollisionException -> {
                                                 Log.w(this@AccountInformation.javaClass.simpleName, it.message.orEmpty())
 
-                                                firebaseUser.delete().addOnSuccessListener {
+                                                firebaseUser?.delete()?.addOnSuccessListener {
 
                                                     firebaseAuthentication.signInWithCredential(authenticationCredential)
                                                         .addOnSuccessListener { authResult ->
 
                                                             authResult.user?.let { signedInFirebaseUser ->
+
+                                                                firebaseUser = signedInFirebaseUser
 
                                                                 val accountName: String = signedInFirebaseUser.email.toString()
 
@@ -300,7 +302,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
     override fun onBackPressed() {
 
-        if (firebaseAuthentication.currentUser == null) {
+        if (firebaseUser == null) {
 
             SnackbarBuilder(applicationContext).show(
                 rootView = accountInformationLayoutBinding.rootView,
