@@ -32,6 +32,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationDataStructure
 import net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInformationProfileData
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
@@ -89,7 +91,7 @@ fun AccountInformation.accountManagerSetupUserInterface() {
     window.navigationBarColor = Color.TRANSPARENT
     window.statusBarColor = Color.TRANSPARENT
 
-    accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, firebaseAuthentication.currentUser?.displayName?:"")
+    accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, Firebase.auth.currentUser?.displayName?:"")
 
     var dominantColor = getColor(R.color.yellow)
     var vibrantColor = getColor(R.color.default_color_light)
@@ -100,7 +102,7 @@ fun AccountInformation.accountManagerSetupUserInterface() {
     accountViewLayoutParameters.setMargins(accountViewLayoutParameters.topMargin, accountViewLayoutParameters.topMargin + statusBarHeight(applicationContext), accountViewLayoutParameters.topMargin, accountViewLayoutParameters.topMargin)
     accountInformationLayoutBinding.profileImageView.layoutParams = accountViewLayoutParameters
 
-    firebaseAuthentication.currentUser?.let { firebaseUser ->
+    Firebase.auth.currentUser?.let { firebaseUser ->
 
         Glide.with(this@accountManagerSetupUserInterface)
             .asDrawable()
@@ -174,12 +176,12 @@ fun AccountInformation.clickSetup() {
 
 fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false) {
 
-    firebaseAuthentication.currentUser?.let { firebaseUser ->
+    Firebase.auth.currentUser?.let { firebaseUser ->
 
         accountInformationLayoutBinding.updatingLoadingView.visibility = View.VISIBLE
         accountInformationLayoutBinding.updatingLoadingView.playAnimation()
 
-        accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, firebaseAuthentication.currentUser?.displayName)
+        accountInformationLayoutBinding.welcomeTextView.text = getString(R.string.welcomeText, Firebase.auth.currentUser?.displayName)
 
         val userInformationProfileData = UserInformationProfileData(
                 privacyAgreement = userInformationIO.readPrivacyAgreement(),
@@ -200,7 +202,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
                 if (!accountInformationLayoutBinding.phoneNumberAddressView.text.isNullOrEmpty()) {
 
-                    val phoneAuthOptions = PhoneAuthOptions.Builder(firebaseAuthentication).apply {
+                    val phoneAuthOptions = PhoneAuthOptions.Builder(Firebase.auth).apply {
                         setPhoneNumber(accountInformationLayoutBinding.phoneNumberAddressView.text.toString())
                         setTimeout(120, TimeUnit.SECONDS)
                         setActivity(this@createUserProfile)

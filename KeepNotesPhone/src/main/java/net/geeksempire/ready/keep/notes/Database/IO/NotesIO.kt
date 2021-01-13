@@ -767,6 +767,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
     fun startBackgroundMigrationProcess(activity: AppCompatActivity, firebaseUser: FirebaseUser) {
 
         val workRequest = OneTimeWorkRequestBuilder<EncryptionMigratingWork>()
+            .addTag(EncryptionMigratingWork::class.java.simpleName)
             .build()
 
         val encryptionMigratingWorkManager = WorkManager.getInstance(keepNoteApplication.applicationContext)
@@ -776,6 +777,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             when (it.state) {
                 WorkInfo.State.SUCCEEDED -> {
+
+                    encryptionMigratingWorkManager.cancelAllWorkByTag(EncryptionMigratingWork::class.java.simpleName)
 
                     retrieveAllNotes(activity, firebaseUser)
 

@@ -3,6 +3,8 @@ package net.geeksempire.ready.keep.notes.Database.IO.ServicesIO
 import android.app.*
 import android.content.Context
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -27,7 +29,7 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
 
         setForegroundAsync(ForegroundInfo(
             EncryptionMigratingWork.Foreground.NotificationId,
-            createNotification()
+            createNotification(false)
         ))
 
         val userInformationIO = UserInformationIO(applicationContext)
@@ -45,6 +47,8 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
 
             val noteTitle = it.noteTile?.let { title -> contentEncryption.decryptEncodedData(title, oldEncryptionPassword) }
             val noteTextContent = it.noteTextContent?.let { content -> contentEncryption.decryptEncodedData(content, oldEncryptionPassword) }
+
+            println(">>> >> > " + noteTextContent)
 
             val newTitle = noteTitle?.let { title -> contentEncryption.encryptEncodedData(title, newEncryptionPassword).asList().toString() }
             val newContent = noteTextContent?.let { content -> contentEncryption.encryptEncodedData(content, newEncryptionPassword).asList().toString() }
@@ -71,12 +75,14 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
 
         notesRoomDatabaseConfiguration.closeDatabase()
 
+        createNotification(true)
+
         workerResult = Result.success()
 
         return workerResult
     }
 
-    private fun createNotification() : Notification {
+    private fun createNotification(notificationDone: Boolean) : Notification {
 
         val notificationManager = applicationContext.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -85,6 +91,20 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
         notificationBuilder.setContentText(applicationContext.getString(R.string.migratingDatabaseEncryption))
         notificationBuilder.setSmallIcon(R.drawable.ic_notification)
         notificationBuilder.color = applicationContext.getColor(R.color.default_color)
+
+        if (notificationDone) {
+
+            notificationBuilder.setContentText(applicationContext.getString(R.string.doneText))
+            notificationBuilder.setAutoCancel(true)
+            notificationBuilder.setOngoing(false)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                notificationManager.cancelAll()
+
+            }, 555)
+
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 

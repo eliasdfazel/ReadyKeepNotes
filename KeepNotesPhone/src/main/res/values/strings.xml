@@ -44,7 +44,9 @@
 
     <string name="typeToSearch">Type To Search…</string>
 
-    <string name="migratingDatabaseEncryption">Migrating Encrypted Information</string>
+    <string name="migratingDatabaseEncryption">Migrating Encrypted Information…</string>
+
+    <string name="doneText">Done.</string>
 
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 

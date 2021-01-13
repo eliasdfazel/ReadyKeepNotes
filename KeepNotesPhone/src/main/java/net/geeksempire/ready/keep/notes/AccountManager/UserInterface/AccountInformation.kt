@@ -61,10 +61,6 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
         UserInformationIO(applicationContext)
     }
 
-    var firebaseAuthentication = Firebase.auth
-
-    var firebaseUser = firebaseAuthentication.currentUser
-
     var profileUpdating: Boolean = false
 
     @Inject lateinit var networkCheckpoint: NetworkCheckpoint
@@ -88,8 +84,8 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
         networkConnectionListener.networkConnectionListenerInterface = this@AccountInformation
 
-        if (firebaseUser != null
-            && firebaseUser!!.isAnonymous) {
+        if (Firebase.auth.currentUser != null
+            && Firebase.auth.currentUser!!.isAnonymous) {
 
             accountInformationLayoutBinding.signupLoadingView.visibility = View.VISIBLE
             accountInformationLayoutBinding.signupLoadingView.playAnimation()
@@ -104,10 +100,10 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
             }
 
-        } else if (firebaseUser != null) {
+        } else if (Firebase.auth.currentUser != null) {
 
             (application as KeepNoteApplication).firestoreDatabase
-                .document(UserInformation.userProfileDatabasePath(firebaseUser!!.uid))
+                .document(UserInformation.userProfileDatabasePath(Firebase.auth.currentUser!!.uid))
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
 
@@ -131,7 +127,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                             if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
 
                                 SendInvitation(applicationContext, accountInformationLayoutBinding.root)
-                                    .invite(firebaseUser!!)
+                                    .invite(Firebase.auth.currentUser!!)
 
                             } else {
 
@@ -154,21 +150,23 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
         }
 
-        firebaseAuthentication.addAuthStateListener { authentication ->
+        Firebase.auth.addAuthStateListener { authentication ->
 
             if (authentication.currentUser == null) {
                 Log.d(this@AccountInformation.javaClass.simpleName, "Firebase Authenticator Couldn't Find Firebase User.")
 
-                firebaseAuthentication.signOut().also {
+                Firebase.auth.signOut().also {
                     Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Information Delete Locally.")
 
                     try {
+
                         File("/data/data/${packageName}/").delete()
+
+                        userInformation.startSignInProcess()
+
                     } catch (e: Exception){
                         e.printStackTrace()
                     }
-
-                    userInformation.startSignInProcess()
 
                 }
 
@@ -185,7 +183,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
     override fun onResume() {
         super.onResume()
 
-        firebaseUser?.reload()
+        Firebase.auth.currentUser?.reload()
 
     }
 
@@ -206,13 +204,13 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                         if (emailAddress != null) {
 
-                            firebaseAuthentication.fetchSignInMethodsForEmail(emailAddress)
+                            Firebase.auth.fetchSignInMethodsForEmail(emailAddress)
                                 .addOnSuccessListener { signInMethodQuery ->
                                     Log.d(this@AccountInformation.javaClass.simpleName, "Current Sign In Methods: ${signInMethodQuery.signInMethods.toString()}")
 
                                     val authenticationCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
 
-                                    firebaseUser?.linkWithCredential(authenticationCredential)?.addOnSuccessListener {
+                                    Firebase.auth.currentUser?.linkWithCredential(authenticationCredential)?.addOnSuccessListener {
                                         Log.d(this@AccountInformation.javaClass.simpleName, "Anonymous Credential Linked With Google Account Credential.")
 
                                         val userProfileChangeRequestBuilder = UserProfileChangeRequest.Builder().apply {
@@ -220,11 +218,11 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                             photoUri = googleSignInAccount.photoUrl
                                         }
 
-                                        firebaseUser?.updateProfile(userProfileChangeRequestBuilder.build())
+                                        Firebase.auth.currentUser?.updateProfile(userProfileChangeRequestBuilder.build())
                                             ?.addOnSuccessListener {
                                                 Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
 
-                                                val accountName: String = firebaseAuthentication.currentUser?.email.toString()
+                                                val accountName: String = Firebase.auth.currentUser?.email.toString()
 
                                                 userInformationIO.saveUserInformation(accountName)
 
@@ -239,14 +237,12 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                             is FirebaseAuthUserCollisionException -> {
                                                 Log.w(this@AccountInformation.javaClass.simpleName, it.message.orEmpty())
 
-                                                firebaseUser?.delete()?.addOnSuccessListener {
+                                                Firebase.auth.currentUser?.delete()?.addOnSuccessListener {
 
-                                                    firebaseAuthentication.signInWithCredential(authenticationCredential)
+                                                    Firebase.auth.signInWithCredential(authenticationCredential)
                                                         .addOnSuccessListener { authResult ->
 
                                                             authResult.user?.let { signedInFirebaseUser ->
-
-                                                                firebaseUser = signedInFirebaseUser
 
                                                                 val accountName: String = signedInFirebaseUser.email.toString()
 
@@ -302,7 +298,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
     override fun onBackPressed() {
 
-        if (firebaseUser == null) {
+        if (Firebase.auth.currentUser == null) {
 
             SnackbarBuilder(applicationContext).show(
                 rootView = accountInformationLayoutBinding.rootView,
