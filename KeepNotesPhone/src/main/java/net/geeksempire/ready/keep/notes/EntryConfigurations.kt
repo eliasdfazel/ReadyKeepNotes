@@ -184,6 +184,10 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
                             entryConfigurationLayoutBinding.waitingView.visibility = View.GONE
                             entryConfigurationLayoutBinding.waitingInformationView.visibility = View.GONE
 
+                            it.user?.let { firebaseUser ->
+                                userInformationIO.saveOldFirebaseUniqueIdentifier(firebaseUser.uid)
+                            }
+
                             openTakeNoteActivity()
 
                         }

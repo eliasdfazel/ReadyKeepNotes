@@ -42,6 +42,36 @@ class UserInformationIO(private val context: Context) {
         return ReadPreferences(context).readPreference("UserInformation", "NewUser", false)
     }
 
+    fun saveOldFirebaseUniqueIdentifier(oldFirebaseUniqueIdentifier: String) {
+
+        val savePreferences = SavePreferences(context)
+
+        savePreferences.savePreference("UserInformation", "OldFirebaseUniqueIdentifier", oldFirebaseUniqueIdentifier)
+
+    }
+
+    fun getOldFirebaseUniqueIdentifier() : String {
+
+        val readPreferences = ReadPreferences(context)
+
+        return readPreferences.readPreference("UserInformation", "OldFirebaseUniqueIdentifier", "").orEmpty()
+    }
+
+    fun saveNewFirebaseUniqueIdentifier(newFirebaseUniqueIdentifier: String) {
+
+        val savePreferences = SavePreferences(context)
+
+        savePreferences.savePreference("UserInformation", "NewFirebaseUniqueIdentifier", newFirebaseUniqueIdentifier)
+
+    }
+
+    fun getNewFirebaseUniqueIdentifier() : String {
+
+        val readPreferences = ReadPreferences(context)
+
+        return readPreferences.readPreference("UserInformation", "NewFirebaseUniqueIdentifier", "").orEmpty()
+    }
+
     fun userSignedIn() : Boolean {
 
         return (ReadPreferences(context).readPreference("UserInformation", "Email", "Unknown") != "Unknown")

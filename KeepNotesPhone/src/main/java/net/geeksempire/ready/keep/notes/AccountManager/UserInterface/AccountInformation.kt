@@ -244,13 +244,18 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                                     firebaseAuthentication.signInWithCredential(authenticationCredential)
                                                         .addOnSuccessListener { authResult ->
 
-                                                            val accountName: String = authResult.user?.email.toString()
+                                                            authResult.user?.let { signedInFirebaseUser ->
 
-                                                            userInformationIO.saveUserInformation(accountName)
+                                                                val accountName: String = signedInFirebaseUser.email.toString()
 
-                                                            userInformationIO.saveNewUserInformation(authResult.additionalUserInfo?.isNewUser?:false)
+                                                                userInformationIO.saveUserInformation(accountName)
+                                                                userInformationIO.saveNewFirebaseUniqueIdentifier(signedInFirebaseUser.uid)
 
-                                                            createUserProfile()
+                                                                userInformationIO.saveNewUserInformation(authResult.additionalUserInfo?.isNewUser?:false)
+
+                                                                createUserProfile()
+
+                                                            }
 
                                                         }.addOnFailureListener {
 
