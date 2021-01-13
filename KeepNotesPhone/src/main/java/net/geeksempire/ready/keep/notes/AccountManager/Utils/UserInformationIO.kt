@@ -29,6 +29,19 @@ class UserInformationIO(private val context: Context) {
         return ReadPreferences(context).readPreference("UserInformation", "Email", null)
     }
 
+    fun saveNewUserInformation(newUser: Boolean) {
+
+        val savePreferences = SavePreferences(context)
+
+        savePreferences.savePreference("UserInformation", "NewUser", newUser)
+
+    }
+
+    fun newUser() : Boolean {
+
+        return ReadPreferences(context).readPreference("UserInformation", "NewUser", false)
+    }
+
     fun userSignedIn() : Boolean {
 
         return (ReadPreferences(context).readPreference("UserInformation", "Email", "Unknown") != "Unknown")

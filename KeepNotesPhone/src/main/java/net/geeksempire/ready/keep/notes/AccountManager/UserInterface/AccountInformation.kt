@@ -61,7 +61,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
         UserInformationIO(applicationContext)
     }
 
-    val firebaseAuthentication = Firebase.auth
+    var firebaseAuthentication = Firebase.auth
 
     val firebaseUser = firebaseAuthentication.currentUser
 
@@ -195,71 +195,6 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
         data?.let {
 
             when (requestCode) {
-//                UserInformation.GoogleSignInLinkRequestCode -> {
-//
-//                    val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
-//                    googleSignInAccountTask.addOnSuccessListener {
-//
-//                        val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
-//
-//                        val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
-//
-//                        firebaseAuthentication.currentUser?.let { firebaseUser ->
-//
-//                            firebaseUser.linkWithCredential(authCredential).addOnSuccessListener {
-//                                Log.d(this@AccountInformation.javaClass.simpleName, "Anonymous Credential Linked With Google Account Credential.")
-//
-//                                val userProfileChangeRequestBuilder = UserProfileChangeRequest.Builder().apply {
-//                                    displayName = googleSignInAccount.displayName
-//                                    photoUri = googleSignInAccount.photoUrl
-//                                }
-//
-//                                firebaseUser.updateProfile(userProfileChangeRequestBuilder.build())
-//                                    .addOnSuccessListener {
-//                                        Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
-//
-//                                        val accountName: String = firebaseAuthentication.currentUser?.email.toString()
-//
-//                                        userInformationIO.saveUserInformation(accountName)
-//
-//                                        createUserProfile()
-//
-//                                    }.addOnFailureListener {
-//
-//
-//
-//                                    }
-//
-//                            }.addOnFailureListener {
-//
-//
-//                            }
-//
-//                        }
-//
-//                    }.addOnFailureListener {
-//                        it.printStackTrace()
-//
-//                        when ((it as ApiException).statusCode) {
-//                            GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS -> {
-//
-//                                Toast.makeText(applicationContext, getString(R.string.waitingInformation), Toast.LENGTH_LONG).show()
-//
-//                            }
-//                            else -> {
-//
-//                                Handler(Looper.getMainLooper()).postDelayed({
-//
-//                                    userInformation.startSignInProcess()
-//
-//                                }, 777)
-//
-//                            }
-//                        }
-//
-//                    }
-//
-//                }
                 UserInformation.GoogleSignInRequestCode -> {
 
                     val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -275,9 +210,9 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                 .addOnSuccessListener { signInMethodQuery ->
                                     Log.d(this@AccountInformation.javaClass.simpleName, "Current Sign In Methods: ${signInMethodQuery.signInMethods.toString()}")
 
-                                    val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
+                                    val authenticationCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
 
-                                    firebaseUser?.linkWithCredential(authCredential)?.addOnSuccessListener {
+                                    firebaseUser?.linkWithCredential(authenticationCredential)?.addOnSuccessListener {
                                         Log.d(this@AccountInformation.javaClass.simpleName, "Anonymous Credential Linked With Google Account Credential.")
 
                                         val userProfileChangeRequestBuilder = UserProfileChangeRequest.Builder().apply {
@@ -304,8 +239,26 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                             is FirebaseAuthUserCollisionException -> {
                                                 Log.w(this@AccountInformation.javaClass.simpleName, it.message.orEmpty())
 
-                                                //Do Merging Process
+                                                firebaseUser.delete().addOnSuccessListener {
 
+                                                    firebaseAuthentication.signInWithCredential(authenticationCredential)
+                                                        .addOnSuccessListener { authResult ->
+
+                                                            val accountName: String = authResult.user?.email.toString()
+
+                                                            userInformationIO.saveUserInformation(accountName)
+
+                                                            userInformationIO.saveNewUserInformation(authResult.additionalUserInfo?.isNewUser?:false)
+
+                                                            createUserProfile()
+
+                                                        }.addOnFailureListener {
+
+
+
+                                                        }
+
+                                                }
 
                                             }
                                         }
