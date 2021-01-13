@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Widgets.RoomDatabase
+package net.geeksempire.ready.keep.notes.Database.Configurations.Offline.DataProcess
 
 import androidx.room.*
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel

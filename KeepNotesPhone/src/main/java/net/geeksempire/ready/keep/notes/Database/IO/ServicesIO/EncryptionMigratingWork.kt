@@ -7,6 +7,7 @@ import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.delay
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
 import net.geeksempire.ready.keep.notes.Database.Configurations.Offline.NotesRoomDatabaseConfiguration
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
@@ -71,6 +72,8 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
 
         notesRoomDatabaseConfiguration.closeDatabase()
 
+        delay(2000)
+
         createNotification(true)
 
         workerResult = Result.success()
@@ -91,8 +94,8 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
         if (notificationDone) {
 
             notificationBuilder.setContentText(applicationContext.getString(R.string.doneText))
-//            notificationBuilder.setAutoCancel(true)
-//            notificationBuilder.setOngoing(false)
+            notificationBuilder.setAutoCancel(true)
+            notificationBuilder.setOngoing(false)
 
             notificationManager.notify(EncryptionMigratingWork.Foreground.NotificationId, notificationBuilder.build())
 
