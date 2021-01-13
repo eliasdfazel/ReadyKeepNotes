@@ -72,7 +72,7 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
 
         notesRoomDatabaseConfiguration.closeDatabase()
 
-        delay(2000)
+        delay(3333)
 
         createNotification(true)
 
