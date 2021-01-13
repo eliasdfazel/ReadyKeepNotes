@@ -301,12 +301,6 @@ class KeepNoteOverview : AppCompatActivity(),
         overviewLayoutBinding = OverviewLayoutBinding.inflate(layoutInflater)
         setContentView(overviewLayoutBinding.root)
 
-//        val workRequest = OneTimeWorkRequestBuilder<EncryptionMigratingWork>()
-//            .build()
-//
-//        val encryptionMigratingWorkManager = WorkManager.getInstance(applicationContext)
-//        encryptionMigratingWorkManager.enqueue(workRequest)
-
         (application as KeepNoteApplication)
             .dependencyGraph
             .subDependencyGraph()
