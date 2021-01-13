@@ -46,10 +46,13 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
             val noteTitle = it.noteTile?.let { title -> contentEncryption.decryptEncodedData(title, oldEncryptionPassword) }
             val noteTextContent = it.noteTextContent?.let { content -> contentEncryption.decryptEncodedData(content, oldEncryptionPassword) }
 
+            val newTitle = noteTitle?.let { title -> contentEncryption.encryptEncodedData(title, newEncryptionPassword).asList().toString() }
+            val newContent = noteTextContent?.let { content -> contentEncryption.encryptEncodedData(content, newEncryptionPassword).asList().toString() }
+
             notesDatabaseDataAccessObject.updateNoteData(NotesDatabaseModel(
                 it.uniqueNoteId,
-                contentEncryption.encryptEncodedData(noteTitle.orEmpty(), newEncryptionPassword).asList().toString(),
-                contentEncryption.encryptEncodedData(noteTextContent.orEmpty(), newEncryptionPassword).asList().toString(),
+                newTitle,
+                newContent,
                 it.noteHandwritingPaintingPaths,
                 it.noteHandwritingSnapshotLink,
                 it.noteVoiceContent,
@@ -65,6 +68,8 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
             ))
 
         }
+
+        notesRoomDatabaseConfiguration.closeDatabase()
 
         workerResult = Result.success()
 
