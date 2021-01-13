@@ -277,47 +277,17 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                                     val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
 
-                                    if (signInMethodQuery.signInMethods.orEmpty().contains(GoogleAuthProvider.PROVIDER_ID)) {
+                                    firebaseUser?.linkWithCredential(authCredential)?.addOnSuccessListener {
+                                        Log.d(this@AccountInformation.javaClass.simpleName, "Anonymous Credential Linked With Google Account Credential.")
 
-                                        firebaseUser?.linkWithCredential(authCredential)?.addOnSuccessListener {
-                                            Log.d(this@AccountInformation.javaClass.simpleName, "Anonymous Credential Linked With Google Account Credential.")
-
-                                            val userProfileChangeRequestBuilder = UserProfileChangeRequest.Builder().apply {
-                                                displayName = googleSignInAccount.displayName
-                                                photoUri = googleSignInAccount.photoUrl
-                                            }
-
-                                            firebaseUser.updateProfile(userProfileChangeRequestBuilder.build())
-                                                .addOnSuccessListener {
-                                                    Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
-
-                                                    val accountName: String = firebaseAuthentication.currentUser?.email.toString()
-
-                                                    userInformationIO.saveUserInformation(accountName)
-
-                                                    createUserProfile()
-
-                                                }
-
-                                        }?.addOnFailureListener {
-                                            it.printStackTrace()
-
-                                            when (it) {
-                                                is FirebaseAuthUserCollisionException -> {
-                                                    Log.w(this@AccountInformation.javaClass.simpleName, it.message.orEmpty())
-
-
-
-                                                }
-                                            }
-
+                                        val userProfileChangeRequestBuilder = UserProfileChangeRequest.Builder().apply {
+                                            displayName = googleSignInAccount.displayName
+                                            photoUri = googleSignInAccount.photoUrl
                                         }
 
-                                    } else {
-
-                                        firebaseAuthentication.signInWithCredential(authCredential)
+                                        firebaseUser.updateProfile(userProfileChangeRequestBuilder.build())
                                             .addOnSuccessListener {
-                                                Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Created.")
+                                                Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
 
                                                 val accountName: String = firebaseAuthentication.currentUser?.email.toString()
 
@@ -325,9 +295,20 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                                                 createUserProfile()
 
-                                            }.addOnFailureListener {
-                                                it.printStackTrace()
                                             }
+
+                                    }?.addOnFailureListener {
+                                        it.printStackTrace()
+
+                                        when (it) {
+                                            is FirebaseAuthUserCollisionException -> {
+                                                Log.w(this@AccountInformation.javaClass.simpleName, it.message.orEmpty())
+
+                                                //Do Merging Process
+
+
+                                            }
+                                        }
 
                                     }
 
