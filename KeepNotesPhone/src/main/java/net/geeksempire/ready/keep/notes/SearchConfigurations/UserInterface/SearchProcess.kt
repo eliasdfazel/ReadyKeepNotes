@@ -21,8 +21,8 @@ import net.geeksempire.ready.keep.notes.Preferences.UserInterface.PreferencesCon
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.SearchConfigurations.SearchLiveData.SearchViewModel
 import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Adapter.SearchResultAdapter
-import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Extensions.setupColors
-import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Extensions.setupViews
+import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Extensions.setupSearchColors
+import net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface.Extensions.setupSearchViews
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
 import net.geeksempire.ready.keep.notes.databinding.SearchProcessLayoutBinding
@@ -56,7 +56,7 @@ class SearchProcess : AppCompatActivity() {
         searchProcessLayoutBinding = SearchProcessLayoutBinding.inflate(layoutInflater)
         setContentView(searchProcessLayoutBinding.root)
 
-        setupViews()
+        setupSearchViews()
 
         notesRoomDatabaseConfiguration = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
 
@@ -146,7 +146,7 @@ class SearchProcess : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        setupColors()
+        setupSearchColors()
 
     }
 

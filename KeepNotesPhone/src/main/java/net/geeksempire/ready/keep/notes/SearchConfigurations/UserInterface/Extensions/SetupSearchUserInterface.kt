@@ -13,7 +13,7 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Animations.CircularRevealAnimat
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
 
-fun SearchProcess.setupViews() {
+fun SearchProcess.setupSearchViews() {
 
     val animationListener = object : AnimationListener {
 
@@ -30,8 +30,8 @@ fun SearchProcess.setupViews() {
     CircularRevealAnimation(animationListener).run {
 
         startForActivityRoot(
-            activity = this@setupViews,
-            rootView = searchProcessLayoutBinding.rootView,
+            context = this@setupSearchViews,
+            rootView = window.decorView/*searchProcessLayoutBinding.root*/,
             xPosition = if (intent.hasExtra("xPosition")) { intent.getIntExtra("xPosition", displayX(applicationContext) / 2) } else { displayX(applicationContext) / 2 },
             yPosition = if (intent.hasExtra("yPosition")) {intent.getIntExtra("yPosition", displayY(applicationContext) / 2)} else { displayY(applicationContext) / 2 }
         )
@@ -40,7 +40,7 @@ fun SearchProcess.setupViews() {
 
 }
 
-fun SearchProcess.setupColors() {
+fun SearchProcess.setupSearchColors() {
 
     when (themePreferences.checkThemeLightDark()) {
         ThemeType.ThemeLight -> {

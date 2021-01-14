@@ -1,11 +1,11 @@
 package net.geeksempire.ready.keep.notes.Utils.UI.Animations
 
 import android.animation.Animator
+import android.content.Context
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateInterpolator
-import androidx.appcompat.app.AppCompatActivity
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
@@ -17,7 +17,7 @@ interface AnimationListener {
 
 class CircularRevealAnimation (private val animationListener: AnimationListener) {
 
-    fun startForActivityRoot(activity: AppCompatActivity, rootView: View, xPosition: Int = (displayX(activity) / 2), yPosition: Int = (displayY(activity) / 2)) {
+    fun startForActivityRoot(context: Context, rootView: View, xPosition: Int = (displayX(context) / 2), yPosition: Int = (displayY(context) / 2)) {
 
         val rootLayout = rootView
         rootLayout.visibility = View.INVISIBLE
@@ -25,16 +25,17 @@ class CircularRevealAnimation (private val animationListener: AnimationListener)
         val viewTreeObserver = rootLayout.viewTreeObserver
 
         if (viewTreeObserver.isAlive) {
+
             viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
 
                 override fun onGlobalLayout() {
 
-                    val finalRadius = hypot(displayX(activity).toDouble(), displayY(activity).toDouble())
+                    val finalRadius = hypot(displayX(context).toDouble(), displayY(context).toDouble())
 
                     val circularReveal = ViewAnimationUtils.createCircularReveal(rootLayout,
                         xPosition,
                         yPosition,
-                        DpToInteger(activity, 51).toFloat(),
+                        DpToInteger(context, 51).toFloat(),
                         finalRadius.toFloat())
 
                     circularReveal.duration = 1111
@@ -52,9 +53,10 @@ class CircularRevealAnimation (private val animationListener: AnimationListener)
                         }
 
                         override fun onAnimationEnd(animation: Animator?) {
-                            rootLayout.visibility = View.VISIBLE
 
                             animationListener.animationFinished()
+
+                            rootLayout.visibility = View.VISIBLE
 
                         }
 
@@ -69,8 +71,11 @@ class CircularRevealAnimation (private val animationListener: AnimationListener)
                     })
                 }
             })
+
         } else {
+
             rootLayout.visibility = View.VISIBLE
+
         }
 
     }
