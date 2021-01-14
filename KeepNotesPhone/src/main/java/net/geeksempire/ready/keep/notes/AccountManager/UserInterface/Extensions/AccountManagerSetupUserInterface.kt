@@ -376,11 +376,13 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
         val notesIO = NotesIO(application as KeepNoteApplication)
 
-        if (userInformationIO.getOldFirebaseUniqueIdentifier() == userInformationIO.getNewFirebaseUniqueIdentifier()) {
+        if (!userInformationIO.userIsReturning()) {
+            // User Linked Anonymous Account With Google Account
 
-            notesIO.retrieveAllNotes(this@createUserProfile, firebaseUser)
+            notesIO.insertAllNotesIntoCloudDatabase(this@createUserProfile, firebaseUser)
 
         } else {
+            // User Signed In To Existing Google Account & Anonymous Account Deleted
 
             notesIO.startBackgroundMigrationProcess(this@createUserProfile, firebaseUser)
 

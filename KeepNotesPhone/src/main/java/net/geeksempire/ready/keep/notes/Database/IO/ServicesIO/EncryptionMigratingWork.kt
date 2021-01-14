@@ -90,6 +90,7 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
         notificationBuilder.setContentText(applicationContext.getString(R.string.migratingDatabaseEncryption))
         notificationBuilder.setSmallIcon(R.drawable.ic_notification)
         notificationBuilder.color = applicationContext.getColor(R.color.default_color)
+        notificationBuilder.setNotificationSilent()
 
         if (notificationDone) {
 

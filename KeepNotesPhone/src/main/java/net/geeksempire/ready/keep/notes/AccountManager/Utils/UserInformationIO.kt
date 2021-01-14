@@ -92,4 +92,9 @@ class UserInformationIO(private val context: Context) {
         return readPreferences.readPreference("UserInformation", "PrivacyAgreement", false)
     }
 
+    fun userIsReturning() : Boolean {
+
+        return (getOldFirebaseUniqueIdentifier() != getNewFirebaseUniqueIdentifier())
+    }
+
 }
