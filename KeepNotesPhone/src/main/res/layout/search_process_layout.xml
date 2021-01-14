@@ -91,7 +91,8 @@
             android:layout_height="95dp"
             android:paddingBottom="20dp"
             android:paddingStart="23dp"
-            android:paddingEnd="59dp"
+            android:paddingEnd="93dp"
+
             android:gravity="center_vertical"
             android:imeOptions="actionSearch"
             android:ellipsize="start"

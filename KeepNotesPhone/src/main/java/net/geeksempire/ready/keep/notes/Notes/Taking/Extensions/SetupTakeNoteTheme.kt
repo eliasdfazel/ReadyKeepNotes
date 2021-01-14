@@ -48,6 +48,7 @@ fun TakeNote.setupTakeNoteTheme() {
             takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
             takeNoteLayoutBinding.editTextTitleView.setBackgroundColor(getColor(R.color.lighter))
 
+            takeNoteLayoutBinding.editTextTitleView.setTextColor(getColor(R.color.darker))
             takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.dark))
 
             takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
@@ -62,6 +63,7 @@ fun TakeNote.setupTakeNoteTheme() {
             takeNoteLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
             takeNoteLayoutBinding.editTextTitleView.setBackgroundColor(getColor(R.color.darker))
 
+            takeNoteLayoutBinding.editTextTitleView.setTextColor(getColor(R.color.lighter))
             takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.light))
 
             takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
