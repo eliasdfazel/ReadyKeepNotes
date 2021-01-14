@@ -326,7 +326,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 val noteHandwritingSnapshotPath = context.externalMediaDirs[0].path + File.separator + documentId + ".PNG"
                 val noteHandwritingSnapshot = File(noteHandwritingSnapshotPath)
-//                val noteHandwritingSnapshot = context.openFileOutput("${documentId}.PNG", Context.MODE_PRIVATE)
 
                 val fileOutputStream = FileOutputStream(noteHandwritingSnapshot)
 
