@@ -96,6 +96,14 @@ class KeepNoteOverview : AppCompatActivity(),
             override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).async {
                 super.onSwipeToEnd(context, position)
 
+                Firebase.auth.currentUser?.let { firebaseUser ->
+
+                    (application as KeepNoteApplication).firestoreDatabase
+                        .document(databaseEndpoints.noteTextsDocumentEndpoint(firebaseUser.uid, context.overviewAdapter.notesDataStructureList[position].uniqueNoteId.toString()))
+                        .delete()
+
+                }
+
                 val dataToDelete = context.overviewAdapter.notesDataStructureList[position]
 
                 context.overviewAdapter.notesDataStructureList.removeAt(position)
