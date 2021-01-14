@@ -21,4 +21,20 @@ class NoteDatabaseConfigurations (private val context: Context) {
         return readPreferences.readPreference("DatabaseConfigurations", "LastTimeUpdate", 0.toLong())
     }
 
+    fun databaseSize(databaseRowCount: Long) {
+
+        val savePreferences = SavePreferences(context)
+
+        savePreferences.savePreference("DatabaseConfigurations", "DatabaseSize", databaseRowCount)
+
+    }
+
+    fun databaseSize() : Long {
+
+        val readPreferences = ReadPreferences(context)
+
+        return readPreferences.readPreference("DatabaseConfigurations", "DatabaseSize", 0.toLong())
+
+    }
+
 }

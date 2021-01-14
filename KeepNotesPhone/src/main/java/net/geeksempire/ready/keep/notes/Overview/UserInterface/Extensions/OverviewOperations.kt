@@ -22,6 +22,8 @@ fun KeepNoteOverview.startDatabaseOperation() = CoroutineScope(SupervisorJob() +
     databaseSize = allNotesData.size.toLong()
     databaseTime = noteDatabaseConfigurations.lastTimeDatabaseUpdate()
 
+    noteDatabaseConfigurations.databaseSize(databaseSize)
+
     notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(allNotesData)
 
     notesRoomDatabaseConfiguration.closeDatabase()
@@ -34,6 +36,8 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
     val newDatabaseSize = notesRoomDatabaseConfiguration.prepareRead()
         .getSizeOfDatabase().toLong()
+
+    noteDatabaseConfigurations.databaseSize(newDatabaseSize)
 
     if (newDatabaseSize > databaseSize
         || noteDatabaseConfigurations.lastTimeDatabaseUpdate() > databaseTime) {

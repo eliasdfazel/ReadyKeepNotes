@@ -3,6 +3,8 @@ package net.geeksempire.ready.keep.notes.SearchConfigurations.UserInterface
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
@@ -11,10 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abanabsalan.aban.magazine.Utils.System.hideKeyboard
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.Configurations.Offline.NotesRoomDatabaseConfiguration
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructureSearch
+import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.UserInterface.PreferencesControl
@@ -46,6 +50,10 @@ class SearchProcess : AppCompatActivity() {
     }
 
     val allNotesData = ArrayList<NotesDataStructureSearch>()
+
+    private val noteDatabaseConfigurations: NoteDatabaseConfigurations by lazy {
+        NoteDatabaseConfigurations(applicationContext)
+    }
 
     private lateinit var notesRoomDatabaseConfiguration: NotesRoomDatabaseConfiguration
 
@@ -99,14 +107,33 @@ class SearchProcess : AppCompatActivity() {
                     searchProcessLayoutBinding.loadingView.setAnimation(R.raw.search_no_results_found)
                     searchProcessLayoutBinding.loadingView.playAnimation()
 
+                    searchProcessLayoutBinding.searchActionView.isEnabled = true
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+
+                        searchProcessLayoutBinding.loadingView.pauseAnimation()
+                        searchProcessLayoutBinding.loadingView.visibility = View.INVISIBLE
+
+                        searchProcessLayoutBinding.searchActionView.icon = getDrawable(R.drawable.icon_search)
+
+                    }, 2369)
+
                 } else {
 
                     searchProcessLayoutBinding.loadingView.pauseAnimation()
                     searchProcessLayoutBinding.loadingView.visibility = View.INVISIBLE
 
+                    searchProcessLayoutBinding.searchActionView.isEnabled = true
+
+                    searchProcessLayoutBinding.searchActionView.icon = getDrawable(R.drawable.icon_search)
+
                     searchResultAdapter.notesDataStructureList.addAll(it)
 
                     searchResultAdapter.notifyDataSetChanged()
+
+                    searchProcessLayoutBinding.searchTerm.clearFocus()
+
+                    hideKeyboard(applicationContext, searchProcessLayoutBinding.searchTerm)
 
                 }
 
@@ -168,10 +195,17 @@ class SearchProcess : AppCompatActivity() {
 
     private fun invokeSearchOperations(searchTerm: String, allNotesData: List<NotesDataStructureSearch>) {
 
-        if (searchTerm.isNotBlank()) {
+        if (searchTerm.isNotBlank()
+            && allNotesData.size.toLong() == noteDatabaseConfigurations.databaseSize()) {
+
+            searchProcessLayoutBinding.textInputSearchTerm.isErrorEnabled = false
 
             searchProcessLayoutBinding.recyclerViewSearchResults.removeAllViews()
             searchResultAdapter.notesDataStructureList.clear()
+
+            searchProcessLayoutBinding.searchActionView.isEnabled = false
+
+            searchProcessLayoutBinding.searchActionView.icon = null
 
             searchProcessLayoutBinding.loadingView.visibility = View.VISIBLE
 
@@ -179,6 +213,10 @@ class SearchProcess : AppCompatActivity() {
             searchProcessLayoutBinding.loadingView.playAnimation()
 
             searchViewModel.searchInDatabase(searchTerm, allNotesData)
+
+        } else {
+
+            searchProcessLayoutBinding.searchTerm.error = getString(R.string.errorOccurred)
 
         }
 

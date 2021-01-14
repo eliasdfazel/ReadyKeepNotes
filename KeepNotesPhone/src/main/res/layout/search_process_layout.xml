@@ -68,8 +68,8 @@
 
         apps:boxBackgroundMode="outline"
         apps:boxBackgroundColor="@color/dark_transparent_high"
-        apps:boxCornerRadiusTopStart="13dp"
-        apps:boxCornerRadiusTopEnd="13dp"
+        apps:boxCornerRadiusTopStart="7dp"
+        apps:boxCornerRadiusTopEnd="7dp"
         apps:boxCornerRadiusBottomStart="0dp"
         apps:boxCornerRadiusBottomEnd="0dp"
         apps:boxStrokeColor="@color/default_color_game_light"
@@ -80,6 +80,8 @@
         apps:hintTextColor="@color/default_color_game_light"
         apps:errorEnabled="true"
         apps:errorTextColor="@color/red"
+        apps:boxStrokeErrorColor="@color/red"
+        apps:errorContentDescription="@string/errorOccurred"
 
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent"
@@ -142,18 +144,19 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadingView"
-        android:layout_width="159dp"
-        android:layout_height="159dp"
-        android:layout_marginBottom="33dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="7dp"
+        android:elevation="13dp"
         android:visibility="invisible"
 
         apps:lottie_rawRes="@raw/searching_loading_animation"
         apps:lottie_repeatMode="restart"
         apps:lottie_loop="true"
 
-        apps:layout_constraintTop_toTopOf="parent"
-        apps:layout_constraintBottom_toBottomOf="parent"
-        apps:layout_constraintStart_toStartOf="parent"
-        apps:layout_constraintEnd_toEndOf="parent"/>
+        apps:layout_constraintTop_toTopOf="@id/searchActionView"
+        apps:layout_constraintBottom_toBottomOf="@id/searchActionView"
+        apps:layout_constraintStart_toStartOf="@id/searchActionView"
+        apps:layout_constraintEnd_toEndOf="@id/searchActionView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
