@@ -149,7 +149,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
     }
 
-    private fun insertAllNotesIntoCloudDatabase(context: AppCompatActivity, firebaseUser: FirebaseUser) = CoroutineScope(Dispatchers.IO).async {
+    fun insertAllNotesIntoCloudDatabase(context: AppCompatActivity, firebaseUser: FirebaseUser) = CoroutineScope(Dispatchers.IO).async {
 
         val notesRoomDatabaseConfiguration = (keepNoteApplication).notesRoomDatabaseConfiguration
 
