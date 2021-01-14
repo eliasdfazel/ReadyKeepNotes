@@ -64,7 +64,7 @@
 
         apps:backgroundTint="@color/default_color_transparent"
         apps:cornerRadius="51dp"
-        apps:elevation="23dp"
+        apps:elevation="13dp"
         apps:icon="@drawable/share_icon"
         apps:iconGravity="textStart"
         apps:iconPadding="0dp"

@@ -163,16 +163,19 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/facebookView"
                 android:layout_width="0dp"
-                android:layout_height="57dp"
+                android:layout_height="77dp"
                 android:layout_marginVertical="19dp"
                 android:layout_marginEnd="13dp"
                 android:gravity="center_vertical|start"
-
                 android:textAllCaps="false"
                 android:text="@string/followFacebook"
                 android:textSize="23sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/upcil"
+                android:insetTop="17dp"
+                android:insetBottom="17dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
 
                 apps:icon="@drawable/facebook_logo"
                 apps:iconSize="51dp"
@@ -182,7 +185,7 @@
                 apps:backgroundTint="@color/blueDark"
                 apps:rippleColor="@color/default_color_game_light_transparent"
                 apps:cornerRadius="51dp"
-                apps:elevation="23dp"
+                apps:elevation="13dp"
 
                 apps:layout_constraintWidth_percent="0.45"
                 apps:layout_constraintTop_toBottomOf="@id/toggleThemeView"
@@ -191,7 +194,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/twitterView"
                 android:layout_width="0dp"
-                android:layout_height="57dp"
+                android:layout_height="77dp"
                 android:layout_marginVertical="19dp"
                 android:layout_marginStart="13dp"
                 android:gravity="center_vertical|start"
@@ -200,6 +203,10 @@
                 android:textSize="23sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/upcil"
+                android:insetTop="17dp"
+                android:insetBottom="17dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
 
                 apps:icon="@drawable/twitter_logo"
                 apps:iconSize="51dp"
@@ -209,7 +216,7 @@
                 apps:backgroundTint="@color/blue"
                 apps:rippleColor="@color/default_color_game_light_transparent"
                 apps:cornerRadius="51dp"
-                apps:elevation="23dp"
+                apps:elevation="13dp"
 
                 apps:layout_constraintWidth_percent="0.45"
                 apps:layout_constraintTop_toBottomOf="@id/toggleThemeView"

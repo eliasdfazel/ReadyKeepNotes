@@ -33,7 +33,7 @@
         apps:strokeWidth="0dp"
         apps:rippleColor="@color/default_color_game"
         apps:cornerRadius="51dp"
-        apps:elevation="23dp"
+        apps:elevation="13dp"
 
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"

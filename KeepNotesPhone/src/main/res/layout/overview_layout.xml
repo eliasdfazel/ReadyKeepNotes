@@ -119,7 +119,7 @@
             android:insetBottom="0dp"
 
             apps:cornerRadius="51dp"
-            apps:elevation="23dp"
+            apps:elevation="13dp"
             apps:icon="@drawable/icon_save"
             apps:iconSize="49dp"
             apps:iconGravity="textStart"
@@ -143,7 +143,7 @@
             android:insetBottom="0dp"
 
             apps:cornerRadius="51dp"
-            apps:elevation="23dp"
+            apps:elevation="13dp"
             apps:icon="@drawable/icon_handwriting"
             apps:iconSize="33dp"
             apps:iconGravity="textStart"
@@ -224,7 +224,7 @@
         android:insetLeft="0dp"
         android:insetRight="0dp"
 
-        apps:elevation="23dp"
+        apps:elevation="13dp"
         apps:cornerRadius="51dp"
         apps:icon="@drawable/brand"
         apps:iconTintMode="multiply"
@@ -249,7 +249,7 @@
         android:insetLeft="0dp"
         android:insetRight="0dp"
 
-        apps:elevation="23dp"
+        apps:elevation="13dp"
         apps:cornerRadius="51dp"
         apps:icon="@drawable/icon_search"
         apps:iconTintMode="multiply"
@@ -275,7 +275,7 @@
         android:visibility="invisible"
 
         apps:cornerRadius="51dp"
-        apps:elevation="23dp"
+        apps:elevation="13dp"
         apps:icon="@drawable/icon_search"
         apps:iconTintMode="multiply"
         apps:iconGravity="textStart"
