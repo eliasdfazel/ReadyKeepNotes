@@ -94,6 +94,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         RecentColorsAdapter(this@TakeNote, paintingCanvasView)
     }
 
+    var documentId = System.currentTimeMillis()
+
     var autoEnterPlaced = false
 
     var contentDescriptionShowing = false
@@ -181,7 +183,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         firebaseUser?.let { firebaseUser ->
 
-            val documentId = if (intent.hasExtra(NoteExtraData.DocumentId)) {
+            documentId = if (intent.hasExtra(NoteExtraData.DocumentId)) {
 
                 intent.getLongExtra(NoteExtraData.DocumentId, System.currentTimeMillis())
 
@@ -394,16 +396,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
             if (!takeNoteLayoutBinding.editTextContentView.text.isNullOrBlank() || paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
                 takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
-
-                val documentId = if (intent.hasExtra(NoteExtraData.DocumentId)) {
-
-                    intent.getLongExtra(NoteExtraData.DocumentId, System.currentTimeMillis())
-
-                } else {
-
-                    System.currentTimeMillis()
-
-                }
 
                 CoroutineScope(Dispatchers.IO).launch {
 
