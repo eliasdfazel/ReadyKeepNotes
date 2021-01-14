@@ -292,32 +292,36 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             takeNoteLayoutBinding.savingView.setOnClickListener {
 
-                if (!contentDescriptionShowing) {
+                if (!takeNoteLayoutBinding.editTextContentView.text.isNullOrBlank() || paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
-                    notesIO.saveNotesAndPaintingOnline(
-                        context = this@TakeNote,
-                        firebaseUser = firebaseUser,
-                        takeNoteLayoutBinding = takeNoteLayoutBinding,
-                        databaseEndpoints = databaseEndpoints,
-                        paintingIO = paintingIO,
-                        paintingCanvasView = paintingCanvasView,
-                        contentEncryption = contentEncryption,
-                        documentId = documentId
-                    )
+                    if (!contentDescriptionShowing) {
 
-                    notesIO.saveNotesAndPaintingOfflineRetry = notesIO.saveNotesAndPaintingOffline(
-                        context = this@TakeNote,
-                        firebaseUser = firebaseUser,
-                        takeNoteLayoutBinding = takeNoteLayoutBinding,
-                        paintingIO = paintingIO,
-                        paintingCanvasView = paintingCanvasView,
-                        contentEncryption = contentEncryption,
-                        documentId = documentId
-                    )
+                        notesIO.saveNotesAndPaintingOnline(
+                            context = this@TakeNote,
+                            firebaseUser = firebaseUser,
+                            takeNoteLayoutBinding = takeNoteLayoutBinding,
+                            databaseEndpoints = databaseEndpoints,
+                            paintingIO = paintingIO,
+                            paintingCanvasView = paintingCanvasView,
+                            contentEncryption = contentEncryption,
+                            documentId = documentId
+                        )
 
-                } else {
+                        notesIO.saveNotesAndPaintingOfflineRetry = notesIO.saveNotesAndPaintingOffline(
+                            context = this@TakeNote,
+                            firebaseUser = firebaseUser,
+                            takeNoteLayoutBinding = takeNoteLayoutBinding,
+                            paintingIO = paintingIO,
+                            paintingCanvasView = paintingCanvasView,
+                            contentEncryption = contentEncryption,
+                            documentId = documentId
+                        )
 
-                    
+                    } else {
+
+
+
+                    }
 
                 }
 
