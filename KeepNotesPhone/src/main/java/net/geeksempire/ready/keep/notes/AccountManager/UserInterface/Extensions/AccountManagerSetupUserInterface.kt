@@ -10,6 +10,8 @@
 
 package net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -40,6 +42,8 @@ import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInfo
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
+import net.geeksempire.ready.keep.notes.EntryConfigurations
+import net.geeksempire.ready.keep.notes.Invitations.Send.SendInvitation
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
@@ -319,9 +323,23 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
                     accountInformationLayoutBinding.inviteFriendsView.visibility = View.VISIBLE
                     accountInformationLayoutBinding.inviteFriendsView.setOnClickListener {
 
-                        //
-                        //
-                        //
+                        if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+
+                            SendInvitation(applicationContext, accountInformationLayoutBinding.root)
+                                .invite(Firebase.auth.currentUser!!)
+
+                        } else {
+
+                            val permissionsList = arrayListOf(
+                                Manifest.permission.GET_ACCOUNTS
+                            )
+
+                            requestPermissions(
+                                permissionsList.toTypedArray(),
+                                EntryConfigurations.PermissionRequestCode
+                            )
+
+                        }
 
                     }
 
