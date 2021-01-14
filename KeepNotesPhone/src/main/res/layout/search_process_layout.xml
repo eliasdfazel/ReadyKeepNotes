@@ -121,6 +121,7 @@
         apps:iconSize="37dp"
         apps:iconGravity="textStart"
         apps:cornerRadius="51dp"
+        apps:elevation="13dp"
         apps:rippleColor="@color/cyan"
         apps:backgroundTint="@color/lighter"
 

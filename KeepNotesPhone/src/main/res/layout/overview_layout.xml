@@ -275,6 +275,7 @@
         android:visibility="invisible"
 
         apps:cornerRadius="51dp"
+        apps:elevation="23dp"
         apps:icon="@drawable/icon_search"
         apps:iconTintMode="multiply"
         apps:iconGravity="textStart"
