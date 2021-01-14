@@ -41,7 +41,6 @@ import net.geeksempire.ready.keep.notes.AccountManager.DataStructure.UserInforma
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.BuildConfig
-import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.Invitations.Send.SendInvitation
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -391,20 +390,6 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
             })
             .submit()
-
-        val notesIO = NotesIO(application as KeepNoteApplication)
-
-        if (!userInformationIO.userIsReturning()) {
-            // User Linked Anonymous Account With Google Account
-
-            notesIO.insertAllNotesIntoCloudDatabase(this@createUserProfile, firebaseUser)
-
-        } else {
-            // User Signed In To Existing Google Account & Anonymous Account Deleted
-
-            notesIO.startBackgroundMigrationProcess(this@createUserProfile, firebaseUser)
-
-        }
 
     }
 

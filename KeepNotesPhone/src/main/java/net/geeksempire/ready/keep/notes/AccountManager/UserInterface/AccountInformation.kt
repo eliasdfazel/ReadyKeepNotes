@@ -32,6 +32,7 @@ import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions.
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions.createUserProfile
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
+import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.Invitations.Send.SendInvitation
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -184,8 +185,6 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
         } else {
 
-            println(">>>>>>> 555")
-
             if (profileUpdating) {
 
                 profileUpdating = false
@@ -239,11 +238,17 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                             ?.addOnSuccessListener {
                                                 Log.d(this@AccountInformation.javaClass.simpleName, "Firebase User Profile Updated.")
 
-                                                val accountName: String = Firebase.auth.currentUser?.email.toString()
+                                                Firebase.auth.currentUser?.let { linkedInFirebaseUser ->
 
-                                                userInformationIO.saveUserInformation(accountName)
+                                                    val accountName: String = linkedInFirebaseUser.email.toString()
 
-                                                createUserProfile()
+                                                    userInformationIO.saveUserInformation(accountName)
+
+                                                    createUserProfile()
+
+                                                    databaseCheckpoint(linkedInFirebaseUser)
+
+                                                }
 
                                             }
 
@@ -269,6 +274,8 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
                                                                 userInformationIO.saveNewUserInformation(authResult.additionalUserInfo?.isNewUser?:false)
 
                                                                 createUserProfile()
+
+                                                                databaseCheckpoint(signedInFirebaseUser)
 
                                                             }
 
@@ -318,6 +325,24 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
     }
 
     override fun networkLost() {
+
+    }
+
+    private fun databaseCheckpoint(firebaseUser: FirebaseUser) {
+
+        val notesIO = NotesIO(application as KeepNoteApplication)
+
+        if (!userInformationIO.userIsReturning()) {
+            // User Linked Anonymous Account With Google Account
+
+            notesIO.insertAllNotesIntoCloudDatabase(this@AccountInformation, firebaseUser)
+
+        } else {
+            // User Signed In To Existing Google Account & Anonymous Account Deleted
+
+            notesIO.startBackgroundMigrationProcess(this@AccountInformation, firebaseUser)
+
+        }
 
     }
 
