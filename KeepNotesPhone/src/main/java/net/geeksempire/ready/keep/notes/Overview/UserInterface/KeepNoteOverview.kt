@@ -417,6 +417,7 @@ class KeepNoteOverview : AppCompatActivity(),
                     }
 
                     if (it.size == 1 && overviewAdapter.notesDataStructureList.size == 0) {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "First Note")
 
                         overviewAdapter.notesDataStructureList.clear()
                         overviewAdapter.notesDataStructureList.addAll(it)
@@ -426,6 +427,7 @@ class KeepNoteOverview : AppCompatActivity(),
                         overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
 
                     } else if (it.size == 1) {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "One Quick Note")
 
                         overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
 
@@ -434,6 +436,7 @@ class KeepNoteOverview : AppCompatActivity(),
                         }
 
                     } else {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "One Full Note")
 
                         overviewAdapter.notesDataStructureList.clear()
                         overviewAdapter.notesDataStructureList.addAll(it)
@@ -548,7 +551,7 @@ class KeepNoteOverview : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
 
-        setupColors()
+        setupOverviewColors()
 
         loadUserAccountInformation()
 

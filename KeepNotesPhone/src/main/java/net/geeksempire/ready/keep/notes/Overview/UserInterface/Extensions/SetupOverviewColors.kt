@@ -7,7 +7,7 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
-fun KeepNoteOverview.setupColors() {
+fun KeepNoteOverview.setupOverviewColors() {
 
     when (themePreferences.checkThemeLightDark()) {
         ThemeType.ThemeLight -> {
