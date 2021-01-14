@@ -1,6 +1,5 @@
 package net.geeksempire.ready.keep.notes.Database.IO
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +34,8 @@ import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandle
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
 import net.geeksempire.ready.keep.notes.databinding.TakeNoteLayoutBinding
+import java.io.File
+import java.io.FileOutputStream
 
 class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
@@ -323,15 +324,19 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
                 val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-                val noteHandwritingSnapshot = context.openFileOutput("${documentId}.PNG", Context.MODE_PRIVATE)
+                val noteHandwritingSnapshotPath = context.externalMediaDirs[0].path + File.separator + documentId + ".PNG"
+                val noteHandwritingSnapshot = File(noteHandwritingSnapshotPath)
+//                val noteHandwritingSnapshot = context.openFileOutput("${documentId}.PNG", Context.MODE_PRIVATE)
 
-                noteHandwritingSnapshot.write(paintingIO.takeScreenshot(paintingCanvasView))
+                val fileOutputStream = FileOutputStream(noteHandwritingSnapshot)
+
+                fileOutputStream.write(paintingIO.takeScreenshot(paintingCanvasView))
 
                 val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
                     noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
                     noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
                     noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
-                    noteHandwritingSnapshotLink = context.getFileStreamPath("${documentId}.PNG").absolutePath,
+                    noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
                     noteTakenTime = documentId,
                     noteEditTime = null,
                     noteIndex = documentId,
@@ -369,12 +374,11 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 e.printStackTrace()
 
                 withContext(SupervisorJob() + Dispatchers.Main) {
-
-                    Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
+                    Log.d(this@NotesIO.javaClass.simpleName, "Note Did Not Saved")
 
                     SnackbarBuilder(context).show (
                         rootView = takeNoteLayoutBinding.rootView,
-                        messageText= context.getString(R.string.emptyNotesCollection),
+                        messageText= context.getString(R.string.offlineSavingError),
                         messageDuration = Snackbar.LENGTH_INDEFINITE,
                         actionButtonText = R.string.retryText,
                         snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {

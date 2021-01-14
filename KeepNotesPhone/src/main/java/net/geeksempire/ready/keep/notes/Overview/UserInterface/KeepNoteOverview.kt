@@ -54,6 +54,7 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeActions
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -96,15 +97,24 @@ class KeepNoteOverview : AppCompatActivity(),
             override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).async {
                 super.onSwipeToEnd(context, position)
 
+                val dataToDelete = context.overviewAdapter.notesDataStructureList[position]
+
                 Firebase.auth.currentUser?.let { firebaseUser ->
 
                     (application as KeepNoteApplication).firestoreDatabase
-                        .document(databaseEndpoints.noteTextsDocumentEndpoint(firebaseUser.uid, context.overviewAdapter.notesDataStructureList[position].uniqueNoteId.toString()))
+                        .document(databaseEndpoints.noteTextsDocumentEndpoint(firebaseUser.uid, dataToDelete.uniqueNoteId.toString()))
                         .delete()
 
                 }
 
-                val dataToDelete = context.overviewAdapter.notesDataStructureList[position]
+
+                dataToDelete.noteHandwritingPaintingPaths?.let { handwritingSnapshotFileToDelete ->
+
+                    File(handwritingSnapshotFileToDelete).delete()
+
+                }
+
+
 
                 context.overviewAdapter.notesDataStructureList.removeAt(position)
                 context.overviewAdapter.notifyItemRemoved(position)
