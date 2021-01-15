@@ -128,47 +128,27 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 
-                if (!notesDataStructureList[position].noteHandwritingSnapshotLink.isNullOrBlank()) {
-
-                    val textShareStringBuilder = StringBuilder()
-                    notesDataStructureList[position].noteTile?.let {
-                        textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
-                    }
-                    textShareStringBuilder.append("\n")
-                    notesDataStructureList[position].noteTextContent?.let {
-                        textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
-                    }
-
-                    val textToShare = textShareStringBuilder.toString()
-
-                    val imageToShare = notesDataStructureList[position].noteHandwritingSnapshotLink
-
-                    ShareIt(context)
-                        .invokeCompleteSharing(
-                            textToShare,
-                            imageToShare
-                        )
-
-                } else {
-
-                    val textShareStringBuilder = StringBuilder()
-                    notesDataStructureList[position].noteTile?.let {
-                        textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
-                    }
-                    textShareStringBuilder.append("\n")
-                    notesDataStructureList[position].noteTextContent?.let {
-                        textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
-                    }
-
-                    val textToShare = textShareStringBuilder.toString()
-
-                    ShareIt(context)
-                        .invokeCompleteSharing(
-                            textToShare,
-                            null
-                        )
-
+                val textShareStringBuilder = StringBuilder()
+                notesDataStructureList[position].noteTile?.let {
+                    textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
                 }
+                textShareStringBuilder.append("\n")
+                notesDataStructureList[position].noteTextContent?.let {
+                    textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
+                }
+
+                val textToShare = textShareStringBuilder.toString()
+
+                val imageToShare = notesDataStructureList[position].noteHandwritingSnapshotLink
+
+                val audioToShare = notesDataStructureList[position].noteVoiceContent
+
+                ShareIt(context)
+                    .invokeCompleteSharing(
+                        textToShare,
+                        imageToShare,
+                        audioToShare
+                    )
 
             }
 

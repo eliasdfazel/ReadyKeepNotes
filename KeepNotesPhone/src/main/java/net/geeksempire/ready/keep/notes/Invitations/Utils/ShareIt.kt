@@ -14,6 +14,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import net.geeksempire.ready.keep.notes.R
+import org.json.JSONArray
 
 class ShareIt (val context: Context) {
 
@@ -28,13 +29,31 @@ class ShareIt (val context: Context) {
 
     }
 
-    fun invokeCompleteSharing(shareText: String?, shareImage: String?) {
+    fun invokeCompleteSharing(shareText: String?, shareImage: String?, shareAudio: String?) {
+
+        val shareExtraStream = ArrayList<Uri>()
+
+        if (!shareImage.isNullOrBlank()) {
+            shareExtraStream.add(Uri.parse(shareImage))
+        }
+
+        if (!shareAudio.isNullOrBlank()) {
+
+            val jsonArrayAudio = JSONArray(shareAudio)
+
+            for (index in 0..jsonArrayAudio.length()) {
+
+                shareExtraStream.add(Uri.parse(jsonArrayAudio.getString(index)))
+
+            }
+
+        }
 
         val shareIntent: Intent = Intent(Intent.ACTION_SEND).apply {
             type = "*/*"
             putExtra(Intent.EXTRA_TEXT, shareText)
-            shareImage?.let {
-                putExtra(Intent.EXTRA_STREAM, Uri.parse(it))
+            if (shareImage != null || shareAudio != null) {
+                putParcelableArrayListExtra(Intent.EXTRA_STREAM, shareExtraStream)
             }
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
