@@ -2,6 +2,9 @@ package net.geeksempire.ready.keep.notes.Notes.Restoring
 
 import android.util.Log
 import kotlinx.coroutines.*
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingMoveRestore
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingStartRestore
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingUpRestore
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.RedrawPaintingData
 

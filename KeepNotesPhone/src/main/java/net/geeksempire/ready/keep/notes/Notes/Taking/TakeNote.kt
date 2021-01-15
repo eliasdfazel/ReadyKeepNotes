@@ -27,6 +27,7 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingAct
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.restorePaints
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Utils.StrokePaintingCanvasView
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview

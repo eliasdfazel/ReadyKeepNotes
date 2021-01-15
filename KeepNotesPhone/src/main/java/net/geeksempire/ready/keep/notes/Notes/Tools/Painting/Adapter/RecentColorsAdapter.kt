@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.changePaintingData
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.NewPaintingData
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.R

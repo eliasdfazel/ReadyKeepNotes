@@ -13,6 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.changePaintingData
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.redoProcess
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.removeAllPaints
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.undoProcess
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.NewPaintingData
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX

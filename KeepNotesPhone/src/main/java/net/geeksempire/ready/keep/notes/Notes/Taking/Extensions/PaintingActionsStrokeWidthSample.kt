@@ -2,6 +2,7 @@ package net.geeksempire.ready.keep.notes.Notes.Taking.Extensions
 
 import android.text.Html
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.changePaintingPathStrokeWidth
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.NewPaintingData
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -31,9 +32,6 @@ fun TakeNote.paintingActionsStrokeWidthSample() {
     }
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = 0f
-
-//    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.startText ="$fluidSliderMinimum"
-//    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.endText = "$fluidSlideMaximum"
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.beginTrackingListener = {
 
