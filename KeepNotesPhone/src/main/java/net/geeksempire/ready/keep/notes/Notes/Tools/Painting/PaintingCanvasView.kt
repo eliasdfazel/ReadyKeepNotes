@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.Notes.Restoring.RedrawSavedPaints
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.InputRecognizer
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingMove
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingStart
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingUp
@@ -45,6 +46,12 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
     var allRedrawPaintingPathData: ArrayList<RedrawPaintingData> = ArrayList<RedrawPaintingData>()
 
+    val inputRecognizer = InputRecognizer()
+
+    var fingerPaintingData = NewPaintingData()
+
+    var stylusPaintingData = NewPaintingData()
+
     init {
 
         this@PaintingCanvasView.isFocusable = true
@@ -67,6 +74,10 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
         drawPaint.strokeCap = Paint.Cap.ROUND
 
         newPaintingData = NewPaintingData(paintColor, paintStrokeWidth)
+
+        fingerPaintingData = NewPaintingData(paintColor, paintStrokeWidth)
+
+        stylusPaintingData = NewPaintingData(paintColor, paintStrokeWidth)
 
     }
 
@@ -93,32 +104,30 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
         motionEvent?.let {
 
-            when (motionEvent.getToolType(0)) {
-                MotionEvent.TOOL_TYPE_FINGER -> {
-                    Log.d(this@PaintingCanvasView.javaClass.simpleName, "Finger Touch")
-
-
-
-                }
-                MotionEvent.TOOL_TYPE_STYLUS -> {
-                    Log.d(this@PaintingCanvasView.javaClass.simpleName, "Stylus Touch")
-
-
-
-                }
-                MotionEvent.TOOL_TYPE_MOUSE -> {
-                    Log.d(this@PaintingCanvasView.javaClass.simpleName, "Mouse Touch")
-
-
-
-                }
-            }
-
             val initialTouchX = motionEvent.x
             val initialTouchY = motionEvent.y
 
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
+
+                    when (motionEvent.getToolType(0)) {
+                        MotionEvent.TOOL_TYPE_FINGER -> {
+                            Log.d(this@PaintingCanvasView.javaClass.simpleName, "Finger Touch")
+
+                            inputRecognizer.stylusDetected = false
+
+                            newPaintingData = fingerPaintingData
+
+                        }
+                        MotionEvent.TOOL_TYPE_STYLUS -> {
+                            Log.d(this@PaintingCanvasView.javaClass.simpleName, "Stylus Touch")
+
+                            inputRecognizer.stylusDetected = true
+
+                            newPaintingData = stylusPaintingData
+
+                        }
+                    }
 
                     touchingStart(initialTouchX, initialTouchY)
 
