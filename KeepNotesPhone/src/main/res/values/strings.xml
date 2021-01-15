@@ -34,7 +34,20 @@
 
     <string name="descriptionToggleText">Toggle Between Keyboard Typing &amp; Handwriting</string>
     <string name="descriptionSavingText">Save Everything Into Online &amp; Offline Database</string>
+
+    <string name="descriptionColorPicker">Pick Color &amp; Line Width &amp; Transparency</string>
     <string name="descriptionClearAllPainting">Clear All Handwriting</string>
+    <string name="descriptionRedo">Redo</string>
+    <string name="descriptionUndo">Undo</string>
+
+    <string name="descriptionSearch">Search</string>
+
+    <string name="descriptionPreferences">Go To Preferences</string>
+    <string name="descriptionGoBack">Back To Previous</string>
+
+    <string name="descriptionToggleTheme">Change Theme Of Application</string>
+
+    <string name="descriptionSupport">Contact Support Team</string>
 
     <string name="drawForWidthSample">Draw Here For Sample</string>
 

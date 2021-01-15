@@ -36,6 +36,7 @@
             android:scaleType="fitCenter"
             android:transitionName="@string/preferenceImageTransitionName"
             android:src="@drawable/preference_icon"
+            android:contentDescription="@string/descriptionPreferences"
 
             apps:layout_constraintWidth_percent="0.3"
             apps:layout_constraintTop_toTopOf="parent"
@@ -50,6 +51,7 @@
             android:layout_marginHorizontal="7dp"
             android:scaleType="fitCenter"
             android:src="@drawable/back_icon"
+            android:contentDescription="@string/descriptionGoBack"
 
             apps:layout_constraintWidth_percent="0.3"
             apps:layout_constraintTop_toTopOf="parent"
@@ -117,6 +119,7 @@
         android:insetBottom="0dp"
         android:insetLeft="0dp"
         android:insetRight="0dp"
+        android:contentDescription="@string/descriptionSearch"
 
         apps:icon="@drawable/icon_search"
         apps:iconTintMode="multiply"

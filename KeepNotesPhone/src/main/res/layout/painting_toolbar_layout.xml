@@ -23,6 +23,7 @@
         android:layout_marginStart="33dp"
         android:src="@drawable/all_colors_icon"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/descriptionColorPicker"
 
         apps:layout_constraintTop_toTopOf="parent"
         apps:layout_constraintBottom_toBottomOf="parent"
@@ -52,6 +53,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/redo_icon"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/descriptionRedo"
 
         apps:shape="circle"
 
@@ -67,6 +69,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/undo_icon"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/descriptionUndo"
 
         apps:shape="circle"
 

@@ -117,6 +117,7 @@
             android:insetTop="00dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
+            android:contentDescription="@string/descriptionSavingText"
 
             apps:cornerRadius="51dp"
             apps:elevation="13dp"
@@ -141,6 +142,7 @@
             android:insetTop="00dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
+            android:contentDescription="@string/descriptionToggleText"
 
             apps:cornerRadius="51dp"
             apps:elevation="13dp"
@@ -248,6 +250,8 @@
         android:insetBottom="0dp"
         android:insetLeft="0dp"
         android:insetRight="0dp"
+        android:contentDescription="@string/descriptionSearch"
+
 
         apps:elevation="13dp"
         apps:cornerRadius="51dp"

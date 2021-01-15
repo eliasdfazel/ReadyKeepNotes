@@ -54,6 +54,7 @@
                 android:padding="15dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/back_icon"
+                android:contentDescription="@string/descriptionGoBack"
 
                 apps:layout_constraintTop_toTopOf="@id/preferencesView"
                 apps:layout_constraintStart_toStartOf="parent" />
@@ -66,6 +67,7 @@
                 android:padding="15dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/support_icon"
+                android:contentDescription="@string/descriptionSupport"
 
                 apps:layout_constraintTop_toTopOf="@id/preferencesView"
                 apps:layout_constraintEnd_toEndOf="parent" />
@@ -131,6 +133,7 @@
                 android:layout_height="179dp"
                 android:padding="11dp"
                 android:layout_marginVertical="7dp"
+                android:contentDescription="@string/descriptionToggleTheme"
 
                 apps:lottie_rawRes="@raw/toggle_theme"
 
