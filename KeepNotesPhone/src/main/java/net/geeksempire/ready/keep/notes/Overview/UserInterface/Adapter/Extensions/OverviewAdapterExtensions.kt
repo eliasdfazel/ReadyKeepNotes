@@ -1,7 +1,10 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Invitations.Utils.ShareIt
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
@@ -120,20 +123,50 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
         this@setupShareView.context,
         this@setupShareView.context.getString(R.string.shareText),
         17.0f,
-        R.color.default_color,
+        R.color.cyan,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 
-                val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
+                if (!notesDataStructureList[position].noteHandwritingSnapshotLink.isNullOrBlank()) {
 
-                if (paintingPathsJsonArray.isNullOrEmpty()) {
+                    val textShareStringBuilder = StringBuilder()
+                    notesDataStructureList[position].noteTile?.let {
+                        textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
+                    }
+                    textShareStringBuilder.append("\n")
+                    notesDataStructureList[position].noteTextContent?.let {
+                        textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
+                    }
 
+                    val textToShare = textShareStringBuilder.toString()
 
+                    val imageToShare = notesDataStructureList[position].noteHandwritingSnapshotLink
+
+                    ShareIt(context)
+                        .invokeCompleteSharing(
+                            textToShare,
+                            imageToShare
+                        )
 
                 } else {
 
+                    val textShareStringBuilder = StringBuilder()
+                    notesDataStructureList[position].noteTile?.let {
+                        textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
+                    }
+                    textShareStringBuilder.append("\n")
+                    notesDataStructureList[position].noteTextContent?.let {
+                        textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
+                    }
 
+                    val textToShare = textShareStringBuilder.toString()
+
+                    ShareIt(context)
+                        .invokeCompleteSharing(
+                            textToShare,
+                            null
+                        )
 
                 }
 

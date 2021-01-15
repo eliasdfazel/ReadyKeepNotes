@@ -76,7 +76,7 @@ class SendInvitation (val context: Context, val rootView: ViewGroup) {
                         super.onActionButtonClicked(snackbar)
 
                         ShareIt(context)
-                            .invoke(InvitationConstant.generateInvitationText(dynamicLinkUri, firebaseUser.displayName.toString()))
+                            .invokeTextSharing(InvitationConstant.generateInvitationText(dynamicLinkUri, firebaseUser.displayName.toString()))
 
                     }
 

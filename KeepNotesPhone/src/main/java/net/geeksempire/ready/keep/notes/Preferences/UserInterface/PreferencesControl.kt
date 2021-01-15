@@ -118,7 +118,7 @@ class PreferencesControl : AppCompatActivity() {
                     ""
 
             ShareIt(applicationContext)
-                .invoke(shareText)
+                .invokeTextSharing(shareText)
 
         }
 
