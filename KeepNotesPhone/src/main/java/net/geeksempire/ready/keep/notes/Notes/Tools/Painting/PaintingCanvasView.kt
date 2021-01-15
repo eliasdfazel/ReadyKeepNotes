@@ -142,7 +142,8 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
     /*
     * ***
     * *** Canvas Utilities
-    * *** */
+    * ***
+    */
 
     private fun touchingStart(x: Float, y: Float) {
 
