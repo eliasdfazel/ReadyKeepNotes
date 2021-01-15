@@ -29,6 +29,7 @@ import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.IO.DeletingProcess
 import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
@@ -54,7 +55,6 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeActions
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
-import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -94,38 +94,13 @@ class KeepNoteOverview : AppCompatActivity(),
 
         val swipeActions = object : SwipeActions {
 
-            override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).async {
+            override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {
                 super.onSwipeToEnd(context, position)
 
                 val dataToDelete = context.overviewAdapter.notesDataStructureList[position]
 
-                Firebase.auth.currentUser?.let { firebaseUser ->
-
-                    (application as KeepNoteApplication).firestoreDatabase
-                        .document(databaseEndpoints.noteTextsDocumentEndpoint(firebaseUser.uid, dataToDelete.uniqueNoteId.toString()))
-                        .delete()
-
-                }
-
-
-                dataToDelete.noteHandwritingPaintingPaths?.let { handwritingSnapshotFileToDelete ->
-
-                    File(handwritingSnapshotFileToDelete).delete()
-
-                }
-
-
-
-                context.overviewAdapter.notesDataStructureList.removeAt(position)
-                context.overviewAdapter.notifyItemRemoved(position)
-
-                val notesRoomDatabaseConfiguration = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
-
-                notesRoomDatabaseConfiguration
-                    .prepareRead()
-                    .deleteNoteData(dataToDelete)
-
-                notesRoomDatabaseConfiguration.closeDatabase()
+                DeletingProcess(this@KeepNoteOverview)
+                    .start(dataToDelete, position)
 
             }
 

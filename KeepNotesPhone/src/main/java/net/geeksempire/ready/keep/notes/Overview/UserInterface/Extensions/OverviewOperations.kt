@@ -51,10 +51,6 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
 }
 
-/**
- * - False to Load Evey Time Database Changed
- * - True Just Add Database Change Listener
- **/
 fun KeepNoteOverview.startNetworkOperation() {
 
     Firebase.auth.currentUser?.let {

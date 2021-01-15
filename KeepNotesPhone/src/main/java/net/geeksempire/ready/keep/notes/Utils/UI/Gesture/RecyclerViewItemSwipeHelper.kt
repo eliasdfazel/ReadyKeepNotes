@@ -10,9 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
@@ -21,8 +19,14 @@ import kotlin.math.abs
 import kotlin.math.max
 
 interface SwipeActions {
-    fun onSwipeToStart(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).async {}
-    fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).async {}
+    /**
+     * Open Menu
+     **/
+    fun onSwipeToStart(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {}
+    /**
+     * Delete
+     **/
+    fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {}
 }
 
 abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview, private val swipeActions: SwipeActions) : ItemTouchHelper.SimpleCallback(
@@ -223,7 +227,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
     abstract fun instantiateUnderlayButton(position: Int): List<UnderlayButton>
 
     interface UnderlayOptionsActions {
-        fun onClick() = CoroutineScope(Dispatchers.Main).async {  }
+        fun onClick() = CoroutineScope(Dispatchers.Main).launch {  }
     }
 
     class UnderlayButton(

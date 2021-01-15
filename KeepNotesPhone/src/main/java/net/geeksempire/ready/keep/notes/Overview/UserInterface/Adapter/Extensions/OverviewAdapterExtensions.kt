@@ -4,8 +4,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.IO.DeletingProcess
 import net.geeksempire.ready.keep.notes.Invitations.Utils.ShareIt
-import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.RecyclerViewItemSwipeHelper
@@ -52,20 +52,12 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
         R.color.red,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
-            override fun onClick() = CoroutineScope(Dispatchers.Main).async {
+            override fun onClick() = CoroutineScope(Dispatchers.Main).launch {
 
                 val dataToDelete = context.overviewAdapter.notesDataStructureList[position]
 
-                context.overviewAdapter.notesDataStructureList.removeAt(position)
-                context.overviewAdapter.notifyItemRemoved(position)
-
-                val notesRoomDatabaseConfiguration = (this@setupDeleteView.context.application as KeepNoteApplication).notesRoomDatabaseConfiguration
-
-                notesRoomDatabaseConfiguration
-                    .prepareRead()
-                    .deleteNoteData(dataToDelete)
-
-                notesRoomDatabaseConfiguration.closeDatabase()
+                DeletingProcess(context)
+                    .start(dataToDelete, position)
 
             }
 
