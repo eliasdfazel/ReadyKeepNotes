@@ -43,7 +43,7 @@ class ShareIt (val context: Context) {
 
             for (index in 0..jsonArrayAudio.length()) {
 
-                shareExtraStream.add(Uri.parse(jsonArrayAudio.getString(index)))
+                shareExtraStream.add(Uri.parse(jsonArrayAudio.getJSONObject(index).getString("Path")))
 
             }
 
