@@ -69,11 +69,11 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
         })
 }
 
-fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapter.setupEditView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
 
     return RecyclerViewItemSwipeHelper.UnderlayButton(
-        this@setupShareView.context,
-        this@setupShareView.context.getString(R.string.editText),
+        this@setupEditView.context,
+        this@setupEditView.context.getString(R.string.editText),
         17.0f,
         R.color.default_color,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
@@ -85,7 +85,7 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
                 if (paintingPathsJsonArray.isNullOrEmpty()) {
 
                     TakeNote.open(context = context,
-                        incomingActivityName = this@setupShareView.javaClass.simpleName,
+                        incomingActivityName = this@setupEditView.javaClass.simpleName,
                         extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                         uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
                         noteTile = notesDataStructureList[position].noteTile,
@@ -97,7 +97,7 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
                 } else {
 
                     TakeNote.open(context = context,
-                        incomingActivityName = this@setupShareView.javaClass.simpleName,
+                        incomingActivityName = this@setupEditView.javaClass.simpleName,
                         extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                         uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
                         noteTile = notesDataStructureList[position].noteTile,
@@ -106,6 +106,34 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
                         encryptedTextContent = true,
                         updateExistingNote = true
                     )
+
+                }
+
+            }
+
+        })
+}
+
+fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+
+    return RecyclerViewItemSwipeHelper.UnderlayButton(
+        this@setupShareView.context,
+        this@setupShareView.context.getString(R.string.shareText),
+        17.0f,
+        R.color.default_color,
+        object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+
+            override fun onClick() = CoroutineScope(Dispatchers.Main).async {
+
+                val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
+
+                if (paintingPathsJsonArray.isNullOrEmpty()) {
+
+
+
+                } else {
+
+
 
                 }
 

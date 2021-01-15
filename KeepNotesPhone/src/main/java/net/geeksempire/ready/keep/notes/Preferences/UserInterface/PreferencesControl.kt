@@ -30,6 +30,7 @@ import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.InApplicationReview.InApplicationReviewProcess
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.InApplicationUpdateProcess
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.UpdateResponse
+import net.geeksempire.ready.keep.notes.Utils.UI.Dialogue.ChangeLogDialogue
 import net.geeksempire.ready.keep.notes.databinding.PreferencesControlLayoutBinding
 import java.util.*
 
@@ -173,6 +174,13 @@ class PreferencesControl : AppCompatActivity() {
                     }
 
                 })
+
+        }
+
+        preferencesControlLayoutBinding.whatsNewView.setOnClickListener {
+
+            ChangeLogDialogue(this@PreferencesControl)
+                .initializeShow(forceShow = true)
 
         }
 

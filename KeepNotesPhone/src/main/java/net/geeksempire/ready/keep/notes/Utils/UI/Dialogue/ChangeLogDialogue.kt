@@ -29,7 +29,7 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
 
     private val fileIO = FileIO(context)
 
-    fun initializeShow() : Deferred<Dialog> = CoroutineScope(Dispatchers.Main).async {
+    fun initializeShow(forceShow: Boolean = false) : Deferred<Dialog> = CoroutineScope(Dispatchers.Main).async {
 
         val changeLogLayoutBinding = ChangeLogLayoutBinding.inflate(context.layoutInflater)
 
@@ -117,7 +117,8 @@ class ChangeLogDialogue (val context: AppCompatActivity) {
                 dialogue.show()
             }
 
-        } else if (BuildConfig.VERSION_CODE > fileIO.readFile(".Updated")?.toInt()?:0) {
+        } else if (BuildConfig.VERSION_CODE > fileIO.readFile(".Updated")?.toInt()?:0
+            || forceShow) {
 
             if (!context.isFinishing) {
                 dialogue.show()

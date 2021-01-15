@@ -10,6 +10,7 @@
 
 package net.geeksempire.ready.keep.notes.Preferences.Extensions
 
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -69,5 +70,12 @@ fun PreferencesControl.toggleLightDark() {
 
         }
     }
+
+    preferencesControlLayoutBinding.whatsNewView.background = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+        intArrayOf(
+            getColor(R.color.blue),
+            Color.TRANSPARENT,
+            getColor(R.color.pink)
+        ))
 
 }

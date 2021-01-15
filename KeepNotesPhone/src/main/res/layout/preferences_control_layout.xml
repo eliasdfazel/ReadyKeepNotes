@@ -163,6 +163,15 @@
                 apps:layout_constraintBottom_toBottomOf="@id/toggleThemeView"
                 apps:layout_constraintStart_toEndOf="@id/toggleThemeView"/>
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/whatsNewView"
+                android:layout_width="match_parent"
+                android:layout_height="77dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/whats_new_icon"
+
+                apps:layout_constraintTop_toBottomOf="@id/toggleThemeView"/>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/facebookView"
                 android:layout_width="0dp"
@@ -191,7 +200,7 @@
                 apps:elevation="13dp"
 
                 apps:layout_constraintWidth_percent="0.45"
-                apps:layout_constraintTop_toBottomOf="@id/toggleThemeView"
+                apps:layout_constraintTop_toBottomOf="@id/whatsNewView"
                 apps:layout_constraintEnd_toEndOf="parent"/>
 
             <com.google.android.material.button.MaterialButton
@@ -222,7 +231,7 @@
                 apps:elevation="13dp"
 
                 apps:layout_constraintWidth_percent="0.45"
-                apps:layout_constraintTop_toBottomOf="@id/toggleThemeView"
+                apps:layout_constraintTop_toBottomOf="@id/whatsNewView"
                 apps:layout_constraintStart_toStartOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
