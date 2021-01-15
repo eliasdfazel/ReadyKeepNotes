@@ -13,7 +13,7 @@ import java.text.DecimalFormat
 fun TakeNote.paintingActionsStrokeWidthSample() {
 
     val fluidSliderMinimum = 3.0.toFloat()
-    val fluidSlideMaximum = 33.0.toFloat()
+    val fluidSlideMaximum = 71.0.toFloat()
     val totalFluidSliderAmount = (fluidSlideMaximum - fluidSliderMinimum)
 
     takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.positionListener = { fluidSliderPosition ->

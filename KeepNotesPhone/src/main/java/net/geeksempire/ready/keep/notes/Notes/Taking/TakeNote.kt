@@ -27,6 +27,7 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingAct
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.InputRecognizer
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.restorePaints
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Utils.StrokePaintingCanvasView
@@ -47,7 +48,7 @@ import kotlin.math.hypot
 class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val paintingCanvasView: PaintingCanvasView by lazy {
-        PaintingCanvasView(applicationContext).also {
+        PaintingCanvasView(this@TakeNote).also {
             it.setupPaintingPanel(
                 getColor(R.color.default_color),
                 3.0f
@@ -102,6 +103,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     var contentDescriptionShowing = false
 
     var incomingActivity = EntryConfigurations::class.java.simpleName
+
+    val inputRecognizer = InputRecognizer()
 
     @Inject lateinit var networkCheckpoint: NetworkCheckpoint
 

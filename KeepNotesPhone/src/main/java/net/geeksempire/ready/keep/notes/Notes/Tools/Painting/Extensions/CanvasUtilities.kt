@@ -88,9 +88,7 @@ fun PaintingCanvasView.changePaintingData(modifiedNewPaintingData: NewPaintingDa
 
     drawPaint.xfermode = null
 
-//    newPaintingData = modifiedNewPaintingData
-
-    if (inputRecognizer.stylusDetected) {
+    if (contextInstance.inputRecognizer.stylusDetected) {
 
         stylusPaintingData = modifiedNewPaintingData
 
@@ -104,9 +102,7 @@ fun PaintingCanvasView.changePaintingData(modifiedNewPaintingData: NewPaintingDa
 
 fun PaintingCanvasView.changePaintingPathStrokeWidth(modifiedNewPaintingData: NewPaintingData) {
 
-//    newPaintingData = modifiedNewPaintingData
-
-    if (inputRecognizer.stylusDetected) {
+    if (contextInstance.inputRecognizer.stylusDetected) {
 
         stylusPaintingData = modifiedNewPaintingData
 

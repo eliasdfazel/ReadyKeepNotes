@@ -1,7 +1,10 @@
 package net.geeksempire.ready.keep.notes.Notes.Taking.Extensions
 
 import android.animation.Animator
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
@@ -23,6 +26,7 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
 import kotlin.math.hypot
 
+@SuppressLint("ClickableViewAccessibility")
 fun TakeNote.setupPaintingActions() {
 
     val allColorPalette = {
@@ -103,10 +107,42 @@ fun TakeNote.setupPaintingActions() {
 
     }
 
-    takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.setOnClickListener {
+    takeNoteLayoutBinding.paintingToolbarInclude.allColorsPicker.setOnTouchListener { view, motionEvent ->
 
-        allColorPalette.invoke()
+        when (motionEvent.action) {
+            MotionEvent.ACTION_DOWN -> {
 
+                when (motionEvent.getToolType(0)) {
+                    MotionEvent.TOOL_TYPE_FINGER -> {
+                        Log.d(this@setupPaintingActions.javaClass.simpleName, "Finger Touch")
+
+                        inputRecognizer.stylusDetected = false
+
+
+
+                    }
+                    MotionEvent.TOOL_TYPE_STYLUS -> {
+                        Log.d(this@setupPaintingActions.javaClass.simpleName, "Stylus Touch")
+
+                        inputRecognizer.stylusDetected = true
+
+                    }
+                }
+
+            }
+            MotionEvent.ACTION_UP -> {
+
+                allColorPalette.invoke()
+
+            }
+            MotionEvent.ACTION_CANCEL -> {
+
+                allColorPalette.invoke()
+
+            }
+        }
+
+        true
     }
 
     takeNoteLayoutBinding.paintingToolbarInclude.undoPaint.setOnClickListener {
@@ -152,6 +188,12 @@ fun TakeNote.setupPaintingActions() {
 
         recentColorsAdapter.allPickedColors.add(takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color)
         recentColorsAdapter.notifyDataSetChanged()
+
+    }
+
+    takeNoteLayoutBinding.colorPaletteInclude.blurView.setOnClickListener {
+
+        allColorPalette.invoke()
 
     }
 

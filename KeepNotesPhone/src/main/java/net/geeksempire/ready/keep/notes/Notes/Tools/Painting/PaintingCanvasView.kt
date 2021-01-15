@@ -1,7 +1,6 @@
 package net.geeksempire.ready.keep.notes.Notes.Tools.Painting
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.*
 import android.util.Log
 import android.view.MotionEvent
@@ -10,13 +9,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.geeksempire.ready.keep.notes.Notes.Restoring.RedrawSavedPaints
-import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.InputRecognizer
+import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingMove
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingStart
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingUp
 
 @SuppressLint("ClickableViewAccessibility")
-class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener {
+class PaintingCanvasView(val contextInstance: TakeNote) : View(contextInstance), View.OnTouchListener {
 
     var readyCanvas: Canvas? = null
 
@@ -45,8 +44,6 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
     var overallRedrawPaintingDataRedo: ArrayList<ArrayList<RedrawPaintingData>> = ArrayList<ArrayList<RedrawPaintingData>>()
 
     var allRedrawPaintingPathData: ArrayList<RedrawPaintingData> = ArrayList<RedrawPaintingData>()
-
-    val inputRecognizer = InputRecognizer()
 
     var fingerPaintingData = NewPaintingData()
 
@@ -114,7 +111,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
                         MotionEvent.TOOL_TYPE_FINGER -> {
                             Log.d(this@PaintingCanvasView.javaClass.simpleName, "Finger Touch")
 
-                            inputRecognizer.stylusDetected = false
+                            contextInstance.inputRecognizer.stylusDetected = false
 
                             newPaintingData = fingerPaintingData
 
@@ -122,7 +119,7 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
                         MotionEvent.TOOL_TYPE_STYLUS -> {
                             Log.d(this@PaintingCanvasView.javaClass.simpleName, "Stylus Touch")
 
-                            inputRecognizer.stylusDetected = true
+                            contextInstance.inputRecognizer.stylusDetected = true
 
                             newPaintingData = stylusPaintingData
 
