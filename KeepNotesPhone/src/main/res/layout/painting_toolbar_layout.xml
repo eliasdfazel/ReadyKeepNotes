@@ -36,6 +36,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/clear_canvas_icon"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/descriptionClearAllPainting"
 
         apps:shape="circle"
 

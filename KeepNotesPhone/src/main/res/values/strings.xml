@@ -34,6 +34,7 @@
 
     <string name="descriptionToggleText">Toggle Between Keyboard Typing &amp; Handwriting</string>
     <string name="descriptionSavingText">Save Everything Into Online &amp; Offline Database</string>
+    <string name="descriptionClearAllPainting">Clear All Handwriting</string>
 
     <string name="drawForWidthSample">Draw Here For Sample</string>
 
