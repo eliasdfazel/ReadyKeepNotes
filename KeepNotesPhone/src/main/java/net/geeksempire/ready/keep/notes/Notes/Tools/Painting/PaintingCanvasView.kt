@@ -94,16 +94,19 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
             when (motionEvent.getToolType(0)) {
                 MotionEvent.TOOL_TYPE_FINGER -> {
+                    Log.d(this@PaintingCanvasView.javaClass.simpleName, "Finger Touch")
 
 
 
                 }
                 MotionEvent.TOOL_TYPE_STYLUS -> {
+                    Log.d(this@PaintingCanvasView.javaClass.simpleName, "Stylus Touch")
 
 
 
                 }
                 MotionEvent.TOOL_TYPE_MOUSE -> {
+                    Log.d(this@PaintingCanvasView.javaClass.simpleName, "Mouse Touch")
 
 
 
@@ -135,6 +138,11 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
         return true
     }
+
+    /*
+    * ***
+    * *** Canvas Utilities
+    * *** */
 
     private fun touchingStart(x: Float, y: Float) {
 
