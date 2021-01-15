@@ -46,7 +46,11 @@ class NotesRoomDatabaseConfiguration (private val context: Context) {
 
         if (::databaseInterface.isInitialized) {
 
-            databaseInterface.close()
+            if (databaseInterface.isOpen) {
+
+                databaseInterface.close()
+
+            }
 
         }
 

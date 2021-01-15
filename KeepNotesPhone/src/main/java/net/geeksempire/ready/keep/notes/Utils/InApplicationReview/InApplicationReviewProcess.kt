@@ -33,9 +33,15 @@ class InApplicationReviewProcess (private val context: AppCompatActivity) {
         if (lastUpdateInformation.isApplicationUpdated() || forceReviewFlow) {
 
             val requestReviewFlow = if (BuildConfig.DEBUG) {
+                Log.d(this@InApplicationReviewProcess.javaClass.simpleName, "Fake Review Flow Invoked")
+
                 fakeReviewManager.requestReviewFlow()
+
             } else {
+                Log.d(this@InApplicationReviewProcess.javaClass.simpleName, "Real Review Flow Invoked")
+
                 reviewManager.requestReviewFlow()
+
             }
 
             requestReviewFlow.addOnSuccessListener { reviewInfo ->
@@ -47,6 +53,7 @@ class InApplicationReviewProcess (private val context: AppCompatActivity) {
                 }
 
                 reviewFlow.addOnSuccessListener {
+                    Log.d(this@InApplicationReviewProcess.javaClass.simpleName, "Real Review Flow Showed Successfully")
 
                 }.addOnFailureListener {
 
@@ -60,7 +67,7 @@ class InApplicationReviewProcess (private val context: AppCompatActivity) {
                 }
 
             }.addOnFailureListener {
-                Log.d(this@InApplicationReviewProcess.javaClass.simpleName, "In Application Review Process Error")
+                Log.d(this@InApplicationReviewProcess.javaClass.simpleName, "In Application Review Process Error ${it.printStackTrace().toString()}")
 
                 Intent().apply {
                     action = Intent.ACTION_VIEW

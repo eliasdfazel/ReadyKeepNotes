@@ -44,4 +44,32 @@
         </shape>
     </item>
 
+    <item>
+        <ripple
+            android:color="@color/default_color_dark">
+            <item
+                android:height="2dp"
+                android:gravity="bottom"
+                android:start="80dp">
+                <shape android:shape="oval">
+                    <solid android:color="@color/light" />
+                    <gradient
+                        android:angle="270"
+                        android:endColor="@color/light"
+                        android:startColor="@color/dark_transparent_higher" />
+                </shape>
+            </item>
+
+            <item
+                android:id="@android:id/mask"
+                android:height="2dp"
+                android:gravity="bottom|center_horizontal"
+                android:start="80dp">
+                <shape android:shape="oval">
+                    <solid android:color="@color/default_color_dark" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+
 </layer-list>
