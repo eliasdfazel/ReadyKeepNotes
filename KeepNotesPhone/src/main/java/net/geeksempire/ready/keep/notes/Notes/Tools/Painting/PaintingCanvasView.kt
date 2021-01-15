@@ -92,6 +92,24 @@ class PaintingCanvasView(context: Context) : View(context), View.OnTouchListener
 
         motionEvent?.let {
 
+            when (motionEvent.getToolType(0)) {
+                MotionEvent.TOOL_TYPE_FINGER -> {
+
+
+
+                }
+                MotionEvent.TOOL_TYPE_STYLUS -> {
+
+
+
+                }
+                MotionEvent.TOOL_TYPE_MOUSE -> {
+
+
+
+                }
+            }
+
             val initialTouchX = motionEvent.x
             val initialTouchY = motionEvent.y
 
