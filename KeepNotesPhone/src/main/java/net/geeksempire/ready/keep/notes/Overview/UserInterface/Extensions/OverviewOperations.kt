@@ -69,7 +69,11 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
                     overviewAdapter.notesDataStructureList[updatedDatabaseItemPosition] = updatedNoteData
 
-                    overviewAdapter.notifyItemChanged(updatedDatabaseItemPosition)
+                    withContext(Dispatchers.Main) {
+
+                        overviewAdapter.notifyItemChanged(updatedDatabaseItemPosition)
+
+                    }
 
                 }
 
