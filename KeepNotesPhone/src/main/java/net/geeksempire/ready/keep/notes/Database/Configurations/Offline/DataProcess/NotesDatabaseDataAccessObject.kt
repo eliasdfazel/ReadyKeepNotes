@@ -36,6 +36,14 @@ interface NotesDatabaseDataAccessObject {
     suspend fun updateHandwritingPathsData(uniqueNoteId: String, handwritingPaths: String)
 
 
+    @Query("SELECT * FROM NotesDatabase WHERE uniqueNoteId IN (:noteUniqueIdentifier)")
+    suspend fun getSpecificNoteData(noteUniqueIdentifier: Long) : NotesDatabaseModel
+
+
+    @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex DESC LIMIT 1")
+    suspend fun getNewestInsertedData() : NotesDatabaseModel
+
+
     @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex DESC")
     suspend fun getAllNotesData(): List<NotesDatabaseModel>
 

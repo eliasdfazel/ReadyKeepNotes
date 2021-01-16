@@ -37,4 +37,36 @@ class NoteDatabaseConfigurations (private val context: Context) {
 
     }
 
+    fun updatedDatabaseItemPosition(documentId: Int) {
+
+        val savePreferences = SavePreferences(context)
+
+        savePreferences.savePreference("DatabaseConfigurations", "NewestUpdatedItemPosition", documentId)
+
+    }
+
+    fun updatedDatabaseItemPosition() : Int {
+
+        val readPreferences = ReadPreferences(context)
+
+        return readPreferences.readPreference("DatabaseConfigurations", "NewestUpdatedItemPosition", 0)
+
+    }
+
+    fun updatedDatabaseItemIdentifier(documentId: Long) {
+
+        val savePreferences = SavePreferences(context)
+
+        savePreferences.savePreference("DatabaseConfigurations", "NewestUpdatedItemIdentifier", documentId)
+
+    }
+
+    fun updatedDatabaseItemIdentifier() : Long {
+
+        val readPreferences = ReadPreferences(context)
+
+        return readPreferences.readPreference("DatabaseConfigurations", "NewestUpdatedItemIdentifier", 0.toLong())
+
+    }
+
 }

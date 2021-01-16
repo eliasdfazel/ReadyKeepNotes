@@ -154,6 +154,9 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
             overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
 
+            context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
+            context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
+
             val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
 
             if (paintingPathsJsonArray.isNullOrEmpty()) {

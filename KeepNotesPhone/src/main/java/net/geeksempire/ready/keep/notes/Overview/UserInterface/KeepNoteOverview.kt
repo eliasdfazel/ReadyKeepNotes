@@ -506,7 +506,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
         }
 
-        startDatabaseOperation()
+//        startDatabaseOperation()
 
         Firebase.auth.currentUser?.let {
 
