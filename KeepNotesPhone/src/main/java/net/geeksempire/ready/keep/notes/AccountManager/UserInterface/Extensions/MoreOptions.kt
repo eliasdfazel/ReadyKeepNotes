@@ -14,14 +14,13 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.Browser.BuiltInBrowser
-import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabase
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Data.resizeDrawable
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
-import android.app.ActivityManagerimport android.content.Contextimport android.content.Intentimport android.text.Htmlimport android.util.Logimport android.view.Gravityimport android.view.Menuimport androidx.appcompat.widget.PopupMenuimport com.google.android.material.snackbar.Snackbarimport com.google.firebase.auth.ktx.authimport com.google.firebase.ktx.Firebaseimport net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformationimport net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationimport net.geeksempire.ready.keep.notes.Browser.BuiltInBrowserimport net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpointsimport net.geeksempire.ready.keep.notes.EntryConfigurationsimport net.geeksempire.ready.keep.notes.KeepNoteApplicationimport net.geeksempire.ready.keep.notes.Rimport net.geeksempire.ready.keep.notes.Utils.Data.resizeDrawableimport net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterfaceimport net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
+import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 
 class MoreOptions(private val context: AccountInformation) {
 
