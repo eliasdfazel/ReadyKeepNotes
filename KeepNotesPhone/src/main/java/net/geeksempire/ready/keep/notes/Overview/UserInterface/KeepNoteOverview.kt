@@ -417,6 +417,8 @@ class KeepNoteOverview : AppCompatActivity(),
 
                         overviewAdapter.addItemToFirst(it.first()).invokeOnCompletion {
 
+                            databaseSize++
+
                             overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
 
                         }
