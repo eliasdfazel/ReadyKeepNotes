@@ -41,7 +41,7 @@ class ShareIt (val context: Context) {
 
             val jsonArrayAudio = JSONArray(shareAudio)
 
-            for (index in 0..jsonArrayAudio.length()) {
+            for (index in 0 until jsonArrayAudio.length()) {
 
                 shareExtraStream.add(Uri.parse(jsonArrayAudio.getJSONObject(index).getString("Path")))
 
