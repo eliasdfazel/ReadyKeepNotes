@@ -2,7 +2,9 @@ package net.geeksempire.ready.keep.notes.Utils.Data
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import java.io.ByteArrayOutputStream
@@ -30,5 +32,30 @@ fun Float.percentage(percentageAmount: Double) : Float {
 
 fun Float.convertToDeviceIndependentPixels(context: Context) : Int {
 
-    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this@convertToDeviceIndependentPixels, context.resources.displayMetrics).toInt()
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this@convertToDeviceIndependentPixels,
+        context.resources.displayMetrics
+    ).toInt()
+}
+
+fun Drawable.resizeDrawable(context: Context, dstWidth: Int, dstHeight: Int): Drawable? {
+
+    var resizedDrawable: Drawable? = null
+
+    resizedDrawable = try {
+
+        val bitmap = (this@resizeDrawable as BitmapDrawable).bitmap
+        val bitmapResized = Bitmap.createScaledBitmap(bitmap, dstWidth, dstHeight, false)
+
+        BitmapDrawable(context.resources, bitmapResized).mutate()
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+
+        ColorDrawable(Color.TRANSPARENT)
+
+    }
+
+    return resizedDrawable
 }

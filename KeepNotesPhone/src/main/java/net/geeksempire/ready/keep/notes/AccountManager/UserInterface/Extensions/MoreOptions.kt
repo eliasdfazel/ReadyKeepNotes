@@ -1,107 +1,153 @@
 package net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions
 
 import android.content.Intent
-import android.view.MenuItem
+import android.text.Html
+import android.util.Log
+import android.view.Gravity
+import android.view.Menu
 import androidx.appcompat.widget.PopupMenu
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
+import net.geeksempire.ready.keep.notes.Browser.BuiltInBrowser
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.Data.resizeDrawable
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import java.io.File
 
+class MoreOptions(private val context: AccountInformation) {
 
-class MoreOptions(private val context: AccountInformation) : PopupMenu.OnMenuItemClickListener {
+    object MenuItemIdentifier {
+        const val PrivacyAgreementItem = 0
+        const val SignOutItem = 1
+    }
 
     fun setup() {
 
         context.accountInformationLayoutBinding.moreOptions.setOnClickListener {
 
-            val popupMenu = PopupMenu(context, it)
+            val popupMenu = PopupMenu(context, it, Gravity.CENTER, 0, R.style.GeeksEmpire_Material)
 
-            popupMenu.inflate(R.menu.account_information_menu_options)
+            popupMenu.menu.add(Menu.NONE, 0, 0,
+                Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + context.getString(R.string.privacyAgreement) + "</font>", Html.FROM_HTML_MODE_COMPACT))
 
-            popupMenu.setOnMenuItemClickListener(this@MoreOptions)
+            popupMenu.menu.add(Menu.NONE, 1, 1,
+                Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + context.getString(R.string.signOutText) + "</font>", Html.FROM_HTML_MODE_COMPACT))
+                .icon = context.getDrawable(R.drawable.not_login_icon)?.resizeDrawable(context, 77, 77)
 
-            popupMenu.show()
-
-        }
-
-    }
-
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-
-        return when (item?.itemId) {
-            R.id.privacyAgreementItem -> {
-
-
-
-                true
+            try {
+                val fields = popupMenu.javaClass.declaredFields
+                for (field in fields) {
+                    if ("mPopup" == field.name) {
+                        field.isAccessible = true
+                        val menuPopupHelper = field[popupMenu]
+                        val classPopupHelper = Class.forName(menuPopupHelper.javaClass.name)
+                        val setForceIcons = classPopupHelper.getMethod(
+                            "setForceShowIcon",
+                            Boolean::class.javaPrimitiveType
+                        )
+                        setForceIcons.invoke(menuPopupHelper, true)
+                        break
+                    }
+                }
+            } catch (e: Throwable) {
+                e.printStackTrace()
             }
-            R.id.signOutItem -> {
 
-                SnackbarBuilder(context).show (
-                    rootView = context.accountInformationLayoutBinding.rootView,
-                    messageText= context.getString(R.string.signOutConfirmText),
-                    messageDuration = Snackbar.LENGTH_INDEFINITE,
-                    actionButtonText = R.string.signInText,
-                    snackbarActionHandlerInterface = object : SnackbarActionHandlerInterface {
+            popupMenu.setOnMenuItemClickListener { menuItem ->
 
-                        override fun onActionButtonClicked(snackbar: Snackbar) {
-                            super.onActionButtonClicked(snackbar)
+                when (menuItem?.itemId) {
+                    MenuItemIdentifier.PrivacyAgreementItem -> {
 
-                            Firebase.auth.currentUser?.let { firebaseUser ->
+                        BuiltInBrowser.show(
+                            context = context,
+                            linkToLoad = context.getString(R.string.privacyAgreementLink),
+                            gradientColorOne = context.getColor(R.color.default_color_dark),
+                            gradientColorTwo = context.getColor(R.color.default_color_game_dark)
+                        )
 
-                                (context.application as KeepNoteApplication).firebaseStorage
-                                    .getReference("ReadyKeepNotes/${firebaseUser.uid}")
-                                    .delete()
+                        true
+                    }
+                    MenuItemIdentifier.SignOutItem -> {
 
-                                (context.application as KeepNoteApplication).firestoreDatabase
-                                    .document(DatabaseEndpoints().generalEndpoints(firebaseUser.uid))
-                                    .delete()
+                        SnackbarBuilder(context).show(
+                            rootView = context.accountInformationLayoutBinding.rootView,
+                            messageText = context.getString(R.string.signOutConfirmText),
+                            messageDuration = Snackbar.LENGTH_INDEFINITE,
+                            actionButtonText = R.string.signInText,
+                            snackbarActionHandlerInterface = object :
+                                SnackbarActionHandlerInterface {
 
-                                (context.application as KeepNoteApplication).firestoreDatabase
-                                    .document(UserInformation.userInformationDatabase(firebaseUser.uid))
-                                    .delete()
+                                override fun onActionButtonClicked(snackbar: Snackbar) {
+                                    super.onActionButtonClicked(snackbar)
 
-                                Firebase.auth.currentUser?.delete()?.addOnSuccessListener {
+                                    Firebase.auth.currentUser?.let { firebaseUser ->
 
-                                    Firebase.auth.signOut()
+                                        (context.application as KeepNoteApplication).firebaseStorage
+                                            .getReference("ReadyKeepNotes/${firebaseUser.uid}")
+                                            .delete()
+                                            .addOnSuccessListener {
+                                                Log.d(this@MoreOptions.javaClass.simpleName, "Storage Deleted")
 
-                                    try {
+                                                (context.application as KeepNoteApplication).firestoreDatabase
+                                                    .document(DatabaseEndpoints().baseEndpoints(firebaseUser.uid))
+                                                    .delete()
+                                                    .addOnSuccessListener {
+                                                        Log.d(this@MoreOptions.javaClass.simpleName, "Database Deleted")
 
-                                        File("/data/data/${context.packageName}/").delete()
+                                                        (context.application as KeepNoteApplication).firestoreDatabase
+                                                            .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
+                                                            .delete()
+                                                            .addOnSuccessListener {
+                                                                Log.d(this@MoreOptions.javaClass.simpleName, "Profile Deleted")
 
-                                    } catch (e: Exception) {
-                                        e.printStackTrace()
+                                                                Firebase.auth.currentUser?.delete()?.addOnSuccessListener {
+                                                                        Log.d(this@MoreOptions.javaClass.simpleName, "Firebase User Deleted")
+
+                                                                        try {
+
+                                                                            File("/data/data/${context.packageName}/").delete()
+
+                                                                        } catch (e: Exception) {
+                                                                            e.printStackTrace()
+
+                                                                        }
+
+                                                                        context.startActivity(Intent(context, EntryConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+
+                                                                        context.finish()
+
+                                                                    }
+
+                                                            }
+
+                                                    }
+
+                                            }
 
                                     }
-
-                                    context.startActivity(Intent(context, EntryConfigurations::class.java)
-                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-
-                                    context.finish()
 
                                 }
 
                             }
+                        )
 
-                        }
-
+                        true
                     }
-                )
+                    else -> {
+                        false
+                    }
+                }
+            }
 
-                true
-            }
-            else -> {
-                false
-            }
+            popupMenu.show()
+
         }
 
     }

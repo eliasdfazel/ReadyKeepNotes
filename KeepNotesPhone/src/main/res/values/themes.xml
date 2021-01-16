@@ -23,6 +23,8 @@
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
 
+        <item name="android:popupBackground">@color/default_color</item>
+
     </style>
 
     <style name="GeeksEmpire.Overview" parent="GeeksEmpire.Material">

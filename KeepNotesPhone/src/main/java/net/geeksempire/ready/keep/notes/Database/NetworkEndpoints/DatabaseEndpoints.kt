@@ -2,6 +2,11 @@ package net.geeksempire.ready.keep.notes.Database.NetworkEndpoints
 
 class DatabaseEndpoints {
 
+    fun baseEndpoints (firebaseUserUniqueId: String) : String  {
+
+        return "/ReadyKeepNotes/${firebaseUserUniqueId}"
+    }
+
     fun generalEndpoints (firebaseUserUniqueId: String) : String  {
 
         return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes"
