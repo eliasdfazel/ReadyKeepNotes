@@ -116,8 +116,14 @@ class MoreOptions(private val context: AccountInformation) {
 
                                                                         try {
 
+                                                                            context.externalMediaDirs[0].listFiles()?.forEach { aFile ->
+
+                                                                                aFile.delete()
+
+                                                                            }
+
                                                                             context.cacheDir.delete()
-                                                                            context.getFileStreamPath("/").delete()
+                                                                            context.getFileStreamPath("").delete()
                                                                             context.deleteDatabase(NotesDatabase)
 
                                                                             context.startActivity(Intent(context, EntryConfigurations::class.java)
