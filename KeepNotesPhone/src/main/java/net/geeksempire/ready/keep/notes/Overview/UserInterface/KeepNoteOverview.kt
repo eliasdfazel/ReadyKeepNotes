@@ -422,7 +422,7 @@ class KeepNoteOverview : AppCompatActivity(),
                         }
 
                     } else {
-                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "One Full Note")
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "All Notes Loading")
 
                         overviewAdapter.notesDataStructureList.clear()
                         overviewAdapter.notesDataStructureList.addAll(it)

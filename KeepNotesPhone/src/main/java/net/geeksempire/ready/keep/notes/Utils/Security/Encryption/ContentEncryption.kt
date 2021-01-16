@@ -59,7 +59,7 @@ class ContentEncryption {
         var textToEncrypt = plainText
 
         if (plainText.isBlank() || plainText == "null") {
-            textToEncrypt = " "
+            textToEncrypt = ""
         }
 
         val encodedText: String = encodeStringBase64(textToEncrypt)
