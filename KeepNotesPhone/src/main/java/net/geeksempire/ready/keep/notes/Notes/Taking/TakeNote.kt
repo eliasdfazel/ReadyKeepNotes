@@ -220,6 +220,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                 }
 
+                takeNoteLayoutBinding.editTextContentView.setSelection(takeNoteLayoutBinding.editTextContentView.text?.length?:0)
+
             }
 
             if (intent.hasExtra(NoteExtraData.PaintingPath)) {
