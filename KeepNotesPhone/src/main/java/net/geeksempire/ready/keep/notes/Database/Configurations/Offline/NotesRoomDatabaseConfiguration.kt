@@ -9,7 +9,6 @@ import net.geeksempire.ready.keep.notes.Database.Configurations.Offline.DataProc
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 
-
 @Database(entities = [NotesDatabaseModel::class], version = 10000, exportSchema = false)
 abstract class NotesRoomDatabaseInterface : RoomDatabase() {
     abstract fun initializeDataAccessObject(): NotesDatabaseDataAccessObject

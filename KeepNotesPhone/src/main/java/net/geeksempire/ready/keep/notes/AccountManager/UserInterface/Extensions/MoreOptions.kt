@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformation
 import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformation
 import net.geeksempire.ready.keep.notes.Browser.BuiltInBrowser
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabase
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -19,7 +20,6 @@ import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Data.resizeDrawable
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
-import java.io.File
 
 class MoreOptions(private val context: AccountInformation) {
 
@@ -90,38 +90,45 @@ class MoreOptions(private val context: AccountInformation) {
                                     Firebase.auth.currentUser?.let { firebaseUser ->
 
                                         (context.application as KeepNoteApplication).firebaseStorage
-                                            .getReference("ReadyKeepNotes/${firebaseUser.uid}")
+                                            .getReference("ReadyKeepNotes/${firebaseUser.uid}/")
                                             .delete()
-                                            .addOnSuccessListener {
+                                            .addOnCompleteListener {
                                                 Log.d(this@MoreOptions.javaClass.simpleName, "Storage Deleted")
 
                                                 (context.application as KeepNoteApplication).firestoreDatabase
                                                     .document(DatabaseEndpoints().baseEndpoints(firebaseUser.uid))
                                                     .delete()
-                                                    .addOnSuccessListener {
+                                                    .addOnCompleteListener {
                                                         Log.d(this@MoreOptions.javaClass.simpleName, "Database Deleted")
 
                                                         (context.application as KeepNoteApplication).firestoreDatabase
                                                             .document(UserInformation.userProfileDatabasePath(firebaseUser.uid))
                                                             .delete()
-                                                            .addOnSuccessListener {
+                                                            .addOnCompleteListener {
                                                                 Log.d(this@MoreOptions.javaClass.simpleName, "Profile Deleted")
 
-                                                                Firebase.auth.currentUser?.delete()?.addOnSuccessListener {
+                                                                Firebase.auth.currentUser
+                                                                    ?.delete()
+                                                                    ?.addOnCompleteListener {
                                                                         Log.d(this@MoreOptions.javaClass.simpleName, "Firebase User Deleted")
+
+                                                                        Firebase.auth.signOut()
 
                                                                         try {
 
-                                                                            File("/data/data/${context.packageName}/").delete()
+                                                                            context.cacheDir.delete()
+                                                                            context.getFileStreamPath("/").delete()
+                                                                            context.deleteDatabase(NotesDatabase)
+
+                                                                            context.startActivity(Intent(context, EntryConfigurations::class.java)
+                                                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+
+                                                                            context.finish()
 
                                                                         } catch (e: Exception) {
                                                                             e.printStackTrace()
 
                                                                         }
-
-                                                                        context.startActivity(Intent(context, EntryConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-
-                                                                        context.finish()
 
                                                                     }
 
