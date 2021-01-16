@@ -118,8 +118,6 @@ fun TakeNote.setupPaintingActions() {
 
                         inputRecognizer.stylusDetected = false
 
-
-
                     }
                     MotionEvent.TOOL_TYPE_STYLUS -> {
                         Log.d(this@setupPaintingActions.javaClass.simpleName, "Stylus Touch")
@@ -132,10 +130,50 @@ fun TakeNote.setupPaintingActions() {
             }
             MotionEvent.ACTION_UP -> {
 
+                if (inputRecognizer.stylusDetected) {
+
+                    paintingCanvasView.newPaintingData = paintingCanvasView.stylusPaintingData
+
+                    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = paintingCanvasView.stylusPaintingData.paintStrokeSliderPosition
+
+                    takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color = paintingCanvasView.stylusPaintingData.paintColor
+                    takeNoteLayoutBinding.colorPaletteInclude.pickColorView.iconTint = ColorStateList.valueOf(paintingCanvasView.stylusPaintingData.paintColor)
+
+                } else {
+
+                    paintingCanvasView.newPaintingData = paintingCanvasView.fingerPaintingData
+
+                    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = paintingCanvasView.fingerPaintingData.paintStrokeSliderPosition
+
+                    takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color = paintingCanvasView.fingerPaintingData.paintColor
+                    takeNoteLayoutBinding.colorPaletteInclude.pickColorView.iconTint = ColorStateList.valueOf(paintingCanvasView.fingerPaintingData.paintColor)
+
+                }
+
                 allColorPalette.invoke()
 
             }
             MotionEvent.ACTION_CANCEL -> {
+
+                if (inputRecognizer.stylusDetected) {
+
+                    paintingCanvasView.newPaintingData = paintingCanvasView.stylusPaintingData
+
+                    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = paintingCanvasView.stylusPaintingData.paintStrokeSliderPosition
+
+                    takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color = paintingCanvasView.stylusPaintingData.paintColor
+                    takeNoteLayoutBinding.colorPaletteInclude.pickColorView.iconTint = ColorStateList.valueOf(paintingCanvasView.stylusPaintingData.paintColor)
+
+                } else {
+
+                    paintingCanvasView.newPaintingData = paintingCanvasView.fingerPaintingData
+
+                    takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.position = paintingCanvasView.fingerPaintingData.paintStrokeSliderPosition
+
+                    takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color = paintingCanvasView.fingerPaintingData.paintColor
+                    takeNoteLayoutBinding.colorPaletteInclude.pickColorView.iconTint = ColorStateList.valueOf(paintingCanvasView.fingerPaintingData.paintColor)
+
+                }
 
                 allColorPalette.invoke()
 

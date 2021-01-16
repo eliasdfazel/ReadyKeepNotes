@@ -50,7 +50,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val paintingCanvasView: PaintingCanvasView by lazy {
         PaintingCanvasView(this@TakeNote).also {
             it.setupPaintingPanel(
-                getColor(R.color.default_color),
+                getColor(R.color.default_color_bright),
                 3.0f
             )
         }

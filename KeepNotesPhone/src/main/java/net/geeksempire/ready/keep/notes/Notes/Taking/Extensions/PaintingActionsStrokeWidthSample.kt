@@ -23,9 +23,10 @@ fun TakeNote.paintingActionsStrokeWidthSample() {
 
         val selectedStrokeWidth = decimalFormat.format((fluidSliderMinimum + (totalFluidSliderAmount  * fluidSliderPosition))).toFloat()
 
-        takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.bubbleText = Html.fromHtml("<small>${selectedStrokeWidth.toString()}</small>", Html.FROM_HTML_MODE_COMPACT).toString()
+        takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.bubbleText =
+            Html.fromHtml("<small>${selectedStrokeWidth.toString()}</small>", Html.FROM_HTML_MODE_COMPACT).toString()
 
-        paintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = paintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth))
+        paintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = paintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth, paintStrokeSliderPosition = fluidSliderPosition))
 
         strokePaintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = strokePaintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth))
 
