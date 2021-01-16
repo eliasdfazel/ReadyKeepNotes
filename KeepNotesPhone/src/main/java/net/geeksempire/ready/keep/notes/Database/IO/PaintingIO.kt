@@ -13,8 +13,10 @@ import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.RedrawPaintingData
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.Data.forEach
 import net.geeksempire.ready.keep.notes.Utils.PreferencesIO.SavePreferences
 import org.json.JSONArray
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
 class PaintingIO (private val context: Context) {
@@ -107,19 +109,21 @@ class PaintingIO (private val context: Context) {
 
         val allPaintingPathsJsonArray = JSONArray(paintingPathsJsonArray)
 
-        for (index in 0 until allPaintingPathsJsonArray.length()) {
+        allPaintingPathsJsonArray.forEach { it ->
 
-            val aPaintingPathsJsonArray = allPaintingPathsJsonArray[index] as JSONArray
+            val aPaintingPathsJsonArray = it as JSONArray
 
             paintingCanvasView.allRedrawPaintingPathData =  ArrayList<RedrawPaintingData>()
 
-            for (pathIndex in 0 until aPaintingPathsJsonArray.length()) {
+            aPaintingPathsJsonArray.forEach { aIt ->
 
-                val xDrawPosition = aPaintingPathsJsonArray.getJSONObject(pathIndex).get("xDrawPosition").toString().toFloat()
-                val yDrawPosition = aPaintingPathsJsonArray.getJSONObject(pathIndex).get("yDrawPosition").toString().toFloat()
+                (aIt as JSONObject)
 
-                val paintColor = aPaintingPathsJsonArray.getJSONObject(pathIndex).get("paintColor").toString().toInt()
-                val paintStrokeWidth = aPaintingPathsJsonArray.getJSONObject(pathIndex).get("paintStrokeWidth").toString().toFloat()
+                val xDrawPosition = aIt.get("xDrawPosition").toString().toFloat()
+                val yDrawPosition = aIt.get("yDrawPosition").toString().toFloat()
+
+                val paintColor = aIt.get("paintColor").toString().toInt()
+                val paintStrokeWidth = aIt.get("paintStrokeWidth").toString().toFloat()
 
                 paintingCanvasView.allRedrawPaintingPathData.add(RedrawPaintingData(
                     xDrawPosition = xDrawPosition,
