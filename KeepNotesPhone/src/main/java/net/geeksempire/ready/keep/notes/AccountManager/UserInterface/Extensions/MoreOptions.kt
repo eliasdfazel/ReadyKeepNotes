@@ -1,5 +1,7 @@
 package net.geeksempire.ready.keep.notes.AccountManager.UserInterface.Extensions
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.text.Html
 import android.util.Log
@@ -19,7 +21,7 @@ import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Data.resizeDrawable
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
-import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
+import android.app.ActivityManagerimport android.content.Contextimport android.content.Intentimport android.text.Htmlimport android.util.Logimport android.view.Gravityimport android.view.Menuimport androidx.appcompat.widget.PopupMenuimport com.google.android.material.snackbar.Snackbarimport com.google.firebase.auth.ktx.authimport com.google.firebase.ktx.Firebaseimport net.geeksempire.ready.keep.notes.AccountManager.UserInterface.AccountInformationimport net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationimport net.geeksempire.ready.keep.notes.Browser.BuiltInBrowserimport net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpointsimport net.geeksempire.ready.keep.notes.EntryConfigurationsimport net.geeksempire.ready.keep.notes.KeepNoteApplicationimport net.geeksempire.ready.keep.notes.Rimport net.geeksempire.ready.keep.notes.Utils.Data.resizeDrawableimport net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterfaceimport net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 
 class MoreOptions(private val context: AccountInformation) {
 
@@ -122,9 +124,8 @@ class MoreOptions(private val context: AccountInformation) {
 
                                                                             }
 
-                                                                            context.cacheDir.delete()
-                                                                            context.getFileStreamPath("").delete()
-                                                                            context.deleteDatabase(NotesDatabase)
+                                                                            (context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager)
+                                                                                .clearApplicationUserData()
 
                                                                             context.startActivity(Intent(context, EntryConfigurations::class.java)
                                                                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
