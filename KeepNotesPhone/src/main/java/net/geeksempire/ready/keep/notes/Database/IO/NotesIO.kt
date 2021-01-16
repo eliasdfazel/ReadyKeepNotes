@@ -331,24 +331,35 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 fileOutputStream.write(paintingIO.takeScreenshot(paintingCanvasView))
 
-                val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                    noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                    noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
-                    noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
-                    noteTakenTime = documentId,
-                    noteEditTime = null,
-                    noteIndex = documentId,
-                    noteTags = null
-                )
-
                 if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
+
+                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
+                        noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
+                        noteTakenTime = documentId,
+                        noteEditTime = System.currentTimeMillis(),
+                        noteIndex = documentId,
+                        noteTags = null
+                    )
 
                     notesRoomDatabaseConfiguration
                         .prepareRead()
                         .updateNoteData(notesDatabaseModel)
 
                 } else {
+
+                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
+                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
+                        noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
+                        noteTakenTime = documentId,
+                        noteEditTime = null,
+                        noteIndex = documentId,
+                        noteTags = null
+                    )
 
                     notesRoomDatabaseConfiguration
                         .prepareRead()
@@ -542,13 +553,28 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
                 val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-                val notesDataStructure = NotesDataStructure(
-                    uniqueNoteId = documentId,
-                    noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                    noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
-                    noteHandwritingSnapshotLink = null,
-                    noteIndex = documentId
-                )
+                val notesDataStructure = if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
+
+                    NotesDataStructure(
+                        uniqueNoteId = documentId,
+                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteHandwritingSnapshotLink = null,
+                        noteEditTime = Timestamp.now(),
+                        noteIndex = documentId
+                    )
+
+                } else {
+
+                    NotesDataStructure(
+                        uniqueNoteId = documentId,
+                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
+                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteHandwritingSnapshotLink = null,
+                        noteIndex = documentId
+                    )
+
+                }
 
                 val databasePath = databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + "${documentId}"
 

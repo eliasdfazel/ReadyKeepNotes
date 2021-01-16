@@ -41,18 +41,18 @@ class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
         //Delete Data On SdCard - Handwriting Snapshot
         notesDatabaseModel.noteHandwritingPaintingPaths?.let { handwritingSnapshotFileToDelete ->
 
-            File(handwritingSnapshotFileToDelete).delete()
+            File(handwritingSnapshotFileToDelete).takeIf { it.exists() }?.delete()
 
         }
 
         //Delete Data On SdCard - Audio Records
-        notesDatabaseModel.noteVoiceContent?.let {
+        notesDatabaseModel.noteVoiceContent?.let { audioContent ->
 
-            val jsonArrayAudios = JSONArray(it)
+            val jsonArrayAudios = JSONArray(audioContent)
 
             for (index in 0..jsonArrayAudios.length()) {
 
-                File(jsonArrayAudios.getJSONObject(index).getString("Path")).delete()
+                File(jsonArrayAudios.getJSONObject(index).getString("Path")).takeIf { it.exists() }?.delete()
 
             }
 
