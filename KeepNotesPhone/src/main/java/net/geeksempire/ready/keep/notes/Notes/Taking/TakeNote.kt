@@ -59,7 +59,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val strokePaintingCanvasView: StrokePaintingCanvasView by lazy {
         StrokePaintingCanvasView(applicationContext).also {
             it.setupPaintingPanel(
-                getColor(R.color.default_color),
+                getColor(R.color.default_color_bright),
                 3.0f
             )
         }
