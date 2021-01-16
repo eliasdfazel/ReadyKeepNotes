@@ -100,4 +100,7 @@
     <string name="supportEmail" translatable="false">ReadyKeepNotes@GeeksEmpire.xyz</string>
     <string name="feedbackTag" translatable="false">Ready Keep Notes Direct Help | Feedback</string>
 
+    <string name="signOutConfirmText">Confirm To Sign Out &amp; Delete All Data</string>
+    <string name="signOutText">Sign Out</string>
+
 </resources>

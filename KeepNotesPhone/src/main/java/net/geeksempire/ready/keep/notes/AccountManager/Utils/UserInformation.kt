@@ -21,6 +21,8 @@ class UserInformation(private val context: AccountInformation) {
         const val GoogleSignInLinkRequestCode = 103
         const val GoogleSignInRequestCode = 105
 
+        fun userInformationDatabase(userUniqueIdentifier: String) : String = "ReadyKeepNotes/UserInformation/${userUniqueIdentifier}"
+
         fun userProfileDatabasePath(userUniqueIdentifier: String) : String = "ReadyKeepNotes/UserInformation/${userUniqueIdentifier}/Profile"
 
         fun invitedSuccessDatabasePath(invitingFriendUniqueIdentifier: String, userUniqueIdentifier: String) : String = "ReadyKeepNotes/UserInformation/${invitingFriendUniqueIdentifier}/SuccessfulInvitations/Friends/${userUniqueIdentifier}"

@@ -105,6 +105,9 @@ fun AccountInformation.accountManagerSetupUserInterface() {
     accountViewLayoutParameters.setMargins(accountViewLayoutParameters.topMargin, accountViewLayoutParameters.topMargin + statusBarHeight(applicationContext), accountViewLayoutParameters.topMargin, accountViewLayoutParameters.topMargin)
     accountInformationLayoutBinding.profileImageView.layoutParams = accountViewLayoutParameters
 
+    MoreOptions(this@accountManagerSetupUserInterface)
+        .setup()
+
     Firebase.auth.currentUser?.let { firebaseUser ->
 
         Glide.with(this@accountManagerSetupUserInterface)
