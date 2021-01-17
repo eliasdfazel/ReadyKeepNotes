@@ -176,6 +176,9 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.6.0'
 
 
+    implementation 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
+
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.21"
 
 

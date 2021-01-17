@@ -23,6 +23,7 @@ import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
+import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupAudioRecorderActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
@@ -120,6 +121,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         const val EncryptedTextContent = "EncryptedTextContent"
         const val UpdateExistingNote = "UpdateExistingNote"
+
+        const val AudioRecordRequestCode = 123
     }
 
     object NoteExtraData {
@@ -178,6 +181,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         setupToggleKeyboardHandwriting()
 
         setupPaintingActions()
+
+        setupAudioRecorderActions()
 
         if (intent.hasExtra("IncomingActivityName")) {
 
@@ -467,6 +472,13 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
             }
 
         }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
 
     }
 
