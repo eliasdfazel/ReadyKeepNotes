@@ -45,16 +45,16 @@ interface NotesDatabaseDataAccessObject {
 
 
     @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex DESC")
-    suspend fun getAllNotesData(): List<NotesDatabaseModel>
+    suspend fun getAllNotesData() : List<NotesDatabaseModel>
 
 
 
     @Query("SELECT * FROM NotesDatabase WHERE noteTile LIKE :searchTerm OR noteTextContent LIKE :searchTerm ORDER BY noteIndex DESC")
-    suspend fun searchAllNotesData(searchTerm: String): List<NotesDatabaseModel>
+    suspend fun searchAllNotesData(searchTerm: String) : List<NotesDatabaseModel>
 
 
 
     @Query("SELECT COUNT(uniqueNoteId) FROM NotesDatabase")
-    suspend fun getSizeOfDatabase(): Int
+    suspend fun getSizeOfDatabase() : Int
 
 }

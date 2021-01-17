@@ -324,18 +324,12 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
                 val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-                val noteHandwritingSnapshotPath = context.externalMediaDirs[0].path +
-                        File.separator +
-                        it.uid +
-                        File.separator +
-                        "HandwritingSnapshot" +
-                        File.separator +
-                        documentId + ".PNG"
+                val noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())
                 val noteHandwritingSnapshot = File(noteHandwritingSnapshotPath)
 
                 if (!noteHandwritingSnapshot.exists()) {
 
-                    File(context.externalMediaDirs[0].path + File.separator + it.uid + File.separator + "HandwritingSnapshot" + File.separator).mkdirs()
+                    File(context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())).mkdirs()
 
                     noteHandwritingSnapshot.createNewFile()
 

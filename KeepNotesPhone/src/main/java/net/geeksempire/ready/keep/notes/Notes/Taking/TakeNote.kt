@@ -27,9 +27,11 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupAudioRecord
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
+import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.InputRecognizer
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.restorePaints
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Utils.StrokePaintingCanvasView
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
@@ -92,6 +94,14 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val firebaseUser = Firebase.auth.currentUser
 
     val databaseEndpoints: DatabaseEndpoints = DatabaseEndpoints()
+
+    val handwritingSnapshotFile: HandwritingSnapshotFile by lazy {
+        HandwritingSnapshotFile(this@TakeNote)
+    }
+
+    val audioRecordingFile: AudioRecordingFile by lazy {
+        AudioRecordingFile(this@TakeNote)
+    }
 
     val recentColorsAdapter: RecentColorsAdapter by lazy {
         RecentColorsAdapter(this@TakeNote, paintingCanvasView)
@@ -478,7 +488,13 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        when (requestCode) {
+            NoteConfigurations.AudioRecordRequestCode -> {
 
+
+
+            }
+        }
 
     }
 
