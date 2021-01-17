@@ -63,16 +63,28 @@
         apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageContentView"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:padding="11dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_image_picker"
+        android:visibility="visible"
+
+        apps:layout_constraintBottom_toBottomOf="@id/contentTextView"
+        apps:layout_constraintEnd_toEndOf="@id/contentTextView"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/audioContentView"
         android:layout_width="43dp"
         android:layout_height="43dp"
         android:padding="7dp"
         android:scaleType="fitCenter"
         android:src="@drawable/icon_voice_recorder"
-        android:visibility="gone"
+        android:visibility="visible"
 
         apps:layout_constraintBottom_toBottomOf="@id/contentTextView"
-        apps:layout_constraintEnd_toEndOf="@id/contentTextView"/>
+        apps:layout_constraintEnd_toStartOf="@id/imageContentView"/>
 
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/waitingViewLoading"

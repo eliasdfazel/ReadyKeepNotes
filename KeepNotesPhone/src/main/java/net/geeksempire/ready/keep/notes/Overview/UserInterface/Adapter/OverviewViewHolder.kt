@@ -15,6 +15,7 @@ class OverviewViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val titleTextView: TextView = view.titleTextView
     val contentTextView: TextView = view.contentTextView
     val contentImageView: ShapesImage = view.contentImageView
+    val imageContentView: ImageView = view.imageContentView
     val audioContentView: ImageView = view.audioContentView
     val waitingViewLoading: SpinKitView = view.waitingViewLoading
 }
