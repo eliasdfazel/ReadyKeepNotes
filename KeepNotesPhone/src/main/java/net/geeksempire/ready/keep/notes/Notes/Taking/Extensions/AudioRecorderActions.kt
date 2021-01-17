@@ -36,7 +36,7 @@ fun TakeNote.setupAudioRecorderActions() {
 
             AndroidAudioRecorder.with(this@setupAudioRecorderActions)
                 .setFilePath(audioFilePath)
-                .setColor(getColor(R.color.pink))
+                .setColor(getColor(R.color.default_color))
                 .setRequestCode(TakeNote.NoteConfigurations.AudioRecordRequestCode)
                 .setSource(AudioSource.MIC)
                 .setChannel(AudioChannel.STEREO)
