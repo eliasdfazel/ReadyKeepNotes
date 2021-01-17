@@ -131,33 +131,21 @@ class PreferencesControl : AppCompatActivity() {
 
         preferencesControlLayoutBinding.facebookView.setOnClickListener {
 
-            startActivity(
-                Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    data = Uri.parse(getString(R.string.facebookLink))
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }, ActivityOptions.makeCustomAnimation(
-                    applicationContext,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left
-                ).toBundle()
-            )
+            startActivity(Intent().apply {
+                action = Intent.ACTION_VIEW
+                data = Uri.parse(getString(R.string.facebookLink))
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK },
+                ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_in_right, R.anim.slide_out_left).toBundle())
 
         }
 
         preferencesControlLayoutBinding.twitterView.setOnClickListener {
 
-            startActivity(
-                Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    data = Uri.parse(getString(R.string.twitterLink))
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }, ActivityOptions.makeCustomAnimation(
-                    applicationContext,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left
-                ).toBundle()
-            )
+            startActivity(Intent().apply {
+                action = Intent.ACTION_VIEW
+                data = Uri.parse(getString(R.string.twitterLink))
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK },
+                ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_in_right, R.anim.slide_out_left).toBundle())
 
         }
 
@@ -191,7 +179,7 @@ class PreferencesControl : AppCompatActivity() {
                     "${systemInformation.getDeviceName()} | API ${Build.VERSION.SDK_INT} | ${systemInformation.getCountryIso().toUpperCase(Locale.getDefault())}"
 
             val emailIntent = Intent(Intent.ACTION_SEND).apply {
-                putExtra(Intent.EXTRA_EMAIL, getString(R.string.supportEmail))
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.supportEmail), getString(R.string.supportEmailGeeksEmpire)))
                 putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedbackTag) + " [${BuildConfig.VERSION_NAME}]")
                 putExtra(Intent.EXTRA_TEXT, textMessage)
                 type = "text/*"
