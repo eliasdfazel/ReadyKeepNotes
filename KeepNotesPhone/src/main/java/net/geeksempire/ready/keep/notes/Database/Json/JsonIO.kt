@@ -33,4 +33,10 @@ class JsonIO {
         return jsonDatabase.toJson(allTags).toString()
     }
 
+    fun writeAudioRecordingFilePaths(allAudioRecordingFile: ArrayList<String>) : String {
+
+        return jsonDatabase.toJson(allAudioRecordingFile).toString()
+
+    }
+
 }

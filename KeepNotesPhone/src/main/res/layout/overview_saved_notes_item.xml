@@ -62,6 +62,18 @@
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/audioContentView"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:padding="7dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/layer_icon_voice_recording"
+        android:visibility="gone"
+
+        apps:layout_constraintBottom_toBottomOf="@id/contentTextView"
+        apps:layout_constraintEnd_toEndOf="@id/contentTextView"/>
+
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/waitingViewLoading"
         android:layout_width="33dp"

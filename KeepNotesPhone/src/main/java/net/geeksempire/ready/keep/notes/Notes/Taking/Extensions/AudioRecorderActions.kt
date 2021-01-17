@@ -29,6 +29,8 @@ fun TakeNote.setupAudioRecorderActions() {
 
             }
 
+            audioIO.updateAudioRecordingDatabase(documentId, audioFile.absolutePath)
+
             AndroidAudioRecorder.with(this@setupAudioRecorderActions)
                 .setFilePath(audioFilePath)
                 .setColor(when (themePreferences.checkThemeLightDark()) {

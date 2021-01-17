@@ -150,6 +150,28 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
+        if (notesDataStructureList[position].noteVoiceContent == null) {
+
+                overviewViewHolder.audioContentView.visibility = View.INVISIBLE
+
+        } else {
+
+            notesDataStructureList[position].noteVoiceContent?.let {
+
+                if (it.isBlank()) {
+
+                    overviewViewHolder.audioContentView.visibility = View.INVISIBLE
+
+                } else {
+
+                    overviewViewHolder.audioContentView.visibility = View.VISIBLE
+
+                }
+
+            }
+
+        }
+
         overviewViewHolder.rootItemContentView.setOnClickListener {
 
             overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE

@@ -33,7 +33,11 @@ interface NotesDatabaseDataAccessObject {
 
 
     @Query("UPDATE NotesDatabase SET noteHandwritingPaintingPaths = :handwritingPaths WHERE uniqueNoteId = :uniqueNoteId")
-    suspend fun updateHandwritingPathsData(uniqueNoteId: String, handwritingPaths: String)
+    suspend fun updateHandwritingPathsData(uniqueNoteId: Long, handwritingPaths: String)
+
+
+    @Query("UPDATE NotesDatabase SET noteVoicePaths = :audioRecordingPaths WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateAudioRecordingPathsData(uniqueNoteId: Long, audioRecordingPaths: String)
 
 
     @Query("SELECT * FROM NotesDatabase WHERE uniqueNoteId IN (:noteUniqueIdentifier)")

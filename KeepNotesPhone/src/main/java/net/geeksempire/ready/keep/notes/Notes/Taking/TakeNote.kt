@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.geeksempire.ready.keep.notes.Database.IO.AudioIO
 import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
 import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
@@ -78,6 +79,10 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val paintingIO: PaintingIO by lazy {
         PaintingIO(applicationContext)
+    }
+
+    val audioIO: AudioIO by lazy {
+        AudioIO(application as KeepNoteApplication)
     }
 
     val noteDatabaseConfigurations: NoteDatabaseConfigurations by lazy {
@@ -490,8 +495,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         when (requestCode) {
             NoteConfigurations.AudioRecordRequestCode -> {
-
-
 
             }
         }

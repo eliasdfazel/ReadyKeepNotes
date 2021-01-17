@@ -56,7 +56,7 @@ class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
 
             for (index in 0 until jsonArrayAudios.length()) {
 
-                File(jsonArrayAudios.getJSONObject(index).getString("Path")).takeIf { it.exists() }?.delete()
+                File(jsonArrayAudios.getJSONObject(index).getString(index.toString())).takeIf { it.exists() }?.delete()
 
             }
 

@@ -115,7 +115,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                             notesRoomDatabaseConfiguration
                                 .prepareRead()
-                                .updateHandwritingPathsData(uniqueNoteId.toString(), paintingIO.preparePaintingPathsOnline(documentSnapshotPath.documents))
+                                .updateHandwritingPathsData(uniqueNoteId, paintingIO.preparePaintingPathsOnline(documentSnapshotPath.documents))
 
                             notesRoomDatabaseConfiguration.closeDatabase()
 
@@ -324,12 +324,12 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
                 val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-                val noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())
+                val noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())
                 val noteHandwritingSnapshot = File(noteHandwritingSnapshotPath)
 
                 if (!noteHandwritingSnapshot.exists()) {
 
-                    File(context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())).mkdirs()
+                    File(context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid)).mkdirs()
 
                     noteHandwritingSnapshot.createNewFile()
 

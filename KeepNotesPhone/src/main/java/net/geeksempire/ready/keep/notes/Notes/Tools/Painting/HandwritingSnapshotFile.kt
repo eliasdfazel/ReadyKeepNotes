@@ -12,18 +12,18 @@ class HandwritingSnapshotFile (val context: AppCompatActivity) {
                 firebaseUserId +
                 File.separator +
                 "HandwritingSnapshot" +
-                File.separator
+                File.separator +
+                uniqueDocumentId + ".PNG"
     }
 
-    fun getHandwritingSnapshotFilePath(firebaseUserId: String, uniqueDocumentId: String) : String {
+    fun getHandwritingSnapshotFilePath(firebaseUserId: String) : String {
 
         return context.externalMediaDirs[0].path +
                 File.separator +
                 firebaseUserId +
                 File.separator +
                 "HandwritingSnapshot" +
-                File.separator +
-                uniqueDocumentId + ".PNG"
+                File.separator
     }
 
 }
