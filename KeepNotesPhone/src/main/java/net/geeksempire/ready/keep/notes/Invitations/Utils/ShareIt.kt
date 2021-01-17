@@ -51,13 +51,13 @@ class ShareIt (val context: AppCompatActivity) {
         }
 
         val shareIntent: Intent = Intent(Intent.ACTION_SEND).apply {
-            type = "*/*"
             putExtra(Intent.EXTRA_TEXT, shareText)
             if (shareImage != null || shareAudio != null) {
                 putParcelableArrayListExtra(Intent.EXTRA_STREAM, shareExtraStream)
             }
             addCategory(Intent.CATEGORY_DEFAULT)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            type = "*/*"
+            flags = (Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.shareText)))
 
