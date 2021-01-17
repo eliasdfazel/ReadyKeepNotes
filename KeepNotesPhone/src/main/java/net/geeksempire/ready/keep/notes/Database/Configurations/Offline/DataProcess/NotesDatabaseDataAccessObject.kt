@@ -41,7 +41,7 @@ interface NotesDatabaseDataAccessObject {
 
 
     @Query("SELECT * FROM NotesDatabase WHERE uniqueNoteId IN (:noteUniqueIdentifier)")
-    suspend fun getSpecificNoteData(noteUniqueIdentifier: Long) : NotesDatabaseModel
+    suspend fun getSpecificNoteData(noteUniqueIdentifier: Long) : NotesDatabaseModel?
 
 
     @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex DESC LIMIT 1")

@@ -65,7 +65,7 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
                 val currentNoteData = overviewAdapter.notesDataStructureList[updatedDatabaseItemPosition]
 
-                if (updatedNoteData.noteEditTime?:0.toLong() > currentNoteData.noteEditTime?:0.toLong()) {
+                if (updatedNoteData!!.noteEditTime?:0.toLong() > currentNoteData.noteEditTime?:0.toLong()) {
 
                     overviewAdapter.notesDataStructureList[updatedDatabaseItemPosition] = updatedNoteData
 

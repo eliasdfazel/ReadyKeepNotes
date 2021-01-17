@@ -138,7 +138,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 )
 
 
-                    notesDatabaseDataAccessObject.insertNewNoteData(notesDatabaseModel)
+                notesDatabaseDataAccessObject.insertNewNoteData(notesDatabaseModel)
 
 
 
