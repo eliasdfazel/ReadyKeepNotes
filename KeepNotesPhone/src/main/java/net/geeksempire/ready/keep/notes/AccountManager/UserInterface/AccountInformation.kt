@@ -127,7 +127,7 @@ class AccountInformation : AppCompatActivity(), NetworkConnectionListenerInterfa
 
                             if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
 
-                                SendInvitation(applicationContext, accountInformationLayoutBinding.root)
+                                SendInvitation(this@AccountInformation, accountInformationLayoutBinding.root)
                                     .invite(Firebase.auth.currentUser!!)
 
                             } else {

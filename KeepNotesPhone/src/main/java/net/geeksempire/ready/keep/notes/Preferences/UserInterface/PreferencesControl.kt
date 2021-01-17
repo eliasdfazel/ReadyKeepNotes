@@ -117,7 +117,7 @@ class PreferencesControl : AppCompatActivity() {
                     "#KeyboardTyping" + " " + "#Handwriting" +
                     ""
 
-            ShareIt(applicationContext)
+            ShareIt(this@PreferencesControl)
                 .invokeTextSharing(shareText)
 
         }

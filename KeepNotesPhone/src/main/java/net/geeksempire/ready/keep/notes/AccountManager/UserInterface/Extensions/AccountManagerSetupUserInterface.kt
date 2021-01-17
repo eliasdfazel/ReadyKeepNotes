@@ -160,7 +160,7 @@ fun AccountInformation.accountManagerSetupUserInterface() {
 
 fun AccountInformation.clickSetup() {
 
-    accountInformationLayoutBinding.nextSubmitView.setOnClickListener {
+    accountInformationLayoutBinding.submitProfileView.setOnClickListener {
 
         if (profileUpdating) {
 
@@ -233,7 +233,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
                                     Handler(Looper.getMainLooper()).postDelayed({
 
-                                        accountInformationLayoutBinding.nextSubmitView.playAnimation()
+                                        accountInformationLayoutBinding.submitProfileView.playAnimation()
 
                                         profileUpdating = true
 
@@ -249,7 +249,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
                                     Handler(Looper.getMainLooper()).postDelayed({
 
-                                        accountInformationLayoutBinding.nextSubmitView.playAnimation()
+                                        accountInformationLayoutBinding.submitProfileView.playAnimation()
 
                                         profileUpdating = true
 
@@ -293,7 +293,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
                     Handler(Looper.getMainLooper()).postDelayed({
 
-                        accountInformationLayoutBinding.nextSubmitView.playAnimation()
+                        accountInformationLayoutBinding.submitProfileView.playAnimation()
 
                         profileUpdating = profileUpdatingProcess
 
@@ -327,7 +327,7 @@ fun AccountInformation.createUserProfile(profileUpdatingProcess: Boolean = false
 
                         if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
 
-                            SendInvitation(applicationContext, accountInformationLayoutBinding.root)
+                            SendInvitation(this@createUserProfile, accountInformationLayoutBinding.root)
                                 .invite(Firebase.auth.currentUser!!)
 
                         } else {

@@ -10,20 +10,21 @@
 
 package net.geeksempire.ready.keep.notes.Invitations.Utils
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import net.geeksempire.ready.keep.notes.R
 import org.json.JSONArray
 
-class ShareIt (val context: Context) {
+class ShareIt (val context: AppCompatActivity) {
 
     fun invokeTextSharing(shareText: String) {
 
         val shareIntent: Intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, shareText)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addCategory(Intent.CATEGORY_DEFAULT)
+            type = "text/plain"
+            flags = (Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.inviteTitle)))
 
@@ -55,6 +56,7 @@ class ShareIt (val context: Context) {
             if (shareImage != null || shareAudio != null) {
                 putParcelableArrayListExtra(Intent.EXTRA_STREAM, shareExtraStream)
             }
+            addCategory(Intent.CATEGORY_DEFAULT)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.shareText)))

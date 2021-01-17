@@ -306,7 +306,7 @@
 
             <!-- Next & Submit -->
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/nextSubmitView"
+                android:id="@+id/submitProfileView"
                 android:layout_width="113dp"
                 android:layout_height="113dp"
                 android:layout_marginVertical="7dp"

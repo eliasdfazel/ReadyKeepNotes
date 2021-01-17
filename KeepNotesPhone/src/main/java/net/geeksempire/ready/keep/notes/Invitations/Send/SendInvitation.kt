@@ -15,6 +15,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.dynamiclinks.ktx.*
@@ -25,7 +26,7 @@ import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 
-class SendInvitation (val context: Context, val rootView: ViewGroup) {
+class SendInvitation (val context: AppCompatActivity, val rootView: ViewGroup) {
 
     fun invite(firebaseUser: FirebaseUser) {
 
