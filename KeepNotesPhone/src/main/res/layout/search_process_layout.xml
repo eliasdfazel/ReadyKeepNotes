@@ -63,7 +63,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputSearchTerm"
         android:layout_width="0dp"
-        android:layout_height="99dp"
+        android:layout_height="91dp"
         android:gravity="center_vertical"
         android:hint="@string/typeToSearch"
         android:textColorHint="@color/default_color_game_light"
@@ -76,7 +76,7 @@
         apps:boxCornerRadiusBottomEnd="0dp"
         apps:boxStrokeColor="@color/default_color_game_light"
         apps:boxStrokeWidth="2dp"
-        apps:boxStrokeWidthFocused="1dp"
+        apps:boxStrokeWidthFocused="2dp"
         apps:hintEnabled="true"
         apps:hintAnimationEnabled="true"
         apps:hintTextColor="@color/default_color_game_light"
@@ -92,11 +92,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchTerm"
             android:layout_width="match_parent"
-            android:layout_height="95dp"
+            android:layout_height="87dp"
             android:paddingBottom="20dp"
             android:paddingStart="23dp"
             android:paddingEnd="93dp"
-
             android:gravity="center_vertical"
             android:imeOptions="actionSearch"
             android:ellipsize="start"
@@ -112,9 +111,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/searchActionView"
-        android:layout_width="63dp"
-        android:layout_height="63dp"
-        android:layout_marginHorizontal="19dp"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginHorizontal="13dp"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:insetLeft="0dp"
@@ -123,13 +122,14 @@
 
         apps:icon="@drawable/icon_search"
         apps:iconTintMode="multiply"
-        apps:iconSize="37dp"
+        apps:iconSize="29dp"
         apps:iconGravity="textStart"
         apps:cornerRadius="51dp"
         apps:elevation="13dp"
         apps:rippleColor="@color/cyan"
         apps:backgroundTint="@color/lighter"
 
+        apps:layout_constraintWidth_percent="0.19"
         apps:layout_constraintTop_toTopOf="@id/textInputSearchTerm"
         apps:layout_constraintBottom_toBottomOf="@id/textInputSearchTerm"
         apps:layout_constraintEnd_toEndOf="@id/textInputSearchTerm"/>

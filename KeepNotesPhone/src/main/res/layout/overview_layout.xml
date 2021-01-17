@@ -262,8 +262,8 @@
         apps:rippleColor="@color/pink"
         apps:backgroundTint="@color/lighter"
 
+        apps:layout_constraintWidth_percent="0.19"
         apps:layout_constraintBottom_toBottomOf="parent"
-        apps:layout_constraintStart_toEndOf="@id/startNewNoteView"
         apps:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
