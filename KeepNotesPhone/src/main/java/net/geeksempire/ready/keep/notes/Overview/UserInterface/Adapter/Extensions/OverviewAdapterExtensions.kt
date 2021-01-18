@@ -48,7 +48,7 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
     return RecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupDeleteView.context,
         this@setupDeleteView.context.getString(R.string.deleteText),
-        17.0f,
+        13.0f,
         R.color.red,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
@@ -69,7 +69,7 @@ fun OverviewAdapter.setupEditView(position: Int): RecyclerViewItemSwipeHelper.Un
     return RecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupEditView.context,
         this@setupEditView.context.getString(R.string.editText),
-        17.0f,
+        13.0f,
         R.color.default_color,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
@@ -114,7 +114,7 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
     return RecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupShareView.context,
         this@setupShareView.context.getString(R.string.shareText),
-        17.0f,
+        13.0f,
         R.color.cyan,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
