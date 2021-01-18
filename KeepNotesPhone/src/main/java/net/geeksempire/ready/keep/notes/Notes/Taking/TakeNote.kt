@@ -419,7 +419,9 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         } else {
 
-            if (!takeNoteLayoutBinding.editTextContentView.text.isNullOrBlank() || paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
+            if (!takeNoteLayoutBinding.editTextTitleView.text.isNullOrBlank()
+                || !takeNoteLayoutBinding.editTextContentView.text.isNullOrBlank()
+                || paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
                 takeNoteLayoutBinding.waitingViewUpload.visibility = View.VISIBLE
 

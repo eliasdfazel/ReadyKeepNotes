@@ -138,15 +138,47 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
             overviewViewHolder.contentImageView.setColorFilter(context.getColor(R.color.pink_transparent))
             overviewViewHolder.contentImageView.setImageDrawable(context.getDrawable(R.drawable.icon_no_content))
 
+            overviewViewHolder.contentImageView.visibility = View.GONE
+
         } else {
 
             overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.FIT_CENTER
             overviewViewHolder.contentImageView.clearColorFilter()
 
+            overviewViewHolder.contentImageView.visibility = View.VISIBLE
+
             Glide.with(context)
                 .load(notesDataStructureList[position].noteHandwritingSnapshotLink)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(overviewViewHolder.contentImageView)
+
+        }
+
+        notesDataStructureList[position].noteTile?.let { noteTile ->
+
+            if (noteTile.isNotBlank()) {
+
+                overviewViewHolder.titleTextView.visibility = View.VISIBLE
+
+            } else {
+
+                overviewViewHolder.titleTextView.visibility = View.GONE
+
+            }
+
+        }
+
+        notesDataStructureList[position].noteTextContent?.let { textContent ->
+
+            if (textContent.isNotBlank()) {
+
+                overviewViewHolder.contentTextView.visibility = View.VISIBLE
+
+            } else {
+
+                overviewViewHolder.contentTextView.visibility = View.GONE
+
+            }
 
         }
 

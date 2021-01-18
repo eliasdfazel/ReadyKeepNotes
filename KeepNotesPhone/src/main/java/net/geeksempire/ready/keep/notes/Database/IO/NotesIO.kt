@@ -324,20 +324,27 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
                 val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
 
-                val noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())
-                val noteHandwritingSnapshot = File(noteHandwritingSnapshotPath)
+                var noteHandwritingSnapshotPath: String? = null
 
-                if (!noteHandwritingSnapshot.exists()) {
+                if (paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
-                    File(context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid)).mkdirs()
+                    noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())
 
-                    noteHandwritingSnapshot.createNewFile()
+                    val noteHandwritingSnapshot = File(noteHandwritingSnapshotPath)
+
+                    if (!noteHandwritingSnapshot.exists()) {
+
+                        File(context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid)).mkdirs()
+
+                        noteHandwritingSnapshot.createNewFile()
+
+                    }
+
+                    val fileOutputStream = FileOutputStream(noteHandwritingSnapshot)
+
+                    fileOutputStream.write(paintingIO.takeScreenshot(paintingCanvasView))
 
                 }
-
-                val fileOutputStream = FileOutputStream(noteHandwritingSnapshot)
-
-                fileOutputStream.write(paintingIO.takeScreenshot(paintingCanvasView))
 
                 if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
 
