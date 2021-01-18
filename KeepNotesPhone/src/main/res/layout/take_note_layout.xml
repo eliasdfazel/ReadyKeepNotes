@@ -81,7 +81,7 @@
         apps:iconGravity="textStart"
         apps:iconTint="@color/light"
         apps:iconPadding="0dp"
-        apps:rippleColor="@color/default_color_game_light"
+        apps:rippleColor="@color/default_color_light"
         apps:backgroundTint="@color/default_color_transparent_twice"
 
         apps:layout_constraintBottom_toBottomOf="parent"
@@ -109,7 +109,7 @@
         apps:iconGravity="textStart"
         apps:iconTint="@color/light"
         apps:iconPadding="0dp"
-        apps:rippleColor="@color/default_color_game_light"
+        apps:rippleColor="@color/default_color_light"
         apps:backgroundTint="@color/default_color_transparent_twice"
 
         apps:layout_constraintBottom_toTopOf="@id/toggleKeyboardHandwriting"
@@ -139,7 +139,7 @@
         apps:iconTint="@color/light"
         apps:iconPadding="0dp"
         apps:rippleColor="@color/default_color_game_light"
-        apps:backgroundTint="@color/default_color_transparent_twice"
+        apps:backgroundTint="@color/default_color_game_transparent"
 
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"/>

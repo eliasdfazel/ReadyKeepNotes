@@ -17,9 +17,11 @@ fun TakeNote.setupAudioRecorderActions() {
 
         Firebase.auth.currentUser?.let {
 
-            val audioFilePath: String = audioRecordingFile.getAudioRecordingFilePath(it.uid, documentId.toString())
+            audioFileId = System.currentTimeMillis().toString()
 
-            val audioFile = File(audioFilePath)
+            audioFilePath = audioRecordingFile.getAudioRecordingFilePath(it.uid, documentId.toString(), audioFileId!!)
+
+            val audioFile = File(audioFilePath!!)
 
             if (!audioFile.exists()) {
 

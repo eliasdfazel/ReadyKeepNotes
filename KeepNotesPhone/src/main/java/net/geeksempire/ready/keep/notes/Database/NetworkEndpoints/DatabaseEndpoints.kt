@@ -22,6 +22,11 @@ class DatabaseEndpoints {
         return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/VoiceRecording"
     }
 
+    fun imageEndpoint(firebaseUserUniqueId: String) : String {
+
+        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/Image"
+    }
+
     fun noteTextsEndpoints (generalEndpoints: String) : String {
 
         return generalEndpoints.plus("/TextingNote").plus("/Texts").plus("/Content")

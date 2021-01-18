@@ -17,7 +17,7 @@ class AudioRecordingFile (val context: AppCompatActivity){
                 File.separator
     }
 
-    fun getAudioRecordingFilePath(firebaseUserId: String, uniqueDocumentId: String) : String {
+    fun getAudioRecordingFilePath(firebaseUserId: String, uniqueDocumentId: String, audioFileId: String) : String {
 
         return context.externalMediaDirs[0].path +
                 File.separator +
@@ -27,6 +27,6 @@ class AudioRecordingFile (val context: AppCompatActivity){
                 File.separator +
                 uniqueDocumentId +
                 File.separator +
-                System.currentTimeMillis() + ".MP3"
+                audioFileId + ".MP3"
     }
 }

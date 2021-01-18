@@ -51,9 +51,14 @@ fun TakeNote.setupTakeNoteTheme() {
             takeNoteLayoutBinding.editTextTitleView.setTextColor(getColor(R.color.darker))
             takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.dark))
 
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
-            takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
+            takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_game_light_transparent))
+            takeNoteLayoutBinding.savingView.rippleColor = ColorStateList.valueOf(getColor(R.color.default_color_game_light))
 
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light_transparent))
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.rippleColor = ColorStateList.valueOf(getColor(R.color.default_color_light))
+
+            takeNoteLayoutBinding.audioRecordView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light_transparent))
+            takeNoteLayoutBinding.audioRecordView.rippleColor = ColorStateList.valueOf(getColor(R.color.default_color_light))
         }
         ThemeType.ThemeDark -> {
 
@@ -66,8 +71,14 @@ fun TakeNote.setupTakeNoteTheme() {
             takeNoteLayoutBinding.editTextTitleView.setTextColor(getColor(R.color.lighter))
             takeNoteLayoutBinding.editTextContentView.setTextColor(getColor(R.color.light))
 
-            takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
-            takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
+            takeNoteLayoutBinding.savingView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_game_dark_transparent))
+            takeNoteLayoutBinding.savingView.rippleColor = ColorStateList.valueOf(getColor(R.color.default_color_game_dark))
+
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark_transparent))
+            takeNoteLayoutBinding.toggleKeyboardHandwriting.rippleColor = ColorStateList.valueOf(getColor(R.color.default_color_dark))
+
+            takeNoteLayoutBinding.audioRecordView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark_transparent))
+            takeNoteLayoutBinding.audioRecordView.rippleColor = ColorStateList.valueOf(getColor(R.color.default_color_dark))
 
         }
     }

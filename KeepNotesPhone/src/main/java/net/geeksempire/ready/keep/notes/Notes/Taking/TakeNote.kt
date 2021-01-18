@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
@@ -47,6 +48,7 @@ import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncrypt
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
 import net.geeksempire.ready.keep.notes.databinding.TakeNoteLayoutBinding
+import java.io.File
 import javax.inject.Inject
 import kotlin.math.hypot
 
@@ -114,6 +116,9 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     }
 
     var documentId = System.currentTimeMillis()
+
+    var audioFileId: String? = null
+    var audioFilePath: String? = null
 
     var autoEnterPlaced = false
 
@@ -501,9 +506,31 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                 when (resultCode) {
                     Activity.RESULT_OK -> {
+                        Log.d(this@TakeNote.javaClass.simpleName, "Voice Recorded Successfully")
+
+                        Firebase.auth.currentUser?.let { firebaseUser ->
+
+                            audioFilePath?.let { audioFilePath ->
+
+                                val audioFile = File(audioFilePath)
+
+                                (application as KeepNoteApplication).firebaseStorage
+                                    .getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid) + "/${documentId}" + "/${audioFileId}" + ".MP3")
+                                    .putBytes(audioFile.readBytes())
+                                    .addOnSuccessListener {
+                                        Log.d(this@TakeNote.javaClass.simpleName, "Audio Recorded File Uploaded Successfully")
+
+                                    }
+
+                            }
+
+                        }
 
                     }
                     else -> {
+                        Log.d(this@TakeNote.javaClass.simpleName, "Voice Recording Process Issue")
+
+
 
                     }
                 }

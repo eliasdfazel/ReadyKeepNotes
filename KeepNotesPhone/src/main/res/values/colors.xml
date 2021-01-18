@@ -24,6 +24,7 @@
     <color name="default_color_game">#ae2357</color>
     <color name="default_color_game_light">#FF005D</color>
     <color name="default_color_game_dark">#760F35</color>
+    <color name="default_color_game_dark_transparent">#80760F35</color>
     <color name="default_color_game_light_transparent">#80FF005D</color>
     <color name="default_color_game_transparent">#80ae2357</color>
 

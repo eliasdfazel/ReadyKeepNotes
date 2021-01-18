@@ -72,9 +72,10 @@ fun TakeNote.setupToggleKeyboardHandwriting() {
 
                Firebase.auth.currentUser?.let {
 
-                   val audioFilePath: String = audioRecordingFile.getAudioRecordingFilePath(it.uid, documentId.toString())
+                   audioFileId = System.currentTimeMillis().toString()
+                   audioFilePath = audioRecordingFile.getAudioRecordingFilePath(it.uid, documentId.toString(), audioFileId!!)
 
-                   val audioFile = File(audioFilePath)
+                   val audioFile = File(audioFilePath!!)
 
                    if (!audioFile.exists()) {
 
