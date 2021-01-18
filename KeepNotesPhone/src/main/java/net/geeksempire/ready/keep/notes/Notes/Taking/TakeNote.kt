@@ -1,6 +1,7 @@
 package net.geeksempire.ready.keep.notes.Notes.Taking
 
 import android.animation.Animator
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
@@ -497,6 +498,15 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
         when (requestCode) {
             NoteConfigurations.AudioRecordRequestCode -> {
+
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+
+                    }
+                    else -> {
+
+                    }
+                }
 
             }
         }
