@@ -28,7 +28,8 @@ class RecentColorsAdapter (private val context: TakeNote, private val paintingCa
 
         recentColorsViewHolder.pickedColor.setOnClickListener {
 
-            paintingCanvasView.changePaintingData(NewPaintingData(paintColor = allPickedColors[position], paintStrokeWidth = paintingCanvasView.newPaintingData.paintStrokeWidth))
+            paintingCanvasView.changePaintingData(NewPaintingData(paintColor = allPickedColors[position],
+                paintStrokeWidth = if (context.inputRecognizer.stylusDetected) { paintingCanvasView.stylusPaintingData.paintStrokeWidth } else { paintingCanvasView.fingerPaintingData.paintStrokeWidth }))
 
             context.takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.color = allPickedColors[position]
             context.takeNoteLayoutBinding.colorPaletteInclude.pickColorView.iconTint = ColorStateList.valueOf(allPickedColors[position])

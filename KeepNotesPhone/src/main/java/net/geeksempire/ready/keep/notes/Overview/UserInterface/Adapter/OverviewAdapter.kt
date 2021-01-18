@@ -152,7 +152,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         if (notesDataStructureList[position].noteImageContent == null) {
 
-            overviewViewHolder.imageContentView.visibility = View.INVISIBLE
+            overviewViewHolder.imageContentView.visibility = View.GONE
 
         } else {
 
@@ -160,7 +160,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
                 if (it.isBlank()) {
 
-                    overviewViewHolder.imageContentView.visibility = View.INVISIBLE
+                    overviewViewHolder.imageContentView.visibility = View.GONE
 
                 } else {
 
@@ -174,7 +174,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         if (notesDataStructureList[position].noteVoiceContent == null) {
 
-                overviewViewHolder.audioContentView.visibility = View.INVISIBLE
+                overviewViewHolder.audioContentView.visibility = View.GONE
 
         } else {
 
@@ -182,7 +182,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
                 if (it.isBlank()) {
 
-                    overviewViewHolder.audioContentView.visibility = View.INVISIBLE
+                    overviewViewHolder.audioContentView.visibility = View.GONE
 
                 } else {
 

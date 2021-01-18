@@ -26,7 +26,15 @@ fun TakeNote.paintingActionsStrokeWidthSample() {
         takeNoteLayoutBinding.colorPaletteInclude.strokeWidthFluidSlider.bubbleText =
             Html.fromHtml("<small>${selectedStrokeWidth.toString()}</small>", Html.FROM_HTML_MODE_COMPACT).toString()
 
-        paintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = paintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth, paintStrokeSliderPosition = fluidSliderPosition))
+        if (inputRecognizer.stylusDetected) {
+
+            paintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = paintingCanvasView.stylusPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth, paintStrokeSliderPosition = fluidSliderPosition))
+
+        } else {
+
+            paintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = paintingCanvasView.fingerPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth, paintStrokeSliderPosition = fluidSliderPosition))
+
+        }
 
         strokePaintingCanvasView.changePaintingPathStrokeWidth(NewPaintingData(paintColor = strokePaintingCanvasView.newPaintingData.paintColor, paintStrokeWidth = selectedStrokeWidth, paintStrokeSliderPosition = fluidSliderPosition))
 

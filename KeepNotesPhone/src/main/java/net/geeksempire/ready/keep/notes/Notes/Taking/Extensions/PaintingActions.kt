@@ -208,7 +208,19 @@ fun TakeNote.setupPaintingActions() {
 
     takeNoteLayoutBinding.colorPaletteInclude.colorPaletteView.setOnColorChangedListener { pickedColor ->
 
-        paintingCanvasView.changePaintingData(NewPaintingData(paintColor = pickedColor, paintStrokeWidth = paintingCanvasView.newPaintingData.paintStrokeWidth))
+        if (inputRecognizer.stylusDetected) {
+
+            paintingCanvasView.changePaintingData(NewPaintingData(paintColor = pickedColor,
+                paintStrokeWidth = paintingCanvasView.stylusPaintingData.paintStrokeWidth,
+                paintStrokeSliderPosition = paintingCanvasView.stylusPaintingData.paintStrokeSliderPosition))
+
+        } else {
+
+            paintingCanvasView.changePaintingData(NewPaintingData(paintColor = pickedColor,
+                paintStrokeWidth = paintingCanvasView.fingerPaintingData.paintStrokeWidth,
+                paintStrokeSliderPosition = paintingCanvasView.fingerPaintingData.paintStrokeSliderPosition))
+
+        }
 
         takeNoteLayoutBinding.colorPaletteInclude.pickColorView.iconTint = ColorStateList.valueOf(pickedColor)
         takeNoteLayoutBinding.colorPaletteInclude.pickColorView.rippleColor = ColorStateList.valueOf(pickedColor)
