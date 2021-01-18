@@ -55,6 +55,8 @@ class SearchProcess : AppCompatActivity() {
         NoteDatabaseConfigurations(applicationContext)
     }
 
+    var searchOperationRequested: Boolean = false
+
     private lateinit var notesRoomDatabaseConfiguration: NotesRoomDatabaseConfiguration
 
     lateinit var searchProcessLayoutBinding: SearchProcessLayoutBinding
@@ -68,10 +70,24 @@ class SearchProcess : AppCompatActivity() {
 
         notesRoomDatabaseConfiguration = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
 
+        searchViewModel.searchPreparedData.observe(this@SearchProcess, Observer {
+
+            allNotesData.addAll(it)
+
+            if (searchOperationRequested) {
+
+                searchOperationRequested = false
+
+                invokeSearchOperations(searchProcessLayoutBinding.searchTerm.text.toString(), allNotesData)
+
+            }
+
+        })
+
         lifecycleScope.launchWhenCreated {
 
-            allNotesData.addAll(searchViewModel.prepareDataForSearch(
-                contentEncryption, firebaseUser.uid, notesRoomDatabaseConfiguration.prepareRead().getAllNotesData()).await())
+            searchViewModel.prepareDataForSearch(
+                contentEncryption, firebaseUser.uid, notesRoomDatabaseConfiguration.prepareRead().getAllNotesData())
 
         }
 
@@ -197,6 +213,8 @@ class SearchProcess : AppCompatActivity() {
 
         if (searchTerm.isNotBlank()
             && allNotesData.size.toLong() == noteDatabaseConfigurations.databaseSize()) {
+
+            searchOperationRequested = true
 
             searchProcessLayoutBinding.textInputSearchTerm.isErrorEnabled = false
 

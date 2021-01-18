@@ -13,11 +13,15 @@ import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncrypt
 
 class SearchViewModel : ViewModel() {
 
+    val searchPreparedData: MutableLiveData<List<NotesDataStructureSearch>> by lazy {
+        MutableLiveData<List<NotesDataStructureSearch>>()
+    }
+
     val searchResults: MutableLiveData<List<NotesDataStructureSearch>> by lazy {
         MutableLiveData<List<NotesDataStructureSearch>>()
     }
 
-    fun prepareDataForSearch(contentEncryption: ContentEncryption, firebaseUserUniqueId: String, allNotes: List<NotesDatabaseModel>) : Deferred<List<NotesDataStructureSearch>> = CoroutineScope(Dispatchers.IO).async {
+    fun prepareDataForSearch(contentEncryption: ContentEncryption, firebaseUserUniqueId: String, allNotes: List<NotesDatabaseModel>) = CoroutineScope(Dispatchers.IO).async {
 
         val plainNotesData = ArrayList<NotesDataStructureSearch>()
 
@@ -44,7 +48,8 @@ class SearchViewModel : ViewModel() {
 
         }
 
-        plainNotesData
+        searchPreparedData.postValue(plainNotesData)
+
     }
 
     fun searchInDatabase(searchTerm: String, allNotesData: List<NotesDataStructureSearch>) = CoroutineScope(Dispatchers.IO).launch {
