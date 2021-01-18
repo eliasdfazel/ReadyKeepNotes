@@ -321,8 +321,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 }
 
-                val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
-                val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
+                val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:""
+                val contentText = takeNoteLayoutBinding.editTextContentView.text?:""
 
                 var noteHandwritingSnapshotPath: String? = null
 
@@ -349,8 +349,12 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
 
                     val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteTile = if (contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            null
+                        } else { contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().toString() },
+                        noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            null
+                        } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
                         noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
                         noteTakenTime = documentId,
@@ -366,8 +370,12 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 } else {
 
                     val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteTile = if (contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            null
+                        } else { contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().toString() },
+                        noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            null
+                        } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
                         noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
                         noteTakenTime = documentId,
@@ -464,11 +472,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     }
 
-                    val contentText = context.overviewLayoutBinding.quickTakeNote.text?:"No Content"
+                    val contentText = context.overviewLayoutBinding.quickTakeNote.text?:""
 
                     val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
                         noteTile = null,
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            null
+                        } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteHandwritingPaintingPaths = null,
                         noteHandwritingSnapshotLink = null,
                         noteTakenTime = documentId,
@@ -565,15 +575,19 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
             if (!firebaseUser.isAnonymous) {
 
-                val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:"Untitled Note"
-                val contentText = takeNoteLayoutBinding.editTextContentView.text?:"No Content"
+                val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:""
+                val contentText = takeNoteLayoutBinding.editTextContentView.text?:""
 
                 val notesDataStructure = if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
 
                     NotesDataStructure(
                         uniqueNoteId = documentId,
-                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteTile = if (contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            ""
+                        } else { contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().toString() },
+                        noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            ""
+                        } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteHandwritingSnapshotLink = null,
                         noteEditTime = Timestamp.now(),
                         noteIndex = documentId
@@ -583,8 +597,12 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     NotesDataStructure(
                         uniqueNoteId = documentId,
-                        noteTile = contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid).asList().toString(),
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteTile = if (contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            ""
+                        } else { contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().toString() },
+                        noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            ""
+                        } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteHandwritingSnapshotLink = null,
                         noteIndex = documentId
                     )
@@ -760,12 +778,14 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     }
 
-                    val contentText = overviewLayoutBinding.quickTakeNote.text?:"No Content"
+                    val contentText = overviewLayoutBinding.quickTakeNote.text?:""
 
                     val notesDataStructure = NotesDataStructure(
                         uniqueNoteId = documentId,
-                        noteTile = contentEncryption.encryptEncodedData("Untitled Note", firebaseUser.uid).asList().toString(),
-                        noteTextContent = contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid).asList().toString(),
+                        noteTile = contentEncryption.encryptEncodedData("", firebaseUser.uid)?.asList().toString(),
+                        noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                            ""
+                        } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteIndex = documentId
                     )
 

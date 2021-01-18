@@ -51,18 +51,17 @@ class ContentEncryption {
     }
 
     @Throws(InvalidKeyException::class)
-    fun encryptEncodedData(plainText: String, rawPasswordString: String): ByteArray {
+    fun encryptEncodedData(plainText: String, rawPasswordString: String): ByteArray? {
 
         //First Encode
         //Second Encrypt
 
-        var textToEncrypt = plainText
-
         if (plainText.isBlank() || plainText == "null") {
-            textToEncrypt = ""
+
+            return null
         }
 
-        val encodedText: String = encodeStringBase64(textToEncrypt)
+        val encodedText: String = encodeStringBase64(plainText)
 
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.ENCRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawPasswordString)))

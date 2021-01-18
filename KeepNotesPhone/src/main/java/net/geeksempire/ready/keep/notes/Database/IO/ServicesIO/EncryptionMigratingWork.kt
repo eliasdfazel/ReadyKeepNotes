@@ -47,8 +47,8 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
             val noteTitle = it.noteTile?.let { title -> contentEncryption.decryptEncodedData(title, oldEncryptionPassword) }
             val noteTextContent = it.noteTextContent?.let { content -> contentEncryption.decryptEncodedData(content, oldEncryptionPassword) }
 
-            val newTitle = noteTitle?.let { title -> contentEncryption.encryptEncodedData(title, newEncryptionPassword).asList().toString() }
-            val newContent = noteTextContent?.let { content -> contentEncryption.encryptEncodedData(content, newEncryptionPassword).asList().toString() }
+            val newTitle = noteTitle?.let { title -> contentEncryption.encryptEncodedData(title, newEncryptionPassword)?.asList().toString() }
+            val newContent = noteTextContent?.let { content -> contentEncryption.encryptEncodedData(content, newEncryptionPassword)?.asList().toString() }
 
             notesDatabaseDataAccessObject.updateNoteData(NotesDatabaseModel(
                 it.uniqueNoteId,

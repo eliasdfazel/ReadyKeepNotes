@@ -154,29 +154,45 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
-        notesDataStructureList[position].noteTile?.let { noteTile ->
+        if (notesDataStructureList[position].noteTile.isNullOrBlank() /*|| notesDataStructureList[position].noteTile.equals("null")*/) {
 
-            if (noteTile.isNotBlank()) {
+            overviewViewHolder.titleTextView.visibility = View.GONE
 
-                overviewViewHolder.titleTextView.visibility = View.VISIBLE
+        } else {
 
-            } else {
+            notesDataStructureList[position].noteTile?.let { noteTile ->
 
-                overviewViewHolder.titleTextView.visibility = View.GONE
+                if (noteTile.isNotBlank()) {
+
+                    overviewViewHolder.titleTextView.visibility = View.VISIBLE
+
+                } else {
+
+                    overviewViewHolder.titleTextView.visibility = View.GONE
+
+                }
 
             }
 
         }
 
-        notesDataStructureList[position].noteTextContent?.let { textContent ->
+        if (notesDataStructureList[position].noteTextContent.isNullOrBlank() /*|| notesDataStructureList[position].noteTextContent.equals("null")*/) {
 
-            if (textContent.isNotBlank()) {
+            overviewViewHolder.contentTextView.visibility = View.GONE
 
-                overviewViewHolder.contentTextView.visibility = View.VISIBLE
+        } else {
 
-            } else {
+            notesDataStructureList[position].noteTextContent?.let { textContent ->
 
-                overviewViewHolder.contentTextView.visibility = View.GONE
+                if (textContent.isNotBlank()) {
+
+                    overviewViewHolder.contentTextView.visibility = View.VISIBLE
+
+                } else {
+
+                    overviewViewHolder.contentTextView.visibility = View.GONE
+
+                }
 
             }
 
