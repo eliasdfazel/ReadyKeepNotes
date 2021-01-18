@@ -12,6 +12,8 @@ class AudioRecordingFile (val context: AppCompatActivity){
                 firebaseUserId +
                 File.separator +
                 "AudioRecording" +
+                File.separator +
+                uniqueDocumentId +
                 File.separator
     }
 
@@ -23,6 +25,8 @@ class AudioRecordingFile (val context: AppCompatActivity){
                 File.separator +
                 "AudioRecording" +
                 File.separator +
-                uniqueDocumentId + ".MP3"
+                uniqueDocumentId +
+                File.separator +
+                System.currentTimeMillis() + ".MP3"
     }
 }
