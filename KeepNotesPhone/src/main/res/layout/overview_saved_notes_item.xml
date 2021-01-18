@@ -19,8 +19,8 @@
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/contentImageView"
-        android:layout_width="77dp"
-        android:layout_height="113dp"
+        android:layout_width="97dp"
+        android:layout_height="143dp"
         android:scaleType="fitCenter"
         android:background="@drawable/round_corner_background"
 
@@ -52,7 +52,7 @@
         android:paddingHorizontal="11dp"
         android:paddingVertical="7dp"
         android:ellipsize="end"
-        android:lines="3"
+        android:lines="5"
         android:textSize="15sp"
         android:textColor="@color/dark"
         android:fontFamily="monospace"
