@@ -130,7 +130,7 @@ class SearchProcess : AppCompatActivity() {
                         searchProcessLayoutBinding.loadingView.pauseAnimation()
                         searchProcessLayoutBinding.loadingView.visibility = View.INVISIBLE
 
-                        searchProcessLayoutBinding.searchActionView.icon = getDrawable(R.drawable.icon_search)
+                        searchProcessLayoutBinding.searchActionView.icon = getDrawable(R.drawable.vector_icon_search)
 
                     }, 2369)
 
@@ -141,7 +141,7 @@ class SearchProcess : AppCompatActivity() {
 
                     searchProcessLayoutBinding.searchActionView.isEnabled = true
 
-                    searchProcessLayoutBinding.searchActionView.icon = getDrawable(R.drawable.icon_search)
+                    searchProcessLayoutBinding.searchActionView.icon = getDrawable(R.drawable.vector_icon_search)
 
                     searchResultAdapter.notesDataStructureList.addAll(it)
 

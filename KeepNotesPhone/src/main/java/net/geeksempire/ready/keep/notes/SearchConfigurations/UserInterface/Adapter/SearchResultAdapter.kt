@@ -128,7 +128,7 @@ class SearchResultAdapter(val context: SearchProcess) : RecyclerView.Adapter<Sea
 
             overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.CENTER_CROP
             overviewViewHolder.contentImageView.setColorFilter(context.getColor(R.color.pink_transparent))
-            overviewViewHolder.contentImageView.setImageDrawable(context.getDrawable(R.drawable.icon_no_content))
+            overviewViewHolder.contentImageView.setImageDrawable(context.getDrawable(R.drawable.vector_icon_no_content))
 
         } else {
 

@@ -28,7 +28,7 @@
         android:height="297dp"
         android:width="297dp"
         android:gravity="center"
-        android:drawable="@drawable/icon_search">
+        android:drawable="@drawable/vector_icon_search">
     </item>
 
 </layer-list>

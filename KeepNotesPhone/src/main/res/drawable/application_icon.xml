@@ -46,7 +46,7 @@
         android:gravity="center"
         android:height="303dp"
         android:width="303dp"
-        android:drawable="@drawable/brand">
+        android:drawable="@drawable/vector_brand_icon">
     </item>
 
 </layer-list>

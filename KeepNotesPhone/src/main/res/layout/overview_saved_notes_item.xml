@@ -71,7 +71,7 @@
         android:layout_height="43dp"
         android:padding="11dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/icon_image_picker"
+        android:src="@drawable/vector_icon_image_picker"
         android:visibility="gone"
 
         apps:layout_constraintBottom_toBottomOf="@id/contentTextView"
@@ -83,7 +83,7 @@
         android:layout_height="43dp"
         android:padding="7dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/icon_voice_recorder"
+        android:src="@drawable/vector_icon_voice_recorder"
         android:visibility="gone"
 
         apps:layout_constraintBottom_toBottomOf="@id/contentTextView"

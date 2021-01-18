@@ -121,7 +121,7 @@
 
             apps:cornerRadius="51dp"
             apps:elevation="13dp"
-            apps:icon="@drawable/icon_save"
+            apps:icon="@drawable/vector_icon_save"
             apps:iconSize="49dp"
             apps:iconGravity="textStart"
             apps:iconTint="@color/light"
@@ -146,7 +146,7 @@
 
             apps:cornerRadius="51dp"
             apps:elevation="13dp"
-            apps:icon="@drawable/icon_handwriting"
+            apps:icon="@drawable/vector_icon_handwriting"
             apps:iconSize="33dp"
             apps:iconGravity="textStart"
             apps:iconTint="@color/light"
@@ -228,7 +228,7 @@
 
         apps:elevation="13dp"
         apps:cornerRadius="51dp"
-        apps:icon="@drawable/brand"
+        apps:icon="@drawable/vector_brand_icon"
         apps:iconTintMode="multiply"
         apps:iconGravity="textStart"
         apps:iconSize="67dp"
@@ -254,7 +254,7 @@
 
         apps:elevation="13dp"
         apps:cornerRadius="51dp"
-        apps:icon="@drawable/icon_search"
+        apps:icon="@drawable/vector_icon_search"
         apps:iconTintMode="multiply"
         apps:iconGravity="textStart"
         apps:iconSize="29dp"
@@ -279,7 +279,7 @@
 
         apps:cornerRadius="51dp"
         apps:elevation="13dp"
-        apps:icon="@drawable/icon_search"
+        apps:icon="@drawable/vector_icon_search"
         apps:iconTintMode="multiply"
         apps:iconGravity="textStart"
         apps:iconSize="23dp"

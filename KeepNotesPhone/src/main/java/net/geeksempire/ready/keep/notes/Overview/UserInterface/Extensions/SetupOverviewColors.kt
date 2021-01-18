@@ -1,5 +1,6 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions
 
+import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
 import android.view.WindowInsetsController
@@ -39,6 +40,12 @@ fun KeepNoteOverview.setupOverviewColors() {
 
             overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.darker))
 
+            overviewLayoutBinding.startNewNoteView.icon = getDrawable(R.drawable.vector_brand_icon)
+            overviewLayoutBinding.startNewNoteView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.lighter))
+
+            overviewLayoutBinding.goToSearch.icon = getDrawable(R.drawable.vector_icon_search)
+            overviewLayoutBinding.goToSearch.backgroundTintList = ColorStateList.valueOf(getColor(R.color.lighter))
+
         }
         ThemeType.ThemeDark -> {
 
@@ -64,6 +71,12 @@ fun KeepNoteOverview.setupOverviewColors() {
             overviewLayoutBinding.textInputQuickTakeNote.boxStrokeColor = getColor(R.color.light_transparent_higher)
 
             overviewLayoutBinding.quickTakeNote.setTextColor(getColor(R.color.lighter))
+
+            overviewLayoutBinding.startNewNoteView.icon = getDrawable(R.drawable.vector_brand_icon_light)
+            overviewLayoutBinding.startNewNoteView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.darker))
+
+            overviewLayoutBinding.goToSearch.icon = getDrawable(R.drawable.vector_icon_search_light)
+            overviewLayoutBinding.goToSearch.backgroundTintList = ColorStateList.valueOf(getColor(R.color.darker))
 
         }
     }

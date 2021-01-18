@@ -12,7 +12,7 @@
         android:layout_width="153dp"
         android:layout_height="153dp"
         android:alpha="0.13"
-        android:src="@drawable/brand"
+        android:src="@drawable/vector_brand_icon"
 
         apps:layout_constraintTop_toTopOf="parent"
         apps:layout_constraintBottom_toBottomOf="parent"
@@ -120,7 +120,7 @@
         android:insetRight="0dp"
         android:contentDescription="@string/descriptionSearch"
 
-        apps:icon="@drawable/icon_search"
+        apps:icon="@drawable/vector_icon_search"
         apps:iconTintMode="multiply"
         apps:iconSize="29dp"
         apps:iconGravity="textStart"

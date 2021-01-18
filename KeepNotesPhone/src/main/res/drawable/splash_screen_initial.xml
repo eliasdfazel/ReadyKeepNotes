@@ -19,7 +19,7 @@
         android:height="255.38dp"
         android:width="523.01824dp"
         android:top="199dp"
-        android:drawable="@drawable/motto_icon">
+        android:drawable="@drawable/vector_motto_icon">
     </item>
 
 </layer-list>

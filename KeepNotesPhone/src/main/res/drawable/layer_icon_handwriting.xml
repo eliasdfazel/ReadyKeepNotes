@@ -28,7 +28,7 @@
         android:height="397dp"
         android:width="397dp"
         android:gravity="center"
-        android:drawable="@drawable/icon_handwriting">
+        android:drawable="@drawable/vector_icon_handwriting">
     </item>
 
 </layer-list>

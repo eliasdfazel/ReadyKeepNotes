@@ -28,7 +28,7 @@
         android:height="203dp"
         android:width="397dp"
         android:gravity="center"
-        android:drawable="@drawable/icon_voice_recorder">
+        android:drawable="@drawable/vector_icon_voice_recorder">
     </item>
 
 </layer-list>
