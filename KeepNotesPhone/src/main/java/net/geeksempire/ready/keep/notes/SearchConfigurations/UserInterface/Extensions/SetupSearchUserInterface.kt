@@ -66,12 +66,15 @@ fun SearchProcess.setupSearchColors() {
 
             searchProcessLayoutBinding.rootView.setBackgroundColor(getColor(R.color.light))
 
+            searchProcessLayoutBinding.brandView.imageTintList = ColorStateList.valueOf(getColor(R.color.dark))
+
             searchProcessLayoutBinding.textInputSearchTerm.boxBackgroundColor = getColor(R.color.dark_transparent_high)
             searchProcessLayoutBinding.textInputSearchTerm.boxStrokeColor = getColor(R.color.dark_transparent_higher)
 
             searchProcessLayoutBinding.searchTerm.setTextColor(getColor(R.color.darker))
 
-            searchProcessLayoutBinding.brandView.imageTintList = ColorStateList.valueOf(getColor(R.color.dark))
+            searchProcessLayoutBinding.searchActionView.icon = getDrawable(R.drawable.vector_icon_search)
+            searchProcessLayoutBinding.searchActionView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.lighter))
 
         }
         ThemeType.ThemeDark -> {
@@ -81,12 +84,15 @@ fun SearchProcess.setupSearchColors() {
 
             searchProcessLayoutBinding.rootView.setBackgroundColor(getColor(R.color.dark))
 
+            searchProcessLayoutBinding.brandView.imageTintList = ColorStateList.valueOf(getColor(R.color.light))
+
             searchProcessLayoutBinding.textInputSearchTerm.boxBackgroundColor = getColor(R.color.light_transparent_high)
             searchProcessLayoutBinding.textInputSearchTerm.boxStrokeColor = getColor(R.color.light_transparent_higher)
 
             searchProcessLayoutBinding.searchTerm.setTextColor(getColor(R.color.lighter))
 
-            searchProcessLayoutBinding.brandView.imageTintList = ColorStateList.valueOf(getColor(R.color.light))
+            searchProcessLayoutBinding.searchActionView.icon = getDrawable(R.drawable.vector_icon_search_light)
+            searchProcessLayoutBinding.searchActionView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.darker))
 
         }
     }
