@@ -73,15 +73,15 @@ data class NotesDatabaseModel(
     /**
      * Json Of Paths (Download Link) From Firestore
      **/
-    @Nullable @ColumnInfo(name = "noteVoicePaths", typeAffinity = ColumnInfo.TEXT) var noteVoiceContent: String? = null,
+    @Nullable @ColumnInfo(name = "noteVoicePaths", typeAffinity = ColumnInfo.TEXT) var noteVoicePaths: String? = null,
     /**
      * Json Of Paths (Download Link) From Firestore
      **/
-    @Nullable @ColumnInfo(name = "noteImagePaths", typeAffinity = ColumnInfo.TEXT) var noteImageContent: String? = null,
+    @Nullable @ColumnInfo(name = "noteImagePaths", typeAffinity = ColumnInfo.TEXT) var noteImagePaths: String? = null,
     /**
      * Json Of Paths (Download Link) From Firestore
      **/
-    @Nullable @ColumnInfo(name = "noteGifPaths", typeAffinity = ColumnInfo.TEXT) var noteGifContent: String? = null,
+    @Nullable @ColumnInfo(name = "noteGifPaths", typeAffinity = ColumnInfo.TEXT) var noteGifPaths: String? = null,
 
     @NonNull @ColumnInfo(name = "noteTakenTime", typeAffinity = ColumnInfo.INTEGER) var noteTakenTime: Long,
     @Nullable @ColumnInfo(name = "noteEditTime", typeAffinity = ColumnInfo.INTEGER) var noteEditTime: Long? = null,

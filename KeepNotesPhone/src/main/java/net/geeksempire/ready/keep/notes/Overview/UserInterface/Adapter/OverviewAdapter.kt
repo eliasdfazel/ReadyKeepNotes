@@ -211,13 +211,13 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
-        if (notesDataStructureList[position].noteImageContent == null) {
+        if (notesDataStructureList[position].noteImagePaths == null) {
 
             overviewViewHolder.imageContentView.visibility = View.GONE
 
         } else {
 
-            notesDataStructureList[position].noteImageContent?.let {
+            notesDataStructureList[position].noteImagePaths?.let {
 
                 if (it.isBlank()) {
 
@@ -233,13 +233,13 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
-        if (notesDataStructureList[position].noteVoiceContent == null) {
+        if (notesDataStructureList[position].noteVoicePaths == null) {
 
                 overviewViewHolder.audioContentView.visibility = View.GONE
 
         } else {
 
-            notesDataStructureList[position].noteVoiceContent?.let {
+            notesDataStructureList[position].noteVoicePaths?.let {
 
                 if (it.isBlank()) {
 

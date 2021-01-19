@@ -133,7 +133,7 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
 
                 val imageToShare = notesDataStructureList[position].noteHandwritingSnapshotLink
 
-                val audioToShare = notesDataStructureList[position].noteVoiceContent
+                val audioToShare = notesDataStructureList[position].noteVoicePaths
 
                 ShareIt(context)
                     .invokeCompleteSharing(

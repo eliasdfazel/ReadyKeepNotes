@@ -24,9 +24,9 @@ class AudioIO (private val keepNoteApplication: KeepNoteApplication) {
 
         notesDatabaseDataAccessObject.getSpecificNoteData(documentId)?.let { audioRecordedRawJsonIO ->
 
-            if (!audioRecordedRawJsonIO.noteVoiceContent.isNullOrBlank()) {
+            if (!audioRecordedRawJsonIO.noteVoicePaths.isNullOrBlank()) {
 
-                val audioRecordedJsonArray = JSONArray(audioRecordedRawJsonIO.noteVoiceContent)
+                val audioRecordedJsonArray = JSONArray(audioRecordedRawJsonIO.noteVoicePaths)
                 audioRecordedJsonArray.forEach {
 
                     audioRecordingFilePaths.add(it.toString())
@@ -46,6 +46,7 @@ class AudioIO (private val keepNoteApplication: KeepNoteApplication) {
                 noteTextContent = null,
                 noteHandwritingPaintingPaths = null,
                 noteHandwritingSnapshotLink = null,
+                noteVoicePaths = keepNoteApplication.jsonIO.writeAudioRecordingFilePaths(audioRecordingFilePaths),
                 noteTakenTime = documentId,
                 noteEditTime = null,
                 noteIndex = documentId,

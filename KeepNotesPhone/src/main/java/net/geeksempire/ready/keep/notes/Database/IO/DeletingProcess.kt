@@ -50,7 +50,7 @@ class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
         }
 
         //Delete Data On SdCard - Audio Records
-        notesDatabaseModel.noteVoiceContent?.let { audioContent ->
+        notesDatabaseModel.noteVoicePaths?.let { audioContent ->
 
             val jsonArrayAudios = JSONArray(audioContent)
 
