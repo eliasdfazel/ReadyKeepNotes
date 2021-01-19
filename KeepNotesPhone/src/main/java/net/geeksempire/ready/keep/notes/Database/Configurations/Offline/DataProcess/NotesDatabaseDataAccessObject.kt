@@ -28,8 +28,8 @@ interface NotesDatabaseDataAccessObject {
     suspend fun deleteNoteData(notesDatabaseModel: NotesDatabaseModel)
 
 
-    @Query("UPDATE NotesDatabase SET noteTile = :noteTitle, noteTextContent = :noteContent, noteHandwritingPaintingPaths = :handwritingPaths WHERE uniqueNoteId = :uniqueNoteId")
-    suspend fun updateTitleContentHandwriting(uniqueNoteId: Long, noteTitle: String, noteContent: String, handwritingPaths: String)
+    @Query("UPDATE NotesDatabase SET noteTile = :noteTitle, noteTextContent = :noteTextContent, noteHandwritingPaintingPaths = :noteHandwritingPaintingPaths WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateTitleContentHandwriting(uniqueNoteId: Long, noteTitle: String, noteTextContent: String, noteHandwritingPaintingPaths: String)
 
 
     @Query("UPDATE NotesDatabase SET noteTags = :allTags WHERE uniqueNoteId = :uniqueNoteId")
@@ -52,9 +52,12 @@ interface NotesDatabaseDataAccessObject {
     suspend fun getNewestInsertedData() : NotesDatabaseModel
 
 
-    @Query("SELECT * FROM NotesDatabase ORDER BY noteIndex DESC")
-    suspend fun getAllNotesData() : List<NotesDatabaseModel>
+    @Query("SELECT * FROM NotesDatabase")
+    suspend fun getAllNotesRawData() : List<NotesDatabaseModel>
 
+
+    @Query("SELECT * FROM NotesDatabase ORDER BY notePinned DESC, noteIndex DESC")
+    suspend fun getAllNotesData() : List<NotesDatabaseModel>
 
 
     @Query("SELECT * FROM NotesDatabase WHERE noteTile LIKE :searchTerm OR noteTextContent LIKE :searchTerm OR noteTags LIKE :searchTerm OR noteTranscribeTags LIKE :searchTerm ORDER BY noteIndex DESC")
