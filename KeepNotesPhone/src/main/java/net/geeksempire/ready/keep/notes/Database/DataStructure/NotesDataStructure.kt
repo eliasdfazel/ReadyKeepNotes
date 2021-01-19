@@ -32,6 +32,9 @@ object Notes {
 object NotesTemporaryModification {
     const val NoteIsNotSelected = 0
     const val NoteIsSelected = 1
+
+    const val NoteUnpinned = 0
+    const val NotePinned = 1
 }
 
 @Keep
@@ -98,5 +101,6 @@ data class NotesDatabaseModel(
      **/
     @Nullable @ColumnInfo(name = "noteTranscribeTags", typeAffinity = ColumnInfo.TEXT) var noteTranscribeTags: String? = null,
 
-    @NonNull @ColumnInfo(name = "dataSelected") var dataSelected: Int = NotesTemporaryModification.NoteIsNotSelected
+    @NonNull @ColumnInfo(name = "notePinned", typeAffinity = ColumnInfo.INTEGER) var notePinned: Int = NotesTemporaryModification.NoteUnpinned,
+    @NonNull @ColumnInfo(name = "dataSelected", typeAffinity = ColumnInfo.INTEGER) var dataSelected: Int = NotesTemporaryModification.NoteIsNotSelected
 )

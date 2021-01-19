@@ -528,7 +528,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 withContext(SupervisorJob() + Dispatchers.Main) {
 
-                    Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
+                    Log.d(this@NotesIO.javaClass.simpleName, "Note Did Not Saved")
 
                     SnackbarBuilder(context).show (
                         rootView = context.overviewLayoutBinding.rootView,
@@ -669,7 +669,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         }
 
                     }.addOnFailureListener {
-                        Log.d(this@NotesIO.javaClass.simpleName, "Note Did Note Saved")
+                        Log.d(this@NotesIO.javaClass.simpleName, "Note Did Not Saved")
 
                         SnackbarBuilder(context).show (
                             rootView = takeNoteLayoutBinding.rootView,
