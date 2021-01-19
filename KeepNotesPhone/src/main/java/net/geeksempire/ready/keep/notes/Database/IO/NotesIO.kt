@@ -359,8 +359,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
                         noteTakenTime = documentId,
                         noteEditTime = System.currentTimeMillis(),
-                        noteIndex = documentId,
-                        noteTags = null
+                        noteIndex = documentId
                     )
 
                     notesRoomDatabaseConfiguration
@@ -379,9 +378,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
                         noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
                         noteTakenTime = documentId,
-                        noteEditTime = null,
-                        noteIndex = documentId,
-                        noteTags = null
+                        noteIndex = documentId
                     )
 
                     notesRoomDatabaseConfiguration

@@ -64,8 +64,8 @@ const val NotesDatabase = "NotesDatabase"
 data class NotesDatabaseModel(
     @NonNull @PrimaryKey var uniqueNoteId: Long,
 
-    @Nullable @ColumnInfo(name = "noteTile", typeAffinity = ColumnInfo.TEXT) var noteTile: String? = null,
-    @Nullable @ColumnInfo(name = "noteTextContent", typeAffinity = ColumnInfo.TEXT) var noteTextContent: String? = null,
+    @Nullable @ColumnInfo(name = "noteTile", typeAffinity = ColumnInfo.TEXT) var noteTile: String?,
+    @Nullable @ColumnInfo(name = "noteTextContent", typeAffinity = ColumnInfo.TEXT) var noteTextContent: String?,
 
     @Nullable @ColumnInfo(name = "noteHandwritingPaintingPaths", typeAffinity = ColumnInfo.TEXT) var noteHandwritingPaintingPaths: String?,
     @Nullable @ColumnInfo(name = "noteHandwritingSnapshotLink", typeAffinity = ColumnInfo.TEXT) var noteHandwritingSnapshotLink: String?,
@@ -73,33 +73,33 @@ data class NotesDatabaseModel(
     /**
      * Json Of Paths (Download Link) From Firestore
      **/
-    @Nullable @ColumnInfo(name = "noteVoicePaths", typeAffinity = ColumnInfo.TEXT) var noteVoicePaths: String? = null,
+    @Nullable @ColumnInfo(name = "noteVoicePaths", typeAffinity = ColumnInfo.TEXT) var noteVoicePaths: String?,
     /**
      * Json Of Paths (Download Link) From Firestore
      **/
-    @Nullable @ColumnInfo(name = "noteImagePaths", typeAffinity = ColumnInfo.TEXT) var noteImagePaths: String? = null,
+    @Nullable @ColumnInfo(name = "noteImagePaths", typeAffinity = ColumnInfo.TEXT) var noteImagePaths: String?,
     /**
      * Json Of Paths (Download Link) From Firestore
      **/
-    @Nullable @ColumnInfo(name = "noteGifPaths", typeAffinity = ColumnInfo.TEXT) var noteGifPaths: String? = null,
+    @Nullable @ColumnInfo(name = "noteGifPaths", typeAffinity = ColumnInfo.TEXT) var noteGifPaths: String?,
 
     @NonNull @ColumnInfo(name = "noteTakenTime", typeAffinity = ColumnInfo.INTEGER) var noteTakenTime: Long,
-    @Nullable @ColumnInfo(name = "noteEditTime", typeAffinity = ColumnInfo.INTEGER) var noteEditTime: Long? = null,
+    @Nullable @ColumnInfo(name = "noteEditTime", typeAffinity = ColumnInfo.INTEGER) var noteEditTime: Long?,
 
     @NonNull @ColumnInfo(name = "noteIndex") var noteIndex: Long,
 
     /**
      * Json Array Of Tags
      **/
-    @Nullable @ColumnInfo(name = "noteTags", typeAffinity = ColumnInfo.TEXT) var noteTags: String? = null,
+    @Nullable @ColumnInfo(name = "noteTags", typeAffinity = ColumnInfo.TEXT) var noteTags: String?,
     /**
      * Json Array Of Hash Tags
      **/
-    @Nullable @ColumnInfo(name = "noteHashTags", typeAffinity = ColumnInfo.TEXT) var noteHashTags: String? = null,
+    @Nullable @ColumnInfo(name = "noteHashTags", typeAffinity = ColumnInfo.TEXT) var noteHashTags: String?,
     /**
      * Json Of Transcribe Tags For Each Recorded Voice
      **/
-    @Nullable @ColumnInfo(name = "noteTranscribeTags", typeAffinity = ColumnInfo.TEXT) var noteTranscribeTags: String? = null,
+    @Nullable @ColumnInfo(name = "noteTranscribeTags", typeAffinity = ColumnInfo.TEXT) var noteTranscribeTags: String?,
 
     @NonNull @ColumnInfo(name = "notePinned", typeAffinity = ColumnInfo.INTEGER) var notePinned: Int = NotesTemporaryModification.NoteUnpinned,
     @NonNull @ColumnInfo(name = "dataSelected", typeAffinity = ColumnInfo.INTEGER) var dataSelected: Int = NotesTemporaryModification.NoteIsNotSelected
