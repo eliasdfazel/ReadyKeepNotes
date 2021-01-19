@@ -154,7 +154,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
-        if (notesDataStructureList[position].noteTile.isNullOrBlank() /*|| notesDataStructureList[position].noteTile.equals("null")*/) {
+        if (notesDataStructureList[position].noteTile.isNullOrBlank()) {
 
             overviewViewHolder.titleTextView.visibility = View.GONE
 
@@ -176,7 +176,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
-        if (notesDataStructureList[position].noteTextContent.isNullOrBlank() /*|| notesDataStructureList[position].noteTextContent.equals("null")*/) {
+        if (notesDataStructureList[position].noteTextContent.isNullOrBlank()) {
 
             overviewViewHolder.contentTextView.visibility = View.GONE
 
