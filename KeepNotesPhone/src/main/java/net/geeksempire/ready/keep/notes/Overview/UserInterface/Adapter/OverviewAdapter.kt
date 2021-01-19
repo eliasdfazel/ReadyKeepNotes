@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
@@ -162,7 +161,6 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
             Glide.with(context)
                 .load(notesDataStructureList[position].noteHandwritingSnapshotLink)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(overviewViewHolder.contentImageView)
 
         }
