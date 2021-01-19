@@ -213,7 +213,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         if (notesDataStructureList[position].noteImageContent == null) {
 
-            overviewViewHolder.imageContentView.visibility = View.VISIBLE
+            overviewViewHolder.imageContentView.visibility = View.GONE
 
         } else {
 
