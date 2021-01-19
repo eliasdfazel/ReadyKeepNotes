@@ -5,8 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -48,7 +46,7 @@ public class AudioRecorderActivity extends AppCompatActivity
     private VisualizerHandler visualizerHandler;
 
     private Timer timer;
-    private MenuItem saveMenuItem;
+
     private int recorderSecondsElapsed;
     private int playerSecondsElapsed;
     private boolean isRecording;
@@ -179,25 +177,6 @@ public class AudioRecorderActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.aar_audio_recorder, menu);
-        saveMenuItem = menu.findItem(R.id.action_save);
-        saveMenuItem.setIcon(ContextCompat.getDrawable(this, R.drawable.aar_ic_check));
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        if (i == android.R.id.home) {
-            finish();
-        } else if (i == R.id.action_save) {
-            selectAudio();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onAudioChunkPulled(AudioChunk audioChunk) {
         float amplitude = isRecording ? (float) audioChunk.maxAmplitude() : 0f;
         visualizerHandler.onDataReceived(amplitude);
@@ -206,6 +185,13 @@ public class AudioRecorderActivity extends AppCompatActivity
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         stopPlaying();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        selectAudio();
+
     }
 
     private void selectAudio() {
@@ -255,7 +241,7 @@ public class AudioRecorderActivity extends AppCompatActivity
                 visualizerHandler.stop();
             }
         }
-        saveMenuItem.setVisible(false);
+
         statusView.setVisibility(View.INVISIBLE);
         restartView.setVisibility(View.INVISIBLE);
         playView.setVisibility(View.INVISIBLE);
@@ -267,7 +253,7 @@ public class AudioRecorderActivity extends AppCompatActivity
 
     private void resumeRecording() {
         isRecording = true;
-        saveMenuItem.setVisible(false);
+
         statusView.setText(R.string.aar_recording);
         statusView.setVisibility(View.VISIBLE);
         restartView.setVisibility(View.INVISIBLE);
@@ -293,7 +279,7 @@ public class AudioRecorderActivity extends AppCompatActivity
     private void pauseRecording() {
         isRecording = false;
         if(!isFinishing()) {
-            saveMenuItem.setVisible(true);
+
         }
         statusView.setText(R.string.aar_paused);
         statusView.setVisibility(View.VISIBLE);
