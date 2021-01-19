@@ -1,3 +1,4 @@
+include ':AudioRecorder'
 include ':AdvancedColorPicker'
 include ':ShapesCustomImageViewLibrary'
 include ':LoadingSpin'

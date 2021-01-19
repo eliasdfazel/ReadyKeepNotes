@@ -1,11 +1,11 @@
 package net.geeksempire.ready.keep.notes.Notes.Taking.Extensions
 
-import cafe.adriel.androidaudiorecorder.AndroidAudioRecorder
-import cafe.adriel.androidaudiorecorder.model.AudioChannel
-import cafe.adriel.androidaudiorecorder.model.AudioSampleRate
-import cafe.adriel.androidaudiorecorder.model.AudioSource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import net.geeksempire.audio.recorder.AndroidAudioRecorder
+import net.geeksempire.audio.recorder.model.AudioChannel
+import net.geeksempire.audio.recorder.model.AudioSampleRate
+import net.geeksempire.audio.recorder.model.AudioSource
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
