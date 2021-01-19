@@ -14,11 +14,11 @@ object Notes {
     const val NoteTextContent = "noteTextContent"
 
     const val NoteHandwritingSnapshotLink = "noteHandwritingSnapshotLink"
-    const val noteHandwritingPaintingPaths = "noteHandwritingPaintingPaths"
+    const val NoteHandwritingPaintingPaths = "noteHandwritingPaintingPaths"
 
-    const val noteVoiceContent = "noteVoiceContent"
-    const val noteImageContent = "noteImageContent"
-    const val noteGifContent = "noteGifContent"
+    const val NoteVoicePaths = "noteVoicePaths"
+    const val NoteImagePaths = "noteImagePaths"
+    const val NoteGifPaths = "noteGifPaths"
 
     const val NoteTakenTime = "noteTakenTime"
     const val NoteEditTime = "noteEditTime"
@@ -26,6 +26,11 @@ object Notes {
     const val NoteIndex = "noteIndex"
 
     const val NotesTags = "noteTags"
+    const val NotesHashTags = "noteHashTags"
+
+    const val NoteTranscribeTags = "noteTranscribeTags"
+
+    const val NotePinned = "notePinned"
 }
 
 @Keep

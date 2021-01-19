@@ -95,7 +95,12 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 val noteTitle = documentSnapshot[Notes.NoteTile].toString()
                 val noteTextContent = documentSnapshot[Notes.NoteTextContent].toString()
 
+                val noteHandwritingPaintingPaths = documentSnapshot[Notes.NoteHandwritingPaintingPaths].toString()
                 val noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].toString()
+
+                val noteVoicePaths = documentSnapshot[Notes.NoteVoicePaths].toString()
+                val noteImagePaths = documentSnapshot[Notes.NoteImagePaths].toString()
+                val noteGifPaths = documentSnapshot[Notes.NoteGifPaths].toString()
 
                 val noteTakenTime = (documentSnapshot[Notes.NoteTakenTime] as Timestamp).toDate().time
                 val noteEditTime = documentSnapshot[Notes.NoteEditTime]?.let {
@@ -103,6 +108,29 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 }
 
                 val noteTags = documentSnapshot[Notes.NotesTags].toString()
+                val noteHashTags = documentSnapshot[Notes.NotesHashTags].toString()
+
+                val noteTranscribeTags = documentSnapshot[Notes.NoteTranscribeTags].toString()
+
+                val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentSnapshot.id.toLong(),
+                    noteTile = noteTitle,
+                    noteTextContent = noteTextContent,
+                    noteHandwritingPaintingPaths = noteHandwritingPaintingPaths,
+                    noteHandwritingSnapshotLink = noteHandwritingSnapshotLink,
+                    noteVoicePaths = noteVoicePaths,
+                    noteImagePaths = noteImagePaths,
+                    noteGifPaths = noteGifPaths,
+                    noteTakenTime = uniqueNoteId,
+                    noteEditTime = noteEditTime,
+                    noteIndex = documentSnapshot.id.toLong(),
+                    noteTags = noteTags,
+                    noteHashTags = noteHashTags,
+                    noteTranscribeTags = noteTranscribeTags,
+                    dataSelected = 0
+                )
+
+
+                notesDatabaseDataAccessObject.insertNewNoteData(notesDatabaseModel)
 
                 keepNoteApplication.firestoreDatabase
                     .collection(databaseEndpoints.paintPathsCollectionEndpoints(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + documentSnapshot.id))
@@ -124,23 +152,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         }
 
                     }
-
-                val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentSnapshot.id.toLong(),
-                    noteTile = noteTitle,
-                    noteTextContent = noteTextContent,
-                    noteHandwritingPaintingPaths = null,
-                    noteHandwritingSnapshotLink = noteHandwritingSnapshotLink,
-                    noteTakenTime = uniqueNoteId,
-                    noteEditTime = noteEditTime,
-                    noteIndex = documentSnapshot.id.toLong(),
-                    noteTags = noteTags,
-                    dataSelected = 0
-                )
-
-
-                notesDatabaseDataAccessObject.insertNewNoteData(notesDatabaseModel)
-
-
 
             }
 
@@ -348,6 +359,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
 
+
+
                     val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
                         noteTile = if (contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
                             null
@@ -357,9 +370,15 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
                         noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
+                        noteVoicePaths = ,
+                        noteImagePaths = ,
+                        noteGifPaths = ,
                         noteTakenTime = documentId,
                         noteEditTime = System.currentTimeMillis(),
-                        noteIndex = documentId
+                        noteIndex = documentId,
+                        noteTags = ,
+                        noteHashTags = ,
+                        noteTranscribeTags =
                     )
 
                     notesRoomDatabaseConfiguration
@@ -377,8 +396,15 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
                         noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
+                        noteVoicePaths = null,
+                        noteImagePaths = null,
+                        noteGifPaths = null,
                         noteTakenTime = documentId,
-                        noteIndex = documentId
+                        noteEditTime = null,
+                        noteIndex = documentId,
+                        noteTags = null,
+                        noteHashTags = null,
+                        noteTranscribeTags = null
                     )
 
                     notesRoomDatabaseConfiguration
@@ -478,10 +504,15 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
                         noteHandwritingPaintingPaths = null,
                         noteHandwritingSnapshotLink = null,
+                        noteVoicePaths = null,
+                        noteImagePaths = null,
+                        noteGifPaths = null,
                         noteTakenTime = documentId,
                         noteEditTime = null,
                         noteIndex = documentId,
-                        noteTags = null
+                        noteTags = null,
+                        noteHashTags = null,
+                        noteTranscribeTags = null
                     )
 
                     notesRoomDatabaseConfiguration
