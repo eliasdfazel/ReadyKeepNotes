@@ -186,13 +186,17 @@ class KeepNoteOverview : AppCompatActivity(),
                                 uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(),
                                 noteTile = overviewAdapter.notesDataStructureList[initialPosition].noteTile.toString(),
                                 noteTextContent = overviewAdapter.notesDataStructureList[initialPosition].noteTextContent.toString(),
-                                noteHandwritingPaintingPaths = null,
-                                noteHandwritingSnapshotLink = null,
-                                noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString()
-                                    .toLong(),
-                                noteEditTime = null,
+                                noteHandwritingPaintingPaths = overviewAdapter.notesDataStructureList[initialPosition].noteHandwritingPaintingPaths,
+                                noteHandwritingSnapshotLink = overviewAdapter.notesDataStructureList[initialPosition].noteHandwritingSnapshotLink,
+                                noteVoicePaths = overviewAdapter.notesDataStructureList[initialPosition].noteVoicePaths,
+                                noteImagePaths = overviewAdapter.notesDataStructureList[initialPosition].noteImagePaths,
+                                noteGifPaths = overviewAdapter.notesDataStructureList[initialPosition].noteGifPaths,
+                                noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString().toLong(),
+                                noteEditTime = overviewAdapter.notesDataStructureList[initialPosition].noteEditTime,
                                 noteIndex = newIndex,
-                                noteTags = null
+                                noteTags = overviewAdapter.notesDataStructureList[initialPosition].noteTags,
+                                noteHashTags = overviewAdapter.notesDataStructureList[initialPosition].noteHashTags,
+                                noteTranscribeTags = overviewAdapter.notesDataStructureList[initialPosition].noteTranscribeTags
                             )
                         )
 
@@ -201,13 +205,17 @@ class KeepNoteOverview : AppCompatActivity(),
                                 uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(),
                                 noteTile = overviewAdapter.notesDataStructureList[targetPosition].noteTile.toString(),
                                 noteTextContent = overviewAdapter.notesDataStructureList[targetPosition].noteTextContent.toString(),
-                                noteHandwritingPaintingPaths = null,
-                                noteHandwritingSnapshotLink = null,
-                                noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString()
-                                    .toLong(),
-                                noteEditTime = null,
+                                noteHandwritingPaintingPaths = overviewAdapter.notesDataStructureList[targetPosition].noteHandwritingPaintingPaths,
+                                noteHandwritingSnapshotLink = overviewAdapter.notesDataStructureList[targetPosition].noteHandwritingSnapshotLink,
+                                noteVoicePaths = overviewAdapter.notesDataStructureList[targetPosition].noteVoicePaths,
+                                noteImagePaths = overviewAdapter.notesDataStructureList[targetPosition].noteImagePaths,
+                                noteGifPaths = overviewAdapter.notesDataStructureList[targetPosition].noteGifPaths,
+                                noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString().toLong(),
+                                noteEditTime = overviewAdapter.notesDataStructureList[targetPosition].noteEditTime,
                                 noteIndex = oldIndex,
-                                noteTags = null
+                                noteTags = overviewAdapter.notesDataStructureList[targetPosition].noteTags,
+                                noteHashTags = overviewAdapter.notesDataStructureList[targetPosition].noteHashTags,
+                                noteTranscribeTags = overviewAdapter.notesDataStructureList[targetPosition].noteTranscribeTags
                             )
                         )
 

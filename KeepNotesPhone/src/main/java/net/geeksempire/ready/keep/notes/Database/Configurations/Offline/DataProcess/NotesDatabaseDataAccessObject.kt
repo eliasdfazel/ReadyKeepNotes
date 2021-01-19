@@ -28,6 +28,10 @@ interface NotesDatabaseDataAccessObject {
     suspend fun deleteNoteData(notesDatabaseModel: NotesDatabaseModel)
 
 
+    @Query("UPDATE NotesDatabase SET noteTile = :noteTitle, noteTextContent = :noteContent, noteHandwritingPaintingPaths = :handwritingPaths WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateTitleContentHandwriting(uniqueNoteId: Long, noteTitle: String, noteContent: String, handwritingPaths: String)
+
+
     @Query("UPDATE NotesDatabase SET noteTags = :allTags WHERE uniqueNoteId = :uniqueNoteId")
     suspend fun updateNoteTagsData(uniqueNoteId: Long, allTags: String)
 
@@ -53,7 +57,7 @@ interface NotesDatabaseDataAccessObject {
 
 
 
-    @Query("SELECT * FROM NotesDatabase WHERE noteTile LIKE :searchTerm OR noteTextContent LIKE :searchTerm ORDER BY noteIndex DESC")
+    @Query("SELECT * FROM NotesDatabase WHERE noteTile LIKE :searchTerm OR noteTextContent LIKE :searchTerm OR noteTags LIKE :searchTerm OR noteTranscribeTags LIKE :searchTerm ORDER BY noteIndex DESC")
     suspend fun searchAllNotesData(searchTerm: String) : List<NotesDatabaseModel>
 
 
