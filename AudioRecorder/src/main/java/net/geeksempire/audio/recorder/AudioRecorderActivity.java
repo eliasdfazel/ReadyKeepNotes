@@ -2,12 +2,11 @@ package net.geeksempire.audio.recorder;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,9 +54,11 @@ public class AudioRecorderActivity extends AppCompatActivity
     private GLAudioVisualizationView visualizerView;
     private TextView statusView;
     private TextView timerView;
-    private ImageButton restartView;
-    private ImageButton recordView;
-    private ImageButton playView;
+    private ImageView restartView;
+    private ImageView recordView;
+    private ImageView playView;
+
+    private ImageView doneView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,18 +84,7 @@ public class AudioRecorderActivity extends AppCompatActivity
         }
 
         if(keepDisplayOn){
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setElevation(0);
-            getSupportActionBar().setBackgroundDrawable(
-                    new ColorDrawable(Util.getDarkerColor(color)));
-            getSupportActionBar().setHomeAsUpIndicator(
-                    ContextCompat.getDrawable(this, R.drawable.aar_ic_clear));
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
         visualizerView = new GLAudioVisualizationView.Builder(this)
@@ -112,9 +102,11 @@ public class AudioRecorderActivity extends AppCompatActivity
         contentLayout = (RelativeLayout) findViewById(R.id.content);
         statusView = (TextView) findViewById(R.id.status);
         timerView = (TextView) findViewById(R.id.timer);
-        restartView = (ImageButton) findViewById(R.id.restart);
-        recordView = (ImageButton) findViewById(R.id.record);
-        playView = (ImageButton) findViewById(R.id.play);
+        restartView = (ImageView) findViewById(R.id.restart);
+        recordView = (ImageView) findViewById(R.id.record);
+        playView = (ImageView) findViewById(R.id.play);
+
+        doneView = (ImageView) findViewById(R.id.doneView);
 
         contentLayout.setBackgroundColor(Util.getDarkerColor(color));
         contentLayout.addView(visualizerView, 0);
@@ -132,6 +124,13 @@ public class AudioRecorderActivity extends AppCompatActivity
             recordView.setColorFilter(Color.BLACK);
             playView.setColorFilter(Color.BLACK);
         }
+
+        doneView.setOnClickListener(view -> {
+
+            selectAudio();
+
+        });
+
     }
 
     @Override
@@ -241,7 +240,7 @@ public class AudioRecorderActivity extends AppCompatActivity
                 visualizerHandler.stop();
             }
         }
-
+        doneView.setVisibility(View.INVISIBLE);
         statusView.setVisibility(View.INVISIBLE);
         restartView.setVisibility(View.INVISIBLE);
         playView.setVisibility(View.INVISIBLE);
@@ -253,7 +252,7 @@ public class AudioRecorderActivity extends AppCompatActivity
 
     private void resumeRecording() {
         isRecording = true;
-
+        doneView.setVisibility(View.INVISIBLE);
         statusView.setText(R.string.aar_recording);
         statusView.setVisibility(View.VISIBLE);
         restartView.setVisibility(View.INVISIBLE);
@@ -279,7 +278,7 @@ public class AudioRecorderActivity extends AppCompatActivity
     private void pauseRecording() {
         isRecording = false;
         if(!isFinishing()) {
-
+            doneView.setVisibility(View.VISIBLE);
         }
         statusView.setText(R.string.aar_paused);
         statusView.setVisibility(View.VISIBLE);

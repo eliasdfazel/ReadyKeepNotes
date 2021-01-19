@@ -10,9 +10,9 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="71dp"
         android:orientation="vertical">
 
         <TextView
@@ -37,17 +37,17 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/recordingActions"
         android:layout_width="match_parent"
         android:layout_height="@dimen/aar_footer_height"
         android:layout_alignParentBottom="true">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/restart"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/record"
-            android:layout_toLeftOf="@+id/record"
             android:layout_marginTop="50dp"
             android:padding="10dp"
             android:scaleType="fitCenter"
@@ -56,32 +56,40 @@
             android:visibility="invisible"
             style="@style/Widget.AppCompat.Button.Borderless"/>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/record"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerInParent="true"
-            android:layout_marginTop="50dp"
-            android:layout_margin="15dp"
+            android:layout_marginHorizontal="15dp"
             android:padding="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/aar_ic_rec"
             android:onClick="toggleRecording"
             style="@style/Widget.AppCompat.Button.Borderless"/>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/play"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/record"
-            android:layout_toRightOf="@+id/record"
             android:layout_marginTop="50dp"
             android:padding="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/aar_ic_play"
             android:onClick="togglePlaying"
             style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/doneView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@id/record"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="3dp"
+            android:src="@drawable/aar_ic_check"
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 
