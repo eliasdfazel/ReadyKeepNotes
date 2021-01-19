@@ -1,5 +1,6 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +58,9 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                 overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
                 overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
 
+                overviewViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+                overviewViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+
             }
             ThemeType.ThemeDark -> {
 
@@ -73,6 +77,9 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
                 overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
                 overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
+
+                overviewViewHolder.imageContentView.imageTintList = null
+                overviewViewHolder.audioContentView.imageTintList = null
 
             }
         }
@@ -112,6 +119,9 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                 overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
                 overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
 
+                overviewViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+                overviewViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+
             }
             ThemeType.ThemeDark -> {
 
@@ -128,6 +138,9 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
                 overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
                 overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
+
+                overviewViewHolder.imageContentView.imageTintList = null
+                overviewViewHolder.audioContentView.imageTintList = null
 
             }
         }
@@ -200,7 +213,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         if (notesDataStructureList[position].noteImageContent == null) {
 
-            overviewViewHolder.imageContentView.visibility = View.GONE
+            overviewViewHolder.imageContentView.visibility = View.VISIBLE
 
         } else {
 

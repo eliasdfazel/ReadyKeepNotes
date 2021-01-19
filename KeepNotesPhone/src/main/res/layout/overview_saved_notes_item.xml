@@ -75,8 +75,8 @@
         android:src="@drawable/vector_icon_image_picker"
         android:visibility="gone"
 
-        apps:layout_constraintBottom_toBottomOf="@id/contentTextView"
-        apps:layout_constraintEnd_toEndOf="@id/contentTextView"/>
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintEnd_toStartOf="@id/contentImageView"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/audioContentView"
@@ -87,7 +87,7 @@
         android:src="@drawable/vector_icon_voice_recorder"
         android:visibility="gone"
 
-        apps:layout_constraintBottom_toBottomOf="@id/contentTextView"
+        apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintEnd_toStartOf="@id/imageContentView"/>
 
     <net.geeksempire.loadingspin.SpinKitView
