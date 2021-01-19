@@ -87,7 +87,7 @@ class SearchProcess : AppCompatActivity() {
         lifecycleScope.launchWhenCreated {
 
             searchViewModel.prepareDataForSearch(
-                contentEncryption, firebaseUser.uid, notesRoomDatabaseConfiguration.prepareRead().getAllNotesData())
+                contentEncryption, firebaseUser.uid, notesRoomDatabaseConfiguration.prepareRead().getAllNotesRawData())
 
         }
 

@@ -130,7 +130,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 )
 
 
-                notesDatabaseDataAccessObject.insertNewNoteData(notesDatabaseModel)
+                notesDatabaseDataAccessObject.insertCompleteNewNoteData(notesDatabaseModel)
 
                 keepNoteApplication.firestoreDatabase
                     .collection(databaseEndpoints.paintPathsCollectionEndpoints(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + documentSnapshot.id))
@@ -355,35 +355,37 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     fileOutputStream.write(paintingIO.takeScreenshot(paintingCanvasView))
 
+                } else {
+
+                    with(File(context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString()))) {
+                        if (exists()) {
+                            delete()
+                        }
+                    }
+
                 }
 
                 if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
 
-                    val specificNoteData = notesRoomDatabaseConfiguration.prepareRead().getSpecificNoteData(documentId)!!
+                    val noteTile = if (contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                        null
+                    } else { contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().toString() }
+                    val noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
+                        null
+                    } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() }
 
-                    val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentId,
-                        noteTile = if (contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
-                            null
-                        } else { contentEncryption.encryptEncodedData(noteTitle.toString(), firebaseUser.uid)?.asList().toString() },
-                        noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
-                            null
-                        } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
-                        noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData),
-                        noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
-                        noteVoicePaths = specificNoteData.noteVoicePaths,
-                        noteImagePaths = specificNoteData.noteImagePaths,
-                        noteGifPaths = specificNoteData.noteGifPaths,
-                        noteTakenTime = documentId,
-                        noteEditTime = System.currentTimeMillis(),
-                        noteIndex = documentId,
-                        noteTags = specificNoteData.noteTags,
-                        noteHashTags = specificNoteData.noteHashTags,
-                        noteTranscribeTags = specificNoteData.noteTranscribeTags
-                    )
+                    val noteHandwritingPaintingPaths = jsonIO.writeAllPaintingPathData(paintingCanvasView.overallRedrawPaintingData)
+                    val noteHandwritingSnapshotLink = noteHandwritingSnapshotPath
+
+                    val noteEditTime = System.currentTimeMillis()
 
                     notesRoomDatabaseConfiguration
                         .prepareRead()
-                        .updateNoteData(notesDatabaseModel)
+                        .updateNoteData(uniqueNoteId = documentId,
+                            noteTitle = noteTile, noteTextContent = noteTextContent,
+                            noteHandwritingPaintingPaths = noteHandwritingPaintingPaths,
+                            noteHandwritingSnapshotLink = noteHandwritingSnapshotLink,
+                            noteEditTime = noteEditTime)
 
                 } else {
 
@@ -409,7 +411,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     notesRoomDatabaseConfiguration
                         .prepareRead()
-                        .insertNewNoteData(notesDatabaseModel)
+                        .insertCompleteNewNoteData(notesDatabaseModel)
 
                 }
 
@@ -517,7 +519,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     notesRoomDatabaseConfiguration
                         .prepareRead()
-                        .insertNewNoteData(notesDatabaseModel)
+                        .insertCompleteNewNoteData(notesDatabaseModel)
 
                     withContext(SupervisorJob() + Dispatchers.Main) {
 

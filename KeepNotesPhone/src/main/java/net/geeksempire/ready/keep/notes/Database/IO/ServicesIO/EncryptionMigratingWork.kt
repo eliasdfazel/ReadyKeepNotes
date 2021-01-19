@@ -50,7 +50,7 @@ class EncryptionMigratingWork(val appContext: Context, val workerParams: WorkerP
             val newTitle = noteTitle?.let { title -> contentEncryption.encryptEncodedData(title, newEncryptionPassword)?.asList().toString() }
             val newContent = noteTextContent?.let { content -> contentEncryption.encryptEncodedData(content, newEncryptionPassword)?.asList().toString() }
 
-            notesDatabaseDataAccessObject.updateNoteData(NotesDatabaseModel(
+            notesDatabaseDataAccessObject.updateCompleteNoteData(NotesDatabaseModel(
                 it.uniqueNoteId,
                 newTitle,
                 newContent,

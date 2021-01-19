@@ -41,7 +41,7 @@ class AudioIO (private val keepNoteApplication: KeepNoteApplication) {
                 noteTranscribeTags = null
             )
 
-            notesDatabaseDataAccessObject.insertNewNoteData(notesDatabaseModel)
+            notesDatabaseDataAccessObject.insertCompleteNewNoteData(notesDatabaseModel)
 
         } else {
 

@@ -17,19 +17,19 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseMode
 interface NotesDatabaseDataAccessObject {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNewNoteData(vararg arrayOfNotesDatabaseModels: NotesDatabaseModel)
+    suspend fun insertCompleteNewNoteData(vararg arrayOfNotesDatabaseModels: NotesDatabaseModel)
 
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateNoteData(vararg arrayOfNotesDatabaseModels: NotesDatabaseModel)
+    suspend fun updateCompleteNoteData(vararg arrayOfNotesDatabaseModels: NotesDatabaseModel)
 
 
     @Delete
     suspend fun deleteNoteData(notesDatabaseModel: NotesDatabaseModel)
 
 
-    @Query("UPDATE NotesDatabase SET noteTile = :noteTitle, noteTextContent = :noteTextContent, noteHandwritingPaintingPaths = :noteHandwritingPaintingPaths WHERE uniqueNoteId = :uniqueNoteId")
-    suspend fun updateTitleContentHandwriting(uniqueNoteId: Long, noteTitle: String, noteTextContent: String, noteHandwritingPaintingPaths: String)
+    @Query("UPDATE NotesDatabase SET noteTile = :noteTitle, noteTextContent = :noteTextContent, noteHandwritingPaintingPaths = :noteHandwritingPaintingPaths, noteEditTime = :noteEditTime, noteHandwritingSnapshotLink = :noteHandwritingSnapshotLink  WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateNoteData(uniqueNoteId: Long, noteTitle: String?, noteTextContent: String?, noteHandwritingSnapshotLink: String?, noteHandwritingPaintingPaths: String?, noteEditTime: Long)
 
 
     @Query("UPDATE NotesDatabase SET noteTags = :allTags WHERE uniqueNoteId = :uniqueNoteId")

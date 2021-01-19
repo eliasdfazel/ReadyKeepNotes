@@ -181,7 +181,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                         val notesDatabaseDataAccessObject = notesRoomDatabaseConfiguration.prepareRead()
 
-                        notesDatabaseDataAccessObject.updateNoteData(
+                        notesDatabaseDataAccessObject.updateCompleteNoteData(
                             NotesDatabaseModel(
                                 uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(),
                                 noteTile = overviewAdapter.notesDataStructureList[initialPosition].noteTile.toString(),
@@ -200,7 +200,7 @@ class KeepNoteOverview : AppCompatActivity(),
                             )
                         )
 
-                        notesDatabaseDataAccessObject.updateNoteData(
+                        notesDatabaseDataAccessObject.updateCompleteNoteData(
                             NotesDatabaseModel(
                                 uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(),
                                 noteTile = overviewAdapter.notesDataStructureList[targetPosition].noteTile.toString(),
