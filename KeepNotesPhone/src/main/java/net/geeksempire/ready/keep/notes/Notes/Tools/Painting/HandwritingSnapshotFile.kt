@@ -7,7 +7,7 @@ import java.io.File
  **/
 class HandwritingSnapshotFile (val baseDirectory: String) {
 
-    fun getHandwritingSnapshotDirectoryPath(firebaseUserId: String, uniqueDocumentId: String) : String {
+    fun getHandwritingSnapshotFilePath(firebaseUserId: String, uniqueDocumentId: String) : String {
 
         return baseDirectory +
                 File.separator +
@@ -18,7 +18,7 @@ class HandwritingSnapshotFile (val baseDirectory: String) {
                 uniqueDocumentId + ".PNG"
     }
 
-    fun getHandwritingSnapshotFilePath(firebaseUserId: String) : String {
+    fun getHandwritingSnapshotDirectoryPath(firebaseUserId: String) : String {
 
         return baseDirectory +
                 File.separator +

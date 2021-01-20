@@ -22,6 +22,7 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.EncryptionMigratingWork
+import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.RetrieveFiles
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -280,6 +281,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         notesRoomDatabaseConfiguration.closeDatabase()
 
+        RetrieveFiles.startProcess(context, context.externalMediaDirs[0].path)
+
     }
 
     /* Offline Database */
@@ -313,13 +316,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 if (paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
-                    noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())
+                    noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())
 
                     val noteHandwritingSnapshot = File(noteHandwritingSnapshotPath)
 
                     if (!noteHandwritingSnapshot.exists()) {
 
-                        File(context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid)).mkdirs()
+                        File(context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid)).mkdirs()
 
                         noteHandwritingSnapshot.createNewFile()
 
@@ -331,7 +334,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 } else {
 
-                    with(File(context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString()))) {
+                    with(File(context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString()))) {
                         if (exists()) {
                             delete()
                         }
@@ -586,7 +589,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 if (paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
-                    noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())
+                    noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())
 
                 }
 

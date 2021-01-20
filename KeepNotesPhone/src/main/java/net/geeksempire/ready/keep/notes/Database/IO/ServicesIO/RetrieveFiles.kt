@@ -1,6 +1,7 @@
 package net.geeksempire.ready.keep.notes.Database.IO.ServicesIO
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import com.google.firebase.auth.ktx.auth
@@ -10,6 +11,7 @@ import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoi
 import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotFile
+import java.io.File
 
 class RetrieveFiles : Service() {
 
@@ -17,6 +19,19 @@ class RetrieveFiles : Service() {
 
     companion object {
         const val BaseDirectory = "BaseDirectory"
+
+        /**
+         * @param baseDirectory = externalMediaDirs[0].path
+         **/
+        fun startProcess(context: Context,
+                         baseDirectory: String) {
+
+            context.startService(Intent(context, RetrieveFiles::class.java).apply {
+                putExtra(RetrieveFiles.BaseDirectory, baseDirectory)
+            })
+
+        }
+
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -36,31 +51,44 @@ class RetrieveFiles : Service() {
 
                     val handwritingSnapshotFile = HandwritingSnapshotFile(baseDirectory)
 
-                    val audioRecordingFile = AudioRecordingFile(baseDirectory)
-
-                    val imagingFile = ImagingFile(baseDirectory)
-
                     val firebaseStorage = Firebase.storage
 
                     firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid))
                         .listAll()
-                        .addOnSuccessListener {
+                        .addOnSuccessListener { listResult ->
 
+                            val noteHandwritingSnapshotFolder = File(handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(firebaseUser.uid))
 
+                            if (!noteHandwritingSnapshotFolder.exists()) {
+
+                                noteHandwritingSnapshotFolder.mkdirs()
+
+                            }
+
+                            listResult.items.forEach { storageReference ->
+
+                                storageReference
+                                    .getFile(File(handwritingSnapshotFile.getHandwritingSnapshotFilePath(firebaseUser.uid, storageReference.name)))
+
+                            }
 
                         }
+
+                    val audioRecordingFile = AudioRecordingFile(baseDirectory)
 
                     firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid))
                         .listAll()
-                        .addOnSuccessListener {
+                        .addOnSuccessListener { listResult ->
 
 
 
                         }
 
+                    val imagingFile = ImagingFile(baseDirectory)
+
                     firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid))
                         .listAll()
-                        .addOnSuccessListener {
+                        .addOnSuccessListener { listResult ->
 
 
 
