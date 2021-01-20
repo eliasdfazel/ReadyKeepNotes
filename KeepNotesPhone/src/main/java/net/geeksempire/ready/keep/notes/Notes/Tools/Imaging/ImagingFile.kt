@@ -13,6 +13,8 @@ class ImagingFile (val baseDirectory: String){
                 File.separator +
                 firebaseUserId +
                 File.separator +
+                "Notes" +
+                File.separator +
                 uniqueDocumentId +
                 File.separator +
                 "Imaging" +
@@ -24,6 +26,8 @@ class ImagingFile (val baseDirectory: String){
         return baseDirectory +
                 File.separator +
                 firebaseUserId +
+                "Notes" +
+                File.separator +
                 uniqueDocumentId +
                 File.separator +
                 File.separator +

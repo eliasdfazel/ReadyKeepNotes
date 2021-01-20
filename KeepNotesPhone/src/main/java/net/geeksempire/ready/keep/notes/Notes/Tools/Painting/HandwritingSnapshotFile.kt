@@ -14,6 +14,8 @@ class HandwritingSnapshotFile (val baseDirectory: String) {
                 File.separator +
                 firebaseUserId +
                 File.separator +
+                "Notes" +
+                File.separator +
                 uniqueDocumentId +
                 File.separator +
                 "HandwritingSnapshot" +
@@ -26,6 +28,8 @@ class HandwritingSnapshotFile (val baseDirectory: String) {
         return baseDirectory +
                 File.separator +
                 firebaseUserId +
+                File.separator +
+                "Notes" +
                 File.separator +
                 uniqueDocumentId +
                 File.separator +

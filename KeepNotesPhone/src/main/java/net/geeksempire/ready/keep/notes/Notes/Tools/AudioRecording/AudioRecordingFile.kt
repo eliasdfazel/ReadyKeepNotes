@@ -14,6 +14,8 @@ class AudioRecordingFile (val baseDirectory: String){
                 File.separator +
                 firebaseUserId +
                 File.separator +
+                "Notes" +
+                File.separator +
                 uniqueDocumentId +
                 File.separator +
                 "AudioRecording" +
@@ -25,6 +27,8 @@ class AudioRecordingFile (val baseDirectory: String){
         return baseDirectory +
                 File.separator +
                 firebaseUserId +
+                File.separator +
+                "Notes" +
                 File.separator +
                 uniqueDocumentId +
                 File.separator +
