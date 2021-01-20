@@ -12,19 +12,19 @@ class DatabaseEndpoints {
         return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes"
     }
 
-    fun handwritingSnapshotEndpoint(firebaseUserUniqueId: String) : String {
+    fun handwritingSnapshotEndpoint(firebaseUserUniqueId: String, uniqueDocumentId: String) : String {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/HandwritingSnapshot"
+        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/${uniqueDocumentId}/HandwritingSnapshot"
     }
 
-    fun voiceRecordingEndpoint(firebaseUserUniqueId: String) : String {
+    fun voiceRecordingEndpoint(firebaseUserUniqueId: String, uniqueDocumentId: String) : String {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/VoiceRecording"
+        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/${uniqueDocumentId}/VoiceRecording"
     }
 
-    fun imageEndpoint(firebaseUserUniqueId: String) : String {
+    fun imageEndpoint(firebaseUserUniqueId: String, uniqueDocumentId: String) : String {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/Image"
+        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/${uniqueDocumentId}/Image"
     }
 
     fun noteTextsEndpoints (generalEndpoints: String) : String {

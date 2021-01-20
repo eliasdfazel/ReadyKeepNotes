@@ -322,7 +322,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     if (!noteHandwritingSnapshot.exists()) {
 
-                        File(context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid)).mkdirs()
+                        File(context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())).mkdirs()
 
                         noteHandwritingSnapshot.createNewFile()
 

@@ -80,7 +80,20 @@ class RetrieveFiles : Service() {
                         .listAll()
                         .addOnSuccessListener { listResult ->
 
+                            val audioRecordingDirectoryPath = File(audioRecordingFile.getAudioRecordingDirectoryPath(firebaseUser.uid))
 
+                            if (!audioRecordingDirectoryPath.exists()) {
+
+                                audioRecordingDirectoryPath.mkdirs()
+
+                            }
+
+                            listResult.items.forEach { storageReference ->
+
+                                storageReference
+                                    .getFile(File(audioRecordingFile.getAudioRecordingFilePath(firebaseUser.uid, storageReference.name)))
+
+                            }
 
                         }
 
@@ -90,7 +103,20 @@ class RetrieveFiles : Service() {
                         .listAll()
                         .addOnSuccessListener { listResult ->
 
+                            val imagingDirectoryPath = File(imagingFile.getImagingDirectoryPath(firebaseUser.uid))
 
+                            if (!imagingDirectoryPath.exists()) {
+
+                                imagingDirectoryPath.mkdirs()
+
+                            }
+
+                            listResult.items.forEach { storageReference ->
+
+                                storageReference
+                                    .getFile(File(imagingFile.getImagingFilePath(firebaseUser.uid, storageReference.name)))
+
+                            }
 
                         }
 
