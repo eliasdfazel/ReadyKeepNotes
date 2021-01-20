@@ -516,9 +516,17 @@ class KeepNoteOverview : AppCompatActivity(),
 
         }
 
-//        startDatabaseOperation()
-
         Firebase.auth.currentUser?.let {
+
+            overviewLayoutBinding.notSynchronizing.visibility = View.VISIBLE
+            overviewLayoutBinding.notSynchronizing.playAnimation()
+
+            if (it.isAnonymous) {
+
+                overviewLayoutBinding.notSynchronizing.visibility = View.VISIBLE
+                overviewLayoutBinding.notSynchronizing.playAnimation()
+
+            }
 
             RemoteSubscriptions()
                 .subscribe(it.uid)

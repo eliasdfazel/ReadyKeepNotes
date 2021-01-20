@@ -33,12 +33,21 @@
             apps:layout_constraintEnd_toEndOf="parent" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="51dp"
+            android:id="@+id/notSynchronizing"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:padding="3dp"
+            android:visibility="invisible"
 
+            apps:lottie_rawRes="@raw/not_synchronizing"
+            apps:lottie_loop="true"
+            apps:lottie_repeatCount="3"
+            apps:lottie_repeatMode="restart"
+
+            apps:layout_constraintWidth_percent="0.09"
             apps:layout_constraintTop_toTopOf="@id/profileImageView"
             apps:layout_constraintBottom_toBottomOf="@id/profileImageView"
-            apps:layout_constraintEnd_toStartOf="@id/profileImageView"/>
+            apps:layout_constraintStart_toStartOf="@id/profileImageView"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/preferencesView"

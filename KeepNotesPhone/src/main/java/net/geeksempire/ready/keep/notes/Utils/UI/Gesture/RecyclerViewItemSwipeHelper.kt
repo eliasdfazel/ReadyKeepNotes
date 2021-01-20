@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
@@ -32,8 +31,7 @@ interface SwipeActions {
 abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview, private val swipeActions: SwipeActions) : ItemTouchHelper.SimpleCallback(
     ItemTouchHelper.UP
             or ItemTouchHelper.DOWN,
-    ItemTouchHelper.START
-            or ItemTouchHelper.END
+    ItemTouchHelper.END
 ) {
 
     private val selectedItemBackground = ContextCompat.getDrawable(context, R.drawable.round_corner_background)?.mutate()
@@ -109,17 +107,10 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
             if (dX < 0) {
-
-                if (!buttonsBuffer.containsKey(position)) {
-                    buttonsBuffer[position] = instantiateUnderlayButton(position)
-                }
-
-                val buttons = buttonsBuffer[position] ?: return
-                if (buttons.isEmpty()) return
-                maxDX = max(-buttons.intrinsicWidth(), dX)
-                drawButtons(canvas, buttons, itemView, maxDX)
+                //To Start
 
             } else if (dX > 0) {
+                //To End
 
                 if (!buttonsBuffer.containsKey(position)) {
                     buttonsBuffer[position] = instantiateUnderlayButton(position)
@@ -145,39 +136,10 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
         )
 
         if (dX > 0) {
-
-            selectedItemBackground?.let {
-
-                selectedItemBackground.setTint(context.getColor(R.color.default_color_game_light_transparent))
-                selectedItemBackground.setBounds(
-                    itemView.left,
-                    itemView.top,
-                    itemView.left + dX.toInt(),
-                    itemView.bottom
-                )
-
-                val rect = RectF(itemView.left.toFloat(), itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
-                val titleBounds = Rect()
-
-                val paint = Paint()
-
-                canvas.drawRoundRect(rect, DpToInteger(context, 5).toFloat(), DpToInteger(context, 3).toFloat(), paint)
-
-                paint.color = ContextCompat.getColor(context, R.color.lighter)
-                paint.textSize = 37f
-                paint.typeface = ResourcesCompat.getFont(context, R.font.houston_regular)
-                paint.textAlign = Paint.Align.LEFT
-
-                paint.getTextBounds(context.getString(R.string.deletedText), 0, context.getString(R.string.deletedText).length, titleBounds)
-
-                val x = (canvas.width / 2f) - titleBounds.centerX()
-                val y = rect.top + rect.height() / 2 + titleBounds.height() / 2 - titleBounds.bottom
-
-                canvas.drawText(context.getString(R.string.deletedText), x.toFloat(), y, paint)
-
-            }
+            //To Start
 
         } else if (dX < 0) {
+            //To End
 
             selectedItemBackground?.let {
 
