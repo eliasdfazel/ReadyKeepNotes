@@ -21,9 +21,31 @@ class RetrieveFiles : Service() {
 
         Firebase.auth.currentUser?.let { firebaseUser ->
 
-            Firebase.storage
-                .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid))
+            val firebaseStorage = Firebase.storage
+
+            firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid))
                 .listAll()
+                .addOnSuccessListener {
+
+
+
+                }
+
+            firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid))
+                .listAll()
+                .addOnSuccessListener {
+
+
+
+                }
+
+            firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid))
+                .listAll()
+                .addOnSuccessListener {
+
+
+
+                }
 
         }
 
