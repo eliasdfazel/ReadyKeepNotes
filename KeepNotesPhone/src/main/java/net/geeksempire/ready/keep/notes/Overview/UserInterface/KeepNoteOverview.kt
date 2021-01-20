@@ -28,7 +28,6 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
-import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.IO.DeletingProcess
 import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
@@ -181,43 +180,11 @@ class KeepNoteOverview : AppCompatActivity(),
 
                         val notesDatabaseDataAccessObject = notesRoomDatabaseConfiguration.prepareRead()
 
-                        notesDatabaseDataAccessObject.updateCompleteNoteData(
-                            NotesDatabaseModel(
-                                uniqueNoteId = overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(),
-                                noteTile = overviewAdapter.notesDataStructureList[initialPosition].noteTile.toString(),
-                                noteTextContent = overviewAdapter.notesDataStructureList[initialPosition].noteTextContent.toString(),
-                                noteHandwritingPaintingPaths = overviewAdapter.notesDataStructureList[initialPosition].noteHandwritingPaintingPaths,
-                                noteHandwritingSnapshotLink = overviewAdapter.notesDataStructureList[initialPosition].noteHandwritingSnapshotLink,
-                                noteVoicePaths = overviewAdapter.notesDataStructureList[initialPosition].noteVoicePaths,
-                                noteImagePaths = overviewAdapter.notesDataStructureList[initialPosition].noteImagePaths,
-                                noteGifPaths = overviewAdapter.notesDataStructureList[initialPosition].noteGifPaths,
-                                noteTakenTime = overviewAdapter.notesDataStructureList[initialPosition].noteTakenTime.toString().toLong(),
-                                noteEditTime = overviewAdapter.notesDataStructureList[initialPosition].noteEditTime,
-                                noteIndex = newIndex,
-                                noteTags = overviewAdapter.notesDataStructureList[initialPosition].noteTags,
-                                noteHashTags = overviewAdapter.notesDataStructureList[initialPosition].noteHashTags,
-                                noteTranscribeTags = overviewAdapter.notesDataStructureList[initialPosition].noteTranscribeTags
-                            )
-                        )
+                        notesDatabaseDataAccessObject
+                            .updateNoteIndex(overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(), newIndex)
 
-                        notesDatabaseDataAccessObject.updateCompleteNoteData(
-                            NotesDatabaseModel(
-                                uniqueNoteId = overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(),
-                                noteTile = overviewAdapter.notesDataStructureList[targetPosition].noteTile.toString(),
-                                noteTextContent = overviewAdapter.notesDataStructureList[targetPosition].noteTextContent.toString(),
-                                noteHandwritingPaintingPaths = overviewAdapter.notesDataStructureList[targetPosition].noteHandwritingPaintingPaths,
-                                noteHandwritingSnapshotLink = overviewAdapter.notesDataStructureList[targetPosition].noteHandwritingSnapshotLink,
-                                noteVoicePaths = overviewAdapter.notesDataStructureList[targetPosition].noteVoicePaths,
-                                noteImagePaths = overviewAdapter.notesDataStructureList[targetPosition].noteImagePaths,
-                                noteGifPaths = overviewAdapter.notesDataStructureList[targetPosition].noteGifPaths,
-                                noteTakenTime = overviewAdapter.notesDataStructureList[targetPosition].noteTakenTime.toString().toLong(),
-                                noteEditTime = overviewAdapter.notesDataStructureList[targetPosition].noteEditTime,
-                                noteIndex = oldIndex,
-                                noteTags = overviewAdapter.notesDataStructureList[targetPosition].noteTags,
-                                noteHashTags = overviewAdapter.notesDataStructureList[targetPosition].noteHashTags,
-                                noteTranscribeTags = overviewAdapter.notesDataStructureList[targetPosition].noteTranscribeTags
-                            )
-                        )
+                        notesDatabaseDataAccessObject
+                            .updateNoteIndex(overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(), oldIndex)
 
                         overviewAdapter.rearrangeItemsData(initialPosition, targetPosition)
 

@@ -32,6 +32,10 @@ interface NotesDatabaseDataAccessObject {
     suspend fun updateNoteData(uniqueNoteId: Long, noteTitle: String?, noteTextContent: String?, noteHandwritingSnapshotLink: String?, noteHandwritingPaintingPaths: String?, noteEditTime: Long)
 
 
+    @Query("UPDATE NotesDatabase SET noteIndex = :noteIndex WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateNoteIndex(uniqueNoteId: Long, noteIndex: Long)
+
+
     @Query("UPDATE NotesDatabase SET noteTags = :allTags WHERE uniqueNoteId = :uniqueNoteId")
     suspend fun updateNoteTagsData(uniqueNoteId: Long, allTags: String)
 

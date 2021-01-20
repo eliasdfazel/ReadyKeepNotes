@@ -31,7 +31,7 @@ interface SwipeActions {
 abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview, private val swipeActions: SwipeActions) : ItemTouchHelper.SimpleCallback(
     ItemTouchHelper.UP
             or ItemTouchHelper.DOWN,
-    ItemTouchHelper.END
+    ItemTouchHelper.START
 ) {
 
     private val selectedItemBackground = ContextCompat.getDrawable(context, R.drawable.round_corner_background)?.mutate()
@@ -109,9 +109,6 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
             if (dX < 0) {
                 //To Start
 
-            } else if (dX > 0) {
-                //To End
-
                 if (!buttonsBuffer.containsKey(position)) {
                     buttonsBuffer[position] = instantiateUnderlayButton(position)
                 }
@@ -120,6 +117,9 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
                 if (buttons.isEmpty()) return
                 maxDX = max(-buttons.intrinsicWidth(), dX)
                 drawButtons(canvas, buttons, itemView, maxDX)
+
+            } else if (dX > 0) {
+                //To End
 
             }
 
