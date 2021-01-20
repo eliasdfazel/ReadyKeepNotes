@@ -1,6 +1,9 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Extensions
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -107,7 +110,16 @@ fun KeepNoteOverview.startNetworkOperation() {
 
     Firebase.auth.currentUser?.let {
 
-        //
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            if (it.isAnonymous) {
+
+                overviewLayoutBinding.notSynchronizing.visibility = View.VISIBLE
+                overviewLayoutBinding.notSynchronizing.playAnimation()
+
+            }
+
+        }, 555)
 
     }
 
