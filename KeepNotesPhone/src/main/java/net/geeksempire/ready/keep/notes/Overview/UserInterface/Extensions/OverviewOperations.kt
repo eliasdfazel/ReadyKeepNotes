@@ -108,11 +108,11 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
 fun KeepNoteOverview.startNetworkOperation() {
 
-    Firebase.auth.currentUser?.let {
+    Firebase.auth.currentUser?.let { firebaseUser ->
 
         Handler(Looper.getMainLooper()).postDelayed({
 
-            if (it.isAnonymous) {
+            if (firebaseUser.email.isNullOrBlank()) {
 
                 overviewLayoutBinding.notSynchronizing.visibility = View.VISIBLE
                 overviewLayoutBinding.notSynchronizing.playAnimation()

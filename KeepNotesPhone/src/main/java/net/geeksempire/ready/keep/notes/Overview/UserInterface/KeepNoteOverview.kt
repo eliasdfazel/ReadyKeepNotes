@@ -485,9 +485,6 @@ class KeepNoteOverview : AppCompatActivity(),
 
         Firebase.auth.currentUser?.let {
 
-            overviewLayoutBinding.notSynchronizing.visibility = View.VISIBLE
-            overviewLayoutBinding.notSynchronizing.playAnimation()
-
             RemoteSubscriptions()
                 .subscribe(it.uid)
 
