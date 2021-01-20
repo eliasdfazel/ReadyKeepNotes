@@ -7,10 +7,17 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
+import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingFile
+import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingFile
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotFile
 
 class RetrieveFiles : Service() {
 
     private val databaseEndpoints = DatabaseEndpoints()
+
+    companion object {
+        const val BaseDirectory = "BaseDirectory"
+    }
 
     override fun onBind(intent: Intent?): IBinder? {
 
@@ -21,31 +28,47 @@ class RetrieveFiles : Service() {
 
         Firebase.auth.currentUser?.let { firebaseUser ->
 
-            val firebaseStorage = Firebase.storage
+            intent?.let { inputData ->
 
-            firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid))
-                .listAll()
-                .addOnSuccessListener {
+                if (inputData.hasExtra(RetrieveFiles.BaseDirectory)) {
+
+                    val baseDirectory: String = inputData.getStringExtra(RetrieveFiles.BaseDirectory)!!
+
+                    val handwritingSnapshotFile = HandwritingSnapshotFile(baseDirectory)
+
+                    val audioRecordingFile = AudioRecordingFile(baseDirectory)
+
+                    val imagingFile = ImagingFile(baseDirectory)
+
+                    val firebaseStorage = Firebase.storage
+
+                    firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid))
+                        .listAll()
+                        .addOnSuccessListener {
 
 
+
+                        }
+
+                    firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid))
+                        .listAll()
+                        .addOnSuccessListener {
+
+
+
+                        }
+
+                    firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid))
+                        .listAll()
+                        .addOnSuccessListener {
+
+
+
+                        }
 
                 }
 
-            firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid))
-                .listAll()
-                .addOnSuccessListener {
-
-
-
-                }
-
-            firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid))
-                .listAll()
-                .addOnSuccessListener {
-
-
-
-                }
+            }
 
         }
 

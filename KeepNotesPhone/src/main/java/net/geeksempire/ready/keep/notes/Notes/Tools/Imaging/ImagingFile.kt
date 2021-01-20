@@ -1,34 +1,34 @@
-package net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording
+package net.geeksempire.ready.keep.notes.Notes.Tools.Imaging
 
 import java.io.File
 
 /**
  * @param baseDirectory = activity.externalMediaDirs[0].path
  **/
-class AudioRecordingFile (val baseDirectory: String){
+class ImagingFile (val baseDirectory: String){
 
-    fun getAudioRecordingDirectoryPath(firebaseUserId: String, uniqueDocumentId: String) : String {
+    fun getImagingDirectoryPath(firebaseUserId: String, uniqueDocumentId: String) : String {
 
         return baseDirectory +
                 File.separator +
                 firebaseUserId +
                 File.separator +
-                "AudioRecording" +
+                "Imaging" +
                 File.separator +
                 uniqueDocumentId +
                 File.separator
     }
 
-    fun getAudioRecordingFilePath(firebaseUserId: String, uniqueDocumentId: String, audioFileId: String) : String {
+    fun getImagingFilePath(firebaseUserId: String, uniqueDocumentId: String, audioFileId: String) : String {
 
         return baseDirectory +
                 File.separator +
                 firebaseUserId +
                 File.separator +
-                "AudioRecording" +
+                "Imaging" +
                 File.separator +
                 uniqueDocumentId +
                 File.separator +
-                audioFileId + ".MP3"
+                audioFileId + ".JPEG"
     }
 }

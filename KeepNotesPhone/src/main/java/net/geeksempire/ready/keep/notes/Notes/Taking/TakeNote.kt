@@ -104,11 +104,11 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     val databaseEndpoints: DatabaseEndpoints = DatabaseEndpoints()
 
     val handwritingSnapshotFile: HandwritingSnapshotFile by lazy {
-        HandwritingSnapshotFile(this@TakeNote)
+        HandwritingSnapshotFile(this@TakeNote.externalMediaDirs[0].path)
     }
 
     val audioRecordingFile: AudioRecordingFile by lazy {
-        AudioRecordingFile(this@TakeNote)
+        AudioRecordingFile(this@TakeNote.externalMediaDirs[0].path)
     }
 
     val recentColorsAdapter: RecentColorsAdapter by lazy {

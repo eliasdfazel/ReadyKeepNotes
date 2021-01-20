@@ -1,13 +1,15 @@
 package net.geeksempire.ready.keep.notes.Notes.Tools.Painting
 
-import androidx.appcompat.app.AppCompatActivity
 import java.io.File
 
-class HandwritingSnapshotFile (val context: AppCompatActivity) {
+/**
+ * @param baseDirectory = activity.externalMediaDirs[0].path
+ **/
+class HandwritingSnapshotFile (val baseDirectory: String) {
 
     fun getHandwritingSnapshotDirectoryPath(firebaseUserId: String, uniqueDocumentId: String) : String {
 
-        return context.externalMediaDirs[0].path +
+        return baseDirectory +
                 File.separator +
                 firebaseUserId +
                 File.separator +
@@ -18,7 +20,7 @@ class HandwritingSnapshotFile (val context: AppCompatActivity) {
 
     fun getHandwritingSnapshotFilePath(firebaseUserId: String) : String {
 
-        return context.externalMediaDirs[0].path +
+        return baseDirectory +
                 File.separator +
                 firebaseUserId +
                 File.separator +
