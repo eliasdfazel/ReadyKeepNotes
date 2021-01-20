@@ -186,7 +186,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     uniqueNoteId = uniqueNoteId,
                     noteTile = noteTitle,
                     noteTextContent = noteTextContent,
-                    noteHandwritingSnapshotLink = null,
+                    noteHandwritingSnapshotLink = noteHandwritingSnapshotLink,
                     noteTakenTime = Timestamp((noteTakenTime / 1000), 0),
                     noteEditTime = Timestamp((noteEditTime / 1000), 0),
                     noteIndex = noteIndex
@@ -608,6 +608,14 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                 val noteTitle = takeNoteLayoutBinding.editTextTitleView.text?:""
                 val contentText = takeNoteLayoutBinding.editTextContentView.text?:""
 
+                var noteHandwritingSnapshotPath: String? = null
+
+                if (paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
+
+                    noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())
+
+                }
+
                 val notesDataStructure = if (context.intent.getBooleanExtra(TakeNote.NoteConfigurations.UpdateExistingNote, false)) {
 
                     NotesDataStructure(
@@ -618,7 +626,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
                             ""
                         } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
-                        noteHandwritingSnapshotLink = null,
+                        noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
                         noteEditTime = Timestamp.now(),
                         noteIndex = documentId
                     )
@@ -633,7 +641,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         noteTextContent = if (contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().isNullOrEmpty()) {
                             ""
                         } else { contentEncryption.encryptEncodedData(contentText.toString(), firebaseUser.uid)?.asList().toString() },
-                        noteHandwritingSnapshotLink = null,
+                        noteHandwritingSnapshotLink = noteHandwritingSnapshotPath,
                         noteIndex = documentId
                     )
 
