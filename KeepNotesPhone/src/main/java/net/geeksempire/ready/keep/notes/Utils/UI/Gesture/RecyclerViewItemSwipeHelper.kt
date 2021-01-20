@@ -107,7 +107,9 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
         val itemView = viewHolder.itemView
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+
             if (dX < 0) {
+
                 if (!buttonsBuffer.containsKey(position)) {
                     buttonsBuffer[position] = instantiateUnderlayButton(position)
                 }
@@ -116,7 +118,20 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
                 if (buttons.isEmpty()) return
                 maxDX = max(-buttons.intrinsicWidth(), dX)
                 drawButtons(canvas, buttons, itemView, maxDX)
+
+            } else if (dX > 0) {
+
+                if (!buttonsBuffer.containsKey(position)) {
+                    buttonsBuffer[position] = instantiateUnderlayButton(position)
+                }
+
+                val buttons = buttonsBuffer[position] ?: return
+                if (buttons.isEmpty()) return
+                maxDX = max(-buttons.intrinsicWidth(), dX)
+                drawButtons(canvas, buttons, itemView, maxDX)
+
             }
+
         }
 
         super.onChildDraw(
@@ -146,7 +161,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
 
                 val paint = Paint()
 
-                canvas.drawRoundRect(rect, DpToInteger(context, 5).toFloat(), DpToInteger(context, 5).toFloat(), paint)
+                canvas.drawRoundRect(rect, DpToInteger(context, 5).toFloat(), DpToInteger(context, 3).toFloat(), paint)
 
                 paint.color = ContextCompat.getColor(context, R.color.lighter)
                 paint.textSize = 37f

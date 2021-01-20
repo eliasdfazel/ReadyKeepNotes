@@ -4,13 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import net.geeksempire.ready.keep.notes.Database.Configurations.Offline.DataProcess.NotesDatabaseDataAccessObject
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 
-@Database(entities = [NotesDatabaseModel::class], version = 10001, exportSchema = true)
+@Database(entities = [NotesDatabaseModel::class], version = 10000, exportSchema = true)
 abstract class NotesRoomDatabaseInterface : RoomDatabase() {
     abstract fun initializeDataAccessObject(): NotesDatabaseDataAccessObject
 }
@@ -21,7 +20,7 @@ class NotesRoomDatabaseConfiguration (private val context: Context) {
 
     private fun initialize() : RoomDatabase.Builder<NotesRoomDatabaseInterface> {
 
-        val databaseMigration = object : Migration(10000, 10001) {
+        /*val databaseMigration = object : Migration(10000, 10001) {
 
             override fun migrate(sqLiteDatabase: SupportSQLiteDatabase) {
 
@@ -30,7 +29,7 @@ class NotesRoomDatabaseConfiguration (private val context: Context) {
 
             }
 
-        }
+        }*/
 
         return Room.databaseBuilder(context, NotesRoomDatabaseInterface::class.java, NotesDatabase)
             .addCallback(object : RoomDatabase.Callback() {
@@ -44,7 +43,7 @@ class NotesRoomDatabaseConfiguration (private val context: Context) {
                 }
 
             })
-            .addMigrations(databaseMigration)
+            //.addMigrations(databaseMigration)
 
     }
 

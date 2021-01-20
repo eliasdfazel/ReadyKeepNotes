@@ -32,6 +32,14 @@
             apps:layout_constraintBottom_toBottomOf="parent"
             apps:layout_constraintEnd_toEndOf="parent" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="51dp"
+            android:layout_height="match_parent"
+
+            apps:layout_constraintTop_toTopOf="@id/profileImageView"
+            apps:layout_constraintBottom_toBottomOf="@id/profileImageView"
+            apps:layout_constraintEnd_toStartOf="@id/profileImageView"/>
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/preferencesView"
             android:layout_width="0dp"
