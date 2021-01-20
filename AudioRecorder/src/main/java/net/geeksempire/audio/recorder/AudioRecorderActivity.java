@@ -87,6 +87,16 @@ public class AudioRecorderActivity extends AppCompatActivity
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
+        if (color == getColor(R.color.default_color_bright)) {
+
+            ((ImageView) findViewById(R.id.brandView)).setImageDrawable(getDrawable(R.drawable.vector_brand_icon));
+
+        } else if (color == getColor(R.color.default_color_dark)) {
+
+            ((ImageView) findViewById(R.id.brandView)).setImageDrawable(getDrawable(R.drawable.vector_brand_icon_light));
+
+        }
+
         visualizerView = new GLAudioVisualizationView.Builder(this)
                 .setLayersCount(1)
                 .setWavesCount(6)

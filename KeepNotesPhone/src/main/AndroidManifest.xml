@@ -147,6 +147,10 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".Database.IO.ServicesIO.RetrieveFiles" />
+
+        <service android:name=".Database.IO.ServicesIO.TransferFiles" />
+
         <service
             android:name=".Utils.RemoteTasks.Notifications.RemoteNotificationHandler">
             <intent-filter>

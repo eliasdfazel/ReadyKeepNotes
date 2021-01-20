@@ -211,32 +211,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                                 .addOnSuccessListener { uploadTaskSnapshot ->
                                     Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
 
-                                    (keepNoteApplication).firebaseStorage
-                                        .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid) + "/${uniqueNoteId}.PNG")
-                                        .downloadUrl
-                                        .addOnSuccessListener { downloadUrl ->
-
-                                            (keepNoteApplication).firestoreDatabase
-                                                .document(databaseEndpoints.generalEndpoints(firebaseUser.uid) + "/" + uniqueNoteId)
-                                                .update(
-                                                    "noteHandwritingSnapshotLink", downloadUrl.toString(),
-                                                ).addOnSuccessListener {
-                                                    Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Saved Successfully")
-
-
-
-                                                }.addOnFailureListener {
-                                                    Log.d(this@NotesIO.javaClass.simpleName, "Paint Link Did Not Saved")
-
-
-                                                }
-
-                                        }.addOnFailureListener {
-
-
-
-                                        }
-
                                     if (noteTextContent.isNotBlank()
                                         || noteTextContent != "No Content") {
 

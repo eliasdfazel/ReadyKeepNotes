@@ -16,6 +16,8 @@
     <string name="signInText">Sign In</string>
     <string name="anonymouslySignInError">Error Setting Up Your Account ⚠</string>
 
+    <string name="settingUpText">Setting Up…</string>
+
     <string name="retryText">Retry</string>
 
     <string name="titleHintText">Title Undefined</string>
