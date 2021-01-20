@@ -23,7 +23,7 @@ import java.net.URL
 import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
 
-class WorkBackgroundProcess(appContext: Context, val workerParams: WorkerParameters) : CoroutineWorker(appContext, workerParams) {
+class ContentContextProcess(appContext: Context, val workerParams: WorkerParameters) : CoroutineWorker(appContext, workerParams) {
 
     private val databaseEndpoints = DatabaseEndpoints()
 

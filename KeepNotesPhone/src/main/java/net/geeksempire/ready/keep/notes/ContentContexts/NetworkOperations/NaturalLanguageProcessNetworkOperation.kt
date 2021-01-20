@@ -17,7 +17,7 @@ class NaturalLanguageProcessNetworkOperation(private val context: AppCompatActiv
 
     fun start(firebaseUserId: String, documentId: String, textContent: String) = CoroutineScope(Dispatchers.IO).async {
 
-        val workRequest = OneTimeWorkRequestBuilder<WorkBackgroundProcess>()
+        val workRequest = OneTimeWorkRequestBuilder<ContentContextProcess>()
             .setInputData(
                 workDataOf(
                     "Request_Body" to requestBodyTextRazor(TextRazorParameters.ExtractorsEntities, textContent).toByteArray(Charset.defaultCharset()),
