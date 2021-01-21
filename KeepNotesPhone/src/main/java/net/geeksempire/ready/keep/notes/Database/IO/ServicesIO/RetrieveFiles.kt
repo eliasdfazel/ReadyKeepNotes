@@ -8,9 +8,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
+import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingLocalFile
+import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingLocalFile
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotLocalFile
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.Extensions.println
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.NotificationBuilder
+import java.io.File
 
 class RetrieveFiles : Service() {
 
@@ -69,26 +72,37 @@ class RetrieveFiles : Service() {
 
                     val baseDirectory: String = inputData.getStringExtra(RetrieveFiles.BaseDirectory)!!
 
+                    val handwritingSnapshotLocalFile = HandwritingSnapshotLocalFile(baseDirectory)
+
+                    val audioRecordingFile = AudioRecordingLocalFile(baseDirectory)
+
+                    val imagingFile = ImagingLocalFile(baseDirectory)
+
                     firebaseStorage.getReference(databaseEndpoints.generalEndpoints(firebaseUser.uid))
                         .listAll()
                         .addOnSuccessListener { allNotesReference ->
 
+                            // All Directories -> Document Unique Identifier
                             allNotesReference.prefixes.forEach { aNoteReference ->
 
-                                aNoteReference
-                                    .listAll()
-                                    .addOnSuccessListener { allFolders ->
+                                val uniqueDocumentId = aNoteReference.name
 
-                                        // Get Handwriting Snapshot File
-                                        // Get Audio Recording Files
-                                        // Get Images Files
+                                // Get Handwriting Snapshot
+                                val handwritingSnapshotDirectoryPath = File(handwritingSnapshotLocalFile.getHandwritingSnapshotDirectoryPath(firebaseUser.uid, uniqueDocumentId))
 
-                                        allFolders.prefixes.forEach { aFolder ->
+                                if (!handwritingSnapshotDirectoryPath.exists()) {
 
-                                            aFolder.name.println()
+                                    handwritingSnapshotDirectoryPath.mkdirs()
 
+                                }
 
-                                        }
+                                firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("$uniqueDocumentId.PNG"))
+                                    .getFile(File(handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(firebaseUserId = firebaseUser.uid, uniqueDocumentId)))
+                                    .addOnCompleteListener {
+
+                                        // Get Audio Recording
+
+                                        // Get Imaging
 
                                     }
 
