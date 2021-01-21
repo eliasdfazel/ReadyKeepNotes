@@ -45,6 +45,7 @@
         android:textColorHint="@color/default_color_game_transparent"
         android:fontFamily="monospace"
         android:cursorVisible="true"
+        android:textCursorDrawable="@android:color/transparent"
         android:focusable="true"
         android:background="@android:color/transparent"
 
