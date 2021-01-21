@@ -42,13 +42,13 @@ class TransferFiles : Service() {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
                 context.startForegroundService(Intent(context, TransferFiles::class.java).apply {
-                    putExtra(RetrieveFiles.BaseDirectory, baseDirectory)
+                    putExtra(TransferFiles.BaseDirectory, baseDirectory)
                 })
 
             } else {
 
-                context.startService(Intent(context, RetrieveFiles::class.java).apply {
-                    putExtra(RetrieveFiles.BaseDirectory, baseDirectory)
+                context.startService(Intent(context, TransferFiles::class.java).apply {
+                    putExtra(TransferFiles.BaseDirectory, baseDirectory)
                 })
 
             }
@@ -68,16 +68,16 @@ class TransferFiles : Service() {
 
             intent?.let { inputData ->
 
-                if (inputData.hasExtra(RetrieveFiles.BaseDirectory)) {
+                if (inputData.hasExtra(TransferFiles.BaseDirectory)) {
 
-                    startForeground(RetrieveFiles.Foreground.NotificationId,
+                    startForeground(TransferFiles.Foreground.NotificationId,
                         NotificationBuilder(applicationContext)
                             .create(notificationId = TransferFiles.Foreground.NotificationId, notificationChannelId = this@TransferFiles.javaClass.simpleName,
                                 notificationTitle = getString(R.string.applicationName), notificationContent = getString(R.string.transferFilesText)))
 
                     val firebaseStorage = Firebase.storage
 
-                    val baseDirectory: String = inputData.getStringExtra(RetrieveFiles.BaseDirectory)!!
+                    val baseDirectory: String = inputData.getStringExtra(TransferFiles.BaseDirectory)!!
 
                     val handwritingSnapshotLocalFile = HandwritingSnapshotLocalFile(baseDirectory)
 

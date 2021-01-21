@@ -23,6 +23,7 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructur
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.EncryptionMigratingWork
 import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.RetrieveFiles
+import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.TransferFiles
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
@@ -280,6 +281,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
             }
 
         notesRoomDatabaseConfiguration.closeDatabase()
+
+        TransferFiles.startProcess(context, context.externalMediaDirs[0].path)
 
     }
 
