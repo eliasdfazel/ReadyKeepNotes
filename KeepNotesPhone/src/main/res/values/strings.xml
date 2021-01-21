@@ -20,6 +20,9 @@
 
     <string name="retryText">Retry</string>
 
+    <string name="retrievingFilesText">Retrieving Files Securely From Cloud ☁</string>
+    <string name="transferFilesText">Transfer Files Securely To Cloud ☁</string>
+
     <string name="titleHintText">Title Undefined</string>
     <string name="contentHintText">Type Here…</string>
     <string name="pickColor">Pick</string>

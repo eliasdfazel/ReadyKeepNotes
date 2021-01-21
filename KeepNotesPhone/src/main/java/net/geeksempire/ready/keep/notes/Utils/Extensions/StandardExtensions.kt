@@ -9,9 +9,9 @@ fun Any?.nullCheckpoint() : String {
     }
 }
 
-fun Any.print() : Any {
+fun Any.println() : Any {
 
-    println("*** " + this@print + " ***")
+    println("*** " + this@println + " ***")
 
-    return this@print
+    return this@println
 }

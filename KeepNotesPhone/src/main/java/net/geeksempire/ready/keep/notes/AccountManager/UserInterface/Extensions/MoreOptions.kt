@@ -97,7 +97,7 @@ class MoreOptions(private val context: AccountInformation) {
                                                 Log.d(this@MoreOptions.javaClass.simpleName, "Storage Deleted")
 
                                                 (context.application as KeepNoteApplication).firestoreDatabase
-                                                    .document(DatabaseEndpoints().baseEndpoints(firebaseUser.uid))
+                                                    .document(DatabaseEndpoints().userDatabaseEndpoints(firebaseUser.uid))
                                                     .delete()
                                                     .addOnCompleteListener {
                                                         Log.d(this@MoreOptions.javaClass.simpleName, "Database Deleted")

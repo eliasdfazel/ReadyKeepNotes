@@ -7,16 +7,18 @@ import android.app.Service
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.EncryptionMigratingWork
 import net.geeksempire.ready.keep.notes.R
 
 class NotificationBuilder (val context: Context) {
 
     private val notificationManager = context.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
 
-    fun create(notificationTitle: String?, notificationContent: String?, notificationContentDone: String?, notificationColor: Int = context.getColor(R.color.default_color), notificationDone: Boolean = false) : Notification{
+    fun create(notificationChannelId: String = this@NotificationBuilder.javaClass.simpleName, notificationId: Int = 666,
+               notificationTitle: String?, notificationContent: String?, notificationContentDone: String? = null,
+               notificationColor: Int = context.getColor(R.color.default_color),
+               notificationDone: Boolean = false) : Notification{
 
-        val notificationBuilder = NotificationCompat.Builder(context, this@NotificationBuilder.javaClass.simpleName)
+        val notificationBuilder = NotificationCompat.Builder(context, notificationChannelId)
         notificationBuilder.setContentTitle(notificationTitle?:context.getString(R.string.applicationName))
         notificationBuilder.setContentText(notificationContent?:context.getString(R.string.settingUpText))
         notificationBuilder.setSmallIcon(R.drawable.ic_notification)
@@ -29,16 +31,16 @@ class NotificationBuilder (val context: Context) {
             notificationBuilder.setAutoCancel(true)
             notificationBuilder.setOngoing(false)
 
-            notificationManager.notify(EncryptionMigratingWork.Foreground.NotificationId, notificationBuilder.build())
+            notificationManager.notify(notificationId, notificationBuilder.build())
 
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            notificationBuilder.setChannelId(context.packageName)
+            notificationBuilder.setChannelId(notificationChannelId)
 
             val notificationChannel = NotificationChannel(
-                context.packageName,
+                notificationChannelId,
                 context.getString(R.string.applicationName),
                 NotificationManager.IMPORTANCE_HIGH)
 
