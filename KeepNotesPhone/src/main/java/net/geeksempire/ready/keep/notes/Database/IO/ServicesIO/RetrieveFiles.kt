@@ -96,9 +96,11 @@ class RetrieveFiles : Service() {
 
                                 }
 
-                                firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("$uniqueDocumentId.PNG"))
-                                    .getFile(File(handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(firebaseUserId = firebaseUser.uid, uniqueDocumentId)))
+                                firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
+                                    .getFile(File(handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(firebaseUser.uid, uniqueDocumentId)))
                                     .addOnCompleteListener {
+
+
 
                                         // Get Audio Recording
 
