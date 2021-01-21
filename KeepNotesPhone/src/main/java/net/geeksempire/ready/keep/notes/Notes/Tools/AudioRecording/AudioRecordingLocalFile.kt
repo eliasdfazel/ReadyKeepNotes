@@ -6,7 +6,7 @@ import java.io.File
  * SdcardDirectory/Uid/DocumentId/AudioRecording
  * @param baseDirectory = activity.externalMediaDirs[0].path
  **/
-class AudioRecordingFile (val baseDirectory: String){
+class AudioRecordingLocalFile (val baseDirectory: String){
 
     fun getAudioRecordingDirectoryPath(firebaseUserId: String, uniqueDocumentId: String) : String {
 

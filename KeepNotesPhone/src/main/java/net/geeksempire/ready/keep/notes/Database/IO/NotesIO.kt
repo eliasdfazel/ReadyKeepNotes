@@ -207,7 +207,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         if (handwritingSnapshot.exists()) {
 
                             (keepNoteApplication).firebaseStorage
-                                .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid) + "/${uniqueNoteId}.PNG")
+                                .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, uniqueNoteId.toString()) + "/${uniqueNoteId}.PNG")
                                 .putBytes(handwritingSnapshot.readBytes())
                                 .addOnSuccessListener { uploadTaskSnapshot ->
                                     Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")
@@ -316,13 +316,13 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 if (paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
-                    noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())
+                    noteHandwritingSnapshotPath = context.handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())
 
                     val noteHandwritingSnapshot = File(noteHandwritingSnapshotPath)
 
                     if (!noteHandwritingSnapshot.exists()) {
 
-                        File(context.handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())).mkdirs()
+                        File(context.handwritingSnapshotLocalFile.getHandwritingSnapshotDirectoryPath(it.uid, documentId.toString())).mkdirs()
 
                         noteHandwritingSnapshot.createNewFile()
 
@@ -334,7 +334,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 } else {
 
-                    with(File(context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString()))) {
+                    with(File(context.handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString()))) {
                         if (exists()) {
                             delete()
                         }
@@ -589,7 +589,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 if (paintingCanvasView.overallRedrawPaintingData.isNotEmpty()) {
 
-                    noteHandwritingSnapshotPath = context.handwritingSnapshotFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())
+                    noteHandwritingSnapshotPath = context.handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(it.uid, documentId.toString())
 
                 }
 
@@ -634,7 +634,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                         Log.d(this@NotesIO.javaClass.simpleName, "Note Saved Successfully")
 
                         (keepNoteApplication).firebaseStorage
-                            .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid) + "/${documentId}.PNG")
+                            .getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, documentId.toString()) + "/${documentId}.PNG")
                             .putBytes(paintingIO.takeScreenshot(paintingCanvasView))
                             .addOnSuccessListener { uploadTaskSnapshot ->
                                 Log.d(this@NotesIO.javaClass.simpleName, "Paint Saved Successfully")

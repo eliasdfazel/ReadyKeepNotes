@@ -24,7 +24,7 @@ class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
                 .delete()
 
             (keepNoteApplication.application as KeepNoteApplication).firebaseStorage
-                .getReference(DatabaseEndpoints().handwritingSnapshotEndpoint(firebaseUser.uid).plus("/${notesDatabaseModel.uniqueNoteId}"))
+                .getReference(DatabaseEndpoints().baseSpecificNoteEndpoint(firebaseUser.uid, notesDatabaseModel.uniqueNoteId.toString()))
                 .delete()
 
         }

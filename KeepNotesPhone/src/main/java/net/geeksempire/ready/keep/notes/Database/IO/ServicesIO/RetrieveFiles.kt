@@ -8,10 +8,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
-import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingFile
-import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingFile
-import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotFile
-import java.io.File
 
 class RetrieveFiles : Service() {
 
@@ -47,78 +43,80 @@ class RetrieveFiles : Service() {
 
                 if (inputData.hasExtra(RetrieveFiles.BaseDirectory)) {
 
-                    val baseDirectory: String = inputData.getStringExtra(RetrieveFiles.BaseDirectory)!!
-
-                    val handwritingSnapshotFile = HandwritingSnapshotFile(baseDirectory)
-
                     val firebaseStorage = Firebase.storage
 
-                    firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid))
-                        .listAll()
-                        .addOnSuccessListener { listResult ->
+                    val baseDirectory: String = inputData.getStringExtra(RetrieveFiles.BaseDirectory)!!
 
-                            val noteHandwritingSnapshotFolder = File(handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(firebaseUser.uid))
 
-                            if (!noteHandwritingSnapshotFolder.exists()) {
 
-                                noteHandwritingSnapshotFolder.mkdirs()
-
-                            }
-
-                            listResult.items.forEach { storageReference ->
-
-                                storageReference
-                                    .getFile(File(handwritingSnapshotFile.getHandwritingSnapshotFilePath(firebaseUser.uid, storageReference.name)))
-
-                            }
-
-                        }
-
-                    val audioRecordingFile = AudioRecordingFile(baseDirectory)
-
-                    firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid))
-                        .listAll()
-                        .addOnSuccessListener { listResult ->
-
-                            val audioRecordingDirectoryPath = File(audioRecordingFile.getAudioRecordingDirectoryPath(firebaseUser.uid))
-
-                            if (!audioRecordingDirectoryPath.exists()) {
-
-                                audioRecordingDirectoryPath.mkdirs()
-
-                            }
-
-                            listResult.items.forEach { storageReference ->
-
-                                storageReference
-                                    .getFile(File(audioRecordingFile.getAudioRecordingFilePath(firebaseUser.uid, storageReference.name)))
-
-                            }
-
-                        }
-
-                    val imagingFile = ImagingFile(baseDirectory)
-
-                    firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid))
-                        .listAll()
-                        .addOnSuccessListener { listResult ->
-
-                            val imagingDirectoryPath = File(imagingFile.getImagingDirectoryPath(firebaseUser.uid))
-
-                            if (!imagingDirectoryPath.exists()) {
-
-                                imagingDirectoryPath.mkdirs()
-
-                            }
-
-                            listResult.items.forEach { storageReference ->
-
-                                storageReference
-                                    .getFile(File(imagingFile.getImagingFilePath(firebaseUser.uid, storageReference.name)))
-
-                            }
-
-                        }
+//                    val handwritingSnapshotFile = HandwritingSnapshotLocalFile(baseDirectory)
+//
+//                    firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid))
+//                        .listAll()
+//                        .addOnSuccessListener { listResult ->
+//
+//                            val noteHandwritingSnapshotFolder = File(handwritingSnapshotFile.getHandwritingSnapshotDirectoryPath(firebaseUser.uid))
+//
+//                            if (!noteHandwritingSnapshotFolder.exists()) {
+//
+//                                noteHandwritingSnapshotFolder.mkdirs()
+//
+//                            }
+//
+//                            listResult.items.forEach { storageReference ->
+//
+//                                storageReference
+//                                    .getFile(File(handwritingSnapshotFile.getHandwritingSnapshotFilePath(firebaseUser.uid, storageReference.name)))
+//
+//                            }
+//
+//                        }
+//
+//                    val audioRecordingFile = AudioRecordingLocalFile(baseDirectory)
+//
+//                    firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid))
+//                        .listAll()
+//                        .addOnSuccessListener { listResult ->
+//
+//                            val audioRecordingDirectoryPath = File(audioRecordingFile.getAudioRecordingDirectoryPath(firebaseUser.uid))
+//
+//                            if (!audioRecordingDirectoryPath.exists()) {
+//
+//                                audioRecordingDirectoryPath.mkdirs()
+//
+//                            }
+//
+//                            listResult.items.forEach { storageReference ->
+//
+//                                storageReference
+//                                    .getFile(File(audioRecordingFile.getAudioRecordingFilePath(firebaseUser.uid, storageReference.name)))
+//
+//                            }
+//
+//                        }
+//
+//                    val imagingFile = ImagingLocalFile(baseDirectory)
+//
+//                    firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid))
+//                        .listAll()
+//                        .addOnSuccessListener { listResult ->
+//
+//                            val imagingDirectoryPath = File(imagingFile.getImagingDirectoryPath(firebaseUser.uid))
+//
+//                            if (!imagingDirectoryPath.exists()) {
+//
+//                                imagingDirectoryPath.mkdirs()
+//
+//                            }
+//
+//                            listResult.items.forEach { storageReference ->
+//
+//                                storageReference
+//                                    .getFile(File(imagingFile.getImagingFilePath(firebaseUser.uid, storageReference.name)))
+//
+//                            }
+//
+//                        }
 
                 }
 

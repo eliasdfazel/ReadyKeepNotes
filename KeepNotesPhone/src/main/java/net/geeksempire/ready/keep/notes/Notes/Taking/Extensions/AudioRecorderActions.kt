@@ -19,13 +19,13 @@ fun TakeNote.setupAudioRecorderActions() {
 
             audioFileId = System.currentTimeMillis().toString()
 
-            audioFilePath = audioRecordingFile.getAudioRecordingFilePath(it.uid, documentId.toString(), audioFileId!!)
+            audioFilePath = audioRecordingLocalFile.getAudioRecordingFilePath(it.uid, documentId.toString(), audioFileId!!)
 
             val audioFile = File(audioFilePath!!)
 
             if (!audioFile.exists()) {
 
-                File(audioRecordingFile.getAudioRecordingDirectoryPath(it.uid, documentId.toString())).mkdirs()
+                File(audioRecordingLocalFile.getAudioRecordingDirectoryPath(it.uid, documentId.toString())).mkdirs()
 
                 audioFile.createNewFile()
 

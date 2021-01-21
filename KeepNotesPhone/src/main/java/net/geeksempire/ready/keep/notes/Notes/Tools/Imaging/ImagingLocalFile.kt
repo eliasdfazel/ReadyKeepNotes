@@ -5,7 +5,7 @@ import java.io.File
 /**
  * @param baseDirectory = activity.externalMediaDirs[0].path
  **/
-class ImagingFile (val baseDirectory: String){
+class ImagingLocalFile (val baseDirectory: String){
 
     fun getImagingDirectoryPath(firebaseUserId: String, uniqueDocumentId: String) : String {
 

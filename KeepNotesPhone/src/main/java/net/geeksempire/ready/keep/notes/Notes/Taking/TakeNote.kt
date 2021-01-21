@@ -30,11 +30,11 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupAudioRecord
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
-import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingFile
+import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.InputRecognizer
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.restorePaints
-import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotFile
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Utils.StrokePaintingCanvasView
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
@@ -103,12 +103,12 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
     val databaseEndpoints: DatabaseEndpoints = DatabaseEndpoints()
 
-    val handwritingSnapshotFile: HandwritingSnapshotFile by lazy {
-        HandwritingSnapshotFile(this@TakeNote.externalMediaDirs[0].path)
+    val handwritingSnapshotLocalFile: HandwritingSnapshotLocalFile by lazy {
+        HandwritingSnapshotLocalFile(this@TakeNote.externalMediaDirs[0].path)
     }
 
-    val audioRecordingFile: AudioRecordingFile by lazy {
-        AudioRecordingFile(this@TakeNote.externalMediaDirs[0].path)
+    val audioRecordingLocalFile: AudioRecordingLocalFile by lazy {
+        AudioRecordingLocalFile(this@TakeNote.externalMediaDirs[0].path)
     }
 
     val recentColorsAdapter: RecentColorsAdapter by lazy {
@@ -501,41 +501,48 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when (requestCode) {
-            NoteConfigurations.AudioRecordRequestCode -> {
+        val firebaseUser = Firebase.auth.currentUser
 
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        Log.d(this@TakeNote.javaClass.simpleName, "Voice Recorded Successfully")
+        if (firebaseUser != null
+            && !firebaseUser.isAnonymous) {
 
-                        Firebase.auth.currentUser?.let { firebaseUser ->
+            when (requestCode) {
+                NoteConfigurations.AudioRecordRequestCode -> {
 
-                            audioFilePath?.let { audioFilePath ->
+                    when (resultCode) {
+                        Activity.RESULT_OK -> {
+                            Log.d(this@TakeNote.javaClass.simpleName, "Voice Recorded Successfully")
 
-                                val audioFile = File(audioFilePath)
+                            Firebase.auth.currentUser?.let { firebaseUser ->
 
-                                (application as KeepNoteApplication).firebaseStorage
-                                    .getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid) + "/${documentId}" + "/${audioFileId}" + ".MP3")
-                                    .putBytes(audioFile.readBytes())
-                                    .addOnSuccessListener {
-                                        Log.d(this@TakeNote.javaClass.simpleName, "Audio Recorded File Uploaded Successfully")
+                                audioFilePath?.let { audioFilePath ->
 
-                                    }
+                                    val audioFile = File(audioFilePath)
+
+                                    (application as KeepNoteApplication).firebaseStorage
+                                        .getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, documentId.toString()).plus("/${audioFileId}" + ".MP3"))
+                                        .putBytes(audioFile.readBytes())
+                                        .addOnSuccessListener {
+                                            Log.d(this@TakeNote.javaClass.simpleName, "Audio Recorded File Uploaded Successfully")
+
+                                        }
+
+                                }
 
                             }
 
                         }
+                        else -> {
+                            Log.d(this@TakeNote.javaClass.simpleName, "Voice Recording Process Issue")
 
+
+
+                        }
                     }
-                    else -> {
-                        Log.d(this@TakeNote.javaClass.simpleName, "Voice Recording Process Issue")
 
-
-
-                    }
                 }
-
             }
+
         }
 
     }

@@ -4,47 +4,110 @@ class DatabaseEndpoints {
 
     fun baseEndpoints (firebaseUserUniqueId: String) : String  {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}"
+        return "/" +
+                "ReadyKeepNotes" +
+                "/" +
+                "${firebaseUserUniqueId}"
     }
 
     fun generalEndpoints (firebaseUserUniqueId: String) : String  {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes"
+        return "/" +
+                "ReadyKeepNotes" +
+                "/" +
+                "${firebaseUserUniqueId}" +
+                "/" +
+                "Notes"
+    }
+
+    fun baseSpecificNoteEndpoint(firebaseUserUniqueId: String, uniqueDocumentId: String) : String {
+
+        return "/" +
+                "ReadyKeepNotes" +
+                "/" +
+                "${firebaseUserUniqueId}" +
+                "/" +
+                "Notes" +
+                "/" +
+                "${uniqueDocumentId}" +
+                "/"
     }
 
     fun handwritingSnapshotEndpoint(firebaseUserUniqueId: String, uniqueDocumentId: String) : String {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/${uniqueDocumentId}/HandwritingSnapshot"
+        return "/" +
+                "ReadyKeepNotes" +
+                "/" +
+                "${firebaseUserUniqueId}" +
+                "/" +
+                "Notes" +
+                "/" +
+                "${uniqueDocumentId}" +
+                "/" +
+                "HandwritingSnapshot"
     }
 
     fun voiceRecordingEndpoint(firebaseUserUniqueId: String, uniqueDocumentId: String) : String {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/${uniqueDocumentId}/VoiceRecording"
+        return "/" +
+                "ReadyKeepNotes" +
+                "/" +
+                "${firebaseUserUniqueId}" +
+                "/" +
+                "Notes" +
+                "/" +
+                "${uniqueDocumentId}" +
+                "/" +
+                "VoiceRecording"
     }
 
     fun imageEndpoint(firebaseUserUniqueId: String, uniqueDocumentId: String) : String {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/${uniqueDocumentId}/Image"
+        return "/" +
+                "ReadyKeepNotes" +
+                "/" +
+                "${firebaseUserUniqueId}" +
+                "/" +
+                "Notes" +
+                "/" +
+                "${uniqueDocumentId}" +
+                "/" +
+                "Image"
     }
 
     fun noteTextsEndpoints (generalEndpoints: String) : String {
 
-        return generalEndpoints.plus("/TextingNote").plus("/Texts").plus("/Content")
+        return generalEndpoints
+            .plus("/TextingNote")
+            .plus("/Texts")
+            .plus("/Content")
     }
 
     fun noteTextsDocumentEndpoint(firebaseUserUniqueId: String, noteDocumentId: String) : String {
 
-        return "/ReadyKeepNotes/${firebaseUserUniqueId}/Notes/${noteDocumentId}"
+        return "/" +
+                "ReadyKeepNotes" +
+                "/" +
+                "${firebaseUserUniqueId}" +
+                "/" +
+                "Notes" +
+                "/" +
+                "${noteDocumentId}"
     }
 
     fun paintPathsDocumentEndpoints (generalEndpoints: String) : String {
 
-        return generalEndpoints.plus("/PaintingNote").plus("/Paths")
+        return generalEndpoints
+            .plus("/PaintingNote")
+            .plus("/Paths")
     }
 
     fun paintPathsCollectionEndpoints (documentReference: String) : String {
 
-        return documentReference.plus("/PaintingNote").plus("/Paths").plus("/Content")
+        return documentReference
+            .plus("/PaintingNote")
+            .plus("/Paths")
+            .plus("/Content")
     }
 
 }

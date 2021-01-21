@@ -6,7 +6,7 @@ import java.io.File
  * SdcardDirectory/Uid/DocumentId/HandwritingSnapshot
  * @param baseDirectory = activity.externalMediaDirs[0].path
  **/
-class HandwritingSnapshotFile (val baseDirectory: String) {
+class HandwritingSnapshotLocalFile (val baseDirectory: String) {
 
     fun getHandwritingSnapshotFilePath(firebaseUserId: String, uniqueDocumentId: String) : String {
 
