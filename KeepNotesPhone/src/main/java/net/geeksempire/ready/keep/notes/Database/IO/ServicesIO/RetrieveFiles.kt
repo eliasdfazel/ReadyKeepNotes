@@ -134,56 +134,35 @@ class RetrieveFiles : Service() {
 
 
                                 // Get Imaging
+                                val imagingDirectoryPath = File(imagingFile.getImagingDirectoryPath(firebaseUser.uid, uniqueDocumentId))
+
+                                if (!imagingDirectoryPath.exists()) {
+
+                                    imagingDirectoryPath.mkdirs()
+
+                                }
+
+                                databaseEndpoints.imageEndpoint(firebaseUser.uid, uniqueDocumentId).println()
+                                firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid, uniqueDocumentId))
+                                    .listAll()
+                                    .addOnSuccessListener { imagingListResults ->
+
+                                        imagingListResults.items.forEach { storageReferenceImageFiles ->
+
+                                            storageReferenceImageFiles.println()
+
+                                            val imageFileId = storageReferenceImageFiles.name
+
+                                            storageReferenceImageFiles
+                                                .getFile(File(imagingFile.getImagingFilePath(firebaseUser.uid, uniqueDocumentId, imageFileId)))
+
+                                        }
+
+                                    }
 
                             }
 
                         }
-//
-//                    val audioRecordingFile = AudioRecordingLocalFile(baseDirectory)
-//
-//                    firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid))
-//                        .listAll()
-//                        .addOnSuccessListener { listResult ->
-//
-//                            val audioRecordingDirectoryPath = File(audioRecordingFile.getAudioRecordingDirectoryPath(firebaseUser.uid))
-//
-//                            if (!audioRecordingDirectoryPath.exists()) {
-//
-//                                audioRecordingDirectoryPath.mkdirs()
-//
-//                            }
-//
-//                            listResult.items.forEach { storageReference ->
-//
-//                                storageReference
-//                                    .getFile(File(audioRecordingFile.getAudioRecordingFilePath(firebaseUser.uid, storageReference.name)))
-//
-//                            }
-//
-//                        }
-//
-//                    val imagingFile = ImagingLocalFile(baseDirectory)
-//
-//                    firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid))
-//                        .listAll()
-//                        .addOnSuccessListener { listResult ->
-//
-//                            val imagingDirectoryPath = File(imagingFile.getImagingDirectoryPath(firebaseUser.uid))
-//
-//                            if (!imagingDirectoryPath.exists()) {
-//
-//                                imagingDirectoryPath.mkdirs()
-//
-//                            }
-//
-//                            listResult.items.forEach { storageReference ->
-//
-//                                storageReference
-//                                    .getFile(File(imagingFile.getImagingFilePath(firebaseUser.uid, storageReference.name)))
-//
-//                            }
-//
-//                        }
 
                 }
 
