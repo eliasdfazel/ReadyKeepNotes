@@ -106,13 +106,43 @@ class TransferFiles : Service() {
 
                                 }
 
-                            } else if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {
+                            } else if (eachDirectory.name == LocalDirectories.AudioRecordingLocalFile) {
 
+                                eachDirectory.listFiles()?.forEach { audioRecordingDirectory ->
 
+                                    val uniqueDocumentId = audioRecordingDirectory.name
 
-                            } else if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {
+                                    audioRecordingDirectory.listFiles()?.forEach { audioRecordingFile ->
 
+                                        if (audioRecordingFile.exists()) {
 
+                                            firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.MP3"))
+                                                .putBytes(audioRecordingFile.readBytes())
+
+                                        }
+
+                                    }
+
+                                }
+
+                            } else if (eachDirectory.name == LocalDirectories.ImagingLocalFile) {
+
+                                eachDirectory.listFiles()?.forEach { imagingDirectory ->
+
+                                    val uniqueDocumentId = imagingDirectory.name
+
+                                    imagingDirectory.listFiles()?.forEach { imagingFile ->
+
+                                        if (imagingFile.exists()) {
+
+                                            firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
+                                                .putBytes(imagingFile.readBytes())
+
+                                        }
+
+                                    }
+
+                                }
 
                             }
 
