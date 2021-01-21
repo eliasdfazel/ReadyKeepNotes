@@ -24,6 +24,12 @@ class TransferFiles : Service() {
         const val NotificationId = 357
     }
 
+    object LocalDirectories {
+        const val HandwritingSnapshotLocalFile = "HandwritingSnapshot"
+        const val AudioRecordingLocalFile = "AudioRecording"
+        const val ImagingLocalFile = "Imaging"
+    }
+
     companion object {
         const val BaseDirectory = "BaseDirectory"
 
@@ -84,12 +90,36 @@ class TransferFiles : Service() {
 
                     if (allFilesDirectory.exists()) {
 
+                        allFilesDirectory.listFiles()?.forEach { eachDirectory ->
 
+                            if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {
+
+                                val handwritingSnapshot = eachDirectory.listFiles()?.get(0)
+
+                                if (handwritingSnapshot != null
+                                    && handwritingSnapshot.exists()) {
+
+                                    val uniqueDocumentId = handwritingSnapshot.name.replace(".PNG", "")
+
+                                    firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
+                                        .putBytes(handwritingSnapshot.readBytes())
+
+                                }
+
+                            } else if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {
+
+
+
+                            } else if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {
+
+
+
+                            }
+
+                        }
 
                     }
 
-//                    firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
-//                        .putBytes(File("").readBytes())
 
                 }
 
