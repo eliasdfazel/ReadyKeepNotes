@@ -8,8 +8,8 @@ import kotlinx.coroutines.async
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
+import net.geeksempire.ready.keep.notes.Notes.Tools.BaseDirectory
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
-import org.json.JSONArray
 import java.io.File
 
 class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
@@ -19,13 +19,28 @@ class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
         //Delete Data On Cloud
         Firebase.auth.currentUser?.let { firebaseUser ->
 
-            (keepNoteApplication.application as KeepNoteApplication).firestoreDatabase
-                .document(DatabaseEndpoints().noteTextsDocumentEndpoint(firebaseUser.uid, notesDatabaseModel.uniqueNoteId.toString()))
-                .delete()
+            if (!firebaseUser.isAnonymous) {
 
-            (keepNoteApplication.application as KeepNoteApplication).firebaseStorage
-                .getReference(DatabaseEndpoints().baseSpecificNoteEndpoint(firebaseUser.uid, notesDatabaseModel.uniqueNoteId.toString()))
-                .delete()
+                (keepNoteApplication.application as KeepNoteApplication).firestoreDatabase
+                    .document(DatabaseEndpoints().noteTextsDocumentEndpoint(firebaseUser.uid, notesDatabaseModel.uniqueNoteId.toString()))
+                    .delete()
+
+                (keepNoteApplication.application as KeepNoteApplication).firebaseStorage
+                    .getReference(DatabaseEndpoints().baseSpecificNoteEndpoint(firebaseUser.uid, notesDatabaseModel.uniqueNoteId.toString()))
+                    .delete()
+
+            }
+
+            //Delete Data On SdCard - Handwriting Snapshot
+            //Delete Data On SdCard - Audio Records
+            //Delete Data On SdCard - Images
+            val filesDirectory = File(BaseDirectory().localBaseDirectory(keepNoteApplication, firebaseUser.uid, notesDatabaseModel.uniqueNoteId.toString()))
+
+            if (filesDirectory.exists()) {
+
+                filesDirectory.delete()
+
+            }
 
         }
 
@@ -41,26 +56,6 @@ class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
             .deleteNoteData(notesDatabaseModel)
 
         notesRoomDatabaseConfiguration.closeDatabase()
-
-        //Delete Data On SdCard - Handwriting Snapshot
-        notesDatabaseModel.noteHandwritingPaintingPaths?.let { handwritingSnapshotFileToDelete ->
-
-            File(handwritingSnapshotFileToDelete).takeIf { it.exists() }?.delete()
-
-        }
-
-        //Delete Data On SdCard - Audio Records
-        notesDatabaseModel.noteVoicePaths?.let { audioContent ->
-
-            val jsonArrayAudios = JSONArray(audioContent)
-
-            for (index in 0 until jsonArrayAudios.length()) {
-
-                File(jsonArrayAudios.getJSONObject(index).getString(index.toString())).takeIf { it.exists() }?.delete()
-
-            }
-
-        }
 
     }
 
