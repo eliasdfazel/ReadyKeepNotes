@@ -100,9 +100,30 @@ class RetrieveFiles : Service() {
                                     .getFile(File(handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(firebaseUser.uid, uniqueDocumentId)))
                                     .addOnCompleteListener {
 
-
-
                                         // Get Audio Recording
+                                        val audioRecordingDirectoryPath = File(audioRecordingFile.getAudioRecordingDirectoryPath(firebaseUser.uid, uniqueDocumentId))
+
+                                        if (!audioRecordingDirectoryPath.exists()) {
+
+                                            audioRecordingDirectoryPath.mkdirs()
+
+                                        }
+
+                                        firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId))
+                                            .listAll()
+                                            .addOnSuccessListener { voiceRecordingListResults ->
+
+                                                voiceRecordingListResults.prefixes.forEach { storageReferenceAudioFiles ->
+
+                                                    val audioFileId = storageReferenceAudioFiles.name
+
+                                                    storageReferenceAudioFiles
+                                                        .getFile(File(audioRecordingFile.getAudioRecordingFilePath(firebaseUser.uid, uniqueDocumentId, audioFileId)))
+
+                                                }
+
+                                            }
+
 
                                         // Get Imaging
 
