@@ -12,6 +12,7 @@ import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordin
 import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotLocalFile
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.Extensions.println
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.NotificationBuilder
 import java.io.File
 
@@ -100,34 +101,39 @@ class RetrieveFiles : Service() {
                                     .getFile(File(handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(firebaseUser.uid, uniqueDocumentId)))
                                     .addOnCompleteListener {
 
-                                        // Get Audio Recording
-                                        val audioRecordingDirectoryPath = File(audioRecordingFile.getAudioRecordingDirectoryPath(firebaseUser.uid, uniqueDocumentId))
 
-                                        if (!audioRecordingDirectoryPath.exists()) {
+                                    }
 
-                                            audioRecordingDirectoryPath.mkdirs()
+
+                                // Get Audio Recording
+                                val audioRecordingDirectoryPath = File(audioRecordingFile.getAudioRecordingDirectoryPath(firebaseUser.uid, uniqueDocumentId))
+
+                                if (!audioRecordingDirectoryPath.exists()) {
+
+                                    audioRecordingDirectoryPath.mkdirs()
+
+                                }
+
+                                databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).println()
+                                firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId))
+                                    .listAll()
+                                    .addOnSuccessListener { voiceRecordingListResults ->
+
+                                        voiceRecordingListResults.items.forEach { storageReferenceAudioFiles ->
+
+                                            storageReferenceAudioFiles.println()
+
+                                            val audioFileId = storageReferenceAudioFiles.name
+
+                                            storageReferenceAudioFiles
+                                                .getFile(File(audioRecordingFile.getAudioRecordingFilePath(firebaseUser.uid, uniqueDocumentId, audioFileId)))
 
                                         }
 
-                                        firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId))
-                                            .listAll()
-                                            .addOnSuccessListener { voiceRecordingListResults ->
-
-                                                voiceRecordingListResults.prefixes.forEach { storageReferenceAudioFiles ->
-
-                                                    val audioFileId = storageReferenceAudioFiles.name
-
-                                                    storageReferenceAudioFiles
-                                                        .getFile(File(audioRecordingFile.getAudioRecordingFilePath(firebaseUser.uid, uniqueDocumentId, audioFileId)))
-
-                                                }
-
-                                            }
-
-
-                                        // Get Imaging
-
                                     }
+
+
+                                // Get Imaging
 
                             }
 
