@@ -30,6 +30,7 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.Extensions.nullCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
@@ -93,25 +94,25 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 val uniqueNoteId = documentSnapshot.id.toLong()
 
-                val noteTitle = documentSnapshot[Notes.NoteTile].toString()
-                val noteTextContent = documentSnapshot[Notes.NoteTextContent].toString()
+                val noteTitle = documentSnapshot[Notes.NoteTile].nullCheckpoint()
+                val noteTextContent = documentSnapshot[Notes.NoteTextContent].nullCheckpoint()
 
-                val noteHandwritingPaintingPaths = documentSnapshot[Notes.NoteHandwritingPaintingPaths].toString()
-                val noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].toString()
+                val noteHandwritingPaintingPaths = documentSnapshot[Notes.NoteHandwritingPaintingPaths].nullCheckpoint()
+                val noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].nullCheckpoint()
 
-                val noteVoicePaths = documentSnapshot[Notes.NoteVoicePaths].toString()
-                val noteImagePaths = documentSnapshot[Notes.NoteImagePaths].toString()
-                val noteGifPaths = documentSnapshot[Notes.NoteGifPaths].toString()
+                val noteVoicePaths = documentSnapshot[Notes.NoteVoicePaths].nullCheckpoint()
+                val noteImagePaths = documentSnapshot[Notes.NoteImagePaths].nullCheckpoint()
+                val noteGifPaths = documentSnapshot[Notes.NoteGifPaths].nullCheckpoint()
 
                 val noteTakenTime = (documentSnapshot[Notes.NoteTakenTime] as Timestamp).toDate().time
                 val noteEditTime = documentSnapshot[Notes.NoteEditTime]?.let {
                     (documentSnapshot[Notes.NoteEditTime] as Timestamp).toDate().time
                 }
 
-                val noteTags = documentSnapshot[Notes.NotesTags].toString()
-                val noteHashTags = documentSnapshot[Notes.NotesHashTags].toString()
+                val noteTags = documentSnapshot[Notes.NotesTags].nullCheckpoint()
+                val noteHashTags = documentSnapshot[Notes.NotesHashTags].nullCheckpoint()
 
-                val noteTranscribeTags = documentSnapshot[Notes.NoteTranscribeTags].toString()
+                val noteTranscribeTags = documentSnapshot[Notes.NoteTranscribeTags].nullCheckpoint()
 
                 val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentSnapshot.id.toLong(),
                     noteTile = noteTitle,
@@ -129,7 +130,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     noteTranscribeTags = noteTranscribeTags,
                     dataSelected = 0
                 )
-
 
                 notesDatabaseDataAccessObject.insertCompleteNewNoteData(notesDatabaseModel)
 
@@ -158,7 +158,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
         notesRoomDatabaseConfiguration.closeDatabase()
 
-
+        RetrieveFiles.startProcess(context, context.externalMediaDirs[0].path)
 
     }
 
@@ -280,8 +280,6 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
             }
 
         notesRoomDatabaseConfiguration.closeDatabase()
-
-        RetrieveFiles.startProcess(context, context.externalMediaDirs[0].path)
 
     }
 

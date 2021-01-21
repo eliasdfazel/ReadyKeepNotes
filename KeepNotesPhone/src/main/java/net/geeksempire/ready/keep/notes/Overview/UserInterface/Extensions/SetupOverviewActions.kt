@@ -96,6 +96,19 @@ fun KeepNoteOverview.setupActions() {
 
     }
 
+    overviewLayoutBinding.notSynchronizing.setOnClickListener {
+
+        val accountInformation = Intent(applicationContext, AccountInformation::class.java)
+        startActivity(
+            accountInformation,
+            ActivityOptions.makeSceneTransitionAnimation(
+                this@setupActions, overviewLayoutBinding.profileImageView, getString(
+                    R.string.profileImageTransitionName
+                )
+            ).toBundle()
+        )
+
+    }
     overviewLayoutBinding.preferencesView.setOnClickListener {
 
         val accountInformation = Intent(applicationContext, PreferencesControl::class.java)

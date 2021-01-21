@@ -26,8 +26,6 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="10dp"
-        android:minHeight="10dp"
         android:indeterminate="true"
         android:indeterminateDuration="7000"
         android:indeterminateDrawable="@drawable/web_view_progress_bar_drawable"
