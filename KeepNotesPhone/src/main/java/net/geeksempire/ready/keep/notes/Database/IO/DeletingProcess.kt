@@ -34,7 +34,7 @@ class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
             //Delete Data On SdCard - Handwriting Snapshot
             //Delete Data On SdCard - Audio Records
             //Delete Data On SdCard - Images
-            val filesDirectory = File(BaseDirectory().localBaseDirectory(keepNoteApplication, firebaseUser.uid, notesDatabaseModel.uniqueNoteId.toString()))
+            val filesDirectory = File(BaseDirectory().localBaseSpecificDirectory(keepNoteApplication, firebaseUser.uid, notesDatabaseModel.uniqueNoteId.toString()))
 
             if (filesDirectory.exists()) {
 

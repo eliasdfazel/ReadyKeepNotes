@@ -9,10 +9,12 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingLocalFile
+import net.geeksempire.ready.keep.notes.Notes.Tools.BaseDirectory
 import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotLocalFile
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.NotificationBuilder
+import java.io.File
 
 class TransferFiles : Service() {
 
@@ -77,7 +79,17 @@ class TransferFiles : Service() {
 
                     val imagingFile = ImagingLocalFile(baseDirectory)
 
+                    // Send Handwriting Snapshot
+                    val allFilesDirectory = File(BaseDirectory().localBaseDirectory(baseDirectory, firebaseUser.uid))
 
+                    if (allFilesDirectory.exists()) {
+
+
+
+                    }
+
+//                    firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
+//                        .putBytes(File("").readBytes())
 
                 }
 
