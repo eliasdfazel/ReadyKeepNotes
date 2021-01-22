@@ -110,7 +110,6 @@ class TransferFiles : Service() {
 
                                 } else if (eachDirectory.name == LocalDirectories.AudioRecordingLocalFile) {
 
-
                                     eachDirectory.listFiles()?.forEach { audioRecordingDirectory ->
 
                                         val audioRecordingFileId = audioRecordingDirectory.name
@@ -129,7 +128,21 @@ class TransferFiles : Service() {
 
                                 } else if (eachDirectory.name == LocalDirectories.ImagingLocalFile) {
 
+                                    eachDirectory.listFiles()?.forEach { imagingDirectory ->
 
+                                        val imagingFileId = imagingDirectory.name
+
+                                        if (imagingDirectory.exists()) {
+
+                                            firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$imagingFileId.PNG"))
+                                                .putBytes(imagingDirectory.readBytes())
+                                                .addOnSuccessListener {
+
+                                                }
+
+                                        }
+
+                                    }
 
                                 }
 
