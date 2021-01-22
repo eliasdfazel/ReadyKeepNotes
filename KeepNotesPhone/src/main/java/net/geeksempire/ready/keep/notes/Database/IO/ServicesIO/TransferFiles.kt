@@ -17,6 +17,9 @@ class TransferFiles : Service() {
 
     private val databaseEndpoints = DatabaseEndpoints()
 
+    var totalProcess = 0
+    var allProcessCounter = 0
+
     object Foreground {
         const val NotificationId = 357
     }
@@ -87,7 +90,9 @@ class TransferFiles : Service() {
 
                             eachNoteDirectory.listFiles()?.forEach { eachDirectory ->
 
-                                if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {
+                                if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {// Get Handwriting Snapshot
+
+                                    totalProcess++
 
                                     val handwritingSnapshot = eachDirectory.listFiles()?.get(0)
 
@@ -98,11 +103,15 @@ class TransferFiles : Service() {
                                             .putBytes(handwritingSnapshot.readBytes())
                                             .addOnSuccessListener {
 
+                                                allProcessCounter++
+
                                             }
 
                                     }
 
-                                } else if (eachDirectory.name == LocalDirectories.AudioRecordingLocalFile) {
+                                } else if (eachDirectory.name == LocalDirectories.AudioRecordingLocalFile) {// Get Audio Recording
+
+                                    totalProcess.plus(eachDirectory.listFiles()?.size?:0)
 
                                     eachDirectory.listFiles()?.forEach { audioRecordingDirectory ->
 
@@ -114,13 +123,17 @@ class TransferFiles : Service() {
                                                 .putBytes(audioRecordingDirectory.readBytes())
                                                 .addOnSuccessListener {
 
+                                                    allProcessCounter++
+
                                                 }
 
                                         }
 
                                     }
 
-                                } else if (eachDirectory.name == LocalDirectories.ImagingLocalFile) {
+                                } else if (eachDirectory.name == LocalDirectories.ImagingLocalFile) {// Get Imaging
+
+                                    totalProcess.plus(eachDirectory.listFiles()?.size?:0)
 
                                     eachDirectory.listFiles()?.forEach { imagingDirectory ->
 
@@ -131,6 +144,8 @@ class TransferFiles : Service() {
                                             firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$imagingFileId.PNG"))
                                                 .putBytes(imagingDirectory.readBytes())
                                                 .addOnSuccessListener {
+
+                                                    allProcessCounter++
 
                                                 }
 
@@ -155,6 +170,21 @@ class TransferFiles : Service() {
 
 
         return Service.START_STICKY
+    }
+
+    private fun allProcessFinished(totalProcess: Int, allProcessCounter: Int) : Boolean {
+
+        return if (allProcessCounter == totalProcess) {
+
+            stopForeground(true)
+
+            true
+        } else {
+
+
+
+            false
+        }
     }
 
 }

@@ -20,6 +20,9 @@ class RetrieveFiles : Service() {
 
     private val databaseEndpoints = DatabaseEndpoints()
 
+    var totalProcess = 0
+    var allProcessCounter = 0
+
     object Foreground {
         const val NotificationId = 357
     }
@@ -99,11 +102,13 @@ class RetrieveFiles : Service() {
 
                                 firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
                                     .getFile(File(handwritingSnapshotLocalFile.getHandwritingSnapshotFilePath(firebaseUser.uid, uniqueDocumentId)))
-                                    .addOnCompleteListener {
+                                    .addOnSuccessListener {
 
+                                        totalProcess++
+
+                                        allProcessCounter++
 
                                     }
-
 
                                 // Get Audio Recording
                                 val audioRecordingDirectoryPath = File(audioRecordingFile.getAudioRecordingDirectoryPath(firebaseUser.uid, uniqueDocumentId))
@@ -119,6 +124,8 @@ class RetrieveFiles : Service() {
                                     .listAll()
                                     .addOnSuccessListener { voiceRecordingListResults ->
 
+                                        totalProcess.plus(voiceRecordingListResults.items.size)
+
                                         voiceRecordingListResults.items.forEach { storageReferenceAudioFiles ->
 
                                             storageReferenceAudioFiles.println()
@@ -127,11 +134,15 @@ class RetrieveFiles : Service() {
 
                                             storageReferenceAudioFiles
                                                 .getFile(File(audioRecordingFile.getAudioRecordingFilePath(firebaseUser.uid, uniqueDocumentId, audioFileId)))
+                                                .addOnSuccessListener {
+
+                                                    allProcessCounter++
+
+                                                }
 
                                         }
 
                                     }
-
 
                                 // Get Imaging
                                 val imagingDirectoryPath = File(imagingFile.getImagingDirectoryPath(firebaseUser.uid, uniqueDocumentId))
@@ -147,6 +158,8 @@ class RetrieveFiles : Service() {
                                     .listAll()
                                     .addOnSuccessListener { imagingListResults ->
 
+                                        totalProcess.plus(imagingListResults.items.size)
+
                                         imagingListResults.items.forEach { storageReferenceImageFiles ->
 
                                             storageReferenceImageFiles.println()
@@ -155,6 +168,11 @@ class RetrieveFiles : Service() {
 
                                             storageReferenceImageFiles
                                                 .getFile(File(imagingFile.getImagingFilePath(firebaseUser.uid, uniqueDocumentId, imageFileId)))
+                                                .addOnSuccessListener {
+
+                                                    allProcessCounter++
+
+                                                }
 
                                         }
 
@@ -171,6 +189,21 @@ class RetrieveFiles : Service() {
         }
 
         return Service.START_STICKY
+    }
+
+    private fun allProcessFinished(totalProcess: Int, allProcessCounter: Int) : Boolean {
+
+        return if (allProcessCounter == totalProcess) {
+
+            stopForeground(true)
+
+            true
+        } else {
+
+
+
+            false
+        }
     }
 
 }
