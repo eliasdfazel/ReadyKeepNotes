@@ -61,6 +61,9 @@
     <string name="handwritingText">Handwriting</string>
     <string name="voiceRecordingText">Voice Recording</string>
 
+    <string name="fingerTouchEditing">You Are Changing 👇. Click Here To Switch… </string>
+    <string name="stylusTouchEditing">You Are Changing 🖊. Click Here To Switch… </string>
+
     <string name="typeToSearch">Type To Search…</string>
 
     <string name="migratingDatabaseEncryption">Migrating Encrypted Information…</string>

@@ -20,7 +20,7 @@
         android:lines="1"
         android:singleLine="true"
         android:ellipsize="end"
-        android:textSize="31sp"
+        android:textSize="23sp"
         android:textColor="@color/lighter"
         android:textStyle="bold"
         android:hint="@string/titleHintText"
@@ -165,7 +165,7 @@
         android:id="@+id/paintingToolbarInclude"
         android:layout_width="match_parent"
         android:layout_height="57dp"
-        android:visibility="invisible"
+        android:visibility="visible"
 
         apps:layout_constraintTop_toTopOf="@id/paintingCanvasContainer" />
 
@@ -177,7 +177,7 @@
         android:layout_height="0dp"
         android:paddingStart="29dp"
         android:paddingEnd="29dp"
-        android:visibility="invisible"
+        android:visibility="visible"
 
         apps:layout_constraintTop_toBottomOf="@id/paintingToolbarInclude"
         apps:layout_constraintBottom_toBottomOf="parent"
