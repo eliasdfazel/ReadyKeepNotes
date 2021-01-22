@@ -34,7 +34,7 @@ class AudioRecordingLocalFile (val baseDirectory: String){
                 File.separator +
                 "AudioRecording" +
                 File.separator +
-                audioFileId + ".MP3"
+                audioFileId
     }
 
 }

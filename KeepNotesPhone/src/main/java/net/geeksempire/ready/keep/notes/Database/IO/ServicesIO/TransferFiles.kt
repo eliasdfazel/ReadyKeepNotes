@@ -110,7 +110,7 @@ class TransferFiles : Service() {
 
                                         if (audioRecordingDirectory.exists()) {
 
-                                            firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$audioRecordingFileId.MP3"))
+                                            firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$audioRecordingFileId"))
                                                 .putBytes(audioRecordingDirectory.readBytes())
                                                 .addOnSuccessListener {
 

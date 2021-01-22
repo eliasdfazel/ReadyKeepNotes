@@ -31,7 +31,6 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.IO.DeletingProcess
 import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
-import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.TransferFiles
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Overview.NotesLiveData.NotesOverviewViewModel
@@ -264,8 +263,6 @@ class KeepNoteOverview : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         overviewLayoutBinding = OverviewLayoutBinding.inflate(layoutInflater)
         setContentView(overviewLayoutBinding.root)
-
-        TransferFiles.startProcess(applicationContext, this@KeepNoteOverview.externalMediaDirs[0].path)
 
         (application as KeepNoteApplication)
             .dependencyGraph

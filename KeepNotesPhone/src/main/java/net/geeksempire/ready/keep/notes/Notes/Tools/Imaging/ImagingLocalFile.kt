@@ -33,6 +33,6 @@ class ImagingLocalFile (val baseDirectory: String){
                 File.separator +
                 "Imaging" +
                 File.separator +
-                audioFileId + ".JPEG"
+                audioFileId
     }
 }
