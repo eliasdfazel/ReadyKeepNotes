@@ -59,6 +59,9 @@ fun TakeNote.setupTakeNoteTheme() {
 
             takeNoteLayoutBinding.audioRecordView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_light))
             takeNoteLayoutBinding.audioRecordView.rippleColor = ColorStateList.valueOf(getColor(R.color.light))
+
+            takeNoteLayoutBinding.colorPaletteInclude.touchTypeIndicator.setTextColor(getColor(R.color.dark))
+
         }
         ThemeType.ThemeDark -> {
 
@@ -79,6 +82,8 @@ fun TakeNote.setupTakeNoteTheme() {
 
             takeNoteLayoutBinding.audioRecordView.backgroundTintList = ColorStateList.valueOf(getColor(R.color.default_color_dark))
             takeNoteLayoutBinding.audioRecordView.rippleColor = ColorStateList.valueOf(getColor(R.color.dark))
+
+            takeNoteLayoutBinding.colorPaletteInclude.touchTypeIndicator.setTextColor(getColor(R.color.light))
 
         }
     }

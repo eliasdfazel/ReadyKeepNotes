@@ -110,7 +110,7 @@
                 android:gravity="center"
                 android:text="@string/drawForWidthSample"
                 android:textColor="@color/default_color_game_light_transparent"
-                android:textSize="17sp"
+                android:textSize="19sp"
                 android:fontFamily="@font/houston_regular"
 
                 apps:layout_constraintTop_toBottomOf="@id/pickColorView"
@@ -134,8 +134,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="29dp"
-                android:paddingVertical="13dp"
-                android:textSize="12sp"
+                android:paddingVertical="19dp"
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:textColor="@color/light"
+                android:text="@string/fingerTouchEditing"
+                android:fontFamily="@font/houston_regular"
 
                 apps:layout_constraintTop_toBottomOf="@id/strokeWidthFluidSlider"/>
 

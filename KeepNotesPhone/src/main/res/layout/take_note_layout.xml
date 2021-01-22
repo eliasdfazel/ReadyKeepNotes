@@ -165,7 +165,8 @@
         android:id="@+id/paintingToolbarInclude"
         android:layout_width="match_parent"
         android:layout_height="57dp"
-        android:visibility="visible"
+        android:elevation="13dp"
+        android:visibility="invisible"
 
         apps:layout_constraintTop_toTopOf="@id/paintingCanvasContainer" />
 
@@ -177,7 +178,8 @@
         android:layout_height="0dp"
         android:paddingStart="29dp"
         android:paddingEnd="29dp"
-        android:visibility="visible"
+        android:elevation="13dp"
+        android:visibility="invisible"
 
         apps:layout_constraintTop_toBottomOf="@id/paintingToolbarInclude"
         apps:layout_constraintBottom_toBottomOf="parent"
