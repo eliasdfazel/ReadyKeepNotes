@@ -8,10 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
-import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.BaseDirectory
-import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingLocalFile
-import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotLocalFile
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.NotificationBuilder
 import java.io.File
@@ -79,68 +76,60 @@ class TransferFiles : Service() {
 
                     val baseDirectory: String = inputData.getStringExtra(TransferFiles.BaseDirectory)!!
 
-                    val handwritingSnapshotLocalFile = HandwritingSnapshotLocalFile(baseDirectory)
+                    /*val handwritingSnapshotLocalFile = HandwritingSnapshotLocalFile(baseDirectory)*/
 
-                    val audioRecordingFile = AudioRecordingLocalFile(baseDirectory)
+                    /*val audioRecordingFile = AudioRecordingLocalFile(baseDirectory)*/
 
-                    val imagingFile = ImagingLocalFile(baseDirectory)
+                    /*val imagingFile = ImagingLocalFile(baseDirectory)*/
 
                     // Send Handwriting Snapshot
                     val allFilesDirectory = File(BaseDirectory().localBaseDirectory(baseDirectory, firebaseUser.uid))
 
                     if (allFilesDirectory.exists()) {
 
-                        allFilesDirectory.listFiles()?.forEach { eachDirectory ->
+                        allFilesDirectory.listFiles()?.forEach { eachNoteDirectory ->
 
-                            if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {
+                            val uniqueDocumentId = eachNoteDirectory.name
 
-                                val handwritingSnapshot = eachDirectory.listFiles()?.get(0)
+                            eachNoteDirectory.listFiles()?.forEach { eachDirectory ->
 
-                                if (handwritingSnapshot != null
-                                    && handwritingSnapshot.exists()) {
+                                if (eachDirectory.name == LocalDirectories.HandwritingSnapshotLocalFile) {
 
-                                    val uniqueDocumentId = handwritingSnapshot.name.replace(".PNG", "")
+                                    val handwritingSnapshot = eachDirectory.listFiles()?.get(0)
 
-                                    firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
-                                        .putBytes(handwritingSnapshot.readBytes())
+                                    if (handwritingSnapshot != null
+                                        && handwritingSnapshot.exists()) {
 
-                                }
+                                        firebaseStorage.getReference(databaseEndpoints.handwritingSnapshotEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
+                                            .putBytes(handwritingSnapshot.readBytes())
+                                            .addOnSuccessListener {
 
-                            } else if (eachDirectory.name == LocalDirectories.AudioRecordingLocalFile) {
+                                            }
 
-                                eachDirectory.listFiles()?.forEach { audioRecordingDirectory ->
+                                    }
 
-                                    val uniqueDocumentId = audioRecordingDirectory.name
+                                } else if (eachDirectory.name == LocalDirectories.AudioRecordingLocalFile) {
 
-                                    audioRecordingDirectory.listFiles()?.forEach { audioRecordingFile ->
 
-                                        if (audioRecordingFile.exists()) {
+                                    eachDirectory.listFiles()?.forEach { audioRecordingDirectory ->
 
-                                            firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.MP3"))
-                                                .putBytes(audioRecordingFile.readBytes())
+                                        val audioRecordingFileId = audioRecordingDirectory.name
+
+                                        if (audioRecordingDirectory.exists()) {
+
+                                            firebaseStorage.getReference(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$audioRecordingFileId.MP3"))
+                                                .putBytes(audioRecordingDirectory.readBytes())
+                                                .addOnSuccessListener {
+
+                                                }
 
                                         }
 
                                     }
 
-                                }
+                                } else if (eachDirectory.name == LocalDirectories.ImagingLocalFile) {
 
-                            } else if (eachDirectory.name == LocalDirectories.ImagingLocalFile) {
 
-                                eachDirectory.listFiles()?.forEach { imagingDirectory ->
-
-                                    val uniqueDocumentId = imagingDirectory.name
-
-                                    imagingDirectory.listFiles()?.forEach { imagingFile ->
-
-                                        if (imagingFile.exists()) {
-
-                                            firebaseStorage.getReference(databaseEndpoints.imageEndpoint(firebaseUser.uid, uniqueDocumentId).plus("/$uniqueDocumentId.PNG"))
-                                                .putBytes(imagingFile.readBytes())
-
-                                        }
-
-                                    }
 
                                 }
 
