@@ -76,12 +76,6 @@ class TransferFiles : Service() {
 
                     val baseDirectory: String = inputData.getStringExtra(TransferFiles.BaseDirectory)!!
 
-                    /*val handwritingSnapshotLocalFile = HandwritingSnapshotLocalFile(baseDirectory)*/
-
-                    /*val audioRecordingFile = AudioRecordingLocalFile(baseDirectory)*/
-
-                    /*val imagingFile = ImagingLocalFile(baseDirectory)*/
-
                     // Send Handwriting Snapshot
                     val allFilesDirectory = File(BaseDirectory().localBaseDirectory(baseDirectory, firebaseUser.uid))
 
