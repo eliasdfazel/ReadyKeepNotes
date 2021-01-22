@@ -9,8 +9,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Notes.Tools.BaseDirectory
-import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.NotificationBuilder
 import java.io.File
 
 class TransferFiles : Service() {
@@ -70,10 +68,10 @@ class TransferFiles : Service() {
 
                 if (inputData.hasExtra(TransferFiles.BaseDirectory)) {
 
-                    startForeground(TransferFiles.Foreground.NotificationId,
+                    /*startForeground(TransferFiles.Foreground.NotificationId,
                         NotificationBuilder(applicationContext)
                             .create(notificationId = TransferFiles.Foreground.NotificationId, notificationChannelId = this@TransferFiles.javaClass.simpleName,
-                                notificationTitle = getString(R.string.applicationName), notificationContent = getString(R.string.transferFilesText)))
+                                notificationTitle = getString(R.string.applicationName), notificationContent = getString(R.string.transferFilesText)))*/
 
                     val firebaseStorage = Firebase.storage
 

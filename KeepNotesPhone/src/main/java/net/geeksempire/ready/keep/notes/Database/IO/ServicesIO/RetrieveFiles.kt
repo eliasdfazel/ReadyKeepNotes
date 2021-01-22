@@ -11,9 +11,7 @@ import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoi
 import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotLocalFile
-import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.Extensions.println
-import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.NotificationBuilder
 import java.io.File
 
 class RetrieveFiles : Service() {
@@ -67,10 +65,10 @@ class RetrieveFiles : Service() {
 
                 if (inputData.hasExtra(RetrieveFiles.BaseDirectory)) {
 
-                    startForeground(RetrieveFiles.Foreground.NotificationId,
+                    /*startForeground(RetrieveFiles.Foreground.NotificationId,
                         NotificationBuilder(applicationContext)
                             .create(notificationId = RetrieveFiles.Foreground.NotificationId, notificationChannelId = this@RetrieveFiles.javaClass.simpleName,
-                                notificationTitle = getString(R.string.applicationName), notificationContent = getString(R.string.retrievingFilesText)))
+                                notificationTitle = getString(R.string.applicationName), notificationContent = getString(R.string.retrievingFilesText)))*/
 
                     val firebaseStorage = Firebase.storage
 
