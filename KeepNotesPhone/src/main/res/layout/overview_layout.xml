@@ -119,7 +119,6 @@
                 android:textColorHint="@color/dark"
                 android:fontFamily="monospace"
                 android:cursorVisible="true"
-                android:textCursorDrawable="@android:color/transparent"
                 android:focusable="true"
 
                 apps:textInputLayoutFocusedRectEnabled="true"/>
