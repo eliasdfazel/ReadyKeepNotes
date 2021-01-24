@@ -255,7 +255,43 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         overviewViewHolder.titleTextView.setOnClickListener {
 
+            overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
 
+            context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
+            context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
+
+            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
+
+            if (paintingPathsJsonArray.isNullOrEmpty()) {
+
+                overviewViewHolder.waitingViewLoading.visibility = View.GONE
+
+                TakeNote.open(context = context,
+                    incomingActivityName = this@OverviewAdapter.javaClass.simpleName,
+                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+                    noteTile = notesDataStructureList[position].noteTile,
+                    contentText = notesDataStructureList[position].noteTextContent,
+                    encryptedTextContent = true,
+                    updateExistingNote = true
+                )
+
+            } else {
+
+                overviewViewHolder.waitingViewLoading.visibility = View.GONE
+
+                TakeNote.open(context = context,
+                    incomingActivityName = this@OverviewAdapter.javaClass.simpleName,
+                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+                    noteTile = notesDataStructureList[position].noteTile,
+                    contentText = notesDataStructureList[position].noteTextContent,
+                    paintingPath = paintingPathsJsonArray,
+                    encryptedTextContent = true,
+                    updateExistingNote = true
+                )
+
+            }
 
         }
 
