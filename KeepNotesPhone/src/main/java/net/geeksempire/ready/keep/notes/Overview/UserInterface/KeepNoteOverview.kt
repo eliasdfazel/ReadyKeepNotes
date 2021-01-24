@@ -383,6 +383,8 @@ class KeepNoteOverview : AppCompatActivity(),
                         overviewAdapter.notesDataStructureList.clear()
                         overviewAdapter.notesDataStructureList.addAll(it)
 
+                        databaseSize++
+
                         overviewAdapter.notifyDataSetChanged()
 
                         overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
