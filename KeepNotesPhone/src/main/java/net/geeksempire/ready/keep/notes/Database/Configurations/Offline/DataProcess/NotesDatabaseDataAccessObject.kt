@@ -40,6 +40,13 @@ interface NotesDatabaseDataAccessObject {
     suspend fun updateNoteTagsData(uniqueNoteId: Long, allTags: String)
 
 
+    /**
+     * Pinned = 1
+     **/
+    @Query("UPDATE NotesDatabase SET notePinned = :notePinned WHERE uniqueNoteId = :uniqueNoteId")
+    suspend fun updateNotePinnedData(uniqueNoteId: Long, notePinned: Int)
+
+
     @Query("UPDATE NotesDatabase SET noteHandwritingPaintingPaths = :handwritingPaths WHERE uniqueNoteId = :uniqueNoteId")
     suspend fun updateHandwritingPathsData(uniqueNoteId: Long, handwritingPaths: String)
 
@@ -60,13 +67,19 @@ interface NotesDatabaseDataAccessObject {
     suspend fun getAllNotesRawData() : List<NotesDatabaseModel>
 
 
+    /**
+     * Pinned = 1
+     **/
+    @Query("SELECT * FROM NotesDatabase WHERE notePinned = 1 ORDER BY noteIndex DESC")
+    suspend fun getAllPinnedNotesData() : List<NotesDatabaseModel>
+
+
     @Query("SELECT * FROM NotesDatabase ORDER BY notePinned DESC, noteIndex DESC")
     suspend fun getAllNotesData() : List<NotesDatabaseModel>
 
 
     @Query("SELECT * FROM NotesDatabase WHERE noteTile LIKE :searchTerm OR noteTextContent LIKE :searchTerm OR noteTags LIKE :searchTerm OR noteTranscribeTags LIKE :searchTerm ORDER BY noteIndex DESC")
     suspend fun searchAllNotesData(searchTerm: String) : List<NotesDatabaseModel>
-
 
 
     @Query("SELECT COUNT(uniqueNoteId) FROM NotesDatabase")

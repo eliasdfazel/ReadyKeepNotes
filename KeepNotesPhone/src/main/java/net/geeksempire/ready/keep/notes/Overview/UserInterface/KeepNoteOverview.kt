@@ -111,7 +111,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 return listOf(
                     overviewAdapter.setupDeleteView(position),
-                    overviewAdapter.setupEditView(position),
+                    overviewAdapter.setupPinnedView(position),
                     overviewAdapter.setupShareView(position)
                 )
             }

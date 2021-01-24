@@ -4,8 +4,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 import net.geeksempire.ready.keep.notes.Database.IO.DeletingProcess
 import net.geeksempire.ready.keep.notes.Invitations.Utils.ShareIt
+import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.RecyclerViewItemSwipeHelper
@@ -49,7 +51,7 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
         this@setupDeleteView.context,
         this@setupDeleteView.context.getString(R.string.deleteText),
         13.0f,
-        R.color.red,
+        R.color.red_transparent,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).launch {
@@ -58,6 +60,36 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
 
                 DeletingProcess(context)
                     .start(dataToDelete, position)
+
+            }
+
+        })
+}
+
+fun OverviewAdapter.setupPinnedView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+
+    return RecyclerViewItemSwipeHelper.UnderlayButton(
+        this@setupPinnedView.context,
+        this@setupPinnedView.context.getString(R.string.pinText),
+        13.0f,
+        R.color.default_color_light_transparent,
+        object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+
+            override fun onClick() = CoroutineScope(Dispatchers.Main).async {
+
+                val notesDatabaseDataAccessObject = (context.application as KeepNoteApplication)
+                    .notesRoomDatabaseConfiguration
+                    .prepareRead()
+
+                if (this@setupPinnedView.notesDataStructureList[position].notePinned == NotesTemporaryModification.NotePinned) {
+
+                    notesDatabaseDataAccessObject.updateNotePinnedData(this@setupPinnedView.notesDataStructureList[position].uniqueNoteId, NotesTemporaryModification.NoteUnpinned)
+
+                } else {
+
+                    notesDatabaseDataAccessObject.updateNotePinnedData(this@setupPinnedView.notesDataStructureList[position].uniqueNoteId, NotesTemporaryModification.NotePinned)
+
+                }
 
             }
 
@@ -115,7 +147,7 @@ fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.U
         this@setupShareView.context,
         this@setupShareView.context.getString(R.string.shareText),
         13.0f,
-        R.color.cyan,
+        R.color.default_color_light_transparent,
         object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
