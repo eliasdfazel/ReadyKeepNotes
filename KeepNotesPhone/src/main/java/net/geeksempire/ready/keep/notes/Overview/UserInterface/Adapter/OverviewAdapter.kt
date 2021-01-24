@@ -253,6 +253,12 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         }
 
+        overviewViewHolder.titleTextView.setOnClickListener {
+
+
+
+        }
+
         overviewViewHolder.rootItemContentView.setOnClickListener {
 
             overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE

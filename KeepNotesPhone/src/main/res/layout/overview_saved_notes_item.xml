@@ -37,6 +37,8 @@
         android:layout_height="39dp"
         android:paddingHorizontal="11dp"
         android:gravity="center_vertical"
+        android:ellipsize="marquee"
+        android:singleLine="true"
         android:textSize="19sp"
         android:textStyle="bold"
         android:textColor="@color/dark"
