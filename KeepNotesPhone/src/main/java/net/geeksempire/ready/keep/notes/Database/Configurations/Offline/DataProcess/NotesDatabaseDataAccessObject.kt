@@ -69,7 +69,7 @@ interface NotesDatabaseDataAccessObject {
 
 
     /**
-     * Pinned = 1
+     * Unpinned = 0 - NotesTemporaryModification.NotePinned | Pinned = 1 - NotesTemporaryModification.NotePinned
      **/
     @Query("SELECT * FROM NotesDatabase WHERE notePinned = :pinStatus ORDER BY noteIndex DESC")
     suspend fun getAllPinnedNotesData(pinStatus: Int = NotesTemporaryModification.NotePinned) : List<NotesDatabaseModel>

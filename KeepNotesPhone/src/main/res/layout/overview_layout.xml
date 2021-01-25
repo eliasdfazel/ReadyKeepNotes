@@ -199,24 +199,6 @@
         apps:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/overviewUnpinnedRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:fadingEdge="vertical"
-            android:fadingEdgeLength="7dp"
-            android:requiresFadingEdge="vertical"
-            android:cacheColorHint="@android:color/transparent"
-            android:scrollbars="none"
-            android:persistentDrawingCache="animation|scrolling"
-            android:saveEnabled="true"
-            android:visibility="visible"
-            android:layoutAnimation="@anim/fade_in_layout_animation"
-
-            apps:layout_constraintTop_toTopOf="parent"/>
-
-        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/overviewPinnedRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -229,10 +211,28 @@
             android:scrollbars="none"
             android:persistentDrawingCache="animation|scrolling"
             android:saveEnabled="true"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layoutAnimation="@anim/fade_in_layout_animation"
 
-            apps:layout_constraintTop_toBottomOf="@id/overviewUnpinnedRecyclerView"/>
+            apps:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/overviewUnpinnedRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:fadingEdge="vertical"
+            android:fadingEdgeLength="7dp"
+            android:requiresFadingEdge="vertical"
+            android:cacheColorHint="@android:color/transparent"
+            android:scrollbars="none"
+            android:persistentDrawingCache="animation|scrolling"
+            android:saveEnabled="true"
+            android:visibility="gone"
+            android:layoutAnimation="@anim/fade_in_layout_animation"
+
+            apps:layout_constraintTop_toBottomOf="@id/overviewPinnedRecyclerView"/>
 
         <net.geeksempire.loadingspin.SpinKitView
             android:id="@+id/waitingViewDownload"

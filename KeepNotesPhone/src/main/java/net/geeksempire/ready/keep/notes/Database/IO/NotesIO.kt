@@ -516,7 +516,7 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                     }
 
-                    context.notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(arrayListOf(notesDatabaseModel))
+                    context.notesOverviewViewModel.notesDatabaseUnpinned.postValue(arrayListOf(notesDatabaseModel))
 
                     notesRoomDatabaseConfiguration.closeDatabase()
 

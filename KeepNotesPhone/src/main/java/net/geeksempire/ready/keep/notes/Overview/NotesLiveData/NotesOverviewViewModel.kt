@@ -6,7 +6,11 @@ import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseMode
 
 class NotesOverviewViewModel : ViewModel() {
 
-    val notesDatabaseQuerySnapshots : MutableLiveData<List<NotesDatabaseModel>> by lazy {
+    val notesDatabaseUnpinned : MutableLiveData<List<NotesDatabaseModel>> by lazy {
+        MutableLiveData<List<NotesDatabaseModel>>()
+    }
+
+    val notesDatabasePinned : MutableLiveData<List<NotesDatabaseModel>> by lazy {
         MutableLiveData<List<NotesDatabaseModel>>()
     }
 

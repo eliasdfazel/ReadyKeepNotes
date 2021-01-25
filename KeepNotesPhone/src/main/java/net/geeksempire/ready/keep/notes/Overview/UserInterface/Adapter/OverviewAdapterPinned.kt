@@ -15,13 +15,13 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
-class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
+class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewPinnedViewHolder>() {
 
     val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : OverviewViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : OverviewPinnedViewHolder {
 
-        return OverviewViewHolder(
+        return OverviewPinnedViewHolder(
             LayoutInflater.from(context)
                 .inflate(R.layout.overview_pinned_notes_item, viewGroup, false))
     }
@@ -37,8 +37,8 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
         return notesDataStructureList[position].dataSelected
     }
 
-    override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(overviewViewHolder, position, payloads)
+    override fun onBindViewHolder(overviewPinnedViewHolder: OverviewPinnedViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(overviewPinnedViewHolder, position, payloads)
 
         when (context.themePreferences.checkThemeLightDark()) {
             ThemeType.ThemeLight -> {
@@ -47,18 +47,18 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
                     context.getDrawable(R.drawable.round_corner_background)
                 tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
 
-                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
+                overviewPinnedViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
                 imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
 
-                overviewViewHolder.contentImageView.background = imageContentBackground
+                overviewPinnedViewHolder.contentImageView.background = imageContentBackground
 
-                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
-                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
 
-                overviewViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
-                overviewViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
 
             }
             ThemeType.ThemeDark -> {
@@ -67,34 +67,34 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
                     context.getDrawable(R.drawable.round_corner_background)
                 tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
 
-                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
+                overviewPinnedViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
                 imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
 
-                overviewViewHolder.contentImageView.background = imageContentBackground
+                overviewPinnedViewHolder.contentImageView.background = imageContentBackground
 
-                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
-                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
+                overviewPinnedViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
+                overviewPinnedViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
 
-                overviewViewHolder.imageContentView.imageTintList = null
-                overviewViewHolder.audioContentView.imageTintList = null
+                overviewPinnedViewHolder.imageContentView.imageTintList = null
+                overviewPinnedViewHolder.audioContentView.imageTintList = null
 
             }
         }
 
     }
 
-    override fun onBindViewHolder(overviewViewHolder: OverviewViewHolder, position: Int) {
+    override fun onBindViewHolder(overviewPinnedViewHolder: OverviewPinnedViewHolder, position: Int) {
 
         Firebase.auth.currentUser?.let {
 
-            overviewViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(
+            overviewPinnedViewHolder.titleTextView.text = context.contentEncryption.decryptEncodedData(
                 notesDataStructureList[position].noteTile.toString(),
                 it.uid
             )
 
-            overviewViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(
+            overviewPinnedViewHolder.contentTextView.text = context.contentEncryption.decryptEncodedData(
                 notesDataStructureList[position].noteTextContent.toString(),
                 it.uid
             )
@@ -108,18 +108,18 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
                     context.getDrawable(R.drawable.round_corner_background)
                 tintedBackgroundDrawable?.setTint(context.getColor(R.color.dark_transparent))
 
-                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
+                overviewPinnedViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
                 imageContentBackground?.setTint(context.getColor(R.color.dark_transparent))
 
-                overviewViewHolder.contentImageView.background = imageContentBackground
+                overviewPinnedViewHolder.contentImageView.background = imageContentBackground
 
-                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
-                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
 
-                overviewViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
-                overviewViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
 
             }
             ThemeType.ThemeDark -> {
@@ -128,46 +128,46 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
                     context.getDrawable(R.drawable.round_corner_background)
                 tintedBackgroundDrawable?.setTint(context.getColor(R.color.light_transparent))
 
-                overviewViewHolder.rootItemContentView.background = tintedBackgroundDrawable
+                overviewPinnedViewHolder.rootItemContentView.background = tintedBackgroundDrawable
 
                 val imageContentBackground = context.getDrawable(R.drawable.round_corner_background)
                 imageContentBackground?.setTint(context.getColor(R.color.light_transparent))
 
-                overviewViewHolder.contentImageView.background = imageContentBackground
+                overviewPinnedViewHolder.contentImageView.background = imageContentBackground
 
-                overviewViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
-                overviewViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
+                overviewPinnedViewHolder.titleTextView.setTextColor(context.getColor(R.color.light))
+                overviewPinnedViewHolder.contentTextView.setTextColor(context.getColor(R.color.light))
 
-                overviewViewHolder.imageContentView.imageTintList = null
-                overviewViewHolder.audioContentView.imageTintList = null
+                overviewPinnedViewHolder.imageContentView.imageTintList = null
+                overviewPinnedViewHolder.audioContentView.imageTintList = null
 
             }
         }
 
         if (notesDataStructureList[position].noteHandwritingSnapshotLink == null) {
 
-            overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            overviewViewHolder.contentImageView.setColorFilter(context.getColor(R.color.pink_transparent))
-            overviewViewHolder.contentImageView.setImageDrawable(context.getDrawable(R.drawable.vector_icon_no_content))
+            overviewPinnedViewHolder.contentImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            overviewPinnedViewHolder.contentImageView.setColorFilter(context.getColor(R.color.pink_transparent))
+            overviewPinnedViewHolder.contentImageView.setImageDrawable(context.getDrawable(R.drawable.vector_icon_no_content))
 
-            overviewViewHolder.contentImageView.visibility = View.GONE
+            overviewPinnedViewHolder.contentImageView.visibility = View.GONE
 
         } else {
 
-            overviewViewHolder.contentImageView.scaleType = ImageView.ScaleType.FIT_CENTER
-            overviewViewHolder.contentImageView.clearColorFilter()
+            overviewPinnedViewHolder.contentImageView.scaleType = ImageView.ScaleType.FIT_CENTER
+            overviewPinnedViewHolder.contentImageView.clearColorFilter()
 
-            overviewViewHolder.contentImageView.visibility = View.VISIBLE
+            overviewPinnedViewHolder.contentImageView.visibility = View.VISIBLE
 
             Glide.with(context)
                 .load(notesDataStructureList[position].noteHandwritingSnapshotLink)
-                .into(overviewViewHolder.contentImageView)
+                .into(overviewPinnedViewHolder.contentImageView)
 
         }
 
         if (notesDataStructureList[position].noteTile.isNullOrBlank()) {
 
-            overviewViewHolder.titleTextView.visibility = View.GONE
+            overviewPinnedViewHolder.titleTextView.visibility = View.GONE
 
         } else {
 
@@ -175,11 +175,11 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
                 if (noteTile.isNotBlank()) {
 
-                    overviewViewHolder.titleTextView.visibility = View.VISIBLE
+                    overviewPinnedViewHolder.titleTextView.visibility = View.VISIBLE
 
                 } else {
 
-                    overviewViewHolder.titleTextView.visibility = View.GONE
+                    overviewPinnedViewHolder.titleTextView.visibility = View.GONE
 
                 }
 
@@ -189,7 +189,7 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
         if (notesDataStructureList[position].noteTextContent.isNullOrBlank()) {
 
-            overviewViewHolder.contentTextView.visibility = View.GONE
+            overviewPinnedViewHolder.contentTextView.visibility = View.GONE
 
         } else {
 
@@ -197,11 +197,11 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
                 if (textContent.isNotBlank()) {
 
-                    overviewViewHolder.contentTextView.visibility = View.VISIBLE
+                    overviewPinnedViewHolder.contentTextView.visibility = View.VISIBLE
 
                 } else {
 
-                    overviewViewHolder.contentTextView.visibility = View.GONE
+                    overviewPinnedViewHolder.contentTextView.visibility = View.GONE
 
                 }
 
@@ -211,7 +211,7 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
         if (notesDataStructureList[position].noteImagePaths == null) {
 
-            overviewViewHolder.imageContentView.visibility = View.GONE
+            overviewPinnedViewHolder.imageContentView.visibility = View.GONE
 
         } else {
 
@@ -219,11 +219,11 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
                 if (it.isBlank()) {
 
-                    overviewViewHolder.imageContentView.visibility = View.GONE
+                    overviewPinnedViewHolder.imageContentView.visibility = View.GONE
 
                 } else {
 
-                    overviewViewHolder.imageContentView.visibility = View.VISIBLE
+                    overviewPinnedViewHolder.imageContentView.visibility = View.VISIBLE
 
                 }
 
@@ -233,7 +233,7 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
         if (notesDataStructureList[position].noteVoicePaths == null) {
 
-                overviewViewHolder.audioContentView.visibility = View.GONE
+                overviewPinnedViewHolder.audioContentView.visibility = View.GONE
 
         } else {
 
@@ -241,11 +241,11 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
                 if (it.isBlank()) {
 
-                    overviewViewHolder.audioContentView.visibility = View.GONE
+                    overviewPinnedViewHolder.audioContentView.visibility = View.GONE
 
                 } else {
 
-                    overviewViewHolder.audioContentView.visibility = View.VISIBLE
+                    overviewPinnedViewHolder.audioContentView.visibility = View.VISIBLE
 
                 }
 
@@ -253,9 +253,9 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
         }
 
-        overviewViewHolder.titleTextView.setOnClickListener {
+        overviewPinnedViewHolder.titleTextView.setOnClickListener {
 
-            overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
+            overviewPinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
 
             context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
             context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
@@ -264,7 +264,7 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
             if (paintingPathsJsonArray.isNullOrEmpty()) {
 
-                overviewViewHolder.waitingViewLoading.visibility = View.GONE
+                overviewPinnedViewHolder.waitingViewLoading.visibility = View.GONE
 
                 TakeNote.open(context = context,
                     incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
@@ -278,7 +278,7 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
             } else {
 
-                overviewViewHolder.waitingViewLoading.visibility = View.GONE
+                overviewPinnedViewHolder.waitingViewLoading.visibility = View.GONE
 
                 TakeNote.open(context = context,
                     incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
@@ -295,9 +295,9 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
         }
 
-        overviewViewHolder.rootItemContentView.setOnClickListener {
+        overviewPinnedViewHolder.rootItemContentView.setOnClickListener {
 
-            overviewViewHolder.waitingViewLoading.visibility = View.VISIBLE
+            overviewPinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
 
             context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
             context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
@@ -306,7 +306,7 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
             if (paintingPathsJsonArray.isNullOrEmpty()) {
 
-                overviewViewHolder.waitingViewLoading.visibility = View.GONE
+                overviewPinnedViewHolder.waitingViewLoading.visibility = View.GONE
 
                 TakeNote.open(context = context,
                     incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
@@ -320,7 +320,7 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
             } else {
 
-                overviewViewHolder.waitingViewLoading.visibility = View.GONE
+                overviewPinnedViewHolder.waitingViewLoading.visibility = View.GONE
 
                 TakeNote.open(context = context,
                     incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,

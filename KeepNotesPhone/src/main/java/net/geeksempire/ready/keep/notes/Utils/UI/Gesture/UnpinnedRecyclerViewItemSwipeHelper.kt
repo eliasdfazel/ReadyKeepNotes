@@ -17,18 +17,7 @@ import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
 
-interface SwipeActions {
-    /**
-     * Open Menu
-     **/
-    fun onSwipeToStart(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {}
-    /**
-     * Delete
-     **/
-    fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {}
-}
-
-abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview, private val swipeActions: SwipeActions) : ItemTouchHelper.SimpleCallback(
+abstract class UnpinnedRecyclerViewItemSwipeHelper(private val context: KeepNoteOverview, private val swipeActions: SwipeActions) : ItemTouchHelper.SimpleCallback(
     ItemTouchHelper.UP
             or ItemTouchHelper.DOWN,
     ItemTouchHelper.START
@@ -62,13 +51,13 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
     }
 
     init {
-        context.overviewLayoutBinding.overviewRecyclerView.setOnTouchListener(touchListener)
+        context.overviewLayoutBinding.overviewUnpinnedRecyclerView.setOnTouchListener(touchListener)
     }
 
     private fun recoverSwipedItem() {
         while (!recoverQueue.isEmpty()) {
             val position = recoverQueue.poll() ?: return
-            context.overviewLayoutBinding.overviewRecyclerView.adapter?.notifyItemChanged(position)
+            context.overviewLayoutBinding.overviewUnpinnedRecyclerView.adapter?.notifyItemChanged(position)
         }
     }
 
@@ -265,7 +254,7 @@ abstract class RecyclerViewItemSwipeHelper(private val context: KeepNoteOverview
 
 }
 
-private fun List<RecyclerViewItemSwipeHelper.UnderlayButton>.intrinsicWidth(): Float {
+private fun List<UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton>.intrinsicWidth(): Float {
 
     if (isEmpty()) {
         return 0.0f

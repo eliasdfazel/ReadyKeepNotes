@@ -11,6 +11,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
@@ -21,16 +22,21 @@ fun KeepNoteOverview.startDatabaseOperation() = CoroutineScope(SupervisorJob() +
 
         val notesRoomDatabaseConfiguration = (application as KeepNoteApplication).notesRoomDatabaseConfiguration
 
-        val allNotesData = notesRoomDatabaseConfiguration
+        val notesDatabaseDataAccessObject = notesRoomDatabaseConfiguration
             .prepareRead()
-            .getAllNotesData()
 
-        databaseSize = allNotesData.size.toLong()
+        val allUnpinnedNotesData = notesDatabaseDataAccessObject.getAllPinnedNotesData(NotesTemporaryModification.NoteUnpinned)
+
+        databaseSize = allUnpinnedNotesData.size.toLong()
         databaseTime = noteDatabaseConfigurations.lastTimeDatabaseUpdate()
 
         noteDatabaseConfigurations.databaseSize(databaseSize)
 
-        notesOverviewViewModel.notesDatabaseQuerySnapshots.postValue(allNotesData)
+        notesOverviewViewModel.notesDatabaseUnpinned.postValue(allUnpinnedNotesData)
+
+        val allPinnedNotesData = notesDatabaseDataAccessObject.getAllPinnedNotesData(NotesTemporaryModification.NotePinned)
+
+        notesOverviewViewModel.notesDatabasePinned.postValue(allPinnedNotesData)
 
         notesRoomDatabaseConfiguration.closeDatabase()
 

@@ -5,11 +5,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.overview_saved_notes_item.view.*
+import kotlinx.android.synthetic.main.overview_unpinned_notes_item.view.*
 import net.geeksempire.loadingspin.SpinKitView
 import net.geekstools.imageview.customshapes.ShapesImage
 
-class OverviewViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class OverviewUnpinnedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val rootItemView: ConstraintLayout = view.rootItemView
     val rootItemContentView: ConstraintLayout = view.rootItemView
     val titleTextView: TextView = view.titleTextView

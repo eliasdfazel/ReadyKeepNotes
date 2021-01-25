@@ -49,14 +49,14 @@ import net.geeksempire.ready.keep.notes.Utils.RemoteTasks.Notifications.RemoteSu
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.Dialogue.ChangeLogDialogue
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.columnCount
-import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.RecyclerViewItemSwipeHelper
+import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.PinnedRecyclerViewItemSwipeHelper
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeActions
+import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.UnpinnedRecyclerViewItemSwipeHelper
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
 import java.util.*
 import javax.inject.Inject
-
 
 class KeepNoteOverview : AppCompatActivity(),
     NetworkConnectionListenerInterface,
@@ -199,25 +199,58 @@ class KeepNoteOverview : AppCompatActivity(),
 
             }
 
-            overviewLayoutBinding.overviewRecyclerView.layoutManager = GridLayoutManager(
+            overviewLayoutBinding.overviewPinnedRecyclerView.layoutManager = GridLayoutManager(
+                applicationContext,
+                columnCount(applicationContext, 151),
+                RecyclerView.VERTICAL,
+                false
+            )
+
+            overviewLayoutBinding.overviewUnpinnedRecyclerView.layoutManager = GridLayoutManager(
                 applicationContext,
                 columnCount(applicationContext, 313),
                 RecyclerView.VERTICAL,
                 false
             )
 
-            overviewLayoutBinding.overviewRecyclerView.adapter = overviewAdapterUnpinned
+            overviewLayoutBinding.overviewPinnedRecyclerView.adapter = overviewAdapterPinned
 
-            itemTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewRecyclerView)
+            overviewLayoutBinding.overviewUnpinnedRecyclerView.adapter = overviewAdapterUnpinned
 
-            notesOverviewViewModel.notesDatabaseQuerySnapshots.observe(this@KeepNoteOverview, Observer {
+            itemUnpinnedTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewUnpinnedRecyclerView)
+
+            itemPinnedTouchHelper.attachToRecyclerView(overviewLayoutBinding.overviewPinnedRecyclerView)
+
+            notesOverviewViewModel.notesDatabasePinned.observe(this@KeepNoteOverview, Observer {
 
                 if (it.isNotEmpty()) {
 
-                    if (!overviewLayoutBinding.overviewRecyclerView.isShown) {
+                    if (!overviewLayoutBinding.overviewPinnedRecyclerView.isShown) {
+                        overviewLayoutBinding.overviewPinnedRecyclerView.visibility = View.VISIBLE
+                    }
 
-                        overviewLayoutBinding.overviewRecyclerView.visibility = View.VISIBLE
+                    overviewAdapterPinned.notesDataStructureList.addAll(it)
 
+                    overviewAdapterPinned.notifyDataSetChanged()
+
+                } else {
+
+                    overviewLayoutBinding.overviewPinnedRecyclerView.visibility = View.GONE
+
+                    overviewAdapterPinned.notesDataStructureList.clear()
+
+                    overviewLayoutBinding.overviewPinnedRecyclerView.removeAllViews()
+
+                }
+
+            })
+
+            notesOverviewViewModel.notesDatabaseUnpinned.observe(this@KeepNoteOverview, Observer {
+
+                if (it.isNotEmpty()) {
+
+                    if (!overviewLayoutBinding.overviewUnpinnedRecyclerView.isShown) {
+                        overviewLayoutBinding.overviewUnpinnedRecyclerView.visibility = View.VISIBLE
                     }
 
                     if (it.size == 1 && overviewAdapterUnpinned.notesDataStructureList.size == 0) {
@@ -230,7 +263,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                         overviewAdapterUnpinned.notifyDataSetChanged()
 
-                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
+                        overviewLayoutBinding.overviewUnpinnedRecyclerView.smoothScrollToPosition(0)
 
                     } else if (it.size == 1) {
                         Log.d(this@KeepNoteOverview.javaClass.simpleName, "One Quick Note")
@@ -239,7 +272,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                             databaseSize++
 
-                            overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
+                            overviewLayoutBinding.overviewUnpinnedRecyclerView.smoothScrollToPosition(0)
 
                         }
 
@@ -251,7 +284,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
                         overviewAdapterUnpinned.notifyDataSetChanged()
 
-                        overviewLayoutBinding.overviewRecyclerView.smoothScrollToPosition(0)
+                        overviewLayoutBinding.overviewUnpinnedRecyclerView.smoothScrollToPosition(0)
 
                     }
 
@@ -259,9 +292,11 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 } else {
 
+                    overviewLayoutBinding.overviewUnpinnedRecyclerView.visibility = View.GONE
+
                     overviewAdapterUnpinned.notesDataStructureList.clear()
 
-                    overviewLayoutBinding.overviewRecyclerView.removeAllViews()
+                    overviewLayoutBinding.overviewUnpinnedRecyclerView.removeAllViews()
 
                     overviewLayoutBinding.waitingViewDownload.visibility = View.VISIBLE
 
@@ -289,7 +324,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
             })
 
-            overviewLayoutBinding.overviewRecyclerView.addOnScrollListener(object :
+            overviewLayoutBinding.overviewUnpinnedRecyclerView.addOnScrollListener(object :
                 RecyclerView.OnScrollListener() {
 
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -425,7 +460,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
     }
 
-    private val itemTouchHelper: ItemTouchHelper by lazy {
+    private val itemPinnedTouchHelper: ItemTouchHelper by lazy {
 
         var initialPosition = -1
         var targetPosition = -1
@@ -444,15 +479,11 @@ class KeepNoteOverview : AppCompatActivity(),
 
         }
 
-        val simpleItemTouchCallback = object : RecyclerViewItemSwipeHelper(this@KeepNoteOverview, swipeActions) {
+        val simpleItemTouchCallback = object : PinnedRecyclerViewItemSwipeHelper(this@KeepNoteOverview, swipeActions) {
 
-            override fun instantiateUnderlayButton(position: Int): List<RecyclerViewItemSwipeHelper.UnderlayButton> {
+            override fun instantiateUnderlayButton(position: Int): List<PinnedRecyclerViewItemSwipeHelper.UnderlayButton> {
 
-                return listOf(
-                    overviewAdapterUnpinned.setupDeleteView(position),
-                    overviewAdapterUnpinned.setupPinnedView(position),
-                    overviewAdapterUnpinned.setupShareView(position)
-                )
+                return listOf()
             }
 
             override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
@@ -525,7 +556,168 @@ class KeepNoteOverview : AppCompatActivity(),
                         notesDatabaseDataAccessObject
                             .updateNoteIndex(overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(), oldIndex)
 
-                        overviewAdapter.rearrangeItemsData(initialPosition, targetPosition)
+                        overviewAdapterUnpinned.rearrangeItemsData(initialPosition, targetPosition)
+
+                        notesRoomDatabaseConfiguration.closeDatabase()
+
+                        initialPosition = -1
+                        targetPosition = -1
+
+                        Firebase.auth.currentUser?.let { firebaseUser ->
+
+                            (application as KeepNoteApplication)
+                                .firestoreDatabase.document(
+                                    databaseEndpoints.generalEndpoints(
+                                        firebaseUser.uid
+                                    ) + "/" + "${initialPosition}"
+                                )
+                                .update(
+                                    Notes.NoteIndex, newIndex,
+                                ).addOnSuccessListener {
+                                    Log.d(
+                                        this@KeepNoteOverview.javaClass.simpleName,
+                                        "Database Rearrange Process Completed Successfully | Initial Position"
+                                    )
+
+                                    (application as KeepNoteApplication)
+                                        .firestoreDatabase.document(
+                                            databaseEndpoints.generalEndpoints(
+                                                firebaseUser.uid
+                                            ) + "/" + "${targetPosition}"
+                                        )
+                                        .update(
+                                            Notes.NoteIndex, oldIndex,
+                                        ).addOnSuccessListener {
+                                            Log.d(
+                                                this@KeepNoteOverview.javaClass.simpleName,
+                                                "Database Rearrange Process Completed Successfully | Target Positionb"
+                                            )
+
+
+                                        }
+
+                                }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+                super.getSwipeThreshold(viewHolder)
+
+                return (0.79).toFloat()
+            }
+
+        }
+
+        ItemTouchHelper(simpleItemTouchCallback)
+    }
+
+    private val itemUnpinnedTouchHelper: ItemTouchHelper by lazy {
+
+        var initialPosition = -1
+        var targetPosition = -1
+
+        val swipeActions = object : SwipeActions {
+
+            override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {
+                super.onSwipeToEnd(context, position)
+
+                val dataToDelete = context.overviewAdapterUnpinned.notesDataStructureList[position]
+
+                DeletingProcess(this@KeepNoteOverview)
+                    .start(dataToDelete, position)
+
+            }
+
+        }
+
+        val simpleItemTouchCallback = object : UnpinnedRecyclerViewItemSwipeHelper(this@KeepNoteOverview, swipeActions) {
+
+            override fun instantiateUnderlayButton(position: Int): List<UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton> {
+
+                return listOf(
+                    overviewAdapterUnpinned.setupDeleteView(position),
+                    overviewAdapterUnpinned.setupPinnedView(position),
+                    overviewAdapterUnpinned.setupShareView(position)
+                )
+            }
+
+            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
+                super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
+
+                val overviewAdapter = (recyclerView.adapter as OverviewAdapterPinned)
+
+                if (initialPosition == -1) {
+
+                    initialPosition = fromPosition
+
+                }
+                targetPosition = toPosition
+
+                overviewAdapter.notifyItemMoved(initialPosition, targetPosition)
+
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+
+                doVibrate(applicationContext, 77)
+
+                when (actionState) {
+                    ItemTouchHelper.ACTION_STATE_DRAG -> {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "Drag & Drop Process")
+
+
+                    }
+                    ItemTouchHelper.ACTION_STATE_SWIPE -> {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "Swipe Process")
+
+
+                    }
+                    ItemTouchHelper.ACTION_STATE_IDLE -> {
+                        Log.d(this@KeepNoteOverview.javaClass.simpleName, "No Process. It Is Idle")
+
+
+                    }
+                }
+
+            }
+
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+
+                doVibrate(applicationContext, 57)
+
+                if (initialPosition != -1 && targetPosition != -1) {
+
+                    val overviewAdapter = (recyclerView.adapter as OverviewAdapterUnpinned)
+
+                    val oldIndex =
+                        overviewAdapter.notesDataStructureList[initialPosition].noteIndex.toString()
+                            .toLong()
+                    val newIndex =
+                        overviewAdapter.notesDataStructureList[targetPosition].noteIndex.toString()
+                            .toLong()
+
+                    lifecycleScope.launch {
+
+                        val notesRoomDatabaseConfiguration = (application as KeepNoteApplication)
+                            .notesRoomDatabaseConfiguration
+
+                        val notesDatabaseDataAccessObject = notesRoomDatabaseConfiguration.prepareRead()
+
+                        notesDatabaseDataAccessObject
+                            .updateNoteIndex(overviewAdapter.notesDataStructureList[initialPosition].uniqueNoteId.toLong(), newIndex)
+
+                        notesDatabaseDataAccessObject
+                            .updateNoteIndex(overviewAdapter.notesDataStructureList[targetPosition].uniqueNoteId.toLong(), oldIndex)
+
+                        overviewAdapterUnpinned.rearrangeItemsData(initialPosition, targetPosition)
 
                         notesRoomDatabaseConfiguration.closeDatabase()
 

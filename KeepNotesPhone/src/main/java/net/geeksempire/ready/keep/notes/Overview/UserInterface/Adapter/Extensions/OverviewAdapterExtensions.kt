@@ -10,9 +10,9 @@ import net.geeksempire.ready.keep.notes.Invitations.Utils.ShareIt
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.RecyclerViewItemSwipeHelper
+import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.UnpinnedRecyclerViewItemSwipeHelper
 
-fun OverviewAdapterPinned.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+fun OverviewAdapterUnpinned.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
     if (this@addItemToFirst.notesDataStructureList[0].uniqueNoteId != notesDatabaseModel.uniqueNoteId) {
 
@@ -28,7 +28,7 @@ fun OverviewAdapterPinned.addItemToFirst(notesDatabaseModel: NotesDatabaseModel)
 
 }
 
-fun OverviewAdapterPinned.rearrangeItemsData(fromPosition: Int, toPosition: Int) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+fun OverviewAdapterUnpinned.rearrangeItemsData(fromPosition: Int, toPosition: Int) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
     val selectedItem = notesDataStructureList[fromPosition]
     notesDataStructureList.removeAt(fromPosition)
@@ -45,14 +45,14 @@ fun OverviewAdapterPinned.rearrangeItemsData(fromPosition: Int, toPosition: Int)
 
 }
 
-fun OverviewAdapterPinned.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapterUnpinned.setupDeleteView(position: Int): UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton {
 
-    return RecyclerViewItemSwipeHelper.UnderlayButton(
+    return UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupDeleteView.context,
         this@setupDeleteView.context.getString(R.string.deleteText),
         13.0f,
         R.color.red_transparent,
-        object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+        object : UnpinnedRecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).launch {
 
@@ -66,14 +66,14 @@ fun OverviewAdapterPinned.setupDeleteView(position: Int): RecyclerViewItemSwipeH
         })
 }
 
-fun OverviewAdapterPinned.setupPinnedView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton {
 
-    return RecyclerViewItemSwipeHelper.UnderlayButton(
+    return UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupPinnedView.context,
         this@setupPinnedView.context.getString(R.string.pinText),
         13.0f,
         R.color.default_color_light_transparent,
-        object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+        object : UnpinnedRecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 
@@ -96,14 +96,14 @@ fun OverviewAdapterPinned.setupPinnedView(position: Int): RecyclerViewItemSwipeH
         })
 }
 
-fun OverviewAdapterPinned.setupEditView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapterUnpinned.setupEditView(position: Int): UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton {
 
-    return RecyclerViewItemSwipeHelper.UnderlayButton(
+    return UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupEditView.context,
         this@setupEditView.context.getString(R.string.editText),
         13.0f,
         R.color.default_color,
-        object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+        object : UnpinnedRecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 
@@ -141,14 +141,14 @@ fun OverviewAdapterPinned.setupEditView(position: Int): RecyclerViewItemSwipeHel
         })
 }
 
-fun OverviewAdapterPinned.setupShareView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapterUnpinned.setupShareView(position: Int): UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton {
 
-    return RecyclerViewItemSwipeHelper.UnderlayButton(
+    return UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupShareView.context,
         this@setupShareView.context.getString(R.string.shareText),
         13.0f,
         R.color.default_color_light_transparent,
-        object : RecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+        object : UnpinnedRecyclerViewItemSwipeHelper.UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 
