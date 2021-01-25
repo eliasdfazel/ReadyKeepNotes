@@ -12,6 +12,7 @@ package net.geeksempire.ready.keep.notes.Database.Configurations.Offline.DataPro
 
 import androidx.room.*
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 
 @Dao
 interface NotesDatabaseDataAccessObject {
@@ -70,8 +71,8 @@ interface NotesDatabaseDataAccessObject {
     /**
      * Pinned = 1
      **/
-    @Query("SELECT * FROM NotesDatabase WHERE notePinned = 1 ORDER BY noteIndex DESC")
-    suspend fun getAllPinnedNotesData() : List<NotesDatabaseModel>
+    @Query("SELECT * FROM NotesDatabase WHERE notePinned = :pinStatus ORDER BY noteIndex DESC")
+    suspend fun getAllPinnedNotesData(pinStatus: Int = NotesTemporaryModification.NotePinned) : List<NotesDatabaseModel>
 
 
     @Query("SELECT * FROM NotesDatabase ORDER BY notePinned DESC, noteIndex DESC")
