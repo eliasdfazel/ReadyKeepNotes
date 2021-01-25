@@ -201,7 +201,7 @@ class KeepNoteOverview : AppCompatActivity(),
 
             overviewLayoutBinding.overviewPinnedRecyclerView.layoutManager = GridLayoutManager(
                 applicationContext,
-                columnCount(applicationContext, 151),
+                columnCount(applicationContext, 213),
                 RecyclerView.VERTICAL,
                 false
             )

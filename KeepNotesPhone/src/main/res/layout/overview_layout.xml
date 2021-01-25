@@ -190,7 +190,7 @@
         
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingBottom="89dp"
@@ -198,58 +198,65 @@
         apps:layout_constraintHeight_percent="0.70"
         apps:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/overviewPinnedRecyclerView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:fadingEdge="vertical"
-            android:fadingEdgeLength="7dp"
-            android:requiresFadingEdge="vertical"
-            android:cacheColorHint="@android:color/transparent"
-            android:scrollbars="none"
-            android:persistentDrawingCache="animation|scrolling"
-            android:saveEnabled="true"
-            android:visibility="gone"
-            android:layoutAnimation="@anim/fade_in_layout_animation"
+            android:layout_height="match_parent">
 
-            apps:layout_constraintTop_toTopOf="parent"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/overviewPinnedRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:paddingHorizontal="11dp"
+                android:fadingEdge="vertical"
+                android:fadingEdgeLength="7dp"
+                android:requiresFadingEdge="vertical"
+                android:cacheColorHint="@android:color/transparent"
+                android:scrollbars="none"
+                android:persistentDrawingCache="animation|scrolling"
+                android:saveEnabled="true"
+                android:visibility="invisible"
+                android:layoutAnimation="@anim/fade_in_layout_animation"
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/overviewUnpinnedRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:fadingEdge="vertical"
-            android:fadingEdgeLength="7dp"
-            android:requiresFadingEdge="vertical"
-            android:cacheColorHint="@android:color/transparent"
-            android:scrollbars="none"
-            android:persistentDrawingCache="animation|scrolling"
-            android:saveEnabled="true"
-            android:visibility="gone"
-            android:layoutAnimation="@anim/fade_in_layout_animation"
+                apps:layout_constraintTop_toTopOf="parent"/>
 
-            apps:layout_constraintTop_toBottomOf="@id/overviewPinnedRecyclerView"
-            apps:layout_constraintBottom_toBottomOf="parent"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/overviewUnpinnedRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:fadingEdge="vertical"
+                android:fadingEdgeLength="7dp"
+                android:requiresFadingEdge="vertical"
+                android:cacheColorHint="@android:color/transparent"
+                android:scrollbars="none"
+                android:persistentDrawingCache="animation|scrolling"
+                android:saveEnabled="true"
+                android:visibility="invisible"
+                android:layoutAnimation="@anim/fade_in_layout_animation"
 
-        <net.geeksempire.loadingspin.SpinKitView
-            android:id="@+id/waitingViewDownload"
-            android:layout_width="197dp"
-            android:layout_height="197dp"
-            android:visibility="visible"
+                apps:layout_constraintTop_toBottomOf="@id/overviewPinnedRecyclerView"
+                apps:layout_constraintBottom_toBottomOf="parent"/>
 
-            apps:SpinKit_Style="Pulse"
-            apps:SpinKit_Color="@color/cyan"
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            apps:layout_constraintTop_toTopOf="parent"
-            apps:layout_constraintBottom_toBottomOf="parent"
-            apps:layout_constraintStart_toStartOf="parent"
-            apps:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.core.widget.NestedScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/waitingViewDownload"
+        android:layout_width="121dp"
+        android:layout_height="121dp"
+        android:visibility="visible"
+
+        apps:SpinKit_Style="Pulse"
+        apps:SpinKit_Color="@color/cyan"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/startNewNoteView"

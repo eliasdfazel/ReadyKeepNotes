@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="3dp"
-    android:layout_marginHorizontal="23.9dp"
+    android:layout_marginHorizontal="13.9dp"
     android:background="@drawable/round_corner_background"
     tools:context=".Overview.UserInterface.KeepNoteOverview"
 
