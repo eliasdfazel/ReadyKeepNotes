@@ -51,7 +51,7 @@ abstract class PinnedRecyclerViewItemSwipeHelper(private val context: KeepNoteOv
     }
 
     init {
-        context.overviewLayoutBinding.overviewUnpinnedRecyclerView.setOnTouchListener(touchListener)
+        context.overviewLayoutBinding.overviewPinnedRecyclerView.setOnTouchListener(touchListener)
     }
 
     private fun recoverSwipedItem() {
