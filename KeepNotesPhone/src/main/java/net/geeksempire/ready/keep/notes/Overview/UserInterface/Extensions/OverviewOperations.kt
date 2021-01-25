@@ -49,7 +49,7 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
     noteDatabaseConfigurations.databaseSize(newDatabaseSize)
 
-    if (overviewAdapter.notesDataStructureList.isEmpty()) {
+    if (overviewAdapterUnpinned.notesDataStructureList.isEmpty()) {
 
         startDatabaseOperation()
 
@@ -66,15 +66,15 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
                 val updatedNoteData = notesDatabaseDataAccessObject.getSpecificNoteData(updatedDatabaseItemIdentifier)
 
-                val currentNoteData = overviewAdapter.notesDataStructureList[updatedDatabaseItemPosition]
+                val currentNoteData = overviewAdapterUnpinned.notesDataStructureList[updatedDatabaseItemPosition]
 
                 if (updatedNoteData!!.noteEditTime?:0.toLong() > currentNoteData.noteEditTime?:0.toLong()) {
 
-                    overviewAdapter.notesDataStructureList[updatedDatabaseItemPosition] = updatedNoteData
+                    overviewAdapterUnpinned.notesDataStructureList[updatedDatabaseItemPosition] = updatedNoteData
 
                     withContext(Dispatchers.Main) {
 
-                        overviewAdapter.notifyItemChanged(updatedDatabaseItemPosition)
+                        overviewAdapterUnpinned.notifyItemChanged(updatedDatabaseItemPosition)
 
                     }
 
@@ -85,13 +85,13 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
                 val newestDatabaseItem: NotesDatabaseModel = notesDatabaseDataAccessObject.getNewestInsertedData()
 
-                if (overviewAdapter.notesDataStructureList[overviewAdapter.itemCount - 1].uniqueNoteId != newestDatabaseItem.uniqueNoteId) {
+                if (overviewAdapterUnpinned.notesDataStructureList[overviewAdapterUnpinned.itemCount - 1].uniqueNoteId != newestDatabaseItem.uniqueNoteId) {
 
-                    overviewAdapter.notesDataStructureList.add(0, newestDatabaseItem)
+                    overviewAdapterUnpinned.notesDataStructureList.add(0, newestDatabaseItem)
 
                     withContext(Dispatchers.Main) {
 
-                        overviewAdapter.notifyItemInserted(0)
+                        overviewAdapterUnpinned.notifyItemInserted(0)
 
                     }
                 }

@@ -45,8 +45,8 @@ class DeletingProcess (private val keepNoteApplication: KeepNoteOverview) {
         }
 
         //Delete Data On User Interface
-        keepNoteApplication.overviewAdapter.notesDataStructureList.removeAt(selectedDataPosition)
-        keepNoteApplication.overviewAdapter.notifyItemRemoved(selectedDataPosition)
+        keepNoteApplication.overviewAdapterUnpinned.notesDataStructureList.removeAt(selectedDataPosition)
+        keepNoteApplication.overviewAdapterUnpinned.notifyItemRemoved(selectedDataPosition)
 
         //Delete Data On Local Database
         val notesRoomDatabaseConfiguration = (keepNoteApplication.application as KeepNoteApplication).notesRoomDatabaseConfiguration

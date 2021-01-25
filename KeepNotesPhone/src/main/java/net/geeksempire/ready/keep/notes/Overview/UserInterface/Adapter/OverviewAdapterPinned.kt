@@ -15,7 +15,7 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
-class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
+class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewViewHolder>() {
 
     val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
 
@@ -23,7 +23,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
 
         return OverviewViewHolder(
             LayoutInflater.from(context)
-                .inflate(R.layout.overview_saved_notes_item, viewGroup, false))
+                .inflate(R.layout.overview_pinned_notes_item, viewGroup, false))
     }
 
     override fun getItemCount() : Int {
@@ -267,7 +267,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                 overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
                 TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapter.javaClass.simpleName,
+                    incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
                     extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
                     noteTile = notesDataStructureList[position].noteTile,
@@ -281,7 +281,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                 overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
                 TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapter.javaClass.simpleName,
+                    incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
                     extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
                     noteTile = notesDataStructureList[position].noteTile,
@@ -309,7 +309,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                 overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
                 TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapter.javaClass.simpleName,
+                    incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
                     extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
                     noteTile = notesDataStructureList[position].noteTile,
@@ -323,7 +323,7 @@ class OverviewAdapter(val context: KeepNoteOverview) : RecyclerView.Adapter<Over
                 overviewViewHolder.waitingViewLoading.visibility = View.GONE
 
                 TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapter.javaClass.simpleName,
+                    incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
                     extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
                     noteTile = notesDataStructureList[position].noteTile,

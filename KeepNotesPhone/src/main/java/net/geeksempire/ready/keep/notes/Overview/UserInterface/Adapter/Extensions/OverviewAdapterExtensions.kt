@@ -12,7 +12,7 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.RecyclerViewItemSwipeHelper
 
-fun OverviewAdapter.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+fun OverviewAdapterPinned.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
     if (this@addItemToFirst.notesDataStructureList[0].uniqueNoteId != notesDatabaseModel.uniqueNoteId) {
 
@@ -28,7 +28,7 @@ fun OverviewAdapter.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = Cor
 
 }
 
-fun OverviewAdapter.rearrangeItemsData(fromPosition: Int, toPosition: Int) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+fun OverviewAdapterPinned.rearrangeItemsData(fromPosition: Int, toPosition: Int) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
     val selectedItem = notesDataStructureList[fromPosition]
     notesDataStructureList.removeAt(fromPosition)
@@ -45,7 +45,7 @@ fun OverviewAdapter.rearrangeItemsData(fromPosition: Int, toPosition: Int) = Cor
 
 }
 
-fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapterPinned.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
 
     return RecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupDeleteView.context,
@@ -56,7 +56,7 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).launch {
 
-                val dataToDelete = context.overviewAdapter.notesDataStructureList[position]
+                val dataToDelete = context.overviewAdapterUnpinned.notesDataStructureList[position]
 
                 DeletingProcess(context)
                     .start(dataToDelete, position)
@@ -66,7 +66,7 @@ fun OverviewAdapter.setupDeleteView(position: Int): RecyclerViewItemSwipeHelper.
         })
 }
 
-fun OverviewAdapter.setupPinnedView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapterPinned.setupPinnedView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
 
     return RecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupPinnedView.context,
@@ -96,7 +96,7 @@ fun OverviewAdapter.setupPinnedView(position: Int): RecyclerViewItemSwipeHelper.
         })
 }
 
-fun OverviewAdapter.setupEditView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapterPinned.setupEditView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
 
     return RecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupEditView.context,
@@ -141,7 +141,7 @@ fun OverviewAdapter.setupEditView(position: Int): RecyclerViewItemSwipeHelper.Un
         })
 }
 
-fun OverviewAdapter.setupShareView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
+fun OverviewAdapterPinned.setupShareView(position: Int): RecyclerViewItemSwipeHelper.UnderlayButton {
 
     return RecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupShareView.context,

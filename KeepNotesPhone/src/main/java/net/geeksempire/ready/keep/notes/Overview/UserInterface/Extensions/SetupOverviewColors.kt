@@ -81,9 +81,9 @@ fun KeepNoteOverview.setupOverviewColors() {
         }
     }
 
-    if (overviewAdapter.notesDataStructureList.isNotEmpty()) {
+    if (overviewAdapterUnpinned.notesDataStructureList.isNotEmpty()) {
 
-        overviewAdapter.notifyItemRangeChanged(0, overviewAdapter.itemCount, null)
+        overviewAdapterUnpinned.notifyItemRangeChanged(0, overviewAdapterUnpinned.itemCount, null)
 
     }
 
