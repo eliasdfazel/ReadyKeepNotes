@@ -96,7 +96,7 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
 
                     this@setupPinnedView.notifyItemRemoved(position)
 
-                    context.overviewAdapterPinned.notesDataStructureList.add(pinnedItem)
+                    context.overviewAdapterPinned.notesDataStructureList.add(0, pinnedItem)
 
                     context.overviewAdapterPinned.notifyItemInserted(0)
 
