@@ -77,15 +77,21 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 
+                println(">>>>>>>>>>>>> 0")
+
                 val notesDatabaseDataAccessObject = (context.application as KeepNoteApplication)
                     .notesRoomDatabaseConfiguration
                     .prepareRead()
 
                 if (this@setupPinnedView.notesDataStructureList[position].notePinned == NotesTemporaryModification.NotePinned) {
 
+                    println(">>>>>>>>>>>>> 1")
+
                     notesDatabaseDataAccessObject.updateNotePinnedData(this@setupPinnedView.notesDataStructureList[position].uniqueNoteId, NotesTemporaryModification.NoteUnpinned)
 
                 } else {
+
+                    println(">>>>>>>>>>>>> 2")
 
                     notesDatabaseDataAccessObject.updateNotePinnedData(this@setupPinnedView.notesDataStructureList[position].uniqueNoteId, NotesTemporaryModification.NotePinned)
 

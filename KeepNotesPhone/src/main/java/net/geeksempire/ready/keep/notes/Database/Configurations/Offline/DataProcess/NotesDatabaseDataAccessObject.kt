@@ -42,7 +42,7 @@ interface NotesDatabaseDataAccessObject {
 
 
     /**
-     * Pinned = 1
+     * Unpinned = 0 - NotesTemporaryModification.NotePinned | Pinned = 1 - NotesTemporaryModification.NotePinned
      **/
     @Query("UPDATE NotesDatabase SET notePinned = :notePinned WHERE uniqueNoteId = :uniqueNoteId")
     suspend fun updateNotePinnedData(uniqueNoteId: Long, notePinned: Int)

@@ -650,7 +650,7 @@ class KeepNoteOverview : AppCompatActivity(),
             override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPosition: Int, target: RecyclerView.ViewHolder, toPosition: Int, x: Int, y: Int) {
                 super.onMoved(recyclerView, viewHolder, fromPosition, target, toPosition, x, y)
 
-                val overviewAdapter = (recyclerView.adapter as OverviewAdapterPinned)
+                val overviewAdapter = (recyclerView.adapter as OverviewAdapterUnpinned)
 
                 if (initialPosition == -1) {
 
