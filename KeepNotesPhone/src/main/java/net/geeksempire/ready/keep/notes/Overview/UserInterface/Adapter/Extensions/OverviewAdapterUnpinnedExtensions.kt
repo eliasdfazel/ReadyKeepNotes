@@ -90,6 +90,16 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
 
                     notesDatabaseDataAccessObject.updateNotePinnedData(this@setupPinnedView.notesDataStructureList[position].uniqueNoteId, NotesTemporaryModification.NotePinned)
 
+                    delay(123)
+
+                    val pinnedItem = this@setupPinnedView.notesDataStructureList.removeAt(position)
+
+                    this@setupPinnedView.notifyItemRemoved(position)
+
+                    context.overviewAdapterPinned.notesDataStructureList.add(pinnedItem)
+
+                    context.overviewAdapterPinned.notifyItemInserted(0)
+
                 }
 
             }
