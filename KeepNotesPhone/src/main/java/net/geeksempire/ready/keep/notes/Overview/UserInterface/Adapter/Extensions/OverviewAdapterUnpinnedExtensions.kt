@@ -10,6 +10,7 @@ import net.geeksempire.ready.keep.notes.Invitations.Utils.ShareIt
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.UnderlayOptionsActions
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.UnpinnedRecyclerViewItemSwipeHelper
 
 fun OverviewAdapterUnpinned.addItemToFirst(notesDatabaseModel: NotesDatabaseModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
@@ -52,7 +53,7 @@ fun OverviewAdapterUnpinned.setupDeleteView(position: Int): UnpinnedRecyclerView
         this@setupDeleteView.context.getString(R.string.deleteText),
         13.0f,
         R.color.red_transparent,
-        object : UnpinnedRecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+        object : UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).launch {
 
@@ -68,12 +69,14 @@ fun OverviewAdapterUnpinned.setupDeleteView(position: Int): UnpinnedRecyclerView
 
 fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton {
 
+    println(">>>>>>>>>>>>> 0")
+
     return UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupPinnedView.context,
         this@setupPinnedView.context.getString(R.string.pinText),
         13.0f,
         R.color.default_color_light_transparent,
-        object : UnpinnedRecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+        object : UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 
@@ -109,7 +112,7 @@ fun OverviewAdapterUnpinned.setupEditView(position: Int): UnpinnedRecyclerViewIt
         this@setupEditView.context.getString(R.string.editText),
         13.0f,
         R.color.default_color,
-        object : UnpinnedRecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+        object : UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 
@@ -154,7 +157,7 @@ fun OverviewAdapterUnpinned.setupShareView(position: Int): UnpinnedRecyclerViewI
         this@setupShareView.context.getString(R.string.shareText),
         13.0f,
         R.color.default_color_light_transparent,
-        object : UnpinnedRecyclerViewItemSwipeHelper.UnderlayOptionsActions {
+        object : UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
 

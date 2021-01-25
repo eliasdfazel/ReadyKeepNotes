@@ -33,3 +33,7 @@ interface SwipeActions {
      **/
     fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {}
 }
+
+interface UnderlayOptionsActions {
+    fun onClick() = CoroutineScope(Dispatchers.Main).launch {  }
+}

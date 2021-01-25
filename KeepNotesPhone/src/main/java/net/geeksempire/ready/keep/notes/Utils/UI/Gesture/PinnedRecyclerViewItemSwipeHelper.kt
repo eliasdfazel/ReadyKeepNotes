@@ -192,10 +192,6 @@ abstract class PinnedRecyclerViewItemSwipeHelper(private val context: KeepNoteOv
 
     abstract fun instantiateUnderlayButton(position: Int): List<UnderlayButton>
 
-    interface UnderlayOptionsActions {
-        fun onClick() = CoroutineScope(Dispatchers.Main).launch {  }
-    }
-
     class UnderlayButton(
         private val context: Context,
         private val title: String,
