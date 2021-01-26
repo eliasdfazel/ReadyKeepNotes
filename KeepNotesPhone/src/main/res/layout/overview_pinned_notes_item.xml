@@ -68,7 +68,7 @@
         android:textSize="15sp"
         android:textColor="@color/dark"
         android:fontFamily="monospace"
-        android:visibility="invisible"
+        android:visibility="gone"
 
         apps:layout_constraintTop_toBottomOf="@id/titleTextView"
         apps:layout_constraintStart_toStartOf="parent"
