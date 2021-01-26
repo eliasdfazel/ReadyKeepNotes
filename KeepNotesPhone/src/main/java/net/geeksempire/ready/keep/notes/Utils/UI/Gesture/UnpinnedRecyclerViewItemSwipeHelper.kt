@@ -19,7 +19,9 @@ import kotlin.math.max
 
 abstract class UnpinnedRecyclerViewItemSwipeHelper(private val context: KeepNoteOverview, private val swipeActions: SwipeActions) : ItemTouchHelper.SimpleCallback(
     ItemTouchHelper.UP
-            or ItemTouchHelper.DOWN,
+            or ItemTouchHelper.DOWN
+            or ItemTouchHelper.START
+            or ItemTouchHelper.END,
     ItemTouchHelper.START
 ) {
 
