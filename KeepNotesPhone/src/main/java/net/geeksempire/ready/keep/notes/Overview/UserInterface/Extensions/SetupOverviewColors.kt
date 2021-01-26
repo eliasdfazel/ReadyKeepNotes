@@ -83,6 +83,8 @@ fun KeepNoteOverview.setupOverviewColors() {
 
     if (overviewAdapterUnpinned.notesDataStructureList.isNotEmpty()) {
 
+        overviewAdapterPinned.notifyItemRangeChanged(0, overviewAdapterUnpinned.itemCount, null)
+
         overviewAdapterUnpinned.notifyItemRangeChanged(0, overviewAdapterUnpinned.itemCount, null)
 
     }
