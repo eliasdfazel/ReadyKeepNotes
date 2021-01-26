@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.abanabsalan.aban.magazine.Utils.System.doVibrate
@@ -199,11 +200,9 @@ class KeepNoteOverview : AppCompatActivity(),
 
             }
 
-            overviewLayoutBinding.overviewPinnedRecyclerView.layoutManager = GridLayoutManager(
-                applicationContext,
+            overviewLayoutBinding.overviewPinnedRecyclerView.layoutManager = StaggeredGridLayoutManager(
                 columnCount(applicationContext, 213),
-                RecyclerView.VERTICAL,
-                false
+                RecyclerView.VERTICAL
             )
 
             overviewLayoutBinding.overviewUnpinnedRecyclerView.layoutManager = GridLayoutManager(
