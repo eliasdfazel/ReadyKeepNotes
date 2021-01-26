@@ -246,8 +246,8 @@
 
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/waitingViewDownload"
-        android:layout_width="121dp"
-        android:layout_height="121dp"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
         android:visibility="visible"
 
         apps:SpinKit_Style="Pulse"
