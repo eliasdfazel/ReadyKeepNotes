@@ -11,3 +11,10 @@ const runtimeOptions = {
     timeoutSeconds: 313,
 }
 
+/* [] */
+exports.scheduledAuthenticatedUserScan = functions.pubsub.schedule('3 of month 07:00').onRun((context) => {
+
+    
+
+    return true;
+});
