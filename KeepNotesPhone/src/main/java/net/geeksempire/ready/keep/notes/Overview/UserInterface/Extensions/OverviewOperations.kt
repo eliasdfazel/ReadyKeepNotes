@@ -27,7 +27,7 @@ fun KeepNoteOverview.startDatabaseOperation() = CoroutineScope(SupervisorJob() +
 
         val allUnpinnedNotesData = notesDatabaseDataAccessObject.getAllPinnedNotesData(NotesTemporaryModification.NoteUnpinned)
 
-        databaseSize = allUnpinnedNotesData.size.toLong()
+        databaseSize = notesDatabaseDataAccessObject.getSizeOfDatabase().toLong()
         databaseTime = noteDatabaseConfigurations.lastTimeDatabaseUpdate()
 
         noteDatabaseConfigurations.databaseSize(databaseSize)
@@ -72,18 +72,41 @@ fun KeepNoteOverview.databaseOperationsCheckpoint() = CoroutineScope(SupervisorJ
 
                 val updatedNoteData = notesDatabaseDataAccessObject.getSpecificNoteData(updatedDatabaseItemIdentifier)
 
-                val currentNoteData = overviewAdapterUnpinned.notesDataStructureList[updatedDatabaseItemPosition]
+                when (updatedNoteData?.notePinned) {
+                    NotesTemporaryModification.NotePinned -> {
 
-                if (updatedNoteData!!.noteEditTime?:0.toLong() > currentNoteData.noteEditTime?:0.toLong()) {
+                        val currentNoteData = overviewAdapterPinned.notesDataStructureList[updatedDatabaseItemPosition]
 
-                    overviewAdapterUnpinned.notesDataStructureList[updatedDatabaseItemPosition] = updatedNoteData
+                        if (updatedNoteData.noteEditTime?:0.toLong() > currentNoteData.noteEditTime?:0.toLong()) {
 
-                    withContext(Dispatchers.Main) {
+                            overviewAdapterPinned.notesDataStructureList[updatedDatabaseItemPosition] = updatedNoteData
 
-                        overviewAdapterUnpinned.notifyItemChanged(updatedDatabaseItemPosition)
+                            withContext(Dispatchers.Main) {
+
+                                overviewAdapterPinned.notifyItemChanged(updatedDatabaseItemPosition)
+
+                            }
+
+                        }
 
                     }
+                    NotesTemporaryModification.NoteUnpinned -> {
 
+                        val currentNoteData = overviewAdapterUnpinned.notesDataStructureList[updatedDatabaseItemPosition]
+
+                        if (updatedNoteData.noteEditTime?:0.toLong() > currentNoteData.noteEditTime?:0.toLong()) {
+
+                            overviewAdapterUnpinned.notesDataStructureList[updatedDatabaseItemPosition] = updatedNoteData
+
+                            withContext(Dispatchers.Main) {
+
+                                overviewAdapterUnpinned.notifyItemChanged(updatedDatabaseItemPosition)
+
+                            }
+
+                        }
+
+                    }
                 }
 
             } else if (newDatabaseSize > databaseSize) {

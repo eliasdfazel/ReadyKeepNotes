@@ -144,6 +144,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
         const val UpdateExistingNote = "UpdateExistingNote"
 
         const val AudioRecordRequestCode = 123
+
+        const val PinnedNote = "PinnedNote"
     }
 
     object NoteExtraData {
@@ -163,7 +165,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                  contentText: String? = null,
                  paintingPath: String? = null,
                  encryptedTextContent: Boolean,
-                 updateExistingNote: Boolean = false) {
+                 updateExistingNote: Boolean = false,
+                 pinnedNote: Boolean = false) {
 
             context.startActivity(Intent(context, TakeNote::class.java).apply {
                 putExtra("IncomingActivityName", incomingActivityName)
@@ -176,6 +179,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                 putExtra(TakeNote.NoteExtraData.TitleText, noteTile)
                 putExtra(TakeNote.NoteExtraData.ContentText, contentText)
                 putExtra(TakeNote.NoteExtraData.PaintingPath, paintingPath)
+
+                putExtra(TakeNote.NoteConfigurations.PinnedNote, pinnedNote)
 
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }, ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, 0).toBundle())

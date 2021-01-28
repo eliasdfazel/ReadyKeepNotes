@@ -274,7 +274,8 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
                     noteTile = notesDataStructureList[position].noteTile,
                     contentText = notesDataStructureList[position].noteTextContent,
                     encryptedTextContent = true,
-                    updateExistingNote = true
+                    updateExistingNote = true,
+                    pinnedNote = true
                 )
 
             } else {
@@ -289,7 +290,8 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
                     contentText = notesDataStructureList[position].noteTextContent,
                     paintingPath = paintingPathsJsonArray,
                     encryptedTextContent = true,
-                    updateExistingNote = true
+                    updateExistingNote = true,
+                    pinnedNote = true
                 )
 
             }
