@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:maxHeight="107dp"
         android:paddingHorizontal="13dp"
-        android:paddingVertical="5dp"
+        android:paddingVertical="7dp"
         android:gravity="top|start"
         android:ellipsize="end"
         android:minLines="1"
