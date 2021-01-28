@@ -1,5 +1,6 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
+import android.view.View
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
@@ -96,9 +97,23 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
 
                     this@setupPinnedView.notifyItemRemoved(position)
 
-                    context.overviewAdapterPinned.notesDataStructureList.add(0, pinnedItem)
+                    if (context.overviewAdapterPinned.notesDataStructureList.isEmpty()) {
 
-                    context.overviewAdapterPinned.notifyItemInserted(0)
+                        context.overviewAdapterPinned.notesDataStructureList.add(pinnedItem)
+
+                        if (!context.overviewLayoutBinding.overviewPinnedRecyclerView.isShown) {
+                            context.overviewLayoutBinding.overviewPinnedRecyclerView.visibility = View.VISIBLE
+                        }
+
+                        context.overviewAdapterPinned.notifyDataSetChanged()
+
+                    } else {
+
+                        context.overviewAdapterPinned.notesDataStructureList.add(0, pinnedItem)
+
+                        context.overviewAdapterPinned.notifyItemInserted(0)
+
+                    }
 
                 }
 

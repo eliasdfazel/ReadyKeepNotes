@@ -19,7 +19,7 @@
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/contentImageView"
-        android:layout_width="213dp"
+        android:layout_width="187dp"
         android:layout_height="199dp"
         android:scaleType="fitCenter"
         android:background="@drawable/round_corner_background"
@@ -33,10 +33,10 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleTextView"
-        android:layout_width="213dp"
+        android:layout_width="187dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="11dp"
-        android:paddingVertical="3dp"
+        android:paddingHorizontal="13dp"
+        android:paddingVertical="5dp"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:ellipsize="marquee"
@@ -57,11 +57,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/contentTextView"
-        android:layout_width="213dp"
+        android:layout_width="187dp"
         android:layout_height="wrap_content"
         android:maxHeight="107dp"
-        android:paddingHorizontal="11dp"
-        android:paddingVertical="3dp"
+        android:paddingHorizontal="13dp"
+        android:paddingVertical="5dp"
         android:gravity="top|start"
         android:ellipsize="end"
         android:minLines="1"

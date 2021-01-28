@@ -201,7 +201,7 @@ class KeepNoteOverview : AppCompatActivity(),
             }
 
             overviewLayoutBinding.overviewPinnedRecyclerView.layoutManager = StaggeredGridLayoutManager(
-                columnCount(applicationContext, 213),
+                columnCount(applicationContext, 219),
                 RecyclerView.VERTICAL
             )
 

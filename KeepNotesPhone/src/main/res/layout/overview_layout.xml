@@ -207,7 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="11dp"
                 android:paddingHorizontal="11dp"
                 android:fadingEdge="vertical"
                 android:fadingEdgeLength="7dp"
