@@ -21,7 +21,7 @@ android {
         minSdkVersion 25
         targetSdkVersion 30
 
-        versionCode 16
+        versionCode 15
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
         wearAppUnbundled true
