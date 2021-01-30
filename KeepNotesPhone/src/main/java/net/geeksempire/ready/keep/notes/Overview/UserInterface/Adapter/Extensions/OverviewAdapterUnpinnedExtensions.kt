@@ -90,11 +90,15 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
 
                     Firebase.auth.currentUser?.let { firebaseUser ->
 
-                        (context.application as KeepNoteApplication).firestoreDatabase
-                            .document(context.databaseEndpoints.baseSpecificNoteEndpoint(firebaseUser.uid, this@setupPinnedView.notesDataStructureList[position].uniqueNoteId.toString()))
-                            .update(
-                                Notes.NotePinned, NotesTemporaryModification.NoteUnpinned,
-                            )
+                        if (!firebaseUser.isAnonymous) {
+
+                            (context.application as KeepNoteApplication).firestoreDatabase
+                                .document(context.databaseEndpoints.baseSpecificNoteEndpoint(firebaseUser.uid, this@setupPinnedView.notesDataStructureList[position].uniqueNoteId.toString()))
+                                .update(
+                                    Notes.NotePinned, NotesTemporaryModification.NoteUnpinned,
+                                )
+
+                        }
 
                     }
 
@@ -104,11 +108,15 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
 
                     Firebase.auth.currentUser?.let { firebaseUser ->
 
-                        (context.application as KeepNoteApplication).firestoreDatabase
-                            .document(context.databaseEndpoints.baseSpecificNoteEndpoint(firebaseUser.uid, this@setupPinnedView.notesDataStructureList[position].uniqueNoteId.toString()))
-                            .update(
-                                Notes.NotePinned, NotesTemporaryModification.NotePinned,
-                            )
+                        if (!firebaseUser.isAnonymous) {
+
+                            (context.application as KeepNoteApplication).firestoreDatabase
+                                .document(context.databaseEndpoints.baseSpecificNoteEndpoint(firebaseUser.uid, this@setupPinnedView.notesDataStructureList[position].uniqueNoteId.toString()))
+                                .update(
+                                    Notes.NotePinned, NotesTemporaryModification.NotePinned,
+                                )
+
+                        }
 
                     }
 
