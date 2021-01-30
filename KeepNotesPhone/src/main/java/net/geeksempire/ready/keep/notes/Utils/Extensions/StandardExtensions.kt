@@ -1,11 +1,20 @@
 package net.geeksempire.ready.keep.notes.Utils.Extensions
 
-fun Any?.nullCheckpoint() : String {
+fun Any?.nullCheckpointString() : String {
 
-    return if (this@nullCheckpoint == null) {
+    return if (this@nullCheckpointString == null) {
         ""
     } else {
-        this@nullCheckpoint.toString()
+        this@nullCheckpointString.toString()
+    }
+}
+
+fun Any?.nullCheckpointInteger() : Int? {
+
+    return if (this@nullCheckpointInteger == null) {
+        null
+    } else {
+        this@nullCheckpointInteger.toString().toInt()
     }
 }
 

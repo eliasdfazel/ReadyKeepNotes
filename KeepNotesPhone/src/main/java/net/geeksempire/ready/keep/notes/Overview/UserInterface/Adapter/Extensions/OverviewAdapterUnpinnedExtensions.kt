@@ -4,6 +4,7 @@ import android.view.View
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
+import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 import net.geeksempire.ready.keep.notes.Database.IO.DeletingProcess
@@ -87,9 +88,29 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
 
                     notesDatabaseDataAccessObject.updateNotePinnedData(this@setupPinnedView.notesDataStructureList[position].uniqueNoteId, NotesTemporaryModification.NoteUnpinned)
 
+                    Firebase.auth.currentUser?.let { firebaseUser ->
+
+                        (context.application as KeepNoteApplication).firestoreDatabase
+                            .document(context.databaseEndpoints.baseSpecificNoteEndpoint(firebaseUser.uid, this@setupPinnedView.notesDataStructureList[position].uniqueNoteId.toString()))
+                            .update(
+                                Notes.NotePinned, NotesTemporaryModification.NoteUnpinned,
+                            )
+
+                    }
+
                 } else {
 
                     notesDatabaseDataAccessObject.updateNotePinnedData(this@setupPinnedView.notesDataStructureList[position].uniqueNoteId, NotesTemporaryModification.NotePinned)
+
+                    Firebase.auth.currentUser?.let { firebaseUser ->
+
+                        (context.application as KeepNoteApplication).firestoreDatabase
+                            .document(context.databaseEndpoints.baseSpecificNoteEndpoint(firebaseUser.uid, this@setupPinnedView.notesDataStructureList[position].uniqueNoteId.toString()))
+                            .update(
+                                Notes.NotePinned, NotesTemporaryModification.NotePinned,
+                            )
+
+                    }
 
                     delay(123)
 

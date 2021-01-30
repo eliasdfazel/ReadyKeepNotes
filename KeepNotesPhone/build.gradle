@@ -21,7 +21,7 @@ android {
         minSdkVersion 25
         targetSdkVersion 30
 
-        versionCode 16
+        versionCode 17
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
         wearAppUnbundled true
@@ -115,7 +115,7 @@ dependencies {
 
     implementation 'androidx.palette:palette-ktx:1.0.0'
 
-    implementation 'androidx.biometric:biometric:1.0.1'
+    implementation 'androidx.biometric:biometric:1.1.0'
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'

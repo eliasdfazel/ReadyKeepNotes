@@ -21,6 +21,7 @@ import net.geeksempire.ready.keep.notes.ContentContexts.NetworkOperations.Natura
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDataStructure
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.EncryptionMigratingWork
 import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.RetrieveFiles
 import net.geeksempire.ready.keep.notes.Database.IO.ServicesIO.TransferFiles
@@ -31,7 +32,8 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.Extensions.nullCheckpoint
+import net.geeksempire.ready.keep.notes.Utils.Extensions.nullCheckpointInteger
+import net.geeksempire.ready.keep.notes.Utils.Extensions.nullCheckpointString
 import net.geeksempire.ready.keep.notes.Utils.Security.Encryption.ContentEncryption
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
@@ -95,25 +97,27 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
 
                 val uniqueNoteId = documentSnapshot.id.toLong()
 
-                val noteTitle = documentSnapshot[Notes.NoteTile].nullCheckpoint()
-                val noteTextContent = documentSnapshot[Notes.NoteTextContent].nullCheckpoint()
+                val noteTitle = documentSnapshot[Notes.NoteTile].nullCheckpointString()
+                val noteTextContent = documentSnapshot[Notes.NoteTextContent].nullCheckpointString()
 
-                val noteHandwritingPaintingPaths = documentSnapshot[Notes.NoteHandwritingPaintingPaths].nullCheckpoint()
-                val noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].nullCheckpoint()
+                val noteHandwritingPaintingPaths = documentSnapshot[Notes.NoteHandwritingPaintingPaths].nullCheckpointString()
+                val noteHandwritingSnapshotLink = documentSnapshot[Notes.NoteHandwritingSnapshotLink].nullCheckpointString()
 
-                val noteVoicePaths = documentSnapshot[Notes.NoteVoicePaths].nullCheckpoint()
-                val noteImagePaths = documentSnapshot[Notes.NoteImagePaths].nullCheckpoint()
-                val noteGifPaths = documentSnapshot[Notes.NoteGifPaths].nullCheckpoint()
+                val noteVoicePaths = documentSnapshot[Notes.NoteVoicePaths].nullCheckpointString()
+                val noteImagePaths = documentSnapshot[Notes.NoteImagePaths].nullCheckpointString()
+                val noteGifPaths = documentSnapshot[Notes.NoteGifPaths].nullCheckpointString()
 
                 val noteTakenTime = (documentSnapshot[Notes.NoteTakenTime] as Timestamp).toDate().time
                 val noteEditTime = documentSnapshot[Notes.NoteEditTime]?.let {
                     (documentSnapshot[Notes.NoteEditTime] as Timestamp).toDate().time
                 }
 
-                val noteTags = documentSnapshot[Notes.NotesTags].nullCheckpoint()
-                val noteHashTags = documentSnapshot[Notes.NotesHashTags].nullCheckpoint()
+                val noteTags = documentSnapshot[Notes.NotesTags].nullCheckpointString()
+                val noteHashTags = documentSnapshot[Notes.NotesHashTags].nullCheckpointString()
 
-                val noteTranscribeTags = documentSnapshot[Notes.NoteTranscribeTags].nullCheckpoint()
+                val noteTranscribeTags = documentSnapshot[Notes.NoteTranscribeTags].nullCheckpointString()
+
+                val notePinned = documentSnapshot[Notes.NotePinned].nullCheckpointInteger()
 
                 val notesDatabaseModel = NotesDatabaseModel(uniqueNoteId = documentSnapshot.id.toLong(),
                     noteTile = noteTitle,
@@ -129,7 +133,8 @@ class NotesIO (private val keepNoteApplication: KeepNoteApplication) {
                     noteTags = noteTags,
                     noteHashTags = noteHashTags,
                     noteTranscribeTags = noteTranscribeTags,
-                    dataSelected = 0
+                    notePinned = notePinned?:NotesTemporaryModification.NoteUnpinned,
+                    dataSelected = NotesTemporaryModification.NoteIsNotSelected
                 )
 
                 notesDatabaseDataAccessObject.insertCompleteNewNoteData(notesDatabaseModel)
