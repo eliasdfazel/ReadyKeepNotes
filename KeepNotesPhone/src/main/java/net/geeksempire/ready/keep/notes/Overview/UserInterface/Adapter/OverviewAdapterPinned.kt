@@ -24,7 +24,8 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
         return OverviewPinnedViewHolder(
             LayoutInflater.from(context)
-                .inflate(R.layout.overview_pinned_notes_item, viewGroup, false))
+                .inflate(R.layout.overview_pinned_notes_item, viewGroup, false)
+        )
     }
 
     override fun getItemCount() : Int {
@@ -38,7 +39,11 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
         return notesDataStructureList[position].dataSelected
     }
 
-    override fun onBindViewHolder(overviewPinnedViewHolder: OverviewPinnedViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(
+        overviewPinnedViewHolder: OverviewPinnedViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
         super.onBindViewHolder(overviewPinnedViewHolder, position, payloads)
 
         when (context.themePreferences.checkThemeLightDark()) {
@@ -58,8 +63,16 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
                 overviewPinnedViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
                 overviewPinnedViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
 
-                overviewPinnedViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
-                overviewPinnedViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(
+                    context.getColor(
+                        R.color.dark
+                    )
+                )
+                overviewPinnedViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(
+                    context.getColor(
+                        R.color.dark
+                    )
+                )
 
             }
             ThemeType.ThemeDark -> {
@@ -119,8 +132,16 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
                 overviewPinnedViewHolder.titleTextView.setTextColor(context.getColor(R.color.dark))
                 overviewPinnedViewHolder.contentTextView.setTextColor(context.getColor(R.color.dark))
 
-                overviewPinnedViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
-                overviewPinnedViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(context.getColor(R.color.dark))
+                overviewPinnedViewHolder.imageContentView.imageTintList = ColorStateList.valueOf(
+                    context.getColor(
+                        R.color.dark
+                    )
+                )
+                overviewPinnedViewHolder.audioContentView.imageTintList = ColorStateList.valueOf(
+                    context.getColor(
+                        R.color.dark
+                    )
+                )
 
             }
             ThemeType.ThemeDark -> {
@@ -267,7 +288,8 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
                 overviewPinnedViewHolder.waitingViewLoading.visibility = View.GONE
 
-                TakeNote.open(context = context,
+                TakeNote.open(
+                    context = context,
                     incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
                     extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
@@ -282,7 +304,8 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
                 overviewPinnedViewHolder.waitingViewLoading.visibility = View.GONE
 
-                TakeNote.open(context = context,
+                TakeNote.open(
+                    context = context,
                     incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
                     extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
@@ -311,7 +334,8 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
                 overviewPinnedViewHolder.waitingViewLoading.visibility = View.GONE
 
-                TakeNote.open(context = context,
+                TakeNote.open(
+                    context = context,
                     incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
                     extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
@@ -325,7 +349,8 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
                 overviewPinnedViewHolder.waitingViewLoading.visibility = View.GONE
 
-                TakeNote.open(context = context,
+                TakeNote.open(
+                    context = context,
                     incomingActivityName = this@OverviewAdapterPinned.javaClass.simpleName,
                     extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
                     uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
@@ -338,6 +363,22 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
             }
 
+        }
+
+        overviewPinnedViewHolder.rootItemContentView.setOnLongClickListener { view ->
+
+            val positionXY = IntArray(2)
+            view.getLocationInWindow(positionXY)
+
+            val viewX = positionXY[0]
+            val viewY = positionXY[1]
+
+            val rootViewWidth = overviewPinnedViewHolder.rootItemContentView.width
+            val rootViewHeight = overviewPinnedViewHolder.rootItemContentView.height
+
+
+
+            false
         }
 
     }
