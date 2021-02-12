@@ -26,12 +26,15 @@ class BalloonOptionsMenu (private val context: Context, private val rootView: Vi
 
         val balloonView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
 
-        val balloonLayoutParams = balloonView.layoutParams as ConstraintLayout.LayoutParams
 
         rootView.addView(balloonView)
 
+        val balloonLayoutParams = balloonView.layoutParams as ConstraintLayout.LayoutParams
+
         balloonView.translationX = viewX.toFloat()
         balloonView.translationY = viewY.toFloat()
+
+        println(">>> >> >")
 
     }
 

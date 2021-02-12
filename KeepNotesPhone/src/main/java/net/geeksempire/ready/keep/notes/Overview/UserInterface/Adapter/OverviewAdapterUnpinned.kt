@@ -10,11 +10,11 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
-import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.ViewHolders.OverviewUnpinnedViewHolder
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.UI.PopupOptionsMenu.BalloonOptionsMenu
 
 class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewUnpinnedViewHolder>() {
 
@@ -254,87 +254,91 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
 
         }
 
-        overviewUnpinnedViewHolder.titleTextView.setOnClickListener {
+        overviewUnpinnedViewHolder.titleTextView.setOnClickListener { view ->
 
-            overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
-
-            context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
-            context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
-
-            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
-
-            if (paintingPathsJsonArray.isNullOrEmpty()) {
-
-                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
-
-                TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
-                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
-                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
-                    noteTile = notesDataStructureList[position].noteTile,
-                    contentText = notesDataStructureList[position].noteTextContent,
-                    encryptedTextContent = true,
-                    updateExistingNote = true
-                )
-
-            } else {
-
-                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
-
-                TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
-                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
-                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
-                    noteTile = notesDataStructureList[position].noteTile,
-                    contentText = notesDataStructureList[position].noteTextContent,
-                    paintingPath = paintingPathsJsonArray,
-                    encryptedTextContent = true,
-                    updateExistingNote = true
-                )
-
-            }
+//            overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
+//
+//            context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
+//            context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
+//
+//            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
+//
+//            if (paintingPathsJsonArray.isNullOrEmpty()) {
+//
+//                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
+//
+//                TakeNote.open(context = context,
+//                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
+//                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+//                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+//                    noteTile = notesDataStructureList[position].noteTile,
+//                    contentText = notesDataStructureList[position].noteTextContent,
+//                    encryptedTextContent = true,
+//                    updateExistingNote = true
+//                )
+//
+//            } else {
+//
+//                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
+//
+//                TakeNote.open(context = context,
+//                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
+//                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+//                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+//                    noteTile = notesDataStructureList[position].noteTile,
+//                    contentText = notesDataStructureList[position].noteTextContent,
+//                    paintingPath = paintingPathsJsonArray,
+//                    encryptedTextContent = true,
+//                    updateExistingNote = true
+//                )
+//
+//            }
 
         }
 
-        overviewUnpinnedViewHolder.rootItemContentView.setOnClickListener {
+        overviewUnpinnedViewHolder.rootItemContentView.setOnClickListener { view ->
 
-            overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
+            val balloonOptionsMenu = BalloonOptionsMenu(context, context.overviewLayoutBinding.rootView, view)
 
-            context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
-            context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
+            balloonOptionsMenu.initializeBalloonPosition()
 
-            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
-
-            if (paintingPathsJsonArray.isNullOrEmpty()) {
-
-                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
-
-                TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
-                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
-                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
-                    noteTile = notesDataStructureList[position].noteTile,
-                    contentText = notesDataStructureList[position].noteTextContent,
-                    encryptedTextContent = true,
-                    updateExistingNote = true
-                )
-
-            } else {
-
-                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
-
-                TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
-                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
-                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
-                    noteTile = notesDataStructureList[position].noteTile,
-                    contentText = notesDataStructureList[position].noteTextContent,
-                    paintingPath = paintingPathsJsonArray,
-                    encryptedTextContent = true,
-                    updateExistingNote = true
-                )
-
-            }
+//            overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
+//
+//            context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
+//            context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
+//
+//            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
+//
+//            if (paintingPathsJsonArray.isNullOrEmpty()) {
+//
+//                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
+//
+//                TakeNote.open(context = context,
+//                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
+//                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+//                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+//                    noteTile = notesDataStructureList[position].noteTile,
+//                    contentText = notesDataStructureList[position].noteTextContent,
+//                    encryptedTextContent = true,
+//                    updateExistingNote = true
+//                )
+//
+//            } else {
+//
+//                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
+//
+//                TakeNote.open(context = context,
+//                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
+//                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+//                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+//                    noteTile = notesDataStructureList[position].noteTile,
+//                    contentText = notesDataStructureList[position].noteTextContent,
+//                    paintingPath = paintingPathsJsonArray,
+//                    encryptedTextContent = true,
+//                    updateExistingNote = true
+//                )
+//
+//            }
 
         }
 
