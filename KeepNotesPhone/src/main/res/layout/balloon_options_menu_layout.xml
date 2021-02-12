@@ -4,17 +4,52 @@
     xmlns:apps="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
-    android:layout_width="153dp"
+    android:layout_width="match_parent"
     android:layout_height="51dp"
     tools:context=".Overview.UserInterface.KeepNoteOverview" >
 
     <net.geeksempire.blurry.effect.view.RealtimeBlurView
         android:id="@+id/blurryBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
+        android:layout_width="151dp"
+        android:layout_height="51dp"
 
         apps:realtimeBlurRadius="7dp"
-        apps:realtimeOverlayColor="@color/default_color_transparent"/>
+        apps:realtimeOverlayColor="@color/default_color_transparent"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
+    <HorizontalScrollView
+        android:layout_width="151dp"
+        android:layout_height="51dp"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="51dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="71dp"
+                android:layout_height="51dp"
+                android:background="@color/black"/>
+
+            <ImageView
+                android:layout_width="71dp"
+                android:layout_height="51dp"
+                android:background="@color/blue"/>
+
+            <ImageView
+                android:layout_width="71dp"
+                android:layout_height="51dp"
+                android:background="@color/red"/>
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -378,7 +378,7 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
 
 
 
-            false
+            true
         }
 
     }

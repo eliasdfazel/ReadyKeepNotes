@@ -1,21 +1,24 @@
 package net.geeksempire.ready.keep.notes.Utils.UI.PopupOptionsMenu
 
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 
-class BalloonOptionsMenu (private val context: Context, private val rootView: ViewGroup, private val anchorView: View) {
+class BalloonOptionsMenu (private val context: AppCompatActivity, private val rootView: ViewGroup, private val anchorView: View) {
 
-    val positionXY = IntArray(2)
+    private val positionXY = IntArray(2)
 
     var viewX = 0
     var viewY = 0
 
-    val rootViewWidth = anchorView.width
-    val rootViewHeight = anchorView.height
+    val anchorViewWidth = anchorView.width
+    val anchorViewHeight = anchorView.height
 
     fun initializeBalloonPosition() {
 
@@ -23,18 +26,18 @@ class BalloonOptionsMenu (private val context: Context, private val rootView: Vi
 
         viewX = positionXY[0]
         viewY = positionXY[1]
+        Log.d(this@BalloonOptionsMenu.javaClass.simpleName, "TouchX: ${viewX} | TouchY: ${viewY}")
 
         val balloonView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
-
 
         rootView.addView(balloonView)
 
         val balloonLayoutParams = balloonView.layoutParams as ConstraintLayout.LayoutParams
 
-        balloonView.translationX = viewX.toFloat()
-        balloonView.translationY = viewY.toFloat()
+        balloonView.x = (displayX(context) / 2).toFloat() - DpToInteger(context, 75)
+        balloonView.y = viewY.toFloat()
 
-        println(">>> >> >")
+
 
     }
 
