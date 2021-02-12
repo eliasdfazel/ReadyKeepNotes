@@ -15,6 +15,7 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.ViewHolde
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.UI.PopupOptionsMenu.BalloonOptionsMenu
 
 class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewPinnedViewHolder>() {
 
@@ -376,7 +377,9 @@ class OverviewAdapterPinned(val context: KeepNoteOverview) : RecyclerView.Adapte
             val rootViewWidth = overviewPinnedViewHolder.rootItemContentView.width
             val rootViewHeight = overviewPinnedViewHolder.rootItemContentView.height
 
+            val balloonOptionsMenu = BalloonOptionsMenu(context, context.overviewLayoutBinding.rootView, view)
 
+            balloonOptionsMenu.initializeBalloonPosition()
 
             false
         }
