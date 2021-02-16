@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:layout_height="51dp"
+    android:layout_height="71dp"
     tools:context=".Overview.UserInterface.KeepNoteOverview" >
 
     <net.geeksempire.blurry.effect.view.RealtimeBlurView
         android:id="@+id/blurryBackground"
         android:layout_width="151dp"
-        android:layout_height="51dp"
+        android:layout_height="71dp"
 
         apps:realtimeBlurRadius="7dp"
         apps:realtimeOverlayColor="@color/default_color_transparent"
@@ -21,10 +21,16 @@
         apps:layout_constraintEnd_toEndOf="parent"/>
 
     <HorizontalScrollView
+        android:id="@+id/menuScrollView"
         android:layout_width="151dp"
         android:layout_height="51dp"
+        android:scrollbarSize="0dp"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="3dp"
+        android:requiresFadingEdge="vertical"
+        android:background="@drawable/body_of_balloon"
 
-        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent">
 
@@ -33,23 +39,18 @@
             android:layout_height="51dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="71dp"
-                android:layout_height="51dp"
-                android:background="@color/black"/>
-
-            <ImageView
-                android:layout_width="71dp"
-                android:layout_height="51dp"
-                android:background="@color/blue"/>
-
-            <ImageView
-                android:layout_width="71dp"
-                android:layout_height="51dp"
-                android:background="@color/red"/>
-
         </LinearLayout>
 
     </HorizontalScrollView>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="151dp"
+        android:layout_height="20dp"
+        android:background="@drawable/pick_of_balloon"
+
+
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintBottom_toTopOf="@id/menuScrollView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

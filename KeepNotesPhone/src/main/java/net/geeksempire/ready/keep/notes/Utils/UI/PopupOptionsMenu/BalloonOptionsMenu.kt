@@ -12,6 +12,8 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 
 class BalloonOptionsMenu (private val context: AppCompatActivity, private val rootView: ViewGroup, private val anchorView: View) {
 
+    private val balloonView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
+
     private val positionXY = IntArray(2)
 
     var viewX = 0
@@ -20,7 +22,7 @@ class BalloonOptionsMenu (private val context: AppCompatActivity, private val ro
     val anchorViewWidth = anchorView.width
     val anchorViewHeight = anchorView.height
 
-    fun initializeBalloonPosition() {
+    fun initializeBalloonPosition() : BalloonOptionsMenu {
 
         anchorView.getLocationInWindow(positionXY)
 
@@ -28,7 +30,6 @@ class BalloonOptionsMenu (private val context: AppCompatActivity, private val ro
         viewY = positionXY[1]
         Log.d(this@BalloonOptionsMenu.javaClass.simpleName, "TouchX: ${viewX} | TouchY: ${viewY}")
 
-        val balloonView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
 
         rootView.addView(balloonView)
 
@@ -37,7 +38,16 @@ class BalloonOptionsMenu (private val context: AppCompatActivity, private val ro
         balloonView.x = (displayX(context) / 2).toFloat() - DpToInteger(context, 75)
         balloonView.y = viewY.toFloat()
 
+        return this@BalloonOptionsMenu
+    }
 
+    fun setupOptionsItems(titlesOfItems: ArrayList<String>) {
+
+        titlesOfItems.forEach {
+
+
+
+        }
 
     }
 
