@@ -55,11 +55,13 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeActions
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.UnpinnedRecyclerViewItemSwipeHelper
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
+import net.geeksempire.ready.keep.notes.Utils.UI.PopupOptionsMenu.BalloonItemsAction
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
 import java.util.*
 import javax.inject.Inject
 
 class KeepNoteOverview : AppCompatActivity(),
+    BalloonItemsAction,
     NetworkConnectionListenerInterface,
     FirebaseInAppMessagingClickListener {
 
@@ -456,6 +458,21 @@ class KeepNoteOverview : AppCompatActivity(),
 
         RemoteMessageHandler()
             .extractData(inAppMessage, action)
+
+    }
+
+    override fun onBalloonItemClickListener(rootView: View, view: View) {
+
+        resources.getStringArray(R.array.balloonItemsText).forEach {
+
+            if (view.tag.toString() == it) {
+                Log.d(this@KeepNoteOverview.javaClass.simpleName, "${view.tag} | Balloon Option Item Click")
+
+                overviewLayoutBinding.rootView.removeView(rootView)
+
+            }
+
+        }
 
     }
 

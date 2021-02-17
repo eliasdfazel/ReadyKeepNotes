@@ -341,13 +341,12 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
 
         overviewUnpinnedViewHolder.rootItemContentView.setOnLongClickListener { view ->
 
-            val balloonOptionsMenu = BalloonOptionsMenu(context = context, rootView = context.overviewLayoutBinding.rootView, anchorView = view)
+            val balloonOptionsMenu = BalloonOptionsMenu(context = context,
+                rootView = context.overviewLayoutBinding.rootView, anchorView = view,
+            clickListener = context)
 
             balloonOptionsMenu.initializeBalloonPosition()
-                .setupOptionsItems(arrayListOf(context.getString(R.string.deleteText),
-                    context.getString(R.string.editText),
-                    context.getString(R.string.shareText),
-                    context.getString(R.string.pinText)))
+                .setupOptionsItems(context.resources.getStringArray(R.array.balloonItemsText))
 
             true
         }

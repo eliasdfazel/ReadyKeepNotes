@@ -12,7 +12,14 @@ import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 
-class BalloonOptionsMenu (private val context: AppCompatActivity, private val rootView: ViewGroup, private val anchorView: View) : View.OnClickListener {
+interface BalloonItemsAction {
+    fun onBalloonItemClickListener(rootView: View, view: View)
+}
+
+class BalloonOptionsMenu (private val context: AppCompatActivity,
+                          private val rootView: ViewGroup,
+                          private val anchorView: View,
+                          private val clickListener: BalloonItemsAction) {
 
     private val balloonView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
     private val allItemsView = balloonView.findViewById<LinearLayout>(R.id.allItemsView)
@@ -44,7 +51,7 @@ class BalloonOptionsMenu (private val context: AppCompatActivity, private val ro
         return this@BalloonOptionsMenu
     }
 
-    fun setupOptionsItems(titlesOfItems: ArrayList<String>) {
+    fun setupOptionsItems(titlesOfItems: Array<String>) {
 
         titlesOfItems.forEach {
 
@@ -52,17 +59,17 @@ class BalloonOptionsMenu (private val context: AppCompatActivity, private val ro
             val balloonOptionItemTextView = itemLayout.findViewById<TextView>(R.id.balloonOptionItemTextView)
 
             balloonOptionItemTextView.text = it
+            balloonOptionItemTextView.tag = it
 
-            itemLayout.setOnClickListener(this@BalloonOptionsMenu)
+            itemLayout.setOnClickListener { view ->
+
+                clickListener.onBalloonItemClickListener(balloonView, view)
+
+            }
 
             allItemsView.addView(itemLayout)
 
         }
-
-    }
-
-    override fun onClick(view: View?) {
-
 
     }
 

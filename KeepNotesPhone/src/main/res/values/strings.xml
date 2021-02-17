@@ -37,6 +37,13 @@
     <string name="shareText">Share</string>
     <string name="pinText">Pin</string>
 
+    <string-array name="balloonItemsText">
+        <item name="deleteText">Delete</item>
+        <item name="editText">Edit</item>
+        <item name="shareText">Share</item>
+        <item name="pinText">Pin</item>
+    </string-array>
+
     <string name="deletedText">Note Will Be Deleted</string>
 
     <string name="descriptionToggleText">Toggle Between Keyboard Typing &amp; Handwriting</string>
