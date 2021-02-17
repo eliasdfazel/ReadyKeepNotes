@@ -11,12 +11,13 @@
     <net.geeksempire.blurry.effect.view.RealtimeBlurView
         android:id="@+id/blurryBackground"
         android:layout_width="151dp"
-        android:layout_height="71dp"
+        android:layout_height="53dp"
+        android:visibility="gone"
 
         apps:realtimeBlurRadius="7dp"
-        apps:realtimeOverlayColor="@color/default_color_transparent"
+        apps:realtimeOverlayColor="#80000000"
 
-        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent"/>
 
@@ -35,11 +36,12 @@
         apps:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
+            android:id="@+id/allItemsView"
             android:layout_width="wrap_content"
             android:layout_height="51dp"
-            android:orientation="horizontal">
-
-        </LinearLayout>
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:orientation="horizontal"/>
 
     </HorizontalScrollView>
 

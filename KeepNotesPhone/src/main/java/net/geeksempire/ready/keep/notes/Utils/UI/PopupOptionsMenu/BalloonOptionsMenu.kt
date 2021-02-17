@@ -4,15 +4,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 
-class BalloonOptionsMenu (private val context: AppCompatActivity, private val rootView: ViewGroup, private val anchorView: View) {
+class BalloonOptionsMenu (private val context: AppCompatActivity, private val rootView: ViewGroup, private val anchorView: View) : View.OnClickListener {
 
     private val balloonView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
+    private val allItemsView = balloonView.findViewById<LinearLayout>(R.id.allItemsView)
 
     private val positionXY = IntArray(2)
 
@@ -45,9 +48,21 @@ class BalloonOptionsMenu (private val context: AppCompatActivity, private val ro
 
         titlesOfItems.forEach {
 
+            val itemLayout = LayoutInflater.from(context).inflate(R.layout.balloon_option_item, null)
+            val balloonOptionItemTextView = itemLayout.findViewById<TextView>(R.id.balloonOptionItemTextView)
 
+            balloonOptionItemTextView.text = it
+
+            itemLayout.setOnClickListener(this@BalloonOptionsMenu)
+
+            allItemsView.addView(itemLayout)
 
         }
+
+    }
+
+    override fun onClick(view: View?) {
+
 
     }
 
