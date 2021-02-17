@@ -19,7 +19,6 @@ interface BalloonItemsAction {
 
 class BalloonOptionsMenu (private val context: AppCompatActivity,
                           private val rootView: ViewGroup,
-                          private val anchorView: View,
                           private val clickListener: BalloonItemsAction) {
 
     private val balloonOptionsRootView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
@@ -30,10 +29,9 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
     var viewX = 0
     var viewY = 0
 
-    val anchorViewWidth = anchorView.width
-    val anchorViewHeight = anchorView.height
+    var balloonOptionsAdded = false
 
-    fun initializeBalloonPosition() : BalloonOptionsMenu {
+    fun initializeBalloonPosition(anchorView: View) : BalloonOptionsMenu {
 
         anchorView.getLocationInWindow(positionXY)
 
@@ -41,6 +39,13 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
         viewY = positionXY[1]
         Log.d(this@BalloonOptionsMenu.javaClass.simpleName, "TouchX: ${viewX} | TouchY: ${viewY}")
 
+        if (balloonOptionsAdded) {
+
+            balloonOptionsAdded = false
+
+            rootView.removeView(balloonOptionsRootView)
+
+        }
 
         rootView.addView(balloonOptionsRootView)
         balloonOptionsRootView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
@@ -49,6 +54,14 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
 
         balloonOptionsRootView.x = (displayX(context) / 2).toFloat() - DpToInteger(context, 75)
         balloonOptionsRootView.y = viewY.toFloat()
+
+        balloonOptionsAdded = true
+
+        balloonOptionsRootView.setOnFocusChangeListener { view, hasFocus ->
+
+            println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> focus = " + hasFocus)
+
+        }
 
         return this@BalloonOptionsMenu
     }
