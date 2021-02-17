@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -343,7 +342,7 @@ class KeepNoteOverview : AppCompatActivity(),
                         }
                         RecyclerView.SCROLL_STATE_DRAGGING -> {
 
-                            overviewAdapterUnpinned.balloonOptionsMenu.removeBalloonOption()
+//                            overviewAdapterUnpinned.balloonOptionsMenu.removeBalloonOption()
                         }
                     }
 
@@ -462,36 +461,36 @@ class KeepNoteOverview : AppCompatActivity(),
 
     }
 
-    override fun onBalloonItemClickListener(balloonOptionsRootView: View, view: View) {
-        Log.d(this@KeepNoteOverview.javaClass.simpleName, "${view.tag} | Balloon Option Item Click")
-
-        when (view.tag.toString()) {
-            "Delete" -> {
-
-
-
-            }
-            "Edit" -> {
-
-
-
-            }
-            "Share" -> {
-
-
-
-            }
-            "Pin" -> {
-
-
-
-            }
-        }
-
-
-        balloonOptionsRootView.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
-        overviewLayoutBinding.rootView.removeView(balloonOptionsRootView)
-    }
+//    override fun onBalloonItemClickListener(balloonOptionsRootView: View, view: View) {
+//        Log.d(this@KeepNoteOverview.javaClass.simpleName, "${view.tag} | Balloon Option Item Click")
+//
+//        when (view.tag.toString()) {
+//            "Delete" -> {
+//
+//
+//
+//            }
+//            "Edit" -> {
+//
+//
+//
+//            }
+//            "Share" -> {
+//
+//
+//
+//            }
+//            "Pin" -> {
+//
+//
+//
+//            }
+//        }
+//
+//
+//        balloonOptionsRootView.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
+//        overviewLayoutBinding.rootView.removeView(balloonOptionsRootView)
+//    }
 
     private val itemPinnedTouchHelper: ItemTouchHelper by lazy {
 

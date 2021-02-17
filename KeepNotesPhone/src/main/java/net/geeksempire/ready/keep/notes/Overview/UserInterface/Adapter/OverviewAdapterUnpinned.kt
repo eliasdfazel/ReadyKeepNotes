@@ -343,13 +343,13 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
 
         }
 
-        overviewUnpinnedViewHolder.rootItemContentView.setOnLongClickListener { view ->
-
-            balloonOptionsMenu.initializeBalloonPosition(anchorView = view)
-                .setupOptionsItems(context.resources.getStringArray(R.array.balloonItemsText))
-
-            true
-        }
+//        overviewUnpinnedViewHolder.rootItemContentView.setOnLongClickListener { view ->
+//
+//            balloonOptionsMenu.initializeBalloonPosition(anchorView = view)
+//                .setupOptionsItems(context.resources.getStringArray(R.array.balloonItemsText))
+//
+//            true
+//        }
 
     }
 
