@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +14,7 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 
 interface BalloonItemsAction {
-    fun onBalloonItemClickListener(rootView: View, view: View)
+    fun onBalloonItemClickListener(balloonOptionsRootView: View, view: View)
 }
 
 class BalloonOptionsMenu (private val context: AppCompatActivity,
@@ -21,8 +22,8 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
                           private val anchorView: View,
                           private val clickListener: BalloonItemsAction) {
 
-    private val balloonView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
-    private val allItemsView = balloonView.findViewById<LinearLayout>(R.id.allItemsView)
+    private val balloonOptionsRootView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
+    private val allItemsView = balloonOptionsRootView.findViewById<LinearLayout>(R.id.allItemsView)
 
     private val positionXY = IntArray(2)
 
@@ -41,12 +42,13 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
         Log.d(this@BalloonOptionsMenu.javaClass.simpleName, "TouchX: ${viewX} | TouchY: ${viewY}")
 
 
-        rootView.addView(balloonView)
+        rootView.addView(balloonOptionsRootView)
+        balloonOptionsRootView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
 
-        val balloonLayoutParams = balloonView.layoutParams as ConstraintLayout.LayoutParams
+        val balloonLayoutParams = balloonOptionsRootView.layoutParams as ConstraintLayout.LayoutParams
 
-        balloonView.x = (displayX(context) / 2).toFloat() - DpToInteger(context, 75)
-        balloonView.y = viewY.toFloat()
+        balloonOptionsRootView.x = (displayX(context) / 2).toFloat() - DpToInteger(context, 75)
+        balloonOptionsRootView.y = viewY.toFloat()
 
         return this@BalloonOptionsMenu
     }
@@ -63,7 +65,7 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
 
             itemLayout.setOnClickListener { view ->
 
-                clickListener.onBalloonItemClickListener(balloonView, view)
+                clickListener.onBalloonItemClickListener(balloonOptionsRootView, view)
 
             }
 

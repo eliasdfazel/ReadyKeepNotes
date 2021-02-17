@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -461,19 +462,35 @@ class KeepNoteOverview : AppCompatActivity(),
 
     }
 
-    override fun onBalloonItemClickListener(rootView: View, view: View) {
+    override fun onBalloonItemClickListener(balloonOptionsRootView: View, view: View) {
+        Log.d(this@KeepNoteOverview.javaClass.simpleName, "${view.tag} | Balloon Option Item Click")
 
-        resources.getStringArray(R.array.balloonItemsText).forEach {
+        when (view.tag.toString()) {
+            "Delete" -> {
 
-            if (view.tag.toString() == it) {
-                Log.d(this@KeepNoteOverview.javaClass.simpleName, "${view.tag} | Balloon Option Item Click")
 
-                overviewLayoutBinding.rootView.removeView(rootView)
 
             }
+            "Edit" -> {
 
+
+
+            }
+            "Share" -> {
+
+
+
+            }
+            "Pin" -> {
+
+
+
+            }
         }
 
+
+        balloonOptionsRootView.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out))
+        overviewLayoutBinding.rootView.removeView(balloonOptionsRootView)
     }
 
     private val itemPinnedTouchHelper: ItemTouchHelper by lazy {
