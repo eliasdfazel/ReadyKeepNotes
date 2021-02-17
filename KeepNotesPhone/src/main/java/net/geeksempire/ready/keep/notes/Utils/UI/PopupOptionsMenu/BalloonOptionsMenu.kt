@@ -59,7 +59,6 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
 
         balloonOptionsRootView.setOnFocusChangeListener { view, hasFocus ->
 
-            println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> focus = " + hasFocus)
 
         }
 
@@ -83,6 +82,18 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
             }
 
             allItemsView.addView(itemLayout)
+
+        }
+
+    }
+
+    fun removeBalloonOption() {
+
+        if (balloonOptionsAdded) {
+
+            balloonOptionsAdded = false
+
+            rootView.removeView(balloonOptionsRootView)
 
         }
 

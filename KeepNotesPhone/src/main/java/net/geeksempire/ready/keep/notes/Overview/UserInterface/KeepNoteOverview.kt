@@ -343,7 +343,7 @@ class KeepNoteOverview : AppCompatActivity(),
                         }
                         RecyclerView.SCROLL_STATE_DRAGGING -> {
 
-
+                            overviewAdapterUnpinned.balloonOptionsMenu.removeBalloonOption()
                         }
                     }
 
