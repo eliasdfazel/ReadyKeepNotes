@@ -15,13 +15,12 @@ import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.ViewHolde
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.UI.PopupOptionsMenu.BalloonOptionsMenu
 
 class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewUnpinnedViewHolder>() {
 
-    val balloonOptionsMenu = BalloonOptionsMenu(context = context,
-        rootView = context.overviewLayoutBinding.rootView,
-        clickListener = context)
+//    val balloonOptionsMenu = BalloonOptionsMenu(context = context,
+//        rootView = context.overviewLayoutBinding.rootView,
+//        clickListener = context)
 
     val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
 

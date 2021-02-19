@@ -101,8 +101,8 @@ class PaintingCanvasView(val contextInstance: TakeNote) : View(contextInstance),
 
         motionEvent?.let {
 
-            val initialTouchX = motionEvent.x
-            val initialTouchY = motionEvent.y
+            val initialTouchX = (motionEvent.x)
+            val initialTouchY = (motionEvent.y)
 
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {

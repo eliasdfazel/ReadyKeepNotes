@@ -38,6 +38,18 @@ fun PixelToDp(context: Context, px: Float): Float {
     return px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
 
+fun Float.DpToPixel(context: Context): Float {
+    val resources: Resources = context.resources
+    val metrics = resources.displayMetrics
+    return this@DpToPixel * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+}
+
+fun Float.PixelToDp(context: Context): Float {
+    val resources: Resources = context.resources
+    val metrics = resources.displayMetrics
+    return this@PixelToDp / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+}
+
 fun DpToInteger(context: Context, dp: Int): Int {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,

@@ -10,7 +10,7 @@ import com.google.firebase.storage.ktx.storage
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Imaging.ImagingLocalFile
-import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotLocalFile
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.DataStructure.HandwritingSnapshotLocalFile
 import net.geeksempire.ready.keep.notes.Utils.Extensions.println
 import java.io.File
 

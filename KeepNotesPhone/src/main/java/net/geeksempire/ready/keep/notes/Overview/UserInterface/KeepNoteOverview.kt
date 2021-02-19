@@ -55,13 +55,12 @@ import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.SwipeActions
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.UnpinnedRecyclerViewItemSwipeHelper
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
-import net.geeksempire.ready.keep.notes.Utils.UI.PopupOptionsMenu.BalloonItemsAction
 import net.geeksempire.ready.keep.notes.databinding.OverviewLayoutBinding
 import java.util.*
 import javax.inject.Inject
 
 class KeepNoteOverview : AppCompatActivity(),
-    BalloonItemsAction,
+//    BalloonItemsAction,
     NetworkConnectionListenerInterface,
     FirebaseInAppMessagingClickListener {
 

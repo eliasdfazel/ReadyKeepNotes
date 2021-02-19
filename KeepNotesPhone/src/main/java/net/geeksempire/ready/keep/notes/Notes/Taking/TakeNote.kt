@@ -32,9 +32,9 @@ import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteThe
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
 import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
+import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.DataStructure.HandwritingSnapshotLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.InputRecognizer
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.restorePaints
-import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.HandwritingSnapshotLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Utils.StrokePaintingCanvasView
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
