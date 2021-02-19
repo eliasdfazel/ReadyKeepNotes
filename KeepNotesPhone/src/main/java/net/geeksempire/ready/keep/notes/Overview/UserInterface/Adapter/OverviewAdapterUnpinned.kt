@@ -18,10 +18,6 @@ import net.geeksempire.ready.keep.notes.R
 
 class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewUnpinnedViewHolder>() {
 
-//    val balloonOptionsMenu = BalloonOptionsMenu(context = context,
-//        rootView = context.overviewLayoutBinding.rootView,
-//        clickListener = context)
-
     val notesDataStructureList: ArrayList<NotesDatabaseModel> = ArrayList<NotesDatabaseModel>()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : OverviewUnpinnedViewHolder {
@@ -341,14 +337,6 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
             }
 
         }
-
-//        overviewUnpinnedViewHolder.rootItemContentView.setOnLongClickListener { view ->
-//
-//            balloonOptionsMenu.initializeBalloonPosition(anchorView = view)
-//                .setupOptionsItems(context.resources.getStringArray(R.array.balloonItemsText))
-//
-//            true
-//        }
 
     }
 
