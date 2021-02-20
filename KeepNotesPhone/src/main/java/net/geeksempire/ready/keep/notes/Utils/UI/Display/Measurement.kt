@@ -58,11 +58,31 @@ fun DpToInteger(context: Context, dp: Int): Int {
     ).toInt()
 }
 
+/**
+ * Get Touch Pixel Position
+ * @param displayEnd = displayX() Or displayY()
+ **/
+fun Float.pixelToPercentage(displayEnd: Float) : Float {
+
+    return (this@pixelToPercentage * 100) / displayEnd
+}
+
+/**
+ * Get Percentage Pixel Position
+ * @param displayEnd = displayX() Or displayY()
+ **/
+fun Float.percentageToPixel(displayEnd: Float) : Float {
+
+    return (this@percentageToPixel * displayEnd) / 100
+}
+
 fun displayX(context: Context): Int {
+
     return context.resources.displayMetrics.widthPixels
 }
 
 fun displayY(context: Context): Int {
+
     return context.resources.displayMetrics.heightPixels
 }
 
