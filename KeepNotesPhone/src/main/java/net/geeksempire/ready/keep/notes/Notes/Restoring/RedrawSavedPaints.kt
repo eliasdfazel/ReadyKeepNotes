@@ -7,7 +7,6 @@ import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touching
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Extensions.touchingUpRestore
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.RedrawPaintingData
-import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToPixel
 
 class RedrawSavedPaints (private val paintingCanvasView: PaintingCanvasView) {
 
@@ -27,18 +26,18 @@ class RedrawSavedPaints (private val paintingCanvasView: PaintingCanvasView) {
         delay(1133)
 
         paintingCanvasView.touchingStartRestore(
-            allRedrawPaintingPathData[0].xDrawPosition.DpToPixel(paintingCanvasView.context),
-            allRedrawPaintingPathData[0].yDrawPosition.DpToPixel(paintingCanvasView.context),
+            allRedrawPaintingPathData[0].xDrawPosition,
+            allRedrawPaintingPathData[0].yDrawPosition,
             allRedrawPaintingPathData[0].paintColor,
             allRedrawPaintingPathData[0].paintStrokeWidth)
 
-        paintingCanvasView.touchingMoveRestore(allRedrawPaintingPathData[0].xDrawPosition.DpToPixel(paintingCanvasView.context),
-            allRedrawPaintingPathData[0].yDrawPosition.DpToPixel(paintingCanvasView.context))
+        paintingCanvasView.touchingMoveRestore(allRedrawPaintingPathData[0].xDrawPosition,
+            allRedrawPaintingPathData[0].yDrawPosition)
 
         allRedrawPaintingPathData.forEachIndexed paintingLoop@ { index, redrawPaintingData ->
 
-            paintingCanvasView.touchingMoveRestore(redrawPaintingData.xDrawPosition.DpToPixel(paintingCanvasView.context),
-                redrawPaintingData.yDrawPosition.DpToPixel(paintingCanvasView.context))
+            paintingCanvasView.touchingMoveRestore(redrawPaintingData.xDrawPosition,
+                redrawPaintingData.yDrawPosition)
 
         }
 
