@@ -42,11 +42,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/default_color"/>
-
-        <meta-data
-            android:name="firebase_crashlytics_collection_enabled"
-            android:value="${enableCrashReporting}" />
-
+        
         <activity
             android:name=".EntryConfigurations">
             <intent-filter>
