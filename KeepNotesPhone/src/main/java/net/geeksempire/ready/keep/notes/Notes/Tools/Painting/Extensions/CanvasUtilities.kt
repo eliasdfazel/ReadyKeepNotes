@@ -9,8 +9,6 @@ import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.NewPaintingData
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingCanvasView
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.PaintingData
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.RedrawPaintingData
-import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
-import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.pixelToPercentage
 import kotlin.math.abs
 
@@ -35,8 +33,11 @@ fun PaintingCanvasView.touchingStart(x: Float, y: Float) {
     allRedrawPaintingPathData = ArrayList<RedrawPaintingData>()
     allRedrawPaintingPathData.clear()
 
-    allRedrawPaintingPathData.add(0, RedrawPaintingData(x.pixelToPercentage(displayX(context).toFloat()), y.pixelToPercentage(displayY(context).toFloat()), newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
-    allRedrawPaintingPathData.add(RedrawPaintingData(x.pixelToPercentage(displayX(context).toFloat()), y.pixelToPercentage(displayY(context).toFloat()), newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+    allRedrawPaintingPathData.add(0, RedrawPaintingData(x.pixelToPercentage(this@touchingStart.width.toFloat()),
+        y.pixelToPercentage(this@touchingStart.height.toFloat()), newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+
+    allRedrawPaintingPathData.add(RedrawPaintingData(x.pixelToPercentage(this@touchingStart.width.toFloat()),
+        y.pixelToPercentage(this@touchingStart.height.toFloat()), newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
 
     invalidate()
 
@@ -44,7 +45,8 @@ fun PaintingCanvasView.touchingStart(x: Float, y: Float) {
 
 fun PaintingCanvasView.touchingMove(x: Float, y: Float) {
 
-    allRedrawPaintingPathData.add(RedrawPaintingData(x.pixelToPercentage(displayX(context).toFloat()), y.pixelToPercentage(displayY(context).toFloat()), newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+    allRedrawPaintingPathData.add(RedrawPaintingData(x.pixelToPercentage(this@touchingMove.width.toFloat()),
+        y.pixelToPercentage(this@touchingMove.height.toFloat()), newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
 
     val dX: Float = abs(x - movingX)
     val dY: Float = abs(y - movingY)
@@ -64,7 +66,8 @@ fun PaintingCanvasView.touchingMove(x: Float, y: Float) {
 
 fun PaintingCanvasView.touchingUp() {
 
-    allRedrawPaintingPathData.add(RedrawPaintingData(movingX.pixelToPercentage(displayX(context).toFloat()), movingY.pixelToPercentage(displayY(context).toFloat()), newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
+    allRedrawPaintingPathData.add(RedrawPaintingData(movingX.pixelToPercentage(this@touchingUp.width.toFloat()),
+        movingY.pixelToPercentage(this@touchingUp.height.toFloat()), newPaintingData.paintColor, newPaintingData.paintStrokeWidth))
 
     overallRedrawPaintingData.add(allRedrawPaintingPathData)
 
