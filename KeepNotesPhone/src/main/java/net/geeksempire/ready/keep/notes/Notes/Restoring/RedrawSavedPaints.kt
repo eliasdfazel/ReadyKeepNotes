@@ -34,13 +34,17 @@ class RedrawSavedPaints (private val paintingCanvasView: PaintingCanvasView) {
             allRedrawPaintingPathData[0].paintColor,
             allRedrawPaintingPathData[0].paintStrokeWidth)
 
-        paintingCanvasView.touchingMoveRestore(allRedrawPaintingPathData[0].xDrawPosition.percentageToPixel(displayX(paintingCanvasView.context).toFloat()),
-            allRedrawPaintingPathData[0].yDrawPosition.percentageToPixel(displayY(paintingCanvasView.context).toFloat()))
+        paintingCanvasView.touchingMoveRestore(
+            allRedrawPaintingPathData[0].xDrawPosition.percentageToPixel(displayX(paintingCanvasView.context).toFloat()),
+            allRedrawPaintingPathData[0].yDrawPosition.percentageToPixel(displayY(paintingCanvasView.context).toFloat())
+        )
 
         allRedrawPaintingPathData.forEachIndexed paintingLoop@ { index, redrawPaintingData ->
 
-            paintingCanvasView.touchingMoveRestore(redrawPaintingData.xDrawPosition.percentageToPixel(displayX(paintingCanvasView.context).toFloat()),
-                redrawPaintingData.yDrawPosition.percentageToPixel(displayY(paintingCanvasView.context).toFloat()))
+            paintingCanvasView.touchingMoveRestore(
+                redrawPaintingData.xDrawPosition.percentageToPixel(displayX(paintingCanvasView.context).toFloat()),
+                redrawPaintingData.yDrawPosition.percentageToPixel(displayY(paintingCanvasView.context).toFloat())
+            )
 
         }
 
