@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.dpToInteger
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
@@ -220,7 +220,7 @@ abstract class PinnedRecyclerViewItemSwipeHelper(private val context: KeepNoteOv
             val paint = Paint()
 
             paint.color = ContextCompat.getColor(context, colorRes)
-            canvas.drawRoundRect(rect, DpToInteger(context, 5).toFloat(), DpToInteger(context, 5).toFloat(), paint)
+            canvas.drawRoundRect(rect, dpToInteger(context, 5).toFloat(), dpToInteger(context, 5).toFloat(), paint)
 
             paint.color = ContextCompat.getColor(context, R.color.lighter)
             paint.textSize = textSizeInPixel

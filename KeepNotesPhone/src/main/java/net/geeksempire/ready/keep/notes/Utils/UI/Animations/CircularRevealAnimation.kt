@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateInterpolator
-import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayY
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.dpToInteger
 import kotlin.math.hypot
 
 interface AnimationListener {
@@ -35,7 +35,7 @@ class CircularRevealAnimation (private val animationListener: AnimationListener)
                     val circularReveal = ViewAnimationUtils.createCircularReveal(rootLayout,
                         xPosition,
                         yPosition,
-                        DpToInteger(context, 51).toFloat(),
+                        dpToInteger(context, 51).toFloat(),
                         finalRadius.toFloat())
 
                     circularReveal.duration = 1111

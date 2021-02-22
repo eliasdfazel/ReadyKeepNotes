@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
 import net.geeksempire.ready.keep.notes.Utils.UI.Display.displayX
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.dpToInteger
 
 interface BalloonItemsAction {
     fun onBalloonItemClickListener(balloonOptionsRootView: View, view: View)
@@ -52,7 +52,7 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
 
         val balloonLayoutParams = balloonOptionsRootView.layoutParams as ConstraintLayout.LayoutParams
 
-        balloonOptionsRootView.x = (displayX(context) / 2).toFloat() - DpToInteger(context, 75)
+        balloonOptionsRootView.x = (displayX(context) / 2).toFloat() - dpToInteger(context, 75)
         balloonOptionsRootView.y = viewY.toFloat()
 
         balloonOptionsAdded = true

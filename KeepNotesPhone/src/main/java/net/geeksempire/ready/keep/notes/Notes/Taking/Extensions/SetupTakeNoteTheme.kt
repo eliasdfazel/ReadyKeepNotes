@@ -13,7 +13,9 @@ import com.google.android.material.button.MaterialButton
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
-import net.geeksempire.ready.keep.notes.Utils.UI.Display.DpToInteger
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.dpToInteger
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.percentageOfDisplay
+import net.geeksempire.ready.keep.notes.Utils.UI.Display.spToInteger
 
 @SuppressLint("ClickableViewAccessibility")
 fun TakeNote.setupTakeNoteTheme() {
@@ -88,6 +90,8 @@ fun TakeNote.setupTakeNoteTheme() {
         }
     }
 
+    takeNoteLayoutBinding.editTextContentView.textSize = percentageOfDisplay(applicationContext, 0.377f).spToInteger(applicationContext)
+
     val toggleClickHandler = Handler(Looper.getMainLooper())
     var toggleClickRunnable: Runnable? = null
     takeNoteLayoutBinding.toggleKeyboardHandwriting.setOnTouchListener { view, motionEvent ->
@@ -120,7 +124,7 @@ fun TakeNote.setupTakeNoteTheme() {
                 }, 333)
 
                 val toggleLayoutParams = takeNoteLayoutBinding.toggleKeyboardHandwriting.layoutParams as ConstraintLayout.LayoutParams
-                toggleLayoutParams.width = DpToInteger(applicationContext, 53)
+                toggleLayoutParams.width = dpToInteger(applicationContext, 53)
                 takeNoteLayoutBinding.toggleKeyboardHandwriting.layoutParams = toggleLayoutParams
 
                 takeNoteLayoutBinding.toggleKeyboardHandwriting.iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
@@ -166,7 +170,7 @@ fun TakeNote.setupTakeNoteTheme() {
                 }, 333)
 
                 val savingLayoutParams = takeNoteLayoutBinding.savingView.layoutParams as ConstraintLayout.LayoutParams
-                savingLayoutParams.width = DpToInteger(applicationContext, 53)
+                savingLayoutParams.width = dpToInteger(applicationContext, 53)
                 takeNoteLayoutBinding.savingView.layoutParams = savingLayoutParams
 
                 takeNoteLayoutBinding.toggleKeyboardHandwriting.iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
