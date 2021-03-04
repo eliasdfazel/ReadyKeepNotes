@@ -46,6 +46,8 @@ fun KeepNoteOverview.setupOverviewColors() {
             overviewLayoutBinding.goToSearch.icon = getDrawable(R.drawable.vector_icon_search)
             overviewLayoutBinding.goToSearch.backgroundTintList = ColorStateList.valueOf(getColor(R.color.lighter))
 
+            overviewLayoutBinding.contentImagePreview.setBackgroundColor(getColor(R.color.white))
+
         }
         ThemeType.ThemeDark -> {
 
@@ -77,6 +79,8 @@ fun KeepNoteOverview.setupOverviewColors() {
 
             overviewLayoutBinding.goToSearch.icon = getDrawable(R.drawable.vector_icon_search_light)
             overviewLayoutBinding.goToSearch.backgroundTintList = ColorStateList.valueOf(getColor(R.color.darker))
+
+            overviewLayoutBinding.contentImagePreview.setBackgroundColor(getColor(R.color.black))
 
         }
     }

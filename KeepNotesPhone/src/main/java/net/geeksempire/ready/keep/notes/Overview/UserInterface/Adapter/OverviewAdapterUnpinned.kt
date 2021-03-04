@@ -4,17 +4,21 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter.ViewHolders.OverviewUnpinnedViewHolder
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.Utils.UI.Animations.AnimationListener
+import net.geeksempire.ready.keep.notes.Utils.UI.Animations.CircularRevealAnimation
 
 class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adapter<OverviewUnpinnedViewHolder>() {
 
@@ -254,48 +258,6 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
 
         }
 
-        overviewUnpinnedViewHolder.titleTextView.setOnClickListener { view ->
-
-            overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
-
-            context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
-            context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
-
-            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
-
-            if (paintingPathsJsonArray.isNullOrEmpty()) {
-
-                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
-
-                TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
-                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
-                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
-                    noteTile = notesDataStructureList[position].noteTile,
-                    contentText = notesDataStructureList[position].noteTextContent,
-                    encryptedTextContent = true,
-                    updateExistingNote = true
-                )
-
-            } else {
-
-                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
-
-                TakeNote.open(context = context,
-                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
-                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
-                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
-                    noteTile = notesDataStructureList[position].noteTile,
-                    contentText = notesDataStructureList[position].noteTextContent,
-                    paintingPath = paintingPathsJsonArray,
-                    encryptedTextContent = true,
-                    updateExistingNote = true
-                )
-
-            }
-
-        }
-
         overviewUnpinnedViewHolder.rootItemContentView.setOnClickListener { view ->
 
             overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
@@ -316,7 +278,17 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
                     noteTile = notesDataStructureList[position].noteTile,
                     contentText = notesDataStructureList[position].noteTextContent,
                     encryptedTextContent = true,
-                    updateExistingNote = true
+                    updateExistingNote = true,
+                    pinnedNote = when (notesDataStructureList[position].notePinned) {
+                        NotesTemporaryModification.NoteUnpinned -> {
+                            false
+                        }
+                        NotesTemporaryModification.NotePinned -> {
+                            true
+                        } else -> {
+                            false
+                        }
+                    }
                 )
 
             } else {
@@ -331,10 +303,49 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
                     contentText = notesDataStructureList[position].noteTextContent,
                     paintingPath = paintingPathsJsonArray,
                     encryptedTextContent = true,
-                    updateExistingNote = true
+                    updateExistingNote = true,
+                    pinnedNote = when (notesDataStructureList[position].notePinned) {
+                        NotesTemporaryModification.NoteUnpinned -> {
+                            false
+                        }
+                        NotesTemporaryModification.NotePinned -> {
+                            true
+                        } else -> {
+                            false
+                        }
+                    }
                 )
 
             }
+
+        }
+
+        overviewUnpinnedViewHolder.contentImageView.setOnClickListener { view ->
+
+            val positionXY = IntArray(2)
+            view.getLocationInWindow(positionXY)
+
+            val viewX = positionXY[0]
+            val viewY = positionXY[1]
+
+            context.overviewLayoutBinding.contentImagePreview.setImageDrawable(overviewUnpinnedViewHolder.contentImageView.drawable)
+
+            CircularRevealAnimation(object : AnimationListener {
+
+                override fun animationFinished() {
+                    super.animationFinished()
+
+                    context.overviewLayoutBinding.contentImagePreview.setOnClickListener {
+
+                        context.overviewLayoutBinding.contentImagePreview.visibility = View.GONE
+                        context.overviewLayoutBinding.contentImagePreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
+
+                    }
+
+
+                }
+
+            }).startForView(context = context, rootView = context.overviewLayoutBinding.contentImagePreview, xPosition = viewX, yPosition = viewY)
 
         }
 

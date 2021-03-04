@@ -334,4 +334,21 @@
         apps:layout_constraintEnd_toStartOf="@id/startNewNoteView"
         apps:layout_constraintStart_toStartOf="parent"/>
 
+    <net.geekstools.imageview.customshapes.ShapesImage
+        android:id="@+id/contentImagePreview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+
+        apps:shape="rounded"
+
+        apps:layout_constraintWidth_percent="0.7"
+        apps:layout_constraintHeight_percent="0.7"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,9 +80,66 @@ class CircularRevealAnimation (private val animationListener: AnimationListener)
 
     }
 
-    fun startForView() {
+    fun startForView(context: Context, rootView: View, xPosition: Int = (displayX(context) / 2), yPosition: Int = (displayY(context) / 2)) {
 
+        val rootLayout = rootView
+        rootLayout.visibility = View.INVISIBLE
 
+        val viewTreeObserver = rootLayout.viewTreeObserver
+
+        if (viewTreeObserver.isAlive) {
+
+            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+
+                override fun onGlobalLayout() {
+
+                    val finalRadius = hypot(displayX(context).toDouble(), displayY(context).toDouble())
+
+                    val circularReveal = ViewAnimationUtils.createCircularReveal(rootLayout,
+                        xPosition,
+                        yPosition,
+                        dpToInteger(context, 51).toFloat(),
+                        finalRadius.toFloat())
+
+                    circularReveal.duration = 531
+                    circularReveal.interpolator = AccelerateInterpolator()
+
+                    rootLayout.visibility = View.VISIBLE
+                    circularReveal.start()
+
+                    rootLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                    circularReveal.addListener(object : Animator.AnimatorListener {
+
+                        override fun onAnimationRepeat(animation: Animator?) {
+
+                        }
+
+                        override fun onAnimationEnd(animation: Animator?) {
+
+                            animationListener.animationFinished()
+
+                            rootLayout.visibility = View.VISIBLE
+
+                        }
+
+                        override fun onAnimationCancel(animation: Animator?) {
+
+                        }
+
+                        override fun onAnimationStart(animation: Animator?) {
+
+                        }
+
+                    })
+                }
+            })
+
+        } else {
+
+            rootLayout.visibility = View.VISIBLE
+
+        }
 
     }
 
