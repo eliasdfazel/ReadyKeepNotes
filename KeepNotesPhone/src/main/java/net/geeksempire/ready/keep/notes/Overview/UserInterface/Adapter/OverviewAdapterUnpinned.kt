@@ -1,6 +1,7 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,10 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
@@ -328,24 +333,56 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
             val viewX = positionXY[0]
             val viewY = positionXY[1]
 
-            context.overviewLayoutBinding.contentImagePreview.setImageDrawable(overviewUnpinnedViewHolder.contentImageView.drawable)
+            Glide.with(context)
+                .asDrawable()
+                .load(notesDataStructureList[position].noteHandwritingSnapshotLink)
+                .addListener(object : RequestListener<Drawable> {
 
-            CircularRevealAnimation(object : AnimationListener {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        e?.printStackTrace()
 
-                override fun animationFinished() {
-                    super.animationFinished()
-
-                    context.overviewLayoutBinding.contentImagePreview.setOnClickListener {
-
-                        context.overviewLayoutBinding.contentImagePreview.visibility = View.GONE
-                        context.overviewLayoutBinding.contentImagePreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
-
+                        return true
                     }
 
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
 
-                }
+                        resource?.let {
 
-            }).startForView(context = context, rootView = context.overviewLayoutBinding.contentImagePreview, xPosition = viewX, yPosition = viewY)
+                            context.runOnUiThread {
+
+                                context.overviewLayoutBinding.contentImagePreview.setImageDrawable(resource)
+
+                                CircularRevealAnimation(object : AnimationListener {
+
+                                    override fun animationFinished() {
+                                        super.animationFinished()
+
+                                        context.overviewLayoutBinding.closeImageContentPreview.visibility = View.VISIBLE
+                                        context.overviewLayoutBinding.closeImageContentPreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
+
+                                        context.overviewLayoutBinding.closeImageContentPreview.setOnClickListener {
+
+                                            context.overviewLayoutBinding.contentImagePreview.visibility = View.GONE
+                                            context.overviewLayoutBinding.contentImagePreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
+
+                                            context.overviewLayoutBinding.closeImageContentPreview.visibility = View.GONE
+                                            context.overviewLayoutBinding.closeImageContentPreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
+
+                                        }
+
+                                    }
+
+                                }).startForView(context = context, rootView = context.overviewLayoutBinding.contentImagePreview, xPosition = viewX, yPosition = viewY)
+
+                            }
+
+                        }
+
+                        return true
+                    }
+
+                })
+                .submit()
 
         }
 

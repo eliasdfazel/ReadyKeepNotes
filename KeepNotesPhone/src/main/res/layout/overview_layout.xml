@@ -334,14 +334,12 @@
         apps:layout_constraintEnd_toStartOf="@id/startNewNoteView"
         apps:layout_constraintStart_toStartOf="parent"/>
 
-    <net.geekstools.imageview.customshapes.ShapesImage
+    <net.geeksempire.ready.keep.notes.Utils.UI.Views.ZoomingImageView.ZoomageView
         android:id="@+id/contentImagePreview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:visibility="gone"
-
-        apps:shape="rounded"
 
         apps:layout_constraintWidth_percent="0.7"
         apps:layout_constraintHeight_percent="0.7"
@@ -350,5 +348,29 @@
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"
         apps:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/closeImageContentPreview"
+        android:layout_width="59dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="7dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:visibility="gone"
+
+        apps:icon="@android:drawable/ic_menu_close_clear_cancel"
+        apps:iconTint="@color/white"
+        apps:iconGravity="textStart"
+        apps:iconPadding="0sp"
+        apps:iconSize="43dp"
+        apps:cornerRadius="51dp"
+        apps:rippleColor="@color/light"
+        apps:backgroundTint="@color/red"
+
+        apps:layout_constraintTop_toBottomOf="@id/contentImagePreview"
+        apps:layout_constraintStart_toStartOf="@id/contentImagePreview"
+        apps:layout_constraintEnd_toEndOf="@id/contentImagePreview"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
