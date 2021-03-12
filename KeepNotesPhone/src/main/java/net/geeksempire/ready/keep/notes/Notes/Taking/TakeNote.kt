@@ -366,13 +366,26 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             }
 
-            takeNoteLayoutBinding.savedAudioRecordView.setOnClickListener {
+            val recordedAudioDirectory = File(audioRecordingLocalFile.getAudioRecordingDirectoryPath(firebaseUser.uid, documentId.toString()))
 
-                File(audioRecordingLocalFile.getAudioRecordingDirectoryPath(firebaseUser.uid, documentId.toString())).listFiles().forEach { recorded ->
+            if (recordedAudioDirectory.exists()) {
 
-                    println(">>> >> > " + recorded)
+                takeNoteLayoutBinding.savedAudioRecordView.visibility = View.VISIBLE
+
+                takeNoteLayoutBinding.savedAudioRecordView.setOnClickListener {
+
+                    val allRecordedAudioFiles = recordedAudioDirectory.listFiles()
+
+                    if (!allRecordedAudioFiles.isNullOrEmpty()) {
+
+                        takeNoteLayoutBinding.recordedAudioContainer.root.visibility = View.VISIBLE
+
+
+
+                    }
 
                 }
+
 
             }
 
