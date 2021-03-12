@@ -25,7 +25,7 @@
                 android:bottomRightRadius="51dp"/>
 
             <solid
-                android:color="@color/default_color_transparent_high" />
+                android:color="@color/default_color_transparent" />
 
         </shape>
 
