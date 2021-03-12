@@ -144,6 +144,35 @@
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/savedAudioRecordView"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:layout_marginVertical="7dp"
+        android:layout_marginHorizontal="17dp"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        android:textColor="@color/light"
+        android:contentDescription="@string/descriptionToggleText"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+
+        apps:cornerRadius="51dp"
+        apps:elevation="13dp"
+        apps:icon="@drawable/vector_icon_voice_recorder"
+        apps:iconSize="19dp"
+        apps:iconGravity="textStart"
+        apps:iconTint="@color/light"
+        apps:iconPadding="0dp"
+        apps:rippleColor="@color/default_color_light"
+        apps:backgroundTint="@color/default_color_game_transparent"
+
+        apps:layout_constraintBottom_toTopOf="@id/savingView"
+        apps:layout_constraintStart_toStartOf="@id/savingView"
+        apps:layout_constraintEnd_toEndOf="@id/savingView"/>
+
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/waitingViewUpload"
         android:layout_width="37dp"

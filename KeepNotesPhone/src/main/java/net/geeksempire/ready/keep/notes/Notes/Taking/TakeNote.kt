@@ -366,6 +366,16 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             }
 
+            takeNoteLayoutBinding.savedAudioRecordView.setOnClickListener {
+
+                File(audioRecordingLocalFile.getAudioRecordingDirectoryPath(firebaseUser.uid, documentId.toString())).listFiles().forEach { recorded ->
+
+                    println(">>> >> > " + recorded)
+
+                }
+
+            }
+
         }
 
     }

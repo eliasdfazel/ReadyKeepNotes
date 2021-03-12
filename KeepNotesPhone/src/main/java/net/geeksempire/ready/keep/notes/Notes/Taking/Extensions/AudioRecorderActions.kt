@@ -21,7 +21,7 @@ fun TakeNote.setupAudioRecorderActions() {
 
             audioFilePath = audioRecordingLocalFile.getAudioRecordingFilePath(it.uid, documentId.toString(), audioFileId!!)
 
-            val audioFile = File(audioFilePath!!)
+            val audioFile = File(audioFilePath!! + ".MP3")
 
             if (!audioFile.exists()) {
 
