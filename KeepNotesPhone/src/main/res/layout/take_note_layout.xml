@@ -221,12 +221,11 @@
         android:id="@+id/recordedAudioContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
 
         apps:layout_constraintWidth_percent="0.79"
 
         apps:layout_constraintBottom_toTopOf="@id/savedAudioRecordView"
-        apps:layout_constraintStart_toStartOf="parent"
-        apps:layout_constraintEnd_toEndOf="parent"/>
+        apps:layout_constraintStart_toStartOf="@id/savedAudioRecordView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

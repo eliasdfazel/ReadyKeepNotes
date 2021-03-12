@@ -5,25 +5,25 @@
     android:id="@+id/rootItemView"
     android:layout_width="match_parent"
     android:layout_height="47dp"
-    android:layout_marginHorizontal="13dp"
+    android:layout_marginEnd="7dp"
     android:layout_marginVertical="7dp">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/audioPlayPause"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
 
         apps:icon="@android:drawable/ic_media_play"
-        apps:iconSize="37dp"
+        apps:iconSize="19dp"
         apps:iconPadding="0dp"
         apps:iconGravity="textStart"
         apps:cornerRadius="51dp"
         apps:rippleColor="@color/green"
-        apps:backgroundTint="@color/default_color_game_dark"
+        apps:backgroundTint="@color/default_color_game_transparent"
 
         apps:layout_constraintTop_toTopOf="parent"
         apps:layout_constraintBottom_toBottomOf="parent"

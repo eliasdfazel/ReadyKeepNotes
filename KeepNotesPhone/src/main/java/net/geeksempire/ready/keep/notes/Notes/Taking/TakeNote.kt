@@ -387,7 +387,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                             val recordedAudioAdapter = RecordedAudioAdapter(this@TakeNote)
 
-                            takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.adapter = recordedAudioAdapter
 
                             recordedAudioAdapter.recordedAudioData.clear()
 
@@ -400,6 +399,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                             withContext(Dispatchers.Main) {
 
                                 takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+
+                                takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.adapter = recordedAudioAdapter
 
                                 recordedAudioAdapter.notifyDataSetChanged()
 
