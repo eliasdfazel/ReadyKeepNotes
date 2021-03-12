@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -26,6 +28,8 @@ import net.geeksempire.ready.keep.notes.Database.IO.PaintingIO
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
+import net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter.RecordedAudioAdapter
+import net.geeksempire.ready.keep.notes.Notes.Revealing.DataStructure.RecordedAudioDataStructure
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupAudioRecorderActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions
 import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
@@ -374,13 +378,36 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                 takeNoteLayoutBinding.savedAudioRecordView.setOnClickListener {
 
-                    val allRecordedAudioFiles = recordedAudioDirectory.listFiles()
+                    CoroutineScope(Dispatchers.IO).launch {
 
-                    if (!allRecordedAudioFiles.isNullOrEmpty()) {
+                        val allRecordedAudioFiles = recordedAudioDirectory.listFiles()
 
-                        takeNoteLayoutBinding.recordedAudioContainer.root.visibility = View.VISIBLE
+                        if (!allRecordedAudioFiles.isNullOrEmpty()) {
 
 
+                            val recordedAudioAdapter = RecordedAudioAdapter(this@TakeNote)
+
+                            takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.adapter = recordedAudioAdapter
+
+                            recordedAudioAdapter.notesDataStructureList.clear()
+
+                            allRecordedAudioFiles.forEach { recordedAudioFile ->
+
+                                recordedAudioAdapter.notesDataStructureList.add(RecordedAudioDataStructure(recordedAudioFile.absolutePath))
+
+                            }
+
+                            withContext(Dispatchers.Main) {
+
+                                takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+
+                                recordedAudioAdapter.notifyDataSetChanged()
+
+                                takeNoteLayoutBinding.recordedAudioContainer.root.visibility = View.VISIBLE
+
+                            }
+
+                        }
 
                     }
 

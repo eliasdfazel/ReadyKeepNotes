@@ -34,8 +34,6 @@
         android:layout_width="0dp"
         android:layout_height="49dp"
 
-        apps:tickMark="@color/green"
-
         apps:layout_constraintStart_toEndOf="@id/audioPlayPause"
         apps:layout_constraintEnd_toEndOf="parent"
         apps:layout_constraintTop_toTopOf="parent"

@@ -1,8 +1,8 @@
 package net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter.ViewHolder.RecordedAudioViewHolder
 import net.geeksempire.ready.keep.notes.Notes.Revealing.DataStructure.RecordedAudioDataStructure
@@ -10,7 +10,7 @@ import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
-class RecordedAudioAdapter(private val context: Context) : RecyclerView.Adapter<RecordedAudioViewHolder>() {
+class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerView.Adapter<RecordedAudioViewHolder>() {
 
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(context)
@@ -22,7 +22,7 @@ class RecordedAudioAdapter(private val context: Context) : RecyclerView.Adapter<
 
         return RecordedAudioViewHolder(
             LayoutInflater.from(context)
-                .inflate(R.layout.overview_pinned_notes_item, viewGroup, false)
+                .inflate(R.layout.recorded_audio_items, viewGroup, false)
         )
     }
 
