@@ -1,3 +1,5 @@
 package net.geeksempire.ready.keep.notes.Notes.Revealing.DataStructure
 
-data class RecordedAudioDataStructure (var audioFilePath: String)
+import java.io.File
+
+data class RecordedAudioDataStructure (var audioFile: File, var audioFilePath: String, var audioFileName: String)

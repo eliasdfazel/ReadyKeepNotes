@@ -1,5 +1,7 @@
 package net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter
 
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +14,29 @@ import net.geeksempire.ready.keep.notes.R
 
 class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerView.Adapter<RecordedAudioViewHolder>() {
 
+    val mediaPlayer: MediaPlayer by lazy {
+        MediaPlayer()
+    }
+
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(context)
     }
 
-    val notesDataStructureList: ArrayList<RecordedAudioDataStructure> = ArrayList<RecordedAudioDataStructure>()
+    val recordedAudioData: ArrayList<RecordedAudioDataStructure> = ArrayList<RecordedAudioDataStructure>()
+
+    var currentRecordedAudioPlaying: String? = null
+
+    init {
+
+        mediaPlayer.setAudioAttributes(
+            AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+        )
+
+
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : RecordedAudioViewHolder {
 
@@ -28,7 +48,7 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
 
     override fun getItemCount() : Int {
 
-        return notesDataStructureList.size
+        return recordedAudioData.size
     }
 
     override fun onBindViewHolder(
@@ -42,10 +62,8 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
             ThemeType.ThemeLight -> {
 
 
-
             }
             ThemeType.ThemeDark -> {
-
 
 
             }
@@ -53,9 +71,63 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
 
     }
 
-    override fun onBindViewHolder(RecordedAudioViewHolder: RecordedAudioViewHolder, position: Int) {
+    override fun onBindViewHolder(recordedAudioViewHolder: RecordedAudioViewHolder, position: Int) {
+
+        recordedAudioViewHolder.audioPlayPause.setOnClickListener {
+
+            if (recordedAudioData[position].audioFileName == currentRecordedAudioPlaying) {
 
 
+
+            }
+
+            if (mediaPlayer.isPlaying) {
+
+                recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
+
+                mediaPlayer.pause()
+                recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
+
+            } else {
+
+                recordedAudioViewHolder.audioProgressBar.progress = 0f
+
+                mediaPlayer.stop()
+                mediaPlayer.reset()
+
+                recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_pause)
+
+                currentRecordedAudioPlaying = recordedAudioData[position].audioFileName
+
+                mediaPlayer.setDataSource(recordedAudioData[position].audioFilePath)
+                mediaPlayer.prepare()
+
+                mediaPlayer.setOnPreparedListener {
+
+                    mediaPlayer.start()
+
+                    recordedAudioViewHolder.audioProgressBar.setStartProgress(0f)
+                    recordedAudioViewHolder.audioProgressBar.setEndProgress(100f)
+
+                    recordedAudioViewHolder.audioProgressBar.setProgressDuration(mediaPlayer.duration)
+                    recordedAudioViewHolder.audioProgressBar.startProgressAnimation()
+
+                }
+
+                mediaPlayer.setOnSeekCompleteListener {
+
+                }
+
+                mediaPlayer.setOnCompletionListener {
+
+                    mediaPlayer.stop()
+                    mediaPlayer.reset()
+
+                }
+
+            }
+
+        }
 
     }
 

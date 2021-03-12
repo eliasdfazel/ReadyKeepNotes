@@ -389,11 +389,11 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                             takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.adapter = recordedAudioAdapter
 
-                            recordedAudioAdapter.notesDataStructureList.clear()
+                            recordedAudioAdapter.recordedAudioData.clear()
 
                             allRecordedAudioFiles.forEach { recordedAudioFile ->
 
-                                recordedAudioAdapter.notesDataStructureList.add(RecordedAudioDataStructure(recordedAudioFile.absolutePath))
+                                recordedAudioAdapter.recordedAudioData.add(RecordedAudioDataStructure(recordedAudioFile, recordedAudioFile.absolutePath, recordedAudioFile.name))
 
                             }
 
@@ -404,6 +404,7 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                                 recordedAudioAdapter.notifyDataSetChanged()
 
                                 takeNoteLayoutBinding.recordedAudioContainer.root.visibility = View.VISIBLE
+                                takeNoteLayoutBinding.recordedAudioContainer.root.bringToFront()
 
                             }
 
