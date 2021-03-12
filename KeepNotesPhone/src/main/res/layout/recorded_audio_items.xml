@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="37dp"
     android:layout_marginEnd="3dp"
-    android:layout_marginVertical="7dp">
+    android:layout_marginVertical="7dp"
+    android:background="@drawable/recorded_audio_track_background">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/audioPlayPause"
@@ -32,10 +33,14 @@
     <net.geeksempire.ProgressBar.HorizontalProgressView
         android:id="@+id/audioProgressBar"
         android:layout_width="0dp"
-        android:layout_height="7dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
         android:layout_marginHorizontal="7dp"
 
-        apps:track_width="7dp"
+        apps:isTracked="true"
+        apps:track_width="3dp"
+        apps:trackColor="@color/light_blue"
+        apps:corner_radius="13dp"
         apps:progressTextVisibility="false"
         apps:start_color="@color/default_color_game_light"
         apps:end_color="@color/default_color_light"

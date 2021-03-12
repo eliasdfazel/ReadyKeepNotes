@@ -59,27 +59,20 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
         return recordedAudioData.size
     }
 
-    override fun onBindViewHolder(
-        recordedAudioViewHolder: RecordedAudioViewHolder,
-        position: Int,
-        payloads: MutableList<Any>
-    ) {
-        super.onBindViewHolder(recordedAudioViewHolder, position, payloads)
+    override fun onBindViewHolder(recordedAudioViewHolder: RecordedAudioViewHolder, position: Int) {
 
         when (themePreferences.checkThemeLightDark()) {
             ThemeType.ThemeLight -> {
 
+                recordedAudioViewHolder.audioProgressBar.setTrackColor(context.getColor(R.color.white))
 
             }
             ThemeType.ThemeDark -> {
 
+                recordedAudioViewHolder.audioProgressBar.setTrackColor(context.getColor(R.color.black))
 
             }
         }
-
-    }
-
-    override fun onBindViewHolder(recordedAudioViewHolder: RecordedAudioViewHolder, position: Int) {
 
         recordedAudioViewHolder.audioPlayPause.setOnClickListener {
 
