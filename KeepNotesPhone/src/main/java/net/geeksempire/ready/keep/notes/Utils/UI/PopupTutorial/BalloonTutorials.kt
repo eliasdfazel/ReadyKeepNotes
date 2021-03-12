@@ -1,4 +1,4 @@
-package net.geeksempire.ready.keep.notes.Utils.UI.PopupOptionsMenu
+package net.geeksempire.ready.keep.notes.Utils.UI.PopupTutorial
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,9 +17,9 @@ interface BalloonItemsAction {
     fun onBalloonItemClickListener(balloonOptionsRootView: View, view: View)
 }
 
-class BalloonOptionsMenu (private val context: AppCompatActivity,
-                          private val rootView: ViewGroup,
-                          private val clickListener: BalloonItemsAction) {
+class BalloonTutorials (private val context: AppCompatActivity,
+                        private val rootView: ViewGroup,
+                        private val clickListener: BalloonItemsAction) {
 
     private val balloonOptionsRootView = LayoutInflater.from(context).inflate(R.layout.balloon_options_menu_layout, null)
     private val allItemsView = balloonOptionsRootView.findViewById<LinearLayout>(R.id.allItemsView)
@@ -31,13 +31,13 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
 
     var balloonOptionsAdded = false
 
-    fun initializeBalloonPosition(anchorView: View) : BalloonOptionsMenu {
+    fun initializeBalloonPosition(anchorView: View) : BalloonTutorials {
 
         anchorView.getLocationInWindow(positionXY)
 
         viewX = positionXY[0]
         viewY = positionXY[1]
-        Log.d(this@BalloonOptionsMenu.javaClass.simpleName, "TouchX: ${viewX} | TouchY: ${viewY}")
+        Log.d(this@BalloonTutorials.javaClass.simpleName, "TouchX: ${viewX} | TouchY: ${viewY}")
 
         if (balloonOptionsAdded) {
 
@@ -62,7 +62,7 @@ class BalloonOptionsMenu (private val context: AppCompatActivity,
 
         }
 
-        return this@BalloonOptionsMenu
+        return this@BalloonTutorials
     }
 
     fun setupOptionsItems(titlesOfItems: Array<String>) {
