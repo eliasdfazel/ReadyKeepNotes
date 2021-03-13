@@ -12,7 +12,7 @@ import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 
-class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerView.Adapter<RecordedAudioViewHolder>() {
+class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerView: RecyclerView) : RecyclerView.Adapter<RecordedAudioViewHolder>() {
 
     val mediaPlayer: MediaPlayer by lazy {
         MediaPlayer()
@@ -24,7 +24,7 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
 
     val recordedAudioData: ArrayList<RecordedAudioDataStructure> = ArrayList<RecordedAudioDataStructure>()
 
-    var currentRecordedAudioPlaying: String? = null
+    var currentRecordedAudioPlaying: Int = 0
 
     object MediaPlayerAction {
         const val STOP = 0
@@ -48,15 +48,30 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) : RecordedAudioViewHolder {
 
-        return RecordedAudioViewHolder(
-            LayoutInflater.from(context)
-                .inflate(R.layout.recorded_audio_items, viewGroup, false)
-        )
+        return RecordedAudioViewHolder(LayoutInflater.from(context).inflate(R.layout.recorded_audio_items, viewGroup, false))
     }
 
     override fun getItemCount() : Int {
 
         return recordedAudioData.size
+    }
+
+    override fun onBindViewHolder(recordedAudioViewHolder: RecordedAudioViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(recordedAudioViewHolder, position, payloads)
+
+        if (recordedAudioData[position].audioPlaying) {
+
+            recordedAudioViewHolder.audioProgressBar.progress = 0f
+            recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
+
+            recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_pause)
+
+        } else {
+
+            recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
+
+        }
+
     }
 
     override fun onBindViewHolder(recordedAudioViewHolder: RecordedAudioViewHolder, position: Int) {
@@ -74,20 +89,81 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
             }
         }
 
+        if (recordedAudioData[position].audioPlaying) {
+
+            recordedAudioViewHolder.audioProgressBar.progress = 0f
+            recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
+
+            recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_pause)
+
+        } else {
+
+            recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
+
+        }
+
         recordedAudioViewHolder.audioPlayPause.setOnClickListener {
-
-            if (recordedAudioData[position].audioFileName == currentRecordedAudioPlaying) {
-
-            }
 
             if (mediaPlayer.isPlaying) {
 
-                recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
+                if (position == currentRecordedAudioPlaying) {
 
-                mediaPlayer.pause()
-                recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
+                    recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
 
-                setMediaPlayerAction = MediaPlayerAction.PAUSE
+                    mediaPlayer.pause()
+                    recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
+
+                    setMediaPlayerAction = MediaPlayerAction.PAUSE
+
+                } else {
+
+                    recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
+
+                    mediaPlayer.pause()
+                    recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
+
+                    setMediaPlayerAction = MediaPlayerAction.PAUSE
+
+                    recordedAudioViewHolder.audioProgressBar.progress = 0f
+
+                    mediaPlayer.stop()
+                    mediaPlayer.reset()
+
+                    setMediaPlayerAction = MediaPlayerAction.STOP
+
+                    recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_pause)
+
+                    currentRecordedAudioPlaying = position
+
+                    mediaPlayer.setDataSource(recordedAudioData[position].audioFilePath)
+                    mediaPlayer.prepare()
+
+                    mediaPlayer.setOnPreparedListener {
+
+                        mediaPlayer.start()
+
+                        setMediaPlayerAction = MediaPlayerAction.PLAY
+
+                        recordedAudioViewHolder.audioProgressBar.setStartProgress(0f)
+                        recordedAudioViewHolder.audioProgressBar.setEndProgress(100f)
+
+                        recordedAudioViewHolder.audioProgressBar.setProgressDuration(mediaPlayer.duration)
+                        recordedAudioViewHolder.audioProgressBar.startProgressAnimation()
+
+                    }
+
+                    mediaPlayer.setOnSeekCompleteListener {
+
+                    }
+
+                    mediaPlayer.setOnCompletionListener {
+
+                        mediaPlayer.stop()
+                        mediaPlayer.reset()
+
+                    }
+
+                }
 
             } else {
 
@@ -113,7 +189,7 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
 
                     recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_pause)
 
-                    currentRecordedAudioPlaying = recordedAudioData[position].audioFileName
+                    currentRecordedAudioPlaying = position
 
                     mediaPlayer.setDataSource(recordedAudioData[position].audioFilePath)
                     mediaPlayer.prepare()
@@ -146,6 +222,9 @@ class RecordedAudioAdapter(private val context: AppCompatActivity) : RecyclerVie
                 }
 
             }
+
+            recordedAudioData[currentRecordedAudioPlaying].audioPlaying = !recordedAudioData[currentRecordedAudioPlaying].audioPlaying
+            notifyDataSetChanged()
 
         }
 

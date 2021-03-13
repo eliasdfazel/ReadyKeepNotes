@@ -30,6 +30,27 @@
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toStartOf="parent"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/audioDelete"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+
+        apps:icon="@android:drawable/ic_menu_close_clear_cancel"
+        apps:iconSize="19dp"
+        apps:iconPadding="0dp"
+        apps:iconGravity="textStart"
+        apps:cornerRadius="51dp"
+        apps:rippleColor="@color/green"
+        apps:backgroundTint="@color/default_color_game_transparent"
+
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
     <net.geeksempire.ProgressBar.HorizontalProgressView
         android:id="@+id/audioProgressBar"
         android:layout_width="0dp"
@@ -48,6 +69,6 @@
         apps:layout_constraintTop_toTopOf="parent"
         apps:layout_constraintBottom_toBottomOf="parent"
         apps:layout_constraintStart_toEndOf="@id/audioPlayPause"
-        apps:layout_constraintEnd_toEndOf="parent" />
+        apps:layout_constraintEnd_toStartOf="@id/audioDelete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
