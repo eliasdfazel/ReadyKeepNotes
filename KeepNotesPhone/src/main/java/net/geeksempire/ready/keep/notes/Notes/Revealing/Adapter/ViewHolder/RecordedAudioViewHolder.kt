@@ -8,4 +8,5 @@ class RecordedAudioViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val rootItemView = view.rootItemView
     val audioPlayPause = view.audioPlayPause
     val audioProgressBar = view.audioProgressBar
+    val audioDelete = view.audioDelete
 }

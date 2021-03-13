@@ -102,6 +102,12 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
 
         }
 
+        recordedAudioViewHolder.audioDelete.setOnClickListener {
+
+
+
+        }
+
         recordedAudioViewHolder.audioPlayPause.setOnClickListener {
 
             if (mediaPlayer.isPlaying) {
