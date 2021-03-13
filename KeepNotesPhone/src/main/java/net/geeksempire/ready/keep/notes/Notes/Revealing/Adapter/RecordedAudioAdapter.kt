@@ -115,14 +115,13 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
 
                     setMediaPlayerAction = MediaPlayerAction.PAUSE
 
+                    recordedAudioData[position].audioPlaying = false
+                    notifyDataSetChanged()
+
                 } else {
 
-                    recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
-
-                    mediaPlayer.pause()
-                    recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
-
-                    setMediaPlayerAction = MediaPlayerAction.PAUSE
+                    recordedAudioData[currentRecordedAudioPlaying].audioPlaying = false
+                    notifyDataSetChanged()
 
                     recordedAudioViewHolder.audioProgressBar.progress = 0f
 
@@ -222,9 +221,6 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
                 }
 
             }
-
-            recordedAudioData[currentRecordedAudioPlaying].audioPlaying = !recordedAudioData[currentRecordedAudioPlaying].audioPlaying
-            notifyDataSetChanged()
 
         }
 
