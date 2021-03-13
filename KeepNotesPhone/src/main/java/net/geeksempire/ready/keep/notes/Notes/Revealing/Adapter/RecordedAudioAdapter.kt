@@ -68,6 +68,9 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
 
         } else {
 
+            recordedAudioViewHolder.audioProgressBar.progress = 0f
+            recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
+
             recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
 
         }
@@ -97,6 +100,9 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
             recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_pause)
 
         } else {
+
+            recordedAudioViewHolder.audioProgressBar.progress = 0f
+            recordedAudioViewHolder.audioProgressBar.stopProgressAnimation()
 
             recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_play)
 

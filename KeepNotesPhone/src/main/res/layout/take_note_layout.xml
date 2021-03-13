@@ -223,9 +223,8 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
 
-        apps:layout_constraintWidth_percent="0.79"
-
         apps:layout_constraintBottom_toTopOf="@id/savedAudioRecordView"
-        apps:layout_constraintStart_toStartOf="@id/savedAudioRecordView" />
+        apps:layout_constraintStart_toStartOf="@id/savedAudioRecordView"
+        apps:layout_constraintEnd_toEndOf="@id/audioRecordView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

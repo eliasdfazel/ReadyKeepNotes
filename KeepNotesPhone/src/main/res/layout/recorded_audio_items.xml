@@ -5,7 +5,6 @@
     android:id="@+id/rootItemView"
     android:layout_width="match_parent"
     android:layout_height="37dp"
-    android:layout_marginEnd="3dp"
     android:layout_marginVertical="7dp"
     android:background="@drawable/recorded_audio_track_background">
 
