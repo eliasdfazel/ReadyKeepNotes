@@ -121,6 +121,7 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
                 } else {
 
                     recordedAudioData[currentRecordedAudioPlaying].audioPlaying = false
+                    recordedAudioData[position].audioPlaying = true
                     notifyDataSetChanged()
 
                     recordedAudioViewHolder.audioProgressBar.progress = 0f
@@ -166,57 +167,46 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
 
             } else {
 
-                if (setMediaPlayerAction == MediaPlayerAction.PAUSE) {
+                recordedAudioData[currentRecordedAudioPlaying].audioPlaying = false
+                recordedAudioData[position].audioPlaying = true
+                notifyDataSetChanged()
 
-                    recordedAudioViewHolder.audioProgressBar.setStartProgress(mediaPlayer.currentPosition.toFloat())
-                    recordedAudioViewHolder.audioProgressBar.setEndProgress(100f)
+                recordedAudioViewHolder.audioProgressBar.progress = 0f
+
+                mediaPlayer.stop()
+                mediaPlayer.reset()
+
+                setMediaPlayerAction = MediaPlayerAction.STOP
+
+                recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_pause)
+
+                currentRecordedAudioPlaying = position
+
+                mediaPlayer.setDataSource(recordedAudioData[position].audioFilePath)
+                mediaPlayer.prepare()
+
+                mediaPlayer.setOnPreparedListener {
 
                     mediaPlayer.start()
 
-                    recordedAudioViewHolder.audioProgressBar.startProgressAnimation()
-
                     setMediaPlayerAction = MediaPlayerAction.PLAY
 
-                } else {
+                    recordedAudioViewHolder.audioProgressBar.setStartProgress(0f)
+                    recordedAudioViewHolder.audioProgressBar.setEndProgress(100f)
 
-                    recordedAudioViewHolder.audioProgressBar.progress = 0f
+                    recordedAudioViewHolder.audioProgressBar.setProgressDuration(mediaPlayer.duration)
+                    recordedAudioViewHolder.audioProgressBar.startProgressAnimation()
+
+                }
+
+                mediaPlayer.setOnSeekCompleteListener {
+
+                }
+
+                mediaPlayer.setOnCompletionListener {
 
                     mediaPlayer.stop()
                     mediaPlayer.reset()
-
-                    setMediaPlayerAction = MediaPlayerAction.STOP
-
-                    recordedAudioViewHolder.audioPlayPause.icon = context.getDrawable(android.R.drawable.ic_media_pause)
-
-                    currentRecordedAudioPlaying = position
-
-                    mediaPlayer.setDataSource(recordedAudioData[position].audioFilePath)
-                    mediaPlayer.prepare()
-
-                    mediaPlayer.setOnPreparedListener {
-
-                        mediaPlayer.start()
-
-                        setMediaPlayerAction = MediaPlayerAction.PLAY
-
-                        recordedAudioViewHolder.audioProgressBar.setStartProgress(0f)
-                        recordedAudioViewHolder.audioProgressBar.setEndProgress(100f)
-
-                        recordedAudioViewHolder.audioProgressBar.setProgressDuration(mediaPlayer.duration)
-                        recordedAudioViewHolder.audioProgressBar.startProgressAnimation()
-
-                    }
-
-                    mediaPlayer.setOnSeekCompleteListener {
-
-                    }
-
-                    mediaPlayer.setOnCompletionListener {
-
-                        mediaPlayer.stop()
-                        mediaPlayer.reset()
-
-                    }
 
                 }
 
