@@ -374,40 +374,48 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
             if (recordedAudioDirectory.exists()) {
 
-                takeNoteLayoutBinding.savedAudioRecordView.visibility = View.VISIBLE
+                val allRecordedAudioFiles = recordedAudioDirectory.listFiles()
 
-                takeNoteLayoutBinding.savedAudioRecordView.setOnClickListener {
+                if (!allRecordedAudioFiles.isNullOrEmpty()) {
 
-                    CoroutineScope(Dispatchers.IO).launch {
+                    takeNoteLayoutBinding.savedAudioRecordView.visibility = View.VISIBLE
 
-                        val allRecordedAudioFiles = recordedAudioDirectory.listFiles()
+                    takeNoteLayoutBinding.savedAudioRecordView.setOnClickListener {
 
-                        if (!allRecordedAudioFiles.isNullOrEmpty()) {
+                        CoroutineScope(Dispatchers.IO).launch {
+
+                            if (!allRecordedAudioFiles.isNullOrEmpty()) {
 
 
-                            val recordedAudioAdapter = RecordedAudioAdapter(this@TakeNote, takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView)
+                                val recordedAudioAdapter = RecordedAudioAdapter(this@TakeNote, takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView)
 
 
-                            recordedAudioAdapter.recordedAudioData.clear()
+                                recordedAudioAdapter.recordedAudioData.clear()
 
-                            allRecordedAudioFiles.forEach { recordedAudioFile ->
+                                allRecordedAudioFiles.forEach { recordedAudioFile ->
 
-                                recordedAudioAdapter.recordedAudioData.add(RecordedAudioDataStructure(recordedAudioFile, recordedAudioFile.absolutePath, recordedAudioFile.name))
+                                    recordedAudioAdapter.recordedAudioData.add(RecordedAudioDataStructure(recordedAudioFile, recordedAudioFile.absolutePath, recordedAudioFile.name))
 
-                            }
+                                }
 
-                            withContext(Dispatchers.Main) {
+                                withContext(Dispatchers.Main) {
 
-                                takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+                                    takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
 
-                                takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.adapter = recordedAudioAdapter
+                                    takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.adapter = recordedAudioAdapter
 
-                                takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.getChildAt(0)
+                                    takeNoteLayoutBinding.recordedAudioContainer.recordedAudioRecyclerView.getChildAt(0)
 
-                                recordedAudioAdapter.notifyDataSetChanged()
+                                    recordedAudioAdapter.notifyDataSetChanged()
 
-                                takeNoteLayoutBinding.recordedAudioContainer.root.visibility = View.VISIBLE
-                                takeNoteLayoutBinding.recordedAudioContainer.root.bringToFront()
+                                    takeNoteLayoutBinding.recordedAudioContainer.root.visibility = View.VISIBLE
+                                    takeNoteLayoutBinding.recordedAudioContainer.root.bringToFront()
+
+                                }
+
+                            } else {
+
+                                takeNoteLayoutBinding.savedAudioRecordView.visibility = View.GONE
 
                             }
 
@@ -416,7 +424,6 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                     }
 
                 }
-
 
             }
 
