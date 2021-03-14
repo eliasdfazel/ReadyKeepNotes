@@ -394,7 +394,9 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
 
                                 allRecordedAudioFiles.forEach { recordedAudioFile ->
 
-                                    recordedAudioAdapter.recordedAudioData.add(RecordedAudioDataStructure(recordedAudioFile, recordedAudioFile.absolutePath, recordedAudioFile.name))
+                                    recordedAudioAdapter.recordedAudioData.add(RecordedAudioDataStructure(
+                                        documentId.toString(), recordedAudioFile.name.replace(".MP3", ""),
+                                        recordedAudioFile, recordedAudioFile.absolutePath, recordedAudioFile.name))
 
                                 }
 

@@ -2,10 +2,18 @@ package net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter
 
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter.ViewHolder.RecordedAudioViewHolder
 import net.geeksempire.ready.keep.notes.Notes.Revealing.DataStructure.RecordedAudioDataStructure
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
@@ -20,6 +28,10 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
 
     val themePreferences: ThemePreferences by lazy {
         ThemePreferences(context)
+    }
+
+    private val databaseEndpoints: DatabaseEndpoints by lazy {
+        DatabaseEndpoints()
     }
 
     val recordedAudioData: ArrayList<RecordedAudioDataStructure> = ArrayList<RecordedAudioDataStructure>()
@@ -109,8 +121,39 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
         }
 
         recordedAudioViewHolder.audioDelete.setOnClickListener {
+            Log.d(this@RecordedAudioAdapter.javaClass.simpleName, "Recorded Audio To Remove: ${recordedAudioData[position]}")
 
+            CoroutineScope(Dispatchers.IO).launch {
 
+                Firebase.auth.currentUser?.let { firebaseUser ->
+
+                    println(">>> >> > " + recordedAudioData[position])
+                    println(">>> >> > " + databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, recordedAudioData[position].documentId).plus("/${recordedAudioData[position].audioRecordedId}" + ".MP3"))
+
+                    Firebase.storage.reference
+                        .child(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, recordedAudioData[position].documentId).plus("/${recordedAudioData[position].audioRecordedId}" + ".MP3"))
+                        .delete().addOnSuccessListener {
+
+                        }.addOnFailureListener {
+
+                        }
+
+                }
+
+//                if (recordedAudioData[position].audioFile.delete()) {
+//
+//                    withContext(Dispatchers.Main) {
+//
+//                        recordedAudioData.removeAt(position)
+//
+//                        notifyItemRemoved(position)
+//                        notifyDataSetChanged()
+//
+//                    }
+//
+//                }
+
+            }
 
         }
 
