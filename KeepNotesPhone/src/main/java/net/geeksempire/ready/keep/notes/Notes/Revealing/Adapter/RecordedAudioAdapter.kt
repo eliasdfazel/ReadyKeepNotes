@@ -1,5 +1,6 @@
 package net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter
 
+import android.content.res.ColorStateList
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.util.Log
@@ -13,6 +14,7 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter.ViewHolder.RecordedAudioViewHolder
 import net.geeksempire.ready.keep.notes.Notes.Revealing.DataStructure.RecordedAudioDataStructure
@@ -94,10 +96,16 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
         when (themePreferences.checkThemeLightDark()) {
             ThemeType.ThemeLight -> {
 
+                recordedAudioViewHolder.audioPlayPause.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.default_color_game))
+                recordedAudioViewHolder.audioDelete.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.default_color_game))
+
                 recordedAudioViewHolder.audioProgressBar.setTrackColor(context.getColor(R.color.white))
 
             }
             ThemeType.ThemeDark -> {
+
+                recordedAudioViewHolder.audioPlayPause.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.default_color_game_transparent))
+                recordedAudioViewHolder.audioDelete.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.default_color_game_transparent))
 
                 recordedAudioViewHolder.audioProgressBar.setTrackColor(context.getColor(R.color.black))
 
@@ -140,18 +148,18 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
 
                 }
 
-//                if (recordedAudioData[position].audioFile.delete()) {
-//
-//                    withContext(Dispatchers.Main) {
-//
-//                        recordedAudioData.removeAt(position)
-//
-//                        notifyItemRemoved(position)
-//                        notifyDataSetChanged()
-//
-//                    }
-//
-//                }
+                if (recordedAudioData[position].audioFile.delete()) {
+
+                    withContext(Dispatchers.Main) {
+
+                        recordedAudioData.removeAt(position)
+
+                        notifyItemRemoved(position)
+                        notifyDataSetChanged()
+
+                    }
+
+                }
 
             }
 
