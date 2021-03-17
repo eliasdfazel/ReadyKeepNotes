@@ -492,6 +492,17 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 }
 
+                /*
+                *
+                *
+                * Update User Interface
+                * Update Data Array
+                * Update RecyclverView Height
+                * Invisible Pinned RecyclerView If Last Pinned Note Get Unpinned
+                *
+                *
+                * */
+
                 Log.d(this@KeepNoteOverview.javaClass.simpleName, "Note ${dataToUnpin.uniqueNoteId} Unpinned")
             }
 
