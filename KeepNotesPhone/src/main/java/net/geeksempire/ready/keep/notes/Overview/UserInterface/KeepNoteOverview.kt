@@ -29,6 +29,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import net.geeksempire.ready.keep.notes.BuildConfig
 import net.geeksempire.ready.keep.notes.Database.DataStructure.Notes
+import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesTemporaryModification
 import net.geeksempire.ready.keep.notes.Database.IO.DeletingProcess
 import net.geeksempire.ready.keep.notes.Database.IO.NoteDatabaseConfigurations
 import net.geeksempire.ready.keep.notes.Database.IO.NotesIO
@@ -469,11 +470,29 @@ class KeepNoteOverview : AppCompatActivity(),
             override fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {
                 super.onSwipeToEnd(context, position)
 
-                val dataToDelete = context.overviewAdapterUnpinned.notesDataStructureList[position]
+                val dataToUnpin = context.overviewAdapterPinned.notesDataStructureList[position]
 
-                DeletingProcess(this@KeepNoteOverview)
-                    .start(dataToDelete, position)
+                val notesDatabaseDataAccessObject = (context.application as KeepNoteApplication)
+                    .notesRoomDatabaseConfiguration
+                    .prepareRead()
 
+                notesDatabaseDataAccessObject.updateNotePinnedData(dataToUnpin.uniqueNoteId, NotesTemporaryModification.NoteUnpinned)
+
+                Firebase.auth.currentUser?.let { firebaseUser ->
+
+                    if (!firebaseUser.isAnonymous) {
+
+                        (context.application as KeepNoteApplication).firestoreDatabase
+                            .document(context.databaseEndpoints.baseSpecificNoteEndpoint(firebaseUser.uid, dataToUnpin.uniqueNoteId.toString()))
+                            .update(
+                                Notes.NotePinned, NotesTemporaryModification.NoteUnpinned,
+                            )
+
+                    }
+
+                }
+
+                Log.d(this@KeepNoteOverview.javaClass.simpleName, "Note ${dataToUnpin.uniqueNoteId} Unpinned")
             }
 
         }

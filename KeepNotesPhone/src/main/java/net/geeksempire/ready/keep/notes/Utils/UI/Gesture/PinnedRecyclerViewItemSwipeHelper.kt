@@ -22,7 +22,7 @@ abstract class PinnedRecyclerViewItemSwipeHelper(private val context: KeepNoteOv
             or ItemTouchHelper.DOWN
             or ItemTouchHelper.START
             or ItemTouchHelper.END,
-    ItemTouchHelper.START
+            ItemTouchHelper.END
 ) {
 
     private val selectedItemBackground = ContextCompat.getDrawable(context, R.drawable.round_corner_background)?.mutate()

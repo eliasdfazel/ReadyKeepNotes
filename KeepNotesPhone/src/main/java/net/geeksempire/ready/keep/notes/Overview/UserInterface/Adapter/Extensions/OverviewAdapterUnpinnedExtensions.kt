@@ -1,5 +1,6 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
+import android.util.Log
 import android.view.View
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -64,6 +65,7 @@ fun OverviewAdapterUnpinned.setupDeleteView(position: Int): UnpinnedRecyclerView
                 DeletingProcess(context)
                     .start(dataToDelete, position)
 
+                Log.d(this@setupDeleteView.javaClass.simpleName, "Note ${this@setupDeleteView.notesDataStructureList[position].uniqueNoteId} Deleted")
             }
 
         })
@@ -146,6 +148,7 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
 
                 }
 
+                Log.d(this@setupPinnedView.javaClass.simpleName, "Note ${this@setupPinnedView.notesDataStructureList[position].uniqueNoteId} Pinned")
             }
 
         })

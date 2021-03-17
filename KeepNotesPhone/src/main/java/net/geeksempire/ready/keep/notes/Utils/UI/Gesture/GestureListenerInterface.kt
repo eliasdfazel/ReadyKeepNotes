@@ -25,11 +25,11 @@ interface GestureListenerInterface {
 
 interface SwipeActions {
     /**
-     * Open Menu
+     *
      **/
     fun onSwipeToStart(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {}
     /**
-     * Delete
+     *
      **/
     fun onSwipeToEnd(context: KeepNoteOverview, position: Int) = CoroutineScope(Dispatchers.Main).launch {}
 }
