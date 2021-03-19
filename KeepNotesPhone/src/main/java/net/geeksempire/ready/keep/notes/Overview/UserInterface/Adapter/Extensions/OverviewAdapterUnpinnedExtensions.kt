@@ -12,6 +12,7 @@ import net.geeksempire.ready.keep.notes.Database.IO.DeletingProcess
 import net.geeksempire.ready.keep.notes.Invitations.Utils.ShareIt
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
+import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.UnderlayOptionsActions
 import net.geeksempire.ready.keep.notes.Utils.UI.Gesture.UnpinnedRecyclerViewItemSwipeHelper
@@ -55,7 +56,17 @@ fun OverviewAdapterUnpinned.setupDeleteView(position: Int): UnpinnedRecyclerView
         this@setupDeleteView.context,
         this@setupDeleteView.context.getString(R.string.deleteText),
         13.0f,
-        R.color.red_transparent,
+        when (this@setupDeleteView.context.themePreferences.checkThemeLightDark()) {
+            ThemeType.ThemeLight -> {
+                R.color.white
+            }
+            ThemeType.ThemeDark -> {
+                R.color.black
+            } else -> {
+                R.color.white
+            }
+        },
+        R.color.red,
         object : UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).launch {
@@ -77,7 +88,17 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
         this@setupPinnedView.context,
         this@setupPinnedView.context.getString(R.string.pinText),
         13.0f,
-        R.color.default_color_light_transparent,
+        when (this@setupPinnedView.context.themePreferences.checkThemeLightDark()) {
+            ThemeType.ThemeLight -> {
+                R.color.white
+            }
+            ThemeType.ThemeDark -> {
+                R.color.black
+            } else -> {
+                R.color.white
+            }
+        },
+        R.color.default_color_light,
         object : UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
@@ -154,13 +175,62 @@ fun OverviewAdapterUnpinned.setupPinnedView(position: Int): UnpinnedRecyclerView
         })
 }
 
+fun OverviewAdapterUnpinned.setupShareView(position: Int): UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton {
+
+    return UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton(
+        this@setupShareView.context,
+        this@setupShareView.context.getString(R.string.shareText),
+        13.0f,
+        when (this@setupShareView.context.themePreferences.checkThemeLightDark()) {
+            ThemeType.ThemeLight -> {
+                R.color.white
+            }
+            ThemeType.ThemeDark -> {
+                R.color.black
+            } else -> {
+                R.color.white
+            }
+        },
+        R.color.default_color_light,
+        object : UnderlayOptionsActions {
+
+            override fun onClick() = CoroutineScope(Dispatchers.Main).async {
+
+                val textShareStringBuilder = StringBuilder()
+                notesDataStructureList[position].noteTile?.let {
+                    textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
+                }
+                textShareStringBuilder.append("\n")
+                notesDataStructureList[position].noteTextContent?.let {
+                    textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
+                }
+
+                val textToShare = textShareStringBuilder.toString()
+
+                val imageToShare = notesDataStructureList[position].noteHandwritingSnapshotLink
+
+                val audioToShare = notesDataStructureList[position].noteVoicePaths
+
+                ShareIt(context)
+                    .invokeCompleteSharing(
+                        textToShare,
+                        imageToShare,
+                        audioToShare
+                    )
+
+            }
+
+        })
+}
+
 fun OverviewAdapterUnpinned.setupEditView(position: Int): UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton {
 
     return UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton(
         this@setupEditView.context,
         this@setupEditView.context.getString(R.string.editText),
         13.0f,
-        R.color.default_color,
+        R.color.white,
+        R.color.default_color_light,
         object : UnderlayOptionsActions {
 
             override fun onClick() = CoroutineScope(Dispatchers.Main).async {
@@ -193,44 +263,6 @@ fun OverviewAdapterUnpinned.setupEditView(position: Int): UnpinnedRecyclerViewIt
                     )
 
                 }
-
-            }
-
-        })
-}
-
-fun OverviewAdapterUnpinned.setupShareView(position: Int): UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton {
-
-    return UnpinnedRecyclerViewItemSwipeHelper.UnderlayButton(
-        this@setupShareView.context,
-        this@setupShareView.context.getString(R.string.shareText),
-        13.0f,
-        R.color.default_color_light_transparent,
-        object : UnderlayOptionsActions {
-
-            override fun onClick() = CoroutineScope(Dispatchers.Main).async {
-
-                val textShareStringBuilder = StringBuilder()
-                notesDataStructureList[position].noteTile?.let {
-                    textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
-                }
-                textShareStringBuilder.append("\n")
-                notesDataStructureList[position].noteTextContent?.let {
-                    textShareStringBuilder.append(context.contentEncryption.decryptEncodedData(it, Firebase.auth.currentUser!!.uid))
-                }
-
-                val textToShare = textShareStringBuilder.toString()
-
-                val imageToShare = notesDataStructureList[position].noteHandwritingSnapshotLink
-
-                val audioToShare = notesDataStructureList[position].noteVoicePaths
-
-                ShareIt(context)
-                    .invokeCompleteSharing(
-                        textToShare,
-                        imageToShare,
-                        audioToShare
-                    )
 
             }
 

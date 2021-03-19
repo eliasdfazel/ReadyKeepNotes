@@ -198,7 +198,8 @@ abstract class UnpinnedRecyclerViewItemSwipeHelper(private val context: KeepNote
         private val context: Context,
         private val title: String,
         textSize: Float,
-        @ColorRes private val colorRes: Int,
+        @ColorRes private val colorBackground: Int,
+        @ColorRes private val colorText: Int,
         private val clickListener: UnderlayOptionsActions
     ) {
         private var clickableRegion: RectF? = null
@@ -219,10 +220,10 @@ abstract class UnpinnedRecyclerViewItemSwipeHelper(private val context: KeepNote
         fun draw(canvas: Canvas, rect: RectF) {
             val paint = Paint()
 
-            paint.color = ContextCompat.getColor(context, colorRes)
+            paint.color = ContextCompat.getColor(context, colorBackground)
             canvas.drawRoundRect(rect, dpToInteger(context, 5).toFloat(), dpToInteger(context, 5).toFloat(), paint)
 
-            paint.color = ContextCompat.getColor(context, R.color.lighter)
+            paint.color = ContextCompat.getColor(context, colorText)
             paint.textSize = textSizeInPixel
             paint.typeface = Typeface.MONOSPACE
             paint.textAlign = Paint.Align.LEFT
