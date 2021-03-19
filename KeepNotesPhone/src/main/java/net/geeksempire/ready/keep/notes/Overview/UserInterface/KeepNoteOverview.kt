@@ -502,6 +502,19 @@ class KeepNoteOverview : AppCompatActivity(),
                 *
                 *
                 * */
+                context.overviewAdapterPinned.notesDataStructureList.remove(dataToUnpin)
+
+                context.overviewAdapterPinned.notifyItemRemoved(position)
+
+                if (context.overviewAdapterPinned.notesDataStructureList.size == 0) {
+
+                    context.overviewLayoutBinding.overviewPinnedRecyclerView.visibility = View.GONE
+
+                }
+
+                context.overviewAdapterUnpinned.notesDataStructureList.add(dataToUnpin)
+
+                context.overviewAdapterUnpinned.notifyItemInserted(context.overviewAdapterUnpinned.notesDataStructureList.size)
 
                 Log.d(this@KeepNoteOverview.javaClass.simpleName, "Note ${dataToUnpin.uniqueNoteId} Unpinned")
             }
