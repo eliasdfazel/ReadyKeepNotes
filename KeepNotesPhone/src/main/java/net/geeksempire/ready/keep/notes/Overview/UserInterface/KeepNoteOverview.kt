@@ -492,16 +492,6 @@ class KeepNoteOverview : AppCompatActivity(),
 
                 }
 
-                /*
-                *
-                *
-                * Update User Interface
-                * Update Data Array
-                * Update RecyclverView Height
-                * Invisible Pinned RecyclerView If Last Pinned Note Get Unpinned
-                *
-                *
-                * */
                 context.overviewAdapterPinned.notesDataStructureList.remove(dataToUnpin)
 
                 context.overviewAdapterPinned.notifyItemRemoved(position)
