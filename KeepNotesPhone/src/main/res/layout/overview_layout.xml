@@ -66,6 +66,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/quickNoteContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
@@ -191,6 +192,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/notesOverviewNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingBottom="89dp"
@@ -351,9 +353,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/closeImageContentPreview"
-        android:layout_width="59dp"
-        android:layout_height="59dp"
-        android:layout_marginTop="7dp"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="5dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
@@ -364,13 +366,35 @@
         apps:iconTint="@color/white"
         apps:iconGravity="textStart"
         apps:iconPadding="0sp"
-        apps:iconSize="43dp"
+        apps:iconSize="19dp"
         apps:cornerRadius="51dp"
         apps:rippleColor="@color/light"
         apps:backgroundTint="@color/red"
 
         apps:layout_constraintTop_toBottomOf="@id/contentImagePreview"
-        apps:layout_constraintStart_toStartOf="@id/contentImagePreview"
+        apps:layout_constraintStart_toStartOf="@id/contentImagePreview" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/openImageContentPreview"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="5dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:visibility="gone"
+
+        apps:icon="@android:drawable/ic_menu_edit"
+        apps:iconTint="@color/white"
+        apps:iconGravity="textStart"
+        apps:iconPadding="0sp"
+        apps:iconSize="19dp"
+        apps:cornerRadius="51dp"
+        apps:rippleColor="@color/light"
+        apps:backgroundTint="@color/blue"
+
+        apps:layout_constraintTop_toBottomOf="@id/contentImagePreview"
         apps:layout_constraintEnd_toEndOf="@id/contentImagePreview"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

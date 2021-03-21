@@ -1,11 +1,13 @@
 package net.geeksempire.ready.keep.notes.Overview.UserInterface.Adapter
 
+import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -357,8 +359,85 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
                                     override fun animationFinished() {
                                         super.animationFinished()
 
+                                        val animation = ValueAnimator.ofFloat(1f, 0.5f)
+                                        animation.addUpdateListener {
+                                            val value = it.animatedValue as Float
+
+                                            context.overviewLayoutBinding.informationBar.alpha = value
+                                            context.overviewLayoutBinding.quickNoteContainer.alpha = value
+                                            context.overviewLayoutBinding.notesOverviewNestedScrollView.alpha = value
+                                        }
+                                        animation.duration = 357
+                                        animation.interpolator = OvershootInterpolator()
+                                        animation.start()
+
                                         context.overviewLayoutBinding.closeImageContentPreview.visibility = View.VISIBLE
                                         context.overviewLayoutBinding.closeImageContentPreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
+
+                                        context.overviewLayoutBinding.openImageContentPreview.visibility = View.VISIBLE
+                                        context.overviewLayoutBinding.openImageContentPreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
+
+                                        context.overviewLayoutBinding.openImageContentPreview.setOnClickListener {
+
+                                            overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.VISIBLE
+
+                                            context.noteDatabaseConfigurations.updatedDatabaseItemPosition(position)
+                                            context.noteDatabaseConfigurations.updatedDatabaseItemIdentifier(notesDataStructureList[position].uniqueNoteId)
+
+                                            val paintingPathsJsonArray = notesDataStructureList[position].noteHandwritingPaintingPaths
+
+                                            if (paintingPathsJsonArray.isNullOrEmpty()) {
+
+                                                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
+
+                                                TakeNote.open(context = context,
+                                                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
+                                                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                                                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+                                                    noteTile = notesDataStructureList[position].noteTile,
+                                                    contentText = notesDataStructureList[position].noteTextContent,
+                                                    encryptedTextContent = true,
+                                                    updateExistingNote = true,
+                                                    pinnedNote = when (notesDataStructureList[position].notePinned) {
+                                                        NotesTemporaryModification.NoteUnpinned -> {
+                                                            false
+                                                        }
+                                                        NotesTemporaryModification.NotePinned -> {
+                                                            true
+                                                        } else -> {
+                                                            false
+                                                        }
+                                                    }
+                                                )
+
+                                            } else {
+
+                                                overviewUnpinnedViewHolder.waitingViewLoading.visibility = View.GONE
+
+                                                TakeNote.open(context = context,
+                                                    incomingActivityName = this@OverviewAdapterUnpinned.javaClass.simpleName,
+                                                    extraConfigurations = TakeNote.NoteConfigurations.KeyboardTyping,
+                                                    uniqueNoteId = notesDataStructureList[position].uniqueNoteId,
+                                                    noteTile = notesDataStructureList[position].noteTile,
+                                                    contentText = notesDataStructureList[position].noteTextContent,
+                                                    paintingPath = paintingPathsJsonArray,
+                                                    encryptedTextContent = true,
+                                                    updateExistingNote = true,
+                                                    pinnedNote = when (notesDataStructureList[position].notePinned) {
+                                                        NotesTemporaryModification.NoteUnpinned -> {
+                                                            false
+                                                        }
+                                                        NotesTemporaryModification.NotePinned -> {
+                                                            true
+                                                        } else -> {
+                                                            false
+                                                        }
+                                                    }
+                                                )
+
+                                            }
+
+                                        }
 
                                         context.overviewLayoutBinding.closeImageContentPreview.setOnClickListener {
 
@@ -367,6 +446,21 @@ class OverviewAdapterUnpinned(val context: KeepNoteOverview) : RecyclerView.Adap
 
                                             context.overviewLayoutBinding.closeImageContentPreview.visibility = View.GONE
                                             context.overviewLayoutBinding.closeImageContentPreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
+
+                                            context.overviewLayoutBinding.openImageContentPreview.visibility = View.GONE
+                                            context.overviewLayoutBinding.openImageContentPreview.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
+
+                                            val animation = ValueAnimator.ofFloat(0.5f, 1f)
+                                            animation.addUpdateListener {
+                                                val value = it.animatedValue as Float
+
+                                                context.overviewLayoutBinding.informationBar.alpha = value
+                                                context.overviewLayoutBinding.quickNoteContainer.alpha = value
+                                                context.overviewLayoutBinding.notesOverviewNestedScrollView.alpha = value
+                                            }
+                                            animation.duration = 357
+                                            animation.interpolator = OvershootInterpolator()
+                                            animation.start()
 
                                         }
 
