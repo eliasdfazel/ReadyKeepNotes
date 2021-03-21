@@ -1,5 +1,7 @@
 {
-  "rulesFile": "database.rules.json",
+  "database": {
+    "rules": "database.rules.json"
+  },
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
@@ -27,6 +29,12 @@
     },
     "database": {
       "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
     },
     "ui": {
       "enabled": true
