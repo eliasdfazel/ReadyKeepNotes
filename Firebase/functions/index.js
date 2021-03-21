@@ -14,7 +14,33 @@ const runtimeOptions = {
 /* [] */
 exports.scheduledAuthenticatedUserScan = functions.pubsub.schedule('3 of month 07:00').onRun((context) => {
 
-    
+    return admin.auth()
+        .listUsers(1000)
+        .then((listUsersResult) => {
 
-    return true;
+            listUsersResult.users.forEach((userRecord) => {
+
+                var userJsonData = userRecord.toJSON();
+
+                if (userJsonData.emailVerified) {
+                    console.log(userJsonData.email, 'Is Verified: ')
+
+                } else {
+                    console.log(userJsonData.email, 'Is Not Verified: ')
+
+                    admin
+                        .auth()
+                        .deleteUser(userJsonData.uid)
+
+
+                }
+
+            });
+
+            if (listUsersResult.pageToken) { listAllUsers(listUsersResult.pageToken); }
+
+        })
+        .catch((error) => {
+            console.log('Error Listing Users: ', error);
+        });;
 });
