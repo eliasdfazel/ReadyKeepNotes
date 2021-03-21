@@ -1,9 +1,20 @@
-const functions = require("firebase-functions");
+'use strict';
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+
+admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+});
+
+const runtimeOptions = {
+    timeoutSeconds: 313,
+}
+
+/* [] */
+exports.scheduledAuthenticatedUserScan = functions.pubsub.schedule('3 of month 07:00').onRun((context) => {
+
+    
+
+    return true;
+});
