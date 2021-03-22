@@ -16,7 +16,7 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
 
     private lateinit var timePickerDialog: TimePickerDialog
 
-    fun initialize() : ReminderTimeDialogue {
+    fun initialize(documentId: Long) : ReminderTimeDialogue {
 
         datePickerDialog = DatePickerDialog(
             context,
@@ -38,7 +38,6 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, month)
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
 
 
                 try {
@@ -80,8 +79,6 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
                 calendar.set(Calendar.MINUTE, minutes)
                 calendar.set(Calendar.SECOND, 13)
 
-
-
                 try {
 
                     timePickerDialog.dismiss()
@@ -97,6 +94,12 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
         )
 
         return this@ReminderTimeDialogue
+    }
+
+    fun show() {
+
+        showCalendar()
+
     }
 
     fun showCalendar() {

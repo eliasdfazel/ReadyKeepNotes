@@ -30,10 +30,7 @@ import net.geeksempire.ready.keep.notes.EntryConfigurations
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Notes.Revealing.Adapter.RecordedAudioAdapter
 import net.geeksempire.ready.keep.notes.Notes.Revealing.DataStructure.RecordedAudioDataStructure
-import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupAudioRecorderActions
-import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupPaintingActions
-import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupTakeNoteTheme
-import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.setupToggleKeyboardHandwriting
+import net.geeksempire.ready.keep.notes.Notes.Taking.Extensions.*
 import net.geeksempire.ready.keep.notes.Notes.Tools.AudioRecording.AudioRecordingLocalFile
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.Adapter.RecentColorsAdapter
 import net.geeksempire.ready.keep.notes.Notes.Tools.Painting.DataStructure.HandwritingSnapshotLocalFile
@@ -428,6 +425,8 @@ class TakeNote : AppCompatActivity(), NetworkConnectionListenerInterface {
                 }
 
             }
+
+            setupNoteReminder()
 
         }
 
