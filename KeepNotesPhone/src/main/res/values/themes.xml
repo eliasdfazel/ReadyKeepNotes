@@ -115,4 +115,36 @@
 
     </style>
 
+    <style name="TimeDialogue.Dark" parent="ThemeOverlay.AppCompat.Dialog">
+        <!-- Header Background-->
+        <item name="colorAccent">@color/default_color_dark</item>
+
+        <!-- Calendar Background-->
+        <item name="android:windowBackground">@color/dark</item>
+
+        <!-- Selected Day-->
+        <item name="android:colorControlActivated">@color/default_color_game_dark_transparent</item>
+
+        <!-- Days Of The Month-->
+        <item name="android:textColorPrimary">@color/default_color_light</item>
+        <!-- Days Of The Week -->
+        <item name="android:textColorSecondary">@color/default_color_game_dark_transparent</item>
+    </style>
+
+    <style name="TimeDialogue.Light" parent="ThemeOverlay.AppCompat.Dialog">
+        <!-- Header Background-->
+        <item name="colorAccent">@color/default_color_light</item>
+
+        <!-- Calendar Background-->
+        <item name="android:windowBackground">@color/light</item>
+
+        <!-- Selected Day-->
+        <item name="android:colorControlActivated">@color/default_color_game_transparent</item>
+
+        <!-- Days Of The Month-->
+        <item name="android:textColorPrimary">@color/default_color_dark</item>
+        <!-- Days Of The Week -->
+        <item name="android:textColorSecondary">@color/default_color_game_transparent</item>
+    </style>
+
 </resources>
