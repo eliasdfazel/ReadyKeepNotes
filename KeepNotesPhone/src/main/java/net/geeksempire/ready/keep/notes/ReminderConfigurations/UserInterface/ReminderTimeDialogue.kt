@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.ReminderConfigurations.DataStructure.ReminderContentDataStructure
 import java.util.*
 
 class ReminderTimeDialogue(private val context: AppCompatActivity, private val themePreferences: ThemePreferences) {
@@ -16,7 +17,7 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
 
     private lateinit var timePickerDialog: TimePickerDialog
 
-    fun initialize(documentId: Long) : ReminderTimeDialogue {
+    fun initialize(reminderContentDataStructure: ReminderContentDataStructure) : ReminderTimeDialogue {
 
         datePickerDialog = DatePickerDialog(
             context,
