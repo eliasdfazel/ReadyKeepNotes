@@ -7,6 +7,8 @@ import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
 import net.geeksempire.ready.keep.notes.ReminderConfigurations.DataStructure.ReminderContentDataStructure
+import net.geeksempire.ready.keep.notes.ReminderConfigurations.DataStructure.ReminderDataStructure
+import net.geeksempire.ready.keep.notes.ReminderConfigurations.IO.ReminderInput
 import java.util.*
 
 class ReminderTimeDialogue(private val context: AppCompatActivity, private val themePreferences: ThemePreferences) {
@@ -79,6 +81,20 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
                 calendar.set(Calendar.HOUR_OF_DAY, hours)
                 calendar.set(Calendar.MINUTE, minutes)
                 calendar.set(Calendar.SECOND, 13)
+
+                val reminderDataStructure = ReminderDataStructure(documentId = reminderContentDataStructure.documentId,
+                    reminderTitle = reminderContentDataStructure.reminderTitle, reminderDescription = reminderContentDataStructure.reminderDescription,
+                    reminderTimeYear = calendar[Calendar.YEAR], reminderTimeMonth = calendar[Calendar.MONTH], reminderTimeDay = calendar[Calendar.DAY_OF_MONTH],
+                    reminderTimeHour = calendar[Calendar.HOUR_OF_DAY], reminderTimeMinute = calendar[Calendar.MINUTE])
+
+                /*
+                *
+                * Save To Offline Database
+                * Save To Firestore
+                *
+                */
+
+                ReminderInput(context, calendar)
 
                 try {
 
