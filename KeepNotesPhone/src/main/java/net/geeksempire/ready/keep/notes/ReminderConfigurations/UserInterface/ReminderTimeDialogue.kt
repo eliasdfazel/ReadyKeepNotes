@@ -3,6 +3,7 @@ package net.geeksempire.ready.keep.notes.ReminderConfigurations.UserInterface
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
+import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
@@ -97,6 +98,9 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
                 * Save To Firestore
                 *
                 */
+
+                val jsonIO = JsonIO()
+                jsonIO.writeReminderData(reminderDataStructure)
 
                 ReminderInput(context, calendar).apply {
                     add(reminderDataStructure)

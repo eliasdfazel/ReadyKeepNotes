@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.CalendarContract
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import net.geeksempire.ready.keep.notes.ReminderConfigurations.DataStructure.Reminder
 import net.geeksempire.ready.keep.notes.ReminderConfigurations.DataStructure.ReminderDataStructure
@@ -34,22 +35,22 @@ class ReminderInput (private val context: AppCompatActivity, private val calenda
 
     fun insertToCalendar(reminderDataStructure: ReminderDataStructure) {
 
-        val calID: Long = 3
-        val startMillis: Long = Calendar.getInstance().run {
-            set(2012, 9, 14, 7, 30)
-            timeInMillis
-        }
-        val endMillis: Long = Calendar.getInstance().run {
-            set(2012, 9, 14, 8, 45)
+        val eventMillisecond: Long = Calendar.getInstance().run {
+            set(reminderDataStructure.reminderTimeYear, reminderDataStructure.reminderTimeMonth, reminderDataStructure.reminderTimeDay,
+                reminderDataStructure.reminderTimeHour, reminderDataStructure.reminderTimeMinute)
+
             timeInMillis
         }
 
         val values = ContentValues().apply {
-            put(CalendarContract.Events.DTSTART, startMillis)
-            put(CalendarContract.Events.DTEND, endMillis)
+            put(CalendarContract.Events.CALENDAR_ID, reminderDataStructure.documentId)
+
+            put(CalendarContract.Events.DTSTART, eventMillisecond)
+            put(CalendarContract.Events.DTEND, eventMillisecond + (1000 * 60))
+
             put(CalendarContract.Events.TITLE, reminderDataStructure.reminderTitle)
             put(CalendarContract.Events.DESCRIPTION, reminderDataStructure.reminderDescription)
-            put(CalendarContract.Events.CALENDAR_ID, reminderDataStructure.documentId)
+
             put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().timeZone.id)
         }
 
@@ -59,6 +60,7 @@ class ReminderInput (private val context: AppCompatActivity, private val calenda
 
         val eventId: Long? = eventUri?.lastPathSegment?.toLong()
 
+        Log.d(this@ReminderInput.javaClass.simpleName, "Event Id: ${eventId}")
     }
 
 }
