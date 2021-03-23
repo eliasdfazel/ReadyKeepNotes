@@ -90,11 +90,18 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
                 /*
                 *
                 * Save To Offline Database
+                */
+                
+
+                /*
                 * Save To Firestore
                 *
                 */
 
-                ReminderInput(context, calendar)
+                ReminderInput(context, calendar).apply {
+                    add(reminderDataStructure)
+                    insertToCalendar(reminderDataStructure)
+                }
 
                 try {
 

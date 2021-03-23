@@ -29,6 +29,7 @@ import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerI
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarActionHandlerInterface
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.SnackbarBuilder
 import net.geeksempire.ready.keep.notes.databinding.EntryConfigurationLayoutBinding
+import java.util.*
 import javax.inject.Inject
 
 class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterface {
@@ -287,6 +288,8 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.CHANGE_WIFI_STATE,
             Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_CALENDAR,
+            Manifest.permission.READ_CALENDAR,
             Manifest.permission.WAKE_LOCK,
             Manifest.permission.VIBRATE
         )
@@ -306,6 +309,8 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
                 && checkSelfPermission(Manifest.permission.ACCESS_WIFI_STATE) == PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(Manifest.permission.CHANGE_WIFI_STATE) == PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED)
     }
