@@ -9,14 +9,14 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import net.geeksempire.ready.keep.notes.R
 
-class NotificationBuilder (val context: Context) {
+class NotificationBuilder (private val context: Context) {
 
     private val notificationManager = context.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
 
     fun create(notificationChannelId: String = this@NotificationBuilder.javaClass.simpleName, notificationId: Int = 666,
                notificationTitle: String?, notificationContent: String?, notificationContentDone: String? = null,
                notificationColor: Int = context.getColor(R.color.default_color),
-               notificationDone: Boolean = false) : Notification{
+               notificationDone: Boolean = false) : Notification {
 
         val notificationBuilder = NotificationCompat.Builder(context, notificationChannelId)
         notificationBuilder.setContentTitle(notificationTitle?:context.getString(R.string.applicationName))

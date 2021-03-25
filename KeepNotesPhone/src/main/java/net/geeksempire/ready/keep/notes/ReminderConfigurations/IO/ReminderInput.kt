@@ -35,18 +35,11 @@ class ReminderInput (private val context: AppCompatActivity, private val calenda
 
     fun insertToCalendar(reminderDataStructure: ReminderDataStructure) {
 
-        val eventMillisecond: Long = Calendar.getInstance().run {
-            set(reminderDataStructure.reminderTimeYear, reminderDataStructure.reminderTimeMonth, reminderDataStructure.reminderTimeDay,
-                reminderDataStructure.reminderTimeHour, reminderDataStructure.reminderTimeMinute)
-
-            timeInMillis
-        }
-
-        val values = ContentValues().apply {
+        val contentValues = ContentValues().apply {
             put(CalendarContract.Events.CALENDAR_ID, reminderDataStructure.documentId)
 
-            put(CalendarContract.Events.DTSTART, eventMillisecond)
-            put(CalendarContract.Events.DTEND, eventMillisecond + (1000 * 60))
+            put(CalendarContract.Events.DTSTART, calendar.timeInMillis)
+            put(CalendarContract.Events.DTEND, calendar.timeInMillis + (1000 * 60))
 
             put(CalendarContract.Events.TITLE, reminderDataStructure.reminderTitle)
             put(CalendarContract.Events.DESCRIPTION, reminderDataStructure.reminderDescription)
@@ -56,11 +49,11 @@ class ReminderInput (private val context: AppCompatActivity, private val calenda
 
         val contentResolver = context.contentResolver
 
-        val eventUri: Uri? = contentResolver.insert(CalendarContract.Events.CONTENT_URI, values)
+        val eventUri: Uri? = contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues)
 
         val eventId: Long? = eventUri?.lastPathSegment?.toLong()
 
-        Log.d(this@ReminderInput.javaClass.simpleName, "Event Id: ${eventId}")
+        Log.d(this@ReminderInput.javaClass.simpleName, "Event Id: $eventId")
     }
 
 }
