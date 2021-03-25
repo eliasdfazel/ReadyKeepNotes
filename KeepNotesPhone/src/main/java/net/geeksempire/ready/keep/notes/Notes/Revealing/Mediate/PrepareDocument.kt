@@ -78,6 +78,8 @@ class PrepareDocument : AppCompatActivity() {
 
                 }
 
+                this@PrepareDocument.finish()
+
             }
             
         } else {
