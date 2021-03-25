@@ -90,12 +90,15 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
 
                 /*
                 *
-                * Save To Offline Database
-                */
-                
-
-                /*
-                * Save To Firestore
+                *
+                *
+                *
+                * * Save To Firestore
+                *
+                *
+                *
+                *
+                *
                 *
                 */
 
