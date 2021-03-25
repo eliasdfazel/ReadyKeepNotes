@@ -8,7 +8,7 @@ import kotlinx.coroutines.async
 import net.geeksempire.ready.keep.notes.Database.DataStructure.NotesDatabaseModel
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
 import net.geeksempire.ready.keep.notes.KeepNoteApplication
-import net.geeksempire.ready.keep.notes.Notes.Tools.BaseDirectory
+import net.geeksempire.ready.keep.notes.Notes.Tools.Directory.BaseDirectory
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
 import java.io.File
 

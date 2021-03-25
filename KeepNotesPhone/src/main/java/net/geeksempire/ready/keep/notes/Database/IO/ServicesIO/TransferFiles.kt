@@ -8,7 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
-import net.geeksempire.ready.keep.notes.Notes.Tools.BaseDirectory
+import net.geeksempire.ready.keep.notes.Notes.Tools.Directory.BaseDirectory
 import java.io.File
 
 class TransferFiles : Service() {

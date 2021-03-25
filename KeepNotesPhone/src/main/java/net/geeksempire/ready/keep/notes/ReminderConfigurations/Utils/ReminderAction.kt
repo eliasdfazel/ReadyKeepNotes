@@ -3,6 +3,8 @@ package net.geeksempire.ready.keep.notes.ReminderConfigurations.Utils
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
+import net.geeksempire.ready.keep.notes.Notes.Revealing.Mediate.PrepareDocument
 import net.geeksempire.ready.keep.notes.ReminderConfigurations.DataStructure.Reminder
 import net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser.NotificationBuilder
 
@@ -19,11 +21,19 @@ class ReminderAction : Service() {
         val notificationBuilder = NotificationBuilder(applicationContext)
 
         intent?.let {
+            Log.d(this@ReminderAction.javaClass.simpleName, "Notification for Document: ${intent.getStringExtra(Reminder.ReminderDocumentId)} Created")
 
             notificationBuilder.create(
                 notificationChannelId = intent.getStringExtra(Reminder.ReminderDocumentId).toString(),
-                notificationTitle = intent.getStringExtra(Reminder.ReminderDocumentTitle),
-                notificationContent = intent.getStringExtra(Reminder.ReminderDocumentDescription)
+                notificationTitle = "🔔 ${intent.getStringExtra(Reminder.ReminderDocumentTitle)}",
+                notificationContent = intent.getStringExtra(Reminder.ReminderDocumentDescription),
+                notificationIntent = Intent(applicationContext, PrepareDocument::class.java).apply {
+                    putExtra(
+                        Reminder.ReminderDocumentId,
+                        intent.getStringExtra(Reminder.ReminderDocumentId).toString()
+                    )
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             )
 
         }

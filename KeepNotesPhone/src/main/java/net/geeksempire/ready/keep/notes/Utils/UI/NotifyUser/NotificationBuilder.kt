@@ -1,10 +1,8 @@
 package net.geeksempire.ready.keep.notes.Utils.UI.NotifyUser
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import net.geeksempire.ready.keep.notes.R
@@ -16,14 +14,22 @@ class NotificationBuilder (private val context: Context) {
     fun create(notificationChannelId: String = this@NotificationBuilder.javaClass.simpleName, notificationId: Int = 666,
                notificationTitle: String?, notificationContent: String?, notificationContentDone: String? = null,
                notificationColor: Int = context.getColor(R.color.default_color),
+               notificationIntent: Intent? = null,
+               notificationSilent: Boolean = false,
                notificationDone: Boolean = false) : Notification {
 
         val notificationBuilder = NotificationCompat.Builder(context, notificationChannelId)
+        notificationBuilder.setTicker(notificationTitle)
         notificationBuilder.setContentTitle(notificationTitle?:context.getString(R.string.applicationName))
         notificationBuilder.setContentText(notificationContent?:context.getString(R.string.settingUpText))
         notificationBuilder.setSmallIcon(R.drawable.ic_notification)
         notificationBuilder.color = notificationColor
-        notificationBuilder.setNotificationSilent()
+        notificationBuilder.setStyle(NotificationCompat.BigTextStyle()
+            .bigText(notificationContent))
+
+        if (notificationSilent) {
+            notificationBuilder.setNotificationSilent()
+        }
 
         if (notificationDone) {
 
@@ -47,6 +53,12 @@ class NotificationBuilder (private val context: Context) {
             notificationManager.createNotificationChannel(notificationChannel)
 
         }
+
+        notificationBuilder.setContentIntent(
+            PendingIntent.getActivity(context, 111, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        )
+
+        notificationManager.notify(notificationId, notificationBuilder.build())
 
         return notificationBuilder.build()
 
