@@ -25,7 +25,7 @@ class ReminderAction : Service() {
 
             val documentId = intent.getLongExtra(Reminder.ReminderDocumentId, 0.toLong())
 
-            if (documentId == 0.toLong()) {
+            if (documentId != 0.toLong()) {
 
                 notificationBuilder.create(
                     notificationChannelId = intent.getStringExtra(Reminder.ReminderDocumentId).toString(),

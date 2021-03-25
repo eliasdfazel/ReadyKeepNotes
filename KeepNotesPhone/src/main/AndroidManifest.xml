@@ -146,6 +146,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".Notes.Revealing.Mediate.PrepareDocument"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="keyboardHidden"
+            android:resizeableActivity="true"
+            android:screenOrientation="sensorPortrait"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/GeeksEmpire.Material.Transparent" />
+
         <service android:name=".Database.IO.ServicesIO.RetrieveFiles" />
 
         <service android:name=".Database.IO.ServicesIO.TransferFiles" />
