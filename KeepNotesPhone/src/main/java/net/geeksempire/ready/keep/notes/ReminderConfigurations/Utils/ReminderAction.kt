@@ -23,18 +23,21 @@ class ReminderAction : Service() {
         intent?.let {
             Log.d(this@ReminderAction.javaClass.simpleName, "Notification for Document: ${intent.getStringExtra(Reminder.ReminderDocumentId)} Created")
 
-            notificationBuilder.create(
-                notificationChannelId = intent.getStringExtra(Reminder.ReminderDocumentId).toString(),
-                notificationTitle = "🔔 ${intent.getStringExtra(Reminder.ReminderDocumentTitle)}",
-                notificationContent = intent.getStringExtra(Reminder.ReminderDocumentDescription),
-                notificationIntent = Intent(applicationContext, PrepareDocument::class.java).apply {
-                    putExtra(
-                        Reminder.ReminderDocumentId,
-                        intent.getStringExtra(Reminder.ReminderDocumentId).toString()
-                    )
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-            )
+            val documentId = intent.getLongExtra(Reminder.ReminderDocumentId, 0.toLong())
+
+            if (documentId == 0.toLong()) {
+
+                notificationBuilder.create(
+                    notificationChannelId = intent.getStringExtra(Reminder.ReminderDocumentId).toString(),
+                    notificationTitle = "🔔 ${intent.getStringExtra(Reminder.ReminderDocumentTitle)}",
+                    notificationContent = intent.getStringExtra(Reminder.ReminderDocumentDescription),
+                    notificationIntent = Intent(applicationContext, PrepareDocument::class.java).apply {
+                        putExtra(Reminder.ReminderDocumentId, documentId.toString())
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                )
+
+            }
 
         }
 
