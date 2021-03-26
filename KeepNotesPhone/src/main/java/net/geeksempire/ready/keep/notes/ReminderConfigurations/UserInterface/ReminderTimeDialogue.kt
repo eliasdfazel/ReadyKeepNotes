@@ -3,7 +3,12 @@ package net.geeksempire.ready.keep.notes.ReminderConfigurations.UserInterface
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import net.geeksempire.ready.keep.notes.Database.Json.JsonIO
+import net.geeksempire.ready.keep.notes.Database.NetworkEndpoints.DatabaseEndpoints
+import net.geeksempire.ready.keep.notes.KeepNoteApplication
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
@@ -13,6 +18,8 @@ import net.geeksempire.ready.keep.notes.ReminderConfigurations.IO.ReminderInput
 import java.util.*
 
 class ReminderTimeDialogue(private val context: AppCompatActivity, private val themePreferences: ThemePreferences) {
+
+    private val databaseEndpoints = DatabaseEndpoints()
 
     private val calendar = Calendar.getInstance()
 
@@ -88,26 +95,24 @@ class ReminderTimeDialogue(private val context: AppCompatActivity, private val t
                     reminderTimeYear = calendar[Calendar.YEAR], reminderTimeMonth = calendar[Calendar.MONTH], reminderTimeDay = calendar[Calendar.DAY_OF_MONTH],
                     reminderTimeHour = calendar[Calendar.HOUR_OF_DAY], reminderTimeMinute = calendar[Calendar.MINUTE])
 
-                /*
-                *
-                *
-                *
-                *
-                * * Save To Firestore
-                *
-                *
-                *
-                *
-                *
-                *
-                */
-
                 val jsonIO = JsonIO()
                 jsonIO.writeReminderData(reminderDataStructure)
 
                 ReminderInput(context, calendar).apply {
                     add(reminderDataStructure)
                     insertToCalendar(reminderDataStructure)
+                }
+
+                Firebase.auth.currentUser?.let { firebaseUser ->
+
+                    (context.application as KeepNoteApplication).firestoreDatabase
+                        .document(databaseEndpoints.noteTextsDocumentEndpoint(firebaseUserUniqueId = firebaseUser.uid, noteDocumentId = reminderContentDataStructure.documentId.toString()))
+                        .update(
+                            "noteReminder", Timestamp(calendar.time)
+                        ).addOnSuccessListener {
+
+                        }
+
                 }
 
                 try {
