@@ -23,6 +23,7 @@ import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
 import net.geeksempire.ready.keep.notes.Browser.BuiltInBrowser
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
+import net.geeksempire.ready.keep.notes.SecurityConfiguratios.Checkpoint.SecurityCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListenerInterface
@@ -33,6 +34,10 @@ import java.util.*
 import javax.inject.Inject
 
 class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterface {
+
+    private val securityCheckpoint: SecurityCheckpoint by lazy {
+        SecurityCheckpoint(applicationContext)
+    }
 
     private val userInformationIO: UserInformationIO by lazy {
         UserInformationIO(applicationContext)
@@ -249,11 +254,19 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
     private fun openOverviewActivity() {
 
-        startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        if (securityCheckpoint.securityEnabled()) {
 
-        this@EntryConfigurations.finish()
+
+
+        } else {
+
+            startActivity(Intent(applicationContext, KeepNoteOverview::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+            this@EntryConfigurations.finish()
+
+        }
 
     }
 
