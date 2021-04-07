@@ -23,6 +23,7 @@ import net.geeksempire.ready.keep.notes.AccountManager.Utils.UserInformationIO
 import net.geeksempire.ready.keep.notes.Browser.BuiltInBrowser
 import net.geeksempire.ready.keep.notes.Notes.Taking.TakeNote
 import net.geeksempire.ready.keep.notes.Overview.UserInterface.KeepNoteOverview
+import net.geeksempire.ready.keep.notes.SecurityConfiguratios.Biometric.BiometricAuthentication
 import net.geeksempire.ready.keep.notes.SecurityConfiguratios.Checkpoint.SecurityCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.Network.NetworkConnectionListener
@@ -256,7 +257,8 @@ class EntryConfigurations : AppCompatActivity(), NetworkConnectionListenerInterf
 
         if (securityCheckpoint.securityEnabled()) {
 
-
+            BiometricAuthentication(this@EntryConfigurations)
+                .startAuthenticationProcess()
 
         } else {
 

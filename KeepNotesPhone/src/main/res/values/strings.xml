@@ -79,6 +79,9 @@
 
     <string name="doneText">Done.</string>
 
+    <string name="biometricTitle">Ready Keep Note</string>
+    <string name="biometricDescription">Authenticate Your Identity To Access Notes 🆔 🔐</string>
+
     <string name="errorOccurred">⚠ Error Occurred ⚠</string>
 
     <string name="offlineSavingError">⚠ Error Occurred Saving Data  ⚠</string>
