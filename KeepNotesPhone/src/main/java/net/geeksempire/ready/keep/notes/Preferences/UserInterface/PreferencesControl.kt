@@ -27,6 +27,7 @@ import net.geeksempire.ready.keep.notes.Preferences.Extensions.toggleLightDark
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemePreferences
 import net.geeksempire.ready.keep.notes.Preferences.Theme.ThemeType
 import net.geeksempire.ready.keep.notes.R
+import net.geeksempire.ready.keep.notes.SecurityConfiguratios.Checkpoint.SecurityCheckpoint
 import net.geeksempire.ready.keep.notes.Utils.InApplicationReview.InApplicationReviewProcess
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.InApplicationUpdateProcess
 import net.geeksempire.ready.keep.notes.Utils.InApplicationUpdate.UpdateResponse
@@ -42,6 +43,10 @@ class PreferencesControl : AppCompatActivity() {
 
     val systemInformation: SystemInformation by lazy {
         SystemInformation(applicationContext)
+    }
+
+    val securityCheckpoint: SecurityCheckpoint by lazy {
+        SecurityCheckpoint(applicationContext)
     }
 
     val firebaseUser = Firebase.auth.currentUser
@@ -88,6 +93,42 @@ class PreferencesControl : AppCompatActivity() {
 
         })
 
+        preferencesControlLayoutBinding.securityOptionToggle.setOnClickListener {
+
+            preferencesControlLayoutBinding.securityOptionToggle.also {
+
+                if (securityCheckpoint.securityEnabled()) {
+
+                    it.speed = -1.130f
+                    it.setMinAndMaxFrame(1, 99)
+
+                    if (!it.isAnimating) {
+                        it.playAnimation()
+                    }
+
+                } else {
+
+                    it.speed = 1.130f
+                    it.setMinAndMaxFrame(1, 99)
+
+                    if (!it.isAnimating) {
+                        it.playAnimation()
+                    }
+
+                }
+
+                securityCheckpoint.securityEnabled(!securityCheckpoint.securityEnabled())
+
+            }
+
+        }
+
+        setupMiscCickListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
         preferencesControlLayoutBinding.accountManagerView.setOnClickListener {
 
             startActivity(
@@ -97,6 +138,48 @@ class PreferencesControl : AppCompatActivity() {
             )
 
         }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        firebaseUser?.let {
+
+            if (firebaseUser.isAnonymous) {
+
+                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
+
+                preferencesControlLayoutBinding.userDisplayName.setLines(2)
+                preferencesControlLayoutBinding.userDisplayName.text = Html.fromHtml("${getString(R.string.notLogin)}", Html.FROM_HTML_MODE_COMPACT)
+
+            } else {
+
+                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
+
+                preferencesControlLayoutBinding.userDisplayName.setLines(1)
+                preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
+
+                Glide.with(this@PreferencesControl)
+                    .asDrawable()
+                    .load(firebaseUser.photoUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(preferencesControlLayoutBinding.userProfileImage)
+
+            }
+
+        }
+
+    }
+
+    override fun onBackPressed() {
+
+        this@PreferencesControl.finish()
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+
+    }
+
+    private fun setupMiscCickListener() {
 
         preferencesControlLayoutBinding.sharingView.setOnClickListener {
 
@@ -195,44 +278,6 @@ class PreferencesControl : AppCompatActivity() {
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        firebaseUser?.let {
-
-            if (firebaseUser.isAnonymous) {
-
-                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
-
-                preferencesControlLayoutBinding.userDisplayName.setLines(2)
-                preferencesControlLayoutBinding.userDisplayName.text = Html.fromHtml("${getString(R.string.notLogin)}", Html.FROM_HTML_MODE_COMPACT)
-
-            } else {
-
-                preferencesControlLayoutBinding.accountManagerView.visibility = View.VISIBLE
-
-                preferencesControlLayoutBinding.userDisplayName.setLines(1)
-                preferencesControlLayoutBinding.userDisplayName.text = firebaseUser.displayName
-
-                Glide.with(this@PreferencesControl)
-                    .asDrawable()
-                    .load(firebaseUser.photoUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(preferencesControlLayoutBinding.userProfileImage)
-
-            }
-
-        }
-
-    }
-
-    override fun onBackPressed() {
-
-        this@PreferencesControl.finish()
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
     }
 

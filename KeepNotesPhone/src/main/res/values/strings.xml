@@ -59,6 +59,7 @@
     <string name="descriptionPreferences">Go To Preferences</string>
     <string name="descriptionGoBack">Back To Previous</string>
 
+    <string name="descriptionToggleSecurity">Security To Access Your Notes By Authentications</string>
     <string name="descriptionToggleTheme">Change Theme Of Application</string>
 
     <string name="descriptionSupport">Contact Support Team</string>
