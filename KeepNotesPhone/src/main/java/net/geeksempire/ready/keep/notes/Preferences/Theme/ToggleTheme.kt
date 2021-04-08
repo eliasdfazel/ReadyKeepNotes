@@ -22,16 +22,14 @@ class ToggleTheme (private val context: AppCompatActivity, private val preferenc
 
         when (themePreferences.checkThemeLightDark()) {
             ThemeType.ThemeLight -> {
-                preferencesControlViewBinding.toggleThemeView.apply {
-                    speed = 3.33f
-                    setMinAndMaxFrame(0, 7)
-                }.playAnimation()
+
+                preferencesControlViewBinding.toggleThemeView.frame = 1
+
             }
             ThemeType.ThemeDark -> {
-                preferencesControlViewBinding.toggleThemeView.apply {
-                    speed = -3.33f
-                    setMinAndMaxFrame(90, 99)
-                }.playAnimation()
+
+                preferencesControlViewBinding.toggleThemeView.frame = 251
+
             }
         }
 
@@ -49,7 +47,7 @@ class ToggleTheme (private val context: AppCompatActivity, private val preferenc
                     ThemeType.ThemeLight -> {
 
                         it.speed = 1.130f
-                        it.setMinAndMaxFrame(7, 90)
+                        it.setMinAndMaxFrame(1, 251)
 
                         if (!it.isAnimating) {
                             it.playAnimation()
@@ -61,7 +59,7 @@ class ToggleTheme (private val context: AppCompatActivity, private val preferenc
                     ThemeType.ThemeDark -> {
 
                         it.speed = -1.130f
-                        it.setMinAndMaxFrame(7, 90)
+                        it.setMinAndMaxFrame(1, 251)
 
                         if (!it.isAnimating) {
                             it.playAnimation()

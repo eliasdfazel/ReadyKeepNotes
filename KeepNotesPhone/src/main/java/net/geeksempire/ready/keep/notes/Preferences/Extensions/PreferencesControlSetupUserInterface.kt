@@ -53,6 +53,12 @@ fun PreferencesControl.toggleLightDark() {
 
             preferencesControlLayoutBinding.accountManagerView.background = accountViewBackground
 
+            val preferencesToggleBackground = getDrawable(R.drawable.preferences_toggle_background) as GradientDrawable
+            preferencesToggleBackground.setTint(Color.WHITE)
+
+            preferencesControlLayoutBinding.toggleThemeView.background = preferencesToggleBackground
+            preferencesControlLayoutBinding.securityOptionToggle.background = preferencesToggleBackground
+
         }
         ThemeType.ThemeDark -> {
 
@@ -67,6 +73,12 @@ fun PreferencesControl.toggleLightDark() {
             accountViewBackground.findDrawableByLayerId(R.id.temporaryForeground).setTint(getColor(R.color.dark))
 
             preferencesControlLayoutBinding.accountManagerView.background = accountViewBackground
+
+            val preferencesToggleBackground = getDrawable(R.drawable.preferences_toggle_background) as GradientDrawable
+            preferencesToggleBackground.setTint(Color.BLACK)
+
+            preferencesControlLayoutBinding.toggleThemeView.background = preferencesToggleBackground
+            preferencesControlLayoutBinding.securityOptionToggle.background = preferencesToggleBackground
 
         }
     }

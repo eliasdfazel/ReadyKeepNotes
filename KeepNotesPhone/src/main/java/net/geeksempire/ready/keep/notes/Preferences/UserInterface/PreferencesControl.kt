@@ -93,6 +93,12 @@ class PreferencesControl : AppCompatActivity() {
 
         })
 
+        preferencesControlLayoutBinding.securityOptionToggle.frame = if (securityCheckpoint.securityEnabled()) {
+            81
+        } else {
+            1
+        }
+
         preferencesControlLayoutBinding.securityOptionToggle.setOnClickListener {
 
             preferencesControlLayoutBinding.securityOptionToggle.also {
@@ -100,7 +106,7 @@ class PreferencesControl : AppCompatActivity() {
                 if (securityCheckpoint.securityEnabled()) {
 
                     it.speed = -1.130f
-                    it.setMinAndMaxFrame(1, 99)
+                    it.setMinAndMaxFrame(1, 81)
 
                     if (!it.isAnimating) {
                         it.playAnimation()
@@ -109,7 +115,7 @@ class PreferencesControl : AppCompatActivity() {
                 } else {
 
                     it.speed = 1.130f
-                    it.setMinAndMaxFrame(1, 99)
+                    it.setMinAndMaxFrame(1, 81)
 
                     if (!it.isAnimating) {
                         it.playAnimation()
