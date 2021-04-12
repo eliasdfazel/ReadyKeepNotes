@@ -135,9 +135,6 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
 
                 Firebase.auth.currentUser?.let { firebaseUser ->
 
-                    println(">>> >> > " + recordedAudioData[position])
-                    println(">>> >> > " + databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, recordedAudioData[position].documentId).plus("/${recordedAudioData[position].audioRecordedId}" + ".MP3"))
-
                     Firebase.storage.reference
                         .child(databaseEndpoints.voiceRecordingEndpoint(firebaseUser.uid, recordedAudioData[position].documentId).plus("/${recordedAudioData[position].audioRecordedId}" + ".MP3"))
                         .delete().addOnSuccessListener {
@@ -152,7 +149,19 @@ class RecordedAudioAdapter(private val context: AppCompatActivity, val recyclerV
 
                     withContext(Dispatchers.Main) {
 
-                        recordedAudioData.removeAt(position)
+                        recordedAudioData.apply {
+
+                            if (recordedAudioData.size == 1) {
+
+                                clear()
+
+                            } else {
+
+                                removeAt(position)
+
+                            }
+
+                        }
 
                         notifyItemRemoved(position)
                         notifyDataSetChanged()
